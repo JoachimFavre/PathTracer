@@ -1,6 +1,8 @@
 #ifndef DEF_SPHERE
 #define DEF_SPHERE
 
+#include <math.h>
+
 #include "Object3D.h";
 #include "DoubleVec3.h"
 #include "Ray.h"
