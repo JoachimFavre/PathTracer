@@ -47,6 +47,12 @@ void DoubleVec3::operator*=(const double& val) {
 void DoubleVec3::operator/=(const double& val) { this->operator*=(1 / val); }
 
 
+// Other method
+void DoubleVec3::normalise() {
+	this->operator/=(length(*this));
+}
+
+
 // Functions
 // Vector operators
 DoubleVec3 operator+(const DoubleVec3& vec1, const DoubleVec3& vec2) {

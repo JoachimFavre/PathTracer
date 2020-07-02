@@ -28,6 +28,8 @@ public:
 	void operator-=(const DoubleVec3& vec);
 	void operator*=(const double& val);
 	void operator/=(const double& val);
+
+	void normalise();
 };
 
 DoubleVec3 operator+(const DoubleVec3& vec1, const DoubleVec3& vec2);
