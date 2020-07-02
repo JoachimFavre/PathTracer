@@ -81,3 +81,21 @@ DoubleVec3 operator/(const DoubleVec3& vec, const double& val) {
 	result /= val;
 	return result;
 }
+
+
+// Other functions
+DoubleVec3 crossProd(const DoubleVec3& vec1, const DoubleVec3& vec2) {
+	double x = vec1.getY()*vec2.getZ() - vec1.getZ()*vec2.getY();
+	double y = vec1.getZ()*vec2.getX() - vec1.getX()*vec2.getZ();
+	double z = vec1.getX()*vec2.getY() - vec1.getY()*vec2.getX();
+	return DoubleVec3(x, y, z);
+}
+
+double dotProd(const DoubleVec3& vec1, const DoubleVec3& vec2) {
+	double x = vec1.getX() * vec2.getX();
+	double y = vec1.getY() * vec2.getY();
+	double z = vec1.getZ() * vec2.getZ();
+	return x + y + z;
+}
+
+double length(const DoubleVec3& vec) { return sqrt(dotProd(vec, vec)); }
