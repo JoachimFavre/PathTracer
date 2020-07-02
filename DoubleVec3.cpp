@@ -10,9 +10,7 @@ DoubleVec3::DoubleVec3(double x, double y, double z) {
 }
 
 DoubleVec3::DoubleVec3(const DoubleVec3& vec) {
-	this->x = vec.getX();
-	this->y = vec.getY();
-	this->z = vec.getZ();
+	this->setVals(vec.getX(), vec.getY(), vec.getZ());
 }
 
 
