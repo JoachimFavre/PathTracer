@@ -1,5 +1,7 @@
 # Visual studio files
 /.vs
+/Debug
+/Release
 BidirectionalPathTracer.sln
 BidirectionalPathTracer.vcxproj
 BidirectionalPathTracer.vcxproj.filters
