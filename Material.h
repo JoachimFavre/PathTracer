@@ -13,7 +13,7 @@ private:
 private:
 	Material();
 	Material(const DoubleVec3& colour, BRDF brdf, double emittance = 0);
-	Material(const Material& obj);
+	Material(const Material& material);
 
 	DoubleVec3 getColour() const;
 	BRDF getBRDF() const;
