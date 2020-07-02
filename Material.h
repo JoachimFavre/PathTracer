@@ -1,5 +1,5 @@
-#ifndef DEF_SPHERE
-#define DEF_SPHERE
+#ifndef DEF_MATERIAL
+#define DEF_MATERIAL
 
 #include "DoubleVec3.h"
 #include "BRDF.h"
@@ -10,7 +10,7 @@ private:
 	BRDF brdf;
 	double emittance;
 
-private:
+public:
 	Material();
 	Material(const DoubleVec3& colour, BRDF brdf, double emittance = 0);
 	Material(const Material& material);
