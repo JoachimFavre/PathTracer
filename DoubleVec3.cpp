@@ -3,15 +3,11 @@
 // Constructors
 DoubleVec3::DoubleVec3(double val /*= 0*/) : x(val), y(val), z(val) {}
 
-DoubleVec3::DoubleVec3(double x, double y, double z) {
-	this->x = x;
-	this->y = y;
-	this->z = z;
-}
+DoubleVec3::DoubleVec3(double x, double y, double z)
+	: x(x), y(y), z(z) {}
 
-DoubleVec3::DoubleVec3(const DoubleVec3& vec) {
-	this->setVals(vec.getX(), vec.getY(), vec.getZ());
-}
+DoubleVec3::DoubleVec3(const DoubleVec3& vec)
+	: x(vec.x), y(vec.y), z(vec.z) {}
 
 // Getters
 double DoubleVec3::getX() const { return this->x; }
@@ -31,9 +27,9 @@ void DoubleVec3::setVals(double x, double y, double z) {
 
 // Operators
 void DoubleVec3::operator+=(const DoubleVec3& vec) {
-	x += vec.getX();
-	y += vec.getY();
-	z += vec.getZ();
+	x += vec.x;
+	y += vec.y;
+	z += vec.z;
 }
 
 void DoubleVec3::operator-=(const DoubleVec3& vec) { this->operator+=(-vec); }

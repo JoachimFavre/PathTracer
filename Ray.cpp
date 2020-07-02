@@ -8,10 +8,8 @@ Ray::Ray(const DoubleVec3& origin, const DoubleVec3& direction)
 	this->direction.normalise();
 }
 
-Ray::Ray(const Ray& ray) {
-	this->origin = ray.getOrigin();
-	this->direction = ray.getDirection();
-}
+Ray::Ray(const Ray& ray)
+	: origin(ray.origin), direction(ray.direction) {}
 
 
 // Getters
