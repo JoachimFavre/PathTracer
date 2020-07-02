@@ -1,3 +1,10 @@
+# Visual studio files
+/.vs
+BidirectionalPathTracer.sln
+BidirectionalPathTracer.vcxproj
+BidirectionalPathTracer.vcxproj.filters
+BidirectionalPathTracer.vcxproj.user
+
 # Prerequisites
 *.d
 
