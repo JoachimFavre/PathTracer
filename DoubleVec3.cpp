@@ -45,7 +45,9 @@ void DoubleVec3::operator/=(const double& val) { this->operator*=(1 / val); }
 
 // Other method
 void DoubleVec3::normalise() {
-	this->operator/=(length(*this));
+	double lengthSquared = dotProd(*this, *this);
+	if (lengthSquared != 1)  // square roots take a lot of time to compute
+		this->operator/=(sqrt(lengthSquared));
 }
 
 
