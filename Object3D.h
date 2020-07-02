@@ -1,28 +1,21 @@
 #ifndef DEF_OBJECT3D
 #define DEF_OBJECT3D
 
+#include "Material.h"
 #include "DoubleVec3.h"
 #include "Ray.h"
-#include "BRDF.h"
 
 class Object3D {
 private:
-	DoubleVec3 colour;
-	BRDF brdf;
-	double emittance;
+	Material material;
 
 public:
 	Object3D();
-	Object3D(const DoubleVec3& colour, BRDF brdf, double emittance = 0);
+	Object3D(const Material& material);
 	Object3D(const Object3D& obj);
 
-	DoubleVec3 getColour() const;
-	BRDF getBRDF() const;
-	double getEmittance() const;
-
-	void setColour(const DoubleVec3& colour);
-	void setBRDF(BRDF brdf);
-	void setEmittance(double emittance);
+	Material getMaterial() const;
+	void setMaterial(const Material& material);
 
 	virtual double closestIntersection(const Ray& ray) const = 0;
 	virtual DoubleVec3 getNormal(const DoubleVec3& point) const = 0;

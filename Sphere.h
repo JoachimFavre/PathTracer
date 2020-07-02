@@ -4,6 +4,7 @@
 #include <math.h>
 
 #include "Object3D.h";
+#include "Material.h"
 #include "DoubleVec3.h"
 #include "Ray.h"
 
@@ -14,7 +15,7 @@ private:
 
 public:
 	Sphere();
-	Sphere(const DoubleVec3& center, double radius, const DoubleVec3& colour, BRDF brdf, double emittance = 0);
+	Sphere(const DoubleVec3& center, double radius, const Material& material);
 	Sphere(const Sphere& sphere);
 
 	DoubleVec3 getCenter() const;

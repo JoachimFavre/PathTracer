@@ -3,8 +3,8 @@
 // Constructors
 Sphere::Sphere() : Object3D(), center(0), radius(1) {}
 
-Sphere::Sphere(const DoubleVec3& center, double radius, const DoubleVec3& colour, BRDF brdf, double emittance /*= 0*/)
-	: Object3D(colour, brdf, emittance), center(center), radius(radius) {}
+Sphere::Sphere(const DoubleVec3& center, double radius, const Material& material)
+	: Object3D(material), center(center), radius(radius) {}
 
 Sphere::Sphere(const Sphere& sphere) 
 	: Object3D(sphere), center(sphere.center), radius(sphere.radius) {}
