@@ -3,7 +3,9 @@
 
 class DoubleVec3 {
 private:
-	double x, y, z;
+	double x = 0;
+	double y = 0;
+	double z = 0;
 
 public:
 	DoubleVec3(double val = 0);
@@ -11,8 +13,8 @@ public:
 	DoubleVec3(const DoubleVec3& vec);
 
 	double getX() const;
-	const double getY();
-	const double getZ();
+	double getY() const;
+	double getZ() const;
 
 	void setX(double x);
 	void setY(double y);
