@@ -23,14 +23,20 @@ public:
 
 	void operator+=(const DoubleVec3& vec);
 	void operator-=(const DoubleVec3& vec);
+	void operator*=(const double& val);
+	void operator/=(const double& val);
 };
+
+DoubleVec3 operator+(const DoubleVec3& vec1, const DoubleVec3& vec2);
+DoubleVec3 operator-(const DoubleVec3& vec);
+DoubleVec3 operator-(const DoubleVec3& vec1, const DoubleVec3& vec2);
+
+DoubleVec3 operator*(const DoubleVec3& vec, const double& val);
+DoubleVec3 operator*(const double& val, const DoubleVec3& vec);
+DoubleVec3 operator/(const DoubleVec3& vec, const double& val);
 
 double length(const DoubleVec3& vec);
 double dotProd(const DoubleVec3& vec1, const DoubleVec3& vec2);
 DoubleVec3 crossProd(const DoubleVec3& vec1, const DoubleVec3& vec2);
-
-DoubleVec3 operator+(const DoubleVec3& vec1, const DoubleVec3& vec2);
-DoubleVec3 operator-(const DoubleVec3& vec1, const DoubleVec3& vec2);
-
 
 #endif

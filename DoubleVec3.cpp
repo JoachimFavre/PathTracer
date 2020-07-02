@@ -13,12 +13,10 @@ DoubleVec3::DoubleVec3(const DoubleVec3& vec) {
 	this->setVals(vec.getX(), vec.getY(), vec.getZ());
 }
 
-
 // Getters
 double DoubleVec3::getX() const { return this->x; }
 double DoubleVec3::getY() const { return this->y; }
 double DoubleVec3::getZ() const { return this->z; }
-
 
 // Setters
 void DoubleVec3::setX(double x) { this->x = x; }
@@ -29,4 +27,57 @@ void DoubleVec3::setVals(double x, double y, double z) {
 	this->x = x;
 	this->y = y;
 	this->z = z;
+}
+
+// Operators
+void DoubleVec3::operator+=(const DoubleVec3& vec) {
+	x += vec.getX();
+	y += vec.getY();
+	z += vec.getZ();
+}
+
+void DoubleVec3::operator-=(const DoubleVec3& vec) { this->operator+=(-vec); }
+
+void DoubleVec3::operator*=(const double& val) {
+	x *= val;
+	y *= val;
+	z *= val;
+}
+
+void DoubleVec3::operator/=(const double& val) { this->operator*=(1 / val); }
+
+
+// Functions
+// Operators
+DoubleVec3 operator+(const DoubleVec3& vec1, const DoubleVec3& vec2) {
+	DoubleVec3 result = vec1;
+	result += vec2;
+	return result;
+}
+
+DoubleVec3 operator-(const DoubleVec3& vec) {
+	DoubleVec3 result = vec;
+	result *= -1;
+	return result;
+}
+
+DoubleVec3 operator-(const DoubleVec3& vec1, const DoubleVec3& vec2) {
+	DoubleVec3 result = vec1;
+	result -= vec2;
+	return result;
+}
+
+
+DoubleVec3 operator*(const DoubleVec3& vec, const double& val) {
+	DoubleVec3 result = vec;
+	result *= val;
+	return result;
+}
+
+DoubleVec3 operator*(const double& val, const DoubleVec3& vec) { return operator*(vec, val); }
+
+DoubleVec3 operator/(const DoubleVec3& vec, const double& val) {
+	DoubleVec3 result = vec;
+	result /= val;
+	return result;
 }
