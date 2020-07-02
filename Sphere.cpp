@@ -18,7 +18,7 @@ double Sphere::getRadius() const { return radius; }
 void Sphere::setCenter(const DoubleVec3& center) { this->center = center; }
 void Sphere::setRadius(double radius) { this->radius = radius; }
 
-// Intersection
+// Virtual functions
 double Sphere::closestIntersection(const Ray& ray) const {
 	// Returns -1 if no solution
 	// Using quadratic equation formula to solve (meaning of a, b, c)
@@ -40,4 +40,11 @@ double Sphere::closestIntersection(const Ray& ray) const {
 		else
 			return (-b + sqrt_discriminant)/2; // biggest solution but maybe positive
 	}
+}
+
+DoubleVec3 Sphere::getNormal(const DoubleVec3& point) const {
+	DoubleVec3 normal(point.getX() - center.getX(),
+					  point.getY() - center.getY(),
+					  point.getZ() - center.getZ());
+	return normal/radius; // normalised
 }

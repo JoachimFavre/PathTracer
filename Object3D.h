@@ -25,6 +25,7 @@ public:
 	void setEmittance(double emittance);
 
 	virtual double closestIntersection(const Ray& ray) const = 0;
+	virtual DoubleVec3 getNormal(const DoubleVec3& point) const = 0;
 };
 
 #endif

@@ -24,6 +24,7 @@ public:
 	void setRadius(double radius);
 
 	double closestIntersection(const Ray& ray) const;
+	DoubleVec3 getNormal(const DoubleVec3& point) const;
 };
 
 #endif
