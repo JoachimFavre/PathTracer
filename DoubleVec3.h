@@ -8,10 +8,11 @@ private:
 public:
 	DoubleVec3(double val = 0);
 	DoubleVec3(double x, double y, double z);
+	DoubleVec3(const DoubleVec3& vec);
 
-	double getX();
-	double getY();
-	double getZ();
+	double getX() const;
+	const double getY();
+	const double getZ();
 
 	void setX(double x);
 	void setY(double y);
