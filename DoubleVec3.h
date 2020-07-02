@@ -1,6 +1,7 @@
 #ifndef DEF_DOUBLEVEC3
 #define DEF_DOUBLEVEC3
 
+#include <iostream>
 #include <math.h>
 
 class DoubleVec3 {
@@ -36,6 +37,8 @@ DoubleVec3 operator-(const DoubleVec3& vec1, const DoubleVec3& vec2);
 DoubleVec3 operator*(const DoubleVec3& vec, const double& val);
 DoubleVec3 operator*(const double& val, const DoubleVec3& vec);
 DoubleVec3 operator/(const DoubleVec3& vec, const double& val);
+
+std::ostream& operator<<(std::ostream& stream, const DoubleVec3& vec);
 
 DoubleVec3 crossProd(const DoubleVec3& vec1, const DoubleVec3& vec2);
 double dotProd(const DoubleVec3& vec1, const DoubleVec3& vec2);

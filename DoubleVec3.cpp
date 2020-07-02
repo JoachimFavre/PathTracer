@@ -48,7 +48,7 @@ void DoubleVec3::operator/=(const double& val) { this->operator*=(1 / val); }
 
 
 // Functions
-// Operators
+// Vector operators
 DoubleVec3 operator+(const DoubleVec3& vec1, const DoubleVec3& vec2) {
 	DoubleVec3 result = vec1;
 	result += vec2;
@@ -67,7 +67,7 @@ DoubleVec3 operator-(const DoubleVec3& vec1, const DoubleVec3& vec2) {
 	return result;
 }
 
-
+// Scalar operators
 DoubleVec3 operator*(const DoubleVec3& vec, const double& val) {
 	DoubleVec3 result = vec;
 	result *= val;
@@ -80,6 +80,13 @@ DoubleVec3 operator/(const DoubleVec3& vec, const double& val) {
 	DoubleVec3 result = vec;
 	result /= val;
 	return result;
+}
+
+
+// ostream operator
+std::ostream& operator<<(std::ostream& stream, const DoubleVec3& vec) {
+	stream << "(" << vec.getX() << ", " << vec.getY() << ", " << vec.getZ() << ")";
+	return stream;
 }
 
 
