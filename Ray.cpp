@@ -31,5 +31,6 @@ void Ray::setOrigin(const DoubleVec3& origin) {
 
 void Ray::setDirection(const DoubleVec3& direction) {
 	this->direction = direction;
+	this->direction.normalise();
 }
 
