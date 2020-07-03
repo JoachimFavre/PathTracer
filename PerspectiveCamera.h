@@ -1,6 +1,9 @@
 #ifndef DEF_PERSPECTIVECAMERA
 #define DEF_PERSPECTIVECAMERA
 
+#define _USE_MATH_DEFINES  // to be able to use M_PI from math.h
+#include <math.h>
+
 #include "DoubleVec3.h"
 #include "Ray.h"
 
@@ -11,7 +14,7 @@ private:
 
 public:
 	PerspectiveCamera();
-	PerspectiveCamera(unsigned int width, unsigned int height, double fovX);
+	PerspectiveCamera(unsigned int width, unsigned int height, double fovX = M_PI/4);
 	PerspectiveCamera(const PerspectiveCamera& camera);
 	
 	unsigned int getWidth();
