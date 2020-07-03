@@ -4,7 +4,6 @@
 #include "Object3D.h"
 #include "DoubleVec3.h"
 #include "Material.h"
-#include "Constants.h"
 
 class TrianglePlane : public Object3D {
 private:
