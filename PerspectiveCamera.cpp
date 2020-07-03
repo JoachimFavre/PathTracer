@@ -24,7 +24,7 @@ void PerspectiveCamera::setFovX(double fovX) { this->fovX = fovX; }
 
 
 // Other methods
-Ray PerspectiveCamera::getRayGoingThrough(unsigned int pixelX, unsigned int pixelY) {
+Ray PerspectiveCamera::getRayGoingThrough(double pixelX, double pixelY) {
     DoubleVec3 rayOrigin(0.0);
     DoubleVec3 rayDirection((2.0*pixelX - width)/width * tan(fovX),
                             (2.0*pixelY - height)/height * tan(height/width*fovX),

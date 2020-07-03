@@ -28,7 +28,7 @@ constexpr double CAMERA_FOV_X = M_PI_4;
 
 constexpr double MAX_DEPTH = 10;
 constexpr unsigned int MAX_BOUNCES = 5;
-constexpr unsigned int SAMPLE_PER_PIXEL = 1000;
+constexpr unsigned int SAMPLE_PER_PIXEL = 1024;
 
 double randomDouble() {
 	return unif(re);
@@ -112,7 +112,7 @@ int main() {
 		std::cout << "\r" << (double)pixelX / PICTURE_WIDTH * 100 << "%     ";
 		for (unsigned int pixelY = 0; pixelY < PICTURE_HEIGHT; pixelY++) {
 			for (unsigned int samples = 0; samples < SAMPLE_PER_PIXEL; samples++) {
-				Ray currentRay = camera.getRayGoingThrough(pixelX, pixelY);
+				Ray currentRay = camera.getRayGoingThrough(pixelX + randomDouble() - 0.5, pixelY + randomDouble() - 0.5);
 				picture[pixelX][pixelY] += traceRay(currentRay)/SAMPLE_PER_PIXEL;
 			}
 		}

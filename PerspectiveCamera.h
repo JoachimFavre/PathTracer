@@ -25,7 +25,7 @@ public:
 	void setHeight(unsigned int height);
 	void setFovX(double fovX);
 
-	Ray getRayGoingThrough(unsigned int pixelX, unsigned int pixelY);
+	Ray getRayGoingThrough(double pixelX, double pixelY);
 };
 
 #endif
