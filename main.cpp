@@ -23,12 +23,12 @@ std::vector<Object3D*> scene;
 
 constexpr unsigned int PICTURE_WIDTH = 500;
 constexpr unsigned int PICTURE_HEIGHT = 500;
-DoubleVec3 picture [PICTURE_HEIGHT][PICTURE_WIDTH];
+DoubleVec3 picture [PICTURE_WIDTH][PICTURE_HEIGHT];
 constexpr double CAMERA_FOV_X = M_PI_4;
 
 constexpr double MAX_DEPTH = 10;
 constexpr unsigned int MAX_BOUNCES = 5;
-constexpr unsigned int SAMPLE_PER_PIXEL = 500;
+constexpr unsigned int SAMPLE_PER_PIXEL = 64;
 
 double randomDouble() {
 	return unif(re);
@@ -47,7 +47,7 @@ DoubleVec3 newDirectionOnHemisphere(const DoubleVec3& normal) {
 	return randomVec;
 }
 
-DoubleVec3 traceRay(const Ray& ray, DoubleVec3 colour = DoubleVec3(0), unsigned int bounces = 0) {  // is "colour" necessary ?
+DoubleVec3 traceRay(const Ray& ray, DoubleVec3 colour = DoubleVec3(0.0), unsigned int bounces = 0) {  // is "colour" necessary ?
 	if (bounces < MAX_BOUNCES) {
 		double smallestPositiveDistance = MAX_DEPTH + 1;  // Strictly positive -> we don't want it to intersect with same object
 		Object3D* closestObject = nullptr;
@@ -61,13 +61,13 @@ DoubleVec3 traceRay(const Ray& ray, DoubleVec3 colour = DoubleVec3(0), unsigned 
 		if (smallestPositiveDistance < MAX_DEPTH) {
 			Material objectMaterial = closestObject->getMaterial();
 			DoubleVec3 objectColour = objectMaterial.getColour();
-			colour += DoubleVec3(objectMaterial.getEmittance());
+			colour += DoubleVec3((double)objectMaterial.getEmittance());
 			// assume BRDF is diffuse
 			DoubleVec3 intersection = ray.getOrigin() + smallestPositiveDistance * ray.getDirection();
 			DoubleVec3 normal = closestObject->getNormal(intersection);
 			DoubleVec3 newDirection = newDirectionOnHemisphere(normal);
 			Ray newRay = Ray(intersection, newDirection);
-			DoubleVec3 recursiveColour = traceRay(newRay, DoubleVec3(0), bounces + 1);
+			DoubleVec3 recursiveColour = traceRay(newRay, DoubleVec3(0.0), bounces + 1);
 			colour += DoubleVec3(recursiveColour.getX()*objectColour.getX(),
 					             recursiveColour.getY()*objectColour.getY(),
 				                 recursiveColour.getZ()*objectColour.getZ())
@@ -83,18 +83,35 @@ DoubleVec3 traceRay(const Ray& ray, DoubleVec3 colour = DoubleVec3(0), unsigned 
 
 int main() {
 	// Make scene
-	scene.push_back(new Sphere(DoubleVec3(0, 0, -5), 1, Material(DoubleVec3(5), BRDF::Diffuse, 0)));
-	scene.push_back(new Sphere(DoubleVec3(-1, 1, -3), 0.2, Material(DoubleVec3(5), BRDF::Diffuse, 1000)));
-	//scene.push_back(new Triangle(DoubleVec3(0, )))
+	// Spheres
+	//scene.push_back(new Sphere(DoubleVec3(0, 0, -2), 0.5, Material(DoubleVec3(5), BRDF::Diffuse)));
+	scene.push_back(new Sphere(DoubleVec3(1, 1, -3), 0.2, Material(DoubleVec3(5), BRDF::Diffuse, 1000)));
+	// left
+	scene.push_back(new TrianglePlane(DoubleVec3(-2, -2, 0), DoubleVec3(-2, 2, 0), DoubleVec3(-2, -2, -4), Material(DoubleVec3(0, 0, 5), BRDF::Diffuse)));
+	scene.push_back(new TrianglePlane(DoubleVec3(-2, 2, 0), DoubleVec3(-2, -2, -4), DoubleVec3(-2, 2, -4), Material(DoubleVec3(0, 0, 5), BRDF::Diffuse)));
+	// right
+	scene.push_back(new TrianglePlane(DoubleVec3(2, -2, 0), DoubleVec3(2, -2, -4), DoubleVec3(2, -2, 0), Material(DoubleVec3(5, 0, 0), BRDF::Diffuse)));
+	scene.push_back(new TrianglePlane(DoubleVec3(2, 2, -4), DoubleVec3(2, -2, -4), DoubleVec3(2, -2, 0), Material(DoubleVec3(5, 0, 0), BRDF::Diffuse)));
+	// Top
+	scene.push_back(new TrianglePlane(DoubleVec3(2, 2, -4), DoubleVec3(-2, 2, 0), DoubleVec3(-2, 2, -4), Material(DoubleVec3(5), BRDF::Diffuse)));
+	scene.push_back(new TrianglePlane(DoubleVec3(-2, 2, 0), DoubleVec3(2, 2, -4), DoubleVec3(2, 2, 0), Material(DoubleVec3(5), BRDF::Diffuse)));
+	// Bottom
+	scene.push_back(new TrianglePlane(DoubleVec3(-2, -2, 0), DoubleVec3(2, -2, -4), DoubleVec3(-2, -2, -4), Material(DoubleVec3(5), BRDF::Diffuse)));
+	scene.push_back(new TrianglePlane(DoubleVec3(2, -2, -4), DoubleVec3(-2, -2, 0), DoubleVec3(2, -2, 0), Material(DoubleVec3(5), BRDF::Diffuse)));
+	//Back
+	scene.push_back(new TrianglePlane(DoubleVec3(-2, 2, -4), DoubleVec3(-2, -2, -4), DoubleVec3(2, 2, -4), Material(DoubleVec3(5), BRDF::Diffuse)));
+	scene.push_back(new TrianglePlane(DoubleVec3(2, 2, -4), DoubleVec3(-2, -2, -4), DoubleVec3(2, -2, -4), Material(DoubleVec3(5), BRDF::Diffuse)));
+
 	
 	PerspectiveCamera camera(PICTURE_WIDTH, PICTURE_HEIGHT, CAMERA_FOV_X);
 
 	// Trace
 	for (unsigned int pixelX = 0; pixelX < PICTURE_WIDTH; pixelX++) {
+		std::cout << (double)pixelX / PICTURE_WIDTH * 100 << "%" << std::endl;
 		for (unsigned int pixelY = 0; pixelY < PICTURE_HEIGHT; pixelY++) {
 			for (unsigned int samples = 0; samples < SAMPLE_PER_PIXEL; samples++) {
 				Ray currentRay = camera.getRayGoingThrough(pixelX, pixelY);
-				picture[pixelY][pixelX] += traceRay(currentRay)/SAMPLE_PER_PIXEL;
+				picture[pixelX][pixelY] += traceRay(currentRay)/SAMPLE_PER_PIXEL;
 			}
 		}
 	}
@@ -103,9 +120,9 @@ int main() {
 	std::ofstream file;
 	file.open("picture.ppm");
 	file << "P3\n" << PICTURE_WIDTH << " " << PICTURE_HEIGHT << "\n" << "255\n";
-	for (unsigned int pixelX = 0; pixelX < PICTURE_WIDTH; pixelX++) {
-		for (unsigned int pixelY = 0; pixelY < PICTURE_HEIGHT; pixelY++) {
-			DoubleVec3 currentColour = picture[pixelY][pixelX];
+	for (unsigned int pixelY = 0; pixelY < PICTURE_HEIGHT; pixelY++) {
+		for (unsigned int pixelX = 0; pixelX < PICTURE_WIDTH; pixelX++) {
+			DoubleVec3 currentColour = picture[pixelX][pixelY];
 			file << std::min(255, (int)currentColour.getX()) << " ";
 			file << std::min(255, (int)currentColour.getY()) << " ";
 			file << std::min(255, (int)currentColour.getZ()) << "\n";
