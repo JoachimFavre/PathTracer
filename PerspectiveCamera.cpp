@@ -22,6 +22,7 @@ void PerspectiveCamera::setWidth(unsigned int width) { this->width = width; }
 void PerspectiveCamera::setHeight(unsigned int height) { this->height = height; }
 void PerspectiveCamera::setFovX(double fovX) { this->fovX = fovX; }
 
+
 // Other methods
 Ray PerspectiveCamera::getRayGoingThrough(unsigned int pixelX, unsigned int pixelY) {
     DoubleVec3 rayOrigin(0);
