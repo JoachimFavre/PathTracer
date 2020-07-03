@@ -8,6 +8,7 @@
 
 #include "Object3D.h"
 #include "Sphere.h"
+#include "TrianglePlane.h"
 #include "PerspectiveCamera.h"
 #include "Ray.h"
 #include "DoubleVec3.h"
@@ -45,8 +46,9 @@ DoubleVec3 traceRay(const Ray& ray, DoubleVec3 colour = DoubleVec3(0), unsigned 
 }
 
 int main() {
-	scene.push_back(new Sphere(DoubleVec3(0, 0, -10), 1, Material(DoubleVec3(5), BRDF::Diffuse, 1000)));
-	
+	scene.push_back(new Sphere(DoubleVec3(0, 0, -5), 1, Material(DoubleVec3(5), BRDF::Diffuse, 200)));
+	//scene.push_back(new TrianglePlane(DoubleVec3(1, 1, -5), DoubleVec3(1, 0, -5), DoubleVec3(0, 1, -5), Material(DoubleVec3(5), BRDF::Diffuse, 1000)));
+
 	PerspectiveCamera camera(PICTURE_WIDTH, PICTURE_HEIGHT, CAMERA_FOV_X);
 
 	// Trace
