@@ -15,6 +15,7 @@
 #include "Ray.h"
 #include "DoubleVec3.h"
 #include "Material.h"
+#include "BRDF.h"
 
 std::uniform_real_distribution<double> unif(0, 1);
 std::default_random_engine re(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());  // new seed each time
@@ -28,7 +29,7 @@ constexpr double CAMERA_FOV_X = M_PI_4;
 
 constexpr double MAX_DEPTH = 10;
 constexpr unsigned int MAX_BOUNCES = 5;
-constexpr unsigned int SAMPLE_PER_PIXEL = 1024;
+constexpr unsigned int SAMPLE_PER_PIXEL = 8;
 
 double randomDouble() {
 	return unif(re);
@@ -36,15 +37,12 @@ double randomDouble() {
 
 DoubleVec3 newDirectionOnHemisphere(const DoubleVec3& normal) {
 	// Generate vector on sphere and then check if angle with normal is between -pi/2 and pi/2
-	double cos_angle = -1;
-	DoubleVec3 randomVec;
-	while (cos_angle < 0) {
-		double theta = M_PI*randomDouble() - M_PI_2;
-		double phi = M_PI*randomDouble() - M_PI_2;
-		randomVec = DoubleVec3(sin(theta)*cos(phi), sin(theta)*sin(phi), cos(theta));
-		cos_angle = dotProd(randomVec, normal);
-	}
-	return randomVec;
+	double theta = M_PI*randomDouble() - M_PI_2;
+	double phi = M_PI*randomDouble() - M_PI_2;
+	DoubleVec3 randomVec = DoubleVec3(sin(theta)*cos(phi), sin(theta)*sin(phi), cos(theta));
+	if (dotProd(randomVec, normal) > 0)
+		return randomVec;
+	return -randomVec;
 }
 
 DoubleVec3 traceRay(const Ray& ray, DoubleVec3 colour = DoubleVec3(0.0), unsigned int bounces = 0) {  // is "colour" necessary ?
@@ -59,51 +57,73 @@ DoubleVec3 traceRay(const Ray& ray, DoubleVec3 colour = DoubleVec3(0.0), unsigne
 			}
 		}
 		if (smallestPositiveDistance < MAX_DEPTH) {
+			DoubleVec3 currentRayDirection = ray.getDirection();
 			Material objectMaterial = closestObject->getMaterial();
 			DoubleVec3 objectColour = objectMaterial.getColour();
 			colour += DoubleVec3((double)objectMaterial.getEmittance());
-			// assume BRDF is diffuse
-			DoubleVec3 intersection = ray.getOrigin() + smallestPositiveDistance * ray.getDirection();
+			DoubleVec3 intersection = ray.getOrigin() + smallestPositiveDistance*currentRayDirection;
 			DoubleVec3 normal = closestObject->getNormal(intersection);
-			DoubleVec3 newDirection = newDirectionOnHemisphere(normal);
-			Ray newRay = Ray(intersection, newDirection);
-			DoubleVec3 recursiveColour = traceRay(newRay, DoubleVec3(0.0), bounces + 1);
-			colour += DoubleVec3(recursiveColour.getX()*objectColour.getX(),
-					             recursiveColour.getY()*objectColour.getY(),
-				                 recursiveColour.getZ()*objectColour.getZ())
-				      * dotProd(ray.getDirection(), normal);
-			return colour;
-		}
-		else  // did not hit anything
-			return colour;
-	}
-	else // max bounces
-		return colour;
+
+			switch (objectMaterial.getBRDF()) {
+			// Diffuse BRDF
+			case BRDF::Diffuse:
+			{ // Needed to get out of switch scope
+				DoubleVec3 newDirection = newDirectionOnHemisphere(normal);
+				DoubleVec3 recursiveColour = traceRay(Ray(intersection, newDirection), DoubleVec3(0.0), bounces + 1);
+				colour += DoubleVec3(recursiveColour.getX() * objectColour.getX(),
+									 recursiveColour.getY() * objectColour.getY(),
+					                 recursiveColour.getZ() * objectColour.getZ())
+					                 * dotProd(currentRayDirection, normal);
+				break;
+			}
+
+			// Refractive BRDF
+			case BRDF::Refractive:
+			{
+				std::cout << "Refractive BRDF will be implemented later." << std::endl;
+				break;
+			}
+
+			// Specular BRDF
+			case BRDF::Specular:
+			{
+				DoubleVec3 newDirection = ray.getDirection() - normal * dotProd(currentRayDirection, normal) * 2;  // gets normalised in ray constructor
+				DoubleVec3 recursiveColour = traceRay(Ray(intersection, newDirection), DoubleVec3(0.0), bounces + 1);
+				colour += recursiveColour;
+				break;
+			}
+
+			default:
+				std::cout << "A BRDF was not implemented." << std::endl;
+			}
+		} // nothing hit
+	} // max bounces
+	return colour;
 }
 
 int main() {
 	// Make scene
 	// Spheres
 	scene.push_back(new Sphere(DoubleVec3(1, 1, -2), 0.5, Material(DoubleVec3(0), BRDF::Diffuse, 255)));
-	scene.push_back(new Sphere(DoubleVec3(-1, -1, -3), 0.5, Material(DoubleVec3(2), BRDF::Diffuse)));
+	scene.push_back(new Sphere(DoubleVec3(0, 0, -3), 0.5, Material(DoubleVec3(1), BRDF::Diffuse)));
 	// left
-	scene.push_back(new TrianglePlane(DoubleVec3(-2, 2, 1), DoubleVec3(-2, -2, 1), DoubleVec3(-2, -2, -4), Material(DoubleVec3(0, 0, 5), BRDF::Diffuse)));
-	scene.push_back(new TrianglePlane(DoubleVec3(-2, 2, 1), DoubleVec3(-2, -2, -4), DoubleVec3(-2, 2, -4), Material(DoubleVec3(0, 0, 5), BRDF::Diffuse)));
+	scene.push_back(new TrianglePlane(DoubleVec3(-2, 2, 1), DoubleVec3(-2, -2, 1), DoubleVec3(-2, -2, -4), Material(DoubleVec3(0, 0, 0.8), BRDF::Diffuse)));
+	scene.push_back(new TrianglePlane(DoubleVec3(-2, 2, 1), DoubleVec3(-2, -2, -4), DoubleVec3(-2, 2, -4), Material(DoubleVec3(0, 0, 0.8), BRDF::Diffuse)));
 	// right
-	scene.push_back(new TrianglePlane(DoubleVec3(2, -2, -4), DoubleVec3(2, -2, 1), DoubleVec3(2, 2, 1), Material(DoubleVec3(5, 0, 0), BRDF::Diffuse)));
-	scene.push_back(new TrianglePlane(DoubleVec3(2, 2, -4), DoubleVec3(2, -2, -4), DoubleVec3(2, 2, 1), Material(DoubleVec3(5, 0, 0), BRDF::Diffuse)));
+	scene.push_back(new TrianglePlane(DoubleVec3(2, -2, -4), DoubleVec3(2, -2, 1), DoubleVec3(2, 2, 1), Material(DoubleVec3(0.8, 0, 0), BRDF::Diffuse)));
+	scene.push_back(new TrianglePlane(DoubleVec3(2, 2, -4), DoubleVec3(2, -2, -4), DoubleVec3(2, 2, 1), Material(DoubleVec3(0.8, 0, 0), BRDF::Diffuse)));
 	// Top
-	scene.push_back(new TrianglePlane(DoubleVec3(2, 2, -4), DoubleVec3(-2, 2, 1), DoubleVec3(-2, 2, -4), Material(DoubleVec3(5), BRDF::Diffuse)));
-	scene.push_back(new TrianglePlane(DoubleVec3(-2, 2, 1), DoubleVec3(2, 2, -4), DoubleVec3(2, 2, 1), Material(DoubleVec3(5), BRDF::Diffuse)));
+	scene.push_back(new TrianglePlane(DoubleVec3(2, 2, -4), DoubleVec3(-2, 2, 1), DoubleVec3(-2, 2, -4), Material(DoubleVec3(0.8), BRDF::Diffuse)));
+	scene.push_back(new TrianglePlane(DoubleVec3(-2, 2, 1), DoubleVec3(2, 2, -4), DoubleVec3(2, 2, 1), Material(DoubleVec3(0.8), BRDF::Diffuse)));
 	// Bottom
-	scene.push_back(new TrianglePlane(DoubleVec3(-2, -2, 1), DoubleVec3(2, -2, -4), DoubleVec3(-2, -2, -4), Material(DoubleVec3(5), BRDF::Diffuse)));
-	scene.push_back(new TrianglePlane(DoubleVec3(2, -2, -4), DoubleVec3(-2, -2, 1), DoubleVec3(2, -2, 1), Material(DoubleVec3(5), BRDF::Diffuse)));
+	scene.push_back(new TrianglePlane(DoubleVec3(-2, -2, 1), DoubleVec3(2, -2, -4), DoubleVec3(-2, -2, -4), Material(DoubleVec3(0.8), BRDF::Diffuse)));
+	scene.push_back(new TrianglePlane(DoubleVec3(2, -2, -4), DoubleVec3(-2, -2, 1), DoubleVec3(2, -2, 1), Material(DoubleVec3(0.8), BRDF::Diffuse)));
 	// Background
-	scene.push_back(new TrianglePlane(DoubleVec3(-2, 2, -4), DoubleVec3(-2, -2, -4), DoubleVec3(2, 2, -4), Material(DoubleVec3(0, 5, 0), BRDF::Diffuse)));
-	scene.push_back(new TrianglePlane(DoubleVec3(2, 2, -4), DoubleVec3(-2, -2, -4), DoubleVec3(2, -2, -4), Material(DoubleVec3(0, 5, 0), BRDF::Diffuse)));
+	scene.push_back(new TrianglePlane(DoubleVec3(-2, 2, -4), DoubleVec3(-2, -2, -4), DoubleVec3(2, 2, -4), Material(DoubleVec3(0, 0.8, 0), BRDF::Diffuse)));
+	scene.push_back(new TrianglePlane(DoubleVec3(2, 2, -4), DoubleVec3(-2, -2, -4), DoubleVec3(2, -2, -4), Material(DoubleVec3(0, 0.8, 0), BRDF::Diffuse)));
 	// Behind camera
-	// scene.push_back(new TrianglePlane(DoubleVec3(2, 2, 1), DoubleVec3(2, -2, 1), DoubleVec3(-2, -2, 1), Material(DoubleVec3(5), BRDF::Diffuse)));
-	// scene.push_back(new TrianglePlane(DoubleVec3(-2, 2, 1), DoubleVec3(2, 2, 1), DoubleVec3(-2, -2, 1), Material(DoubleVec3(5), BRDF::Diffuse)));
+	scene.push_back(new TrianglePlane(DoubleVec3(2, 2, 1), DoubleVec3(2, -2, 1), DoubleVec3(-2, -2, 1), Material(DoubleVec3(5), BRDF::Diffuse)));
+	scene.push_back(new TrianglePlane(DoubleVec3(-2, 2, 1), DoubleVec3(2, 2, 1), DoubleVec3(-2, -2, 1), Material(DoubleVec3(5), BRDF::Diffuse)));
 	
 	PerspectiveCamera camera(PICTURE_WIDTH, PICTURE_HEIGHT, CAMERA_FOV_X);
 
@@ -111,6 +131,7 @@ int main() {
 	for (unsigned int pixelX = 0; pixelX < PICTURE_WIDTH; pixelX++) {
 		std::cout << "\r" << (double)pixelX / PICTURE_WIDTH * 100 << "%     ";
 		for (unsigned int pixelY = 0; pixelY < PICTURE_HEIGHT; pixelY++) {
+			// std::cout << "\r" << (double)(pixelX*PICTURE_WIDTH + pixelY) / (PICTURE_WIDTH*PICTURE_HEIGHT) * 100 << "%     ";
 			for (unsigned int samples = 0; samples < SAMPLE_PER_PIXEL; samples++) {
 				Ray currentRay = camera.getRayGoingThrough(pixelX + randomDouble() - 0.5, pixelY + randomDouble() - 0.5);
 				picture[pixelX][pixelY] += traceRay(currentRay)/SAMPLE_PER_PIXEL;
