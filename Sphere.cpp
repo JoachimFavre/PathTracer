@@ -43,8 +43,6 @@ double Sphere::closestIntersection(const Ray& ray) const {
 }
 
 DoubleVec3 Sphere::getNormal(const DoubleVec3& point) const {
-	DoubleVec3 normal(point.getX() - center.getX(),
-					  point.getY() - center.getY(),
-					  point.getZ() - center.getZ());
+	DoubleVec3 normal(point - center);
 	return normal/radius; // normalised
 }

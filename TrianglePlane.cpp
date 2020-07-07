@@ -48,5 +48,7 @@ double TrianglePlane::closestIntersection(const Ray& ray) const {
 DoubleVec3 TrianglePlane::getNormal(const DoubleVec3& point) const {
 	DoubleVec3 edge1 = vertex2 - vertex1;
 	DoubleVec3 edge2 = vertex3 - vertex1;
-	return crossProd(edge1, edge2);  // Not sure with the signs
+	DoubleVec3 result = crossProd(edge1, edge2);
+	result.normalise();
+	return result;  // Not sure with the signs
 }

@@ -35,54 +35,53 @@ double randomDouble() {
 	return unif(re);
 }
 
-DoubleVec3 newDirectionOnHemisphere(const DoubleVec3& normal) {
-	// Generate vector on sphere and then check if angle with normal is between -pi/2 and pi/2
-	double theta = M_PI*randomDouble() - M_PI_2;
-	double phi = M_PI*randomDouble() - M_PI_2;
-	DoubleVec3 randomVec = DoubleVec3(sin(theta)*cos(phi), sin(theta)*sin(phi), cos(theta));
-	if (dotProd(randomVec, normal) > 0)
-		return randomVec;
-	return -randomVec;
-}
-
-DoubleVec3 traceRay(const Ray& ray, unsigned int bounces = 0) {  // is "colour" necessary ?
+DoubleVec3 traceRay(const Ray& ray, unsigned int bounces = 0) {
 	DoubleVec3 result(0.0);
-
 	if (bounces < MAX_BOUNCES) {
-		double smallestPositiveDistance = MAX_DEPTH + 1;  // Strictly positive -> we don't want it to intersect with same object
+		double smallestPositiveDistance = MAX_DEPTH + 1;  // Will be strictly positive -> we don't want it to intersect with same object
 		Object3D* closestObject = nullptr;
 		for (Object3D* object : scene) {
 			double distance = object->closestIntersection(ray);
-			if (distance > DBL_EPSILON&& distance < smallestPositiveDistance) {
+			if (distance > DBL_EPSILON && distance < smallestPositiveDistance) {
 				smallestPositiveDistance = distance;
 				closestObject = object;
 			}
 		}
+
 		if (smallestPositiveDistance < MAX_DEPTH) {
 			DoubleVec3 currentRayDirection = ray.getDirection();
 			Material objectMaterial = closestObject->getMaterial();
 			DoubleVec3 objectColour = objectMaterial.getColour();
 
-			result += DoubleVec3((double)objectMaterial.getEmittance());
-
 			DoubleVec3 intersection = ray.getOrigin() + smallestPositiveDistance*currentRayDirection;
 			DoubleVec3 normal = closestObject->getNormal(intersection);
+
+			result += DoubleVec3(objectMaterial.getEmittance());
 
 			switch (objectMaterial.getBRDF()) {
 			// Diffuse BRDF
 			case BRDF::Diffuse:
 			{ // Needed to get out of switch scope
-				DoubleVec3 newDirection = newDirectionOnHemisphere(normal);
-				DoubleVec3 recursiveColour = traceRay(Ray(intersection, newDirection), bounces + 1) / 2;
+				// Generate vector on hemisphere
+				double theta = M_PI*(randomDouble() - 0.5);
+				double phi = M_PI*(randomDouble() - 0.5);
+				DoubleVec3 newDirection(sin(theta)*cos(phi), sin(theta)*sin(phi), cos(theta));  // vector on sphere of radius 1
+				double dotProduct = dotProd(newDirection, normal);
+				if (dotProduct < 0) { // Wrong hemisphere
+					newDirection = -newDirection;
+					dotProduct = -dotProduct;
+				}
+
+				DoubleVec3 recursiveColour = traceRay(Ray(intersection, newDirection), bounces + 1);
 				result += DoubleVec3(recursiveColour.getX() * objectColour.getX(),
 									 recursiveColour.getY() * objectColour.getY(),
 					                 recursiveColour.getZ() * objectColour.getZ())
-					                 * dotProd(newDirection, normal) / M_PI / M_PI;
+					                 * dotProduct / M_PI / M_PI;
 				break;
 			}
 
 			// Refractive BRDF
-			case BRDF::Refractive:
+			case BRDF::Refractive: 
 			{
 				std::cout << "Refractive BRDF will be implemented later." << std::endl;
 				break;
@@ -91,7 +90,7 @@ DoubleVec3 traceRay(const Ray& ray, unsigned int bounces = 0) {  // is "colour" 
 			// Specular BRDF
 			case BRDF::Specular:
 			{
-				DoubleVec3 newDirection = ray.getDirection() - normal * dotProd(currentRayDirection, normal) * 2;  // gets normalised in ray constructor
+				DoubleVec3 newDirection = ray.getDirection() - normal*dotProd(currentRayDirection, normal)*2;  // gets normalised in ray constructor
 				DoubleVec3 recursiveColour = traceRay(Ray(intersection, newDirection), bounces + 1);
 				result += recursiveColour;
 				break;
@@ -108,24 +107,24 @@ DoubleVec3 traceRay(const Ray& ray, unsigned int bounces = 0) {  // is "colour" 
 int main() {
 	// Make scene
 	// Spheres
-	scene.push_back(new Sphere(DoubleVec3(0, -1.5, -3.5), 0.5, Material(DoubleVec3(0), BRDF::Diffuse, 255)));
+	scene.push_back(new Sphere(DoubleVec3(0, -1.5, -2.5), 0.5, Material(DoubleVec3(0), BRDF::Diffuse, 10000)));
 	// scene.push_back(new Sphere(DoubleVec3(-1, 1, -2), 0.5, Material(DoubleVec3(0), BRDF::Specular)));
-	scene.push_back(new Sphere(DoubleVec3(0, 1.5, -3), 0.5, Material(DoubleVec3(10), BRDF::Diffuse)));
+	scene.push_back(new Sphere(DoubleVec3(-1, 1.5, -2.5), 0.5, Material(DoubleVec3(6), BRDF::Diffuse)));
 	// left
-	scene.push_back(new TrianglePlane(DoubleVec3(-2, 2, 1), DoubleVec3(-2, -2, 1), DoubleVec3(-2, -2, -4), Material(DoubleVec3(2, 2, 8), BRDF::Diffuse)));
-	scene.push_back(new TrianglePlane(DoubleVec3(-2, 2, 1), DoubleVec3(-2, -2, -4), DoubleVec3(-2, 2, -4), Material(DoubleVec3(2, 2, 8), BRDF::Diffuse)));
+	scene.push_back(new TrianglePlane(DoubleVec3(-2, 2, 1), DoubleVec3(-2, -2, 1), DoubleVec3(-2, -2, -4), Material(DoubleVec3(2, 2, 10), BRDF::Diffuse)));
+	scene.push_back(new TrianglePlane(DoubleVec3(-2, 2, 1), DoubleVec3(-2, -2, -4), DoubleVec3(-2, 2, -4), Material(DoubleVec3(2, 2, 10), BRDF::Diffuse)));
 	// right
-	scene.push_back(new TrianglePlane(DoubleVec3(2, -2, -4), DoubleVec3(2, -2, 1), DoubleVec3(2, 2, 1), Material(DoubleVec3(8, 2, 2), BRDF::Diffuse)));
-	scene.push_back(new TrianglePlane(DoubleVec3(2, 2, -4), DoubleVec3(2, -2, -4), DoubleVec3(2, 2, 1), Material(DoubleVec3(8, 2, 2), BRDF::Diffuse)));
+	scene.push_back(new TrianglePlane(DoubleVec3(2, -2, -4), DoubleVec3(2, -2, 1), DoubleVec3(2, 2, 1), Material(DoubleVec3(10, 2, 2), BRDF::Diffuse)));
+	scene.push_back(new TrianglePlane(DoubleVec3(2, 2, -4), DoubleVec3(2, -2, -4), DoubleVec3(2, 2, 1), Material(DoubleVec3(10, 2, 2), BRDF::Diffuse)));
 	// Top
-	scene.push_back(new TrianglePlane(DoubleVec3(2, 2, -4), DoubleVec3(-2, 2, 1), DoubleVec3(-2, 2, -4), Material(DoubleVec3(6), BRDF::Diffuse)));
-	scene.push_back(new TrianglePlane(DoubleVec3(-2, 2, 1), DoubleVec3(2, 2, -4), DoubleVec3(2, 2, 1), Material(DoubleVec3(6), BRDF::Diffuse)));
+	scene.push_back(new TrianglePlane(DoubleVec3(2, 2, -4), DoubleVec3(-2, 2, 1), DoubleVec3(-2, 2, -4), Material(DoubleVec3(3), BRDF::Diffuse)));
+	scene.push_back(new TrianglePlane(DoubleVec3(-2, 2, 1), DoubleVec3(2, 2, -4), DoubleVec3(2, 2, 1), Material(DoubleVec3(3), BRDF::Diffuse)));
 	// Bottom
-	scene.push_back(new TrianglePlane(DoubleVec3(-2, -2, 1), DoubleVec3(2, -2, -4), DoubleVec3(-2, -2, -4), Material(DoubleVec3(6), BRDF::Diffuse)));
-	scene.push_back(new TrianglePlane(DoubleVec3(2, -2, -4), DoubleVec3(-2, -2, 1), DoubleVec3(2, -2, 1), Material(DoubleVec3(6), BRDF::Diffuse)));
+	scene.push_back(new TrianglePlane(DoubleVec3(-2, -2, 1), DoubleVec3(2, -2, -4), DoubleVec3(-2, -2, -4), Material(DoubleVec3(3), BRDF::Diffuse)));
+	scene.push_back(new TrianglePlane(DoubleVec3(2, -2, -4), DoubleVec3(-2, -2, 1), DoubleVec3(2, -2, 1), Material(DoubleVec3(3), BRDF::Diffuse)));
 	// Background
-	scene.push_back(new TrianglePlane(DoubleVec3(-2, 2, -4), DoubleVec3(-2, -2, -4), DoubleVec3(2, 2, -4), Material(DoubleVec3(2, 8, 2), BRDF::Diffuse)));
-	scene.push_back(new TrianglePlane(DoubleVec3(2, 2, -4), DoubleVec3(-2, -2, -4), DoubleVec3(2, -2, -4), Material(DoubleVec3(2, 8, 2), BRDF::Diffuse)));
+	scene.push_back(new TrianglePlane(DoubleVec3(-2, 2, -4), DoubleVec3(-2, -2, -4), DoubleVec3(2, 2, -4), Material(DoubleVec3(2, 10, 2), BRDF::Diffuse)));
+	scene.push_back(new TrianglePlane(DoubleVec3(2, 2, -4), DoubleVec3(-2, -2, -4), DoubleVec3(2, -2, -4), Material(DoubleVec3(2, 10, 2), BRDF::Diffuse)));
 	// Behind camera
 	scene.push_back(new TrianglePlane(DoubleVec3(2, 2, 1), DoubleVec3(2, -2, 1), DoubleVec3(-2, -2, 1), Material(DoubleVec3(6), BRDF::Diffuse)));
 	scene.push_back(new TrianglePlane(DoubleVec3(-2, 2, 1), DoubleVec3(2, 2, 1), DoubleVec3(-2, -2, 1), Material(DoubleVec3(6), BRDF::Diffuse)));
@@ -153,8 +152,9 @@ int main() {
 			DoubleVec3 currentColour = picture[pixelX][pixelY];
 			file << std::min(255, (int)currentColour.getX()) << " ";
 			file << std::min(255, (int)currentColour.getY()) << " ";
-			file << std::min(255, (int)currentColour.getZ()) << "\n";
+			file << std::min(255, (int)currentColour.getZ()) << "   ";
 		}
+		file << "\n";
 	}
 	file.close();
 
