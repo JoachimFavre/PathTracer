@@ -105,6 +105,8 @@ DoubleVec3 traceRay(const Ray& ray, unsigned int bounces = 0) {
 }
 
 int main() {
+	long long beginningTime = std::chrono::system_clock::now().time_since_epoch().count();
+
 	// Make scene
 	// Spheres
 	scene.push_back(new Sphere(DoubleVec3(0, -1.5, -2.5), 0.5, Material(DoubleVec3(0), BRDF::Diffuse, 10000)));
@@ -157,6 +159,9 @@ int main() {
 		file << "\n";
 	}
 	file.close();
+
+	long long endingTime = std::chrono::system_clock::now().time_since_epoch().count();
+	std::cout << "\nComputed in " << (double)(endingTime - beginningTime) / std::chrono::system_clock::period::den << " seconds.\n";
 
 	return 0;
 }
