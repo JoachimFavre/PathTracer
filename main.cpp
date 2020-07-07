@@ -111,7 +111,7 @@ int main() {
 	// Make scene
 	// Spheres
 	scene.push_back(new Sphere(DoubleVec3(0, -1.5, -2.5), 0.5, Material(DoubleVec3(0), BRDF::Diffuse, 10000)));
-	// scene.push_back(new Sphere(DoubleVec3(-1, 1, -2), 0.5, Material(DoubleVec3(0), BRDF::Specular)));
+	// scene.push_back(new Sphere(DoubleVec3(0.5, 1.5, -2), 0.5, Material(DoubleVec3(0), BRDF::Specular)));
 	scene.push_back(new Sphere(DoubleVec3(-1, 1.5, -2.5), 0.5, Material(DoubleVec3(6), BRDF::Diffuse)));
 	// left
 	scene.push_back(new TrianglePlane(DoubleVec3(-2, 2, 1), DoubleVec3(-2, -2, 1), DoubleVec3(-2, -2, -4), Material(DoubleVec3(2, 2, 10), BRDF::Diffuse)));
@@ -137,12 +137,13 @@ int main() {
 	// Display doubles with 2 decimals
 	std::cout << std::fixed;
 	std::cout << std::setprecision(2);
+	std::cout << "\r" << "Width=" << PICTURE_WIDTH << "   Height=" << PICTURE_HEIGHT << "   Spp=" << SAMPLE_PER_PIXEL << "   Bounces=" << MAX_BOUNCES << std::endl;
 
 	// Trace
 	for (unsigned int pixelX = 0; pixelX < PICTURE_WIDTH; pixelX++) {
-		std::cout << "\r" << "Width=" << PICTURE_WIDTH << "   Height=" << PICTURE_HEIGHT << "   Spp=" << SAMPLE_PER_PIXEL << "   Bounces=" << MAX_BOUNCES << "   Progress=" << (double)pixelX / PICTURE_WIDTH * 100 << "%";
+		std::cout << "\r" << (double)pixelX / PICTURE_WIDTH * 100 << "%";
 		for (unsigned int pixelY = 0; pixelY < PICTURE_HEIGHT; pixelY++) {
-			// std::cout << "\r" << (double)(pixelX*PICTURE_WIDTH + pixelY) / (PICTURE_WIDTH*PICTURE_HEIGHT) * 100 << "%     ";
+			// std::cout << "\r" << (double)(pixelX*PICTURE_WIDTH + pixelY) / (PICTURE_WIDTH*PICTURE_HEIGHT) * 100 << "%";
 			for (unsigned int samples = 0; samples < SAMPLE_PER_PIXEL; samples++) {
 				Ray currentRay = camera.getRayGoingThrough(pixelX + randomDouble() - 0.5, pixelY + randomDouble() - 0.5);
 				picture[pixelX][pixelY] += traceRay(currentRay)/SAMPLE_PER_PIXEL;
