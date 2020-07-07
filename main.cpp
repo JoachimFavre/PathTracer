@@ -39,7 +39,7 @@ double randomDouble() {
 DoubleVec3 traceRay(const Ray& ray, unsigned int bounces = 0) {
 	DoubleVec3 result(0.0);
 	if (bounces < MAX_BOUNCES) {
-		double smallestPositiveDistance = MAX_DEPTH + 1;  // Will be strictly positive -> we don't want it to intersect with same object
+		double smallestPositiveDistance = MAX_DEPTH + 1;  // Has to be strictly positive -> we don't want it to intersect with same object
 		Object3D* closestObject = nullptr;
 		for (Object3D* object : scene) {
 			double distance = object->closestIntersection(ray);
@@ -134,6 +134,7 @@ int main() {
 	
 	PerspectiveCamera camera(PICTURE_WIDTH, PICTURE_HEIGHT, CAMERA_FOV_X);
 
+	// Display doubles with 2 decimals
 	std::cout << std::fixed;
 	std::cout << std::setprecision(2);
 
