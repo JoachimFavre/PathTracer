@@ -1,5 +1,6 @@
 #include <vector>
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <algorithm>
 #include <random>
@@ -133,9 +134,12 @@ int main() {
 	
 	PerspectiveCamera camera(PICTURE_WIDTH, PICTURE_HEIGHT, CAMERA_FOV_X);
 
+	std::cout << std::fixed;
+	std::cout << std::setprecision(2);
+
 	// Trace
 	for (unsigned int pixelX = 0; pixelX < PICTURE_WIDTH; pixelX++) {
-		std::cout << "\r" << (double)pixelX / PICTURE_WIDTH * 100 << "%     ";
+		std::cout << "\r" << "Width=" << PICTURE_WIDTH << "   Height=" << PICTURE_HEIGHT << "   Spp=" << SAMPLE_PER_PIXEL << "   Bounces=" << MAX_BOUNCES << "   Progress=" << (double)pixelX / PICTURE_WIDTH * 100 << "%";
 		for (unsigned int pixelY = 0; pixelY < PICTURE_HEIGHT; pixelY++) {
 			// std::cout << "\r" << (double)(pixelX*PICTURE_WIDTH + pixelY) / (PICTURE_WIDTH*PICTURE_HEIGHT) * 100 << "%     ";
 			for (unsigned int samples = 0; samples < SAMPLE_PER_PIXEL; samples++) {
