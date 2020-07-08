@@ -18,7 +18,6 @@
 #include "DiffuseMaterial.h"
 #include "RefractiveMaterial.h"
 #include "SpecularMaterial.h"
-#include "BRDF.h"
 
 
 // for random
