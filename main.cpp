@@ -38,7 +38,7 @@ constexpr unsigned int MIN_BOUNCES = 5;  // Less if hits nothing
 constexpr unsigned int SAMPLE_PER_PIXEL = 64;
 
 constexpr bool RUSSIAN_ROULETTE = true;
-constexpr double RR_STOP_PROBABILITY = 0.9;
+constexpr double RR_STOP_PROBABILITY = 0.3;
 
 double randomDouble() {
 	return unif(re);
@@ -47,9 +47,8 @@ double randomDouble() {
 DoubleVec3D traceRay(const Ray& ray, unsigned int bounces = 0) {
 	DoubleVec3D result(0.0);
 	double rrFactor = 1.0;
-	double a = randomDouble();
 	if (bounces >= MIN_BOUNCES) {
-		if (!RUSSIAN_ROULETTE || a < RR_STOP_PROBABILITY)
+		if (!RUSSIAN_ROULETTE || randomDouble() < RR_STOP_PROBABILITY)
 			return result;
 		rrFactor = 1.0/(1.0 - RR_STOP_PROBABILITY);
 	}
@@ -112,11 +111,12 @@ int main() {
 	// Display doubles with 2 decimals
 	std::cout << std::fixed;
 	std::cout << std::setprecision(2);
+	// Print informations
 	std::cout << "Width=" << PICTURE_WIDTH << "   Height=" << PICTURE_HEIGHT << "   Sample/Pixel=" << SAMPLE_PER_PIXEL << std::endl;
 	std::cout << "RussianRoulette=" << (RUSSIAN_ROULETTE ? "true" : "false") << "   MinBounces=" << MIN_BOUNCES << "   RrStopProbability=" << RR_STOP_PROBABILITY << std::endl;
 	std::cout << std::endl;
 
-	// Trace
+	// Trace rays
 	for (unsigned int pixelX = 0; pixelX < PICTURE_WIDTH; pixelX++) {
 		std::cout << "\r" << (double)pixelX / PICTURE_WIDTH * 100 << "%";
 		for (unsigned int pixelY = 0; pixelY < PICTURE_HEIGHT; pixelY++) {
@@ -127,10 +127,9 @@ int main() {
 			}
 		}
 	}
-
 	std::cout << "\r" << 100.0 << "%" << std::endl;
 
-	// Write
+	// Write picture
 	std::ofstream file;
 	file.open("picture.ppm");
 	file << "P3\n" << PICTURE_WIDTH << " " << PICTURE_HEIGHT << "\n" << "255\n";
@@ -144,9 +143,11 @@ int main() {
 	}
 	file.close();
 
+	// Delete pointers
 	for (Object3D* object : scene)
 		delete object;
 
+	// Measure time
 	long long endingTime = std::chrono::system_clock::now().time_since_epoch().count();
 	std::cout << "\nComputed in " << (double)(endingTime - beginningTime) / std::chrono::system_clock::period::den << " seconds.\n";
 
