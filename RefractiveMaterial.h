@@ -12,14 +12,14 @@ private:
 
 public:
 	RefractiveMaterial();
-	RefractiveMaterial(const DoubleVec3D& colour, double refractiveIndex);
+	RefractiveMaterial(const DoubleVec3D& colour, double refractiveIndex, double emittance = 0);
 	RefractiveMaterial(const RefractiveMaterial& material);
 
 	double getRefractiveIndex() const;
 	void setRefractiveIndex(double refractiveIndex);
 
-	DoubleVec3D getNextRay(const Ray& previousRay, Object3D* intersectedObject, const DoubleVec3D& intersectionPoint) const;
-	double getBRDFFactor() const;
+	DoubleVec3D getNewDirection(const Ray& previousRay, const DoubleVec3D& normal, double (*randomDouble)()) const;
+	DoubleVec3D computeCurrentColour(const DoubleVec3D& recursiveColour, double angleNewDirectionNormal) const;
 };
 
 #endif

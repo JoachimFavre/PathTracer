@@ -4,7 +4,7 @@
 Triangle::Triangle()
 	: Object3D(), vertex1(1, 0, 0), vertex2(0, 1, 0), vertex3(0, 0, 1) {}
 
-Triangle::Triangle(const DoubleVec3D& vertex1, const DoubleVec3D& vertex2, const DoubleVec3D& vertex3, const Material& material)
+Triangle::Triangle(const DoubleVec3D& vertex1, const DoubleVec3D& vertex2, const DoubleVec3D& vertex3, Material* material)
 	: Object3D(material), vertex1(vertex1), vertex2(vertex2), vertex3(vertex3) {}
 
 Triangle::Triangle(const Triangle& triangle)

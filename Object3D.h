@@ -2,20 +2,23 @@
 #define DEF_OBJECT3D
 
 #include "Material.h"
+#include "DiffuseMaterial.h"
 #include "DoubleVec3D.h"
 #include "Ray.h"
 
 class Object3D {
 private:
-	Material material;
+	Material* material;
 
 public:
 	Object3D();
-	Object3D(const Material& material);
+	Object3D(Material* material);
 	Object3D(const Object3D& obj);
 
-	Material getMaterial() const;
-	void setMaterial(const Material& material);
+	~Object3D();
+
+	Material* getMaterial() const;
+	void setMaterial(Material* material);
 
 	virtual double closestIntersection(const Ray& ray) const = 0;
 	virtual DoubleVec3D getNormal(const DoubleVec3D& point) const = 0;

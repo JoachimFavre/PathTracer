@@ -3,7 +3,7 @@
 // Constructors
 Sphere::Sphere() : Object3D(), center(0), radius(1) {}
 
-Sphere::Sphere(const DoubleVec3D& center, double radius, const Material& material)
+Sphere::Sphere(const DoubleVec3D& center, double radius, Material* material)
 	: Object3D(material), center(center), radius(radius) {}
 
 Sphere::Sphere(const Sphere& sphere) 

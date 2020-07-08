@@ -15,7 +15,7 @@ private:
 
 public:
 	Sphere();
-	Sphere(const DoubleVec3D& center, double radius, const Material& material);
+	Sphere(const DoubleVec3D& center, double radius, Material* material);
 	Sphere(const Sphere& sphere);
 
 	DoubleVec3D getCenter() const;
