@@ -4,7 +4,7 @@
 #define _USE_MATH_DEFINES  // to be able to use M_PI from math.h
 #include <math.h>
 
-#include "DoubleVec3.h"
+#include "DoubleVec3D.h"
 #include "Ray.h"
 
 class PerspectiveCamera {

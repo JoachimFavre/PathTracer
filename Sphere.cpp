@@ -3,7 +3,7 @@
 // Constructors
 Sphere::Sphere() : Object3D(), center(0), radius(1) {}
 
-Sphere::Sphere(const DoubleVec3& center, double radius, const Material& material)
+Sphere::Sphere(const DoubleVec3D& center, double radius, const Material& material)
 	: Object3D(material), center(center), radius(radius) {}
 
 Sphere::Sphere(const Sphere& sphere) 
@@ -11,11 +11,11 @@ Sphere::Sphere(const Sphere& sphere)
 
 
 // Getters
-DoubleVec3 Sphere::getCenter() const { return center; }
+DoubleVec3D Sphere::getCenter() const { return center; }
 double Sphere::getRadius() const { return radius; }
 
 // Setters
-void Sphere::setCenter(const DoubleVec3& center) { this->center = center; }
+void Sphere::setCenter(const DoubleVec3D& center) { this->center = center; }
 void Sphere::setRadius(double radius) { this->radius = radius; }
 
 // Virtual functions
@@ -23,7 +23,7 @@ double Sphere::closestIntersection(const Ray& ray) const {
 	// Returns -1 if no solution
 	// Using quadratic equation formula to solve (meaning of a, b, c)
 	// a = dotProd(rayDir, rayDir) but = 1
-	DoubleVec3 differenceOriginCenter = ray.getOrigin() - center;
+	DoubleVec3D differenceOriginCenter = ray.getOrigin() - center;
 	double b = 2 * dotProd(ray.getDirection(), differenceOriginCenter);
 	double c = dotProd(differenceOriginCenter, differenceOriginCenter) - radius * radius;
 
@@ -42,7 +42,7 @@ double Sphere::closestIntersection(const Ray& ray) const {
 	}
 }
 
-DoubleVec3 Sphere::getNormal(const DoubleVec3& point) const {
-	DoubleVec3 normal(point - center);
+DoubleVec3D Sphere::getNormal(const DoubleVec3D& point) const {
+	DoubleVec3D normal(point - center);
 	return normal/radius; // normalised
 }

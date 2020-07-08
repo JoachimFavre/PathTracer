@@ -1,22 +1,22 @@
 #ifndef DEF_RAY
 #define DEF_RAY
 
-#include "DoubleVec3.h"
+#include "DoubleVec3D.h"
 
 class Ray {
 private:
-	DoubleVec3 origin, direction;
+	DoubleVec3D origin, direction;
 
 public:
 	Ray();
-	Ray(const DoubleVec3& origin, const DoubleVec3& direction);
+	Ray(const DoubleVec3D& origin, const DoubleVec3D& direction);
 	Ray(const Ray& ray);
 
-	DoubleVec3 getOrigin() const;
-	DoubleVec3 getDirection() const;
+	DoubleVec3D getOrigin() const;
+	DoubleVec3D getDirection() const;
 
-	void setOrigin(const DoubleVec3& origin);
-	void setDirection(const DoubleVec3& direction);
+	void setOrigin(const DoubleVec3D& origin);
+	void setDirection(const DoubleVec3D& direction);
 };
 
 #endif

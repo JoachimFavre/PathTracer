@@ -3,7 +3,7 @@
 // Constructors
 Ray::Ray() : origin(0), direction(1, 0, 0) {}
 
-Ray::Ray(const DoubleVec3& origin, const DoubleVec3& direction)
+Ray::Ray(const DoubleVec3D& origin, const DoubleVec3D& direction)
 	: origin(origin), direction(direction) {
 	this->direction.normalise();
 }
@@ -13,21 +13,21 @@ Ray::Ray(const Ray& ray)
 
 
 // Getters
-DoubleVec3 Ray::getOrigin() const {
+DoubleVec3D Ray::getOrigin() const {
 	return origin;
 }
 
-DoubleVec3 Ray::getDirection() const {
+DoubleVec3D Ray::getDirection() const {
 	return direction;
 }
 
 
 // Setters
-void Ray::setOrigin(const DoubleVec3& origin) {
+void Ray::setOrigin(const DoubleVec3D& origin) {
 	this->origin = origin;
 }
 
-void Ray::setDirection(const DoubleVec3& direction) {
+void Ray::setDirection(const DoubleVec3D& direction) {
 	this->direction = direction;
 	this->direction.normalise();
 }
