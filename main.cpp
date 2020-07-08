@@ -34,8 +34,11 @@ constexpr double CAMERA_FOV_X = M_PI_4;
 DoubleVec3D picture [PICTURE_WIDTH][PICTURE_HEIGHT];
 
 constexpr double MAX_DEPTH = 10;
-constexpr unsigned int MAX_BOUNCES = 5;
+constexpr unsigned int MIN_BOUNCES = 5;
 constexpr unsigned int SAMPLE_PER_PIXEL = 64;
+
+constexpr bool RUSSIAN_ROULETTE = true;
+const double RR_STOP_PROBABILITY = 0.1;
 
 double randomDouble() {
 	return unif(re);
@@ -43,28 +46,36 @@ double randomDouble() {
 
 DoubleVec3D traceRay(const Ray& ray, unsigned int bounces = 0) {
 	DoubleVec3D result(0.0);
-	if (bounces < MAX_BOUNCES) {
-		double smallestPositiveDistance = MAX_DEPTH + 1;  // Has to be strictly positive -> we don't want it to intersect with same object
-		Object3D* closestObject = nullptr;
-		for (Object3D* object : scene) {
-			double distance = object->closestIntersection(ray);
-			if (distance > DBL_EPSILON && distance < smallestPositiveDistance) {
-				smallestPositiveDistance = distance;
-				closestObject = object;
-			}
+	double rrFactor = 1.0;
+	double a = randomDouble();
+	if (bounces >= MIN_BOUNCES) {
+		if (!RUSSIAN_ROULETTE || a < RR_STOP_PROBABILITY)
+			return result;
+		rrFactor = 1.0/(1.0 - RR_STOP_PROBABILITY);
+	}
+
+	double smallestPositiveDistance = MAX_DEPTH + 1;  // Has to be strictly positive -> we don't want it to intersect with same object
+	Object3D* closestObject = nullptr;
+	for (Object3D* object : scene) {
+		double distance = object->closestIntersection(ray);
+		if (distance > DBL_EPSILON && distance < smallestPositiveDistance) {
+			smallestPositiveDistance = distance;
+			closestObject = object;
 		}
+	}
 
-		if (smallestPositiveDistance < MAX_DEPTH) {
-			Material* objectMaterial = closestObject->getMaterial();
-			DoubleVec3D intersection = ray.getOrigin() + smallestPositiveDistance*ray.getDirection();
-			DoubleVec3D normal = closestObject->getNormal(intersection);
+	if (smallestPositiveDistance > MAX_DEPTH)  // Something must be hit
+		return result;
 
-			result += DoubleVec3D(objectMaterial->getEmittance());
-			DoubleVec3D newDirection = objectMaterial->getNewDirection(ray, normal, &randomDouble);
-			DoubleVec3D recursiveColour = traceRay(Ray(intersection, newDirection), bounces + 1);
-			result += objectMaterial->computeCurrentColour(recursiveColour, dotProd(newDirection, normal));
-		} // nothing hit
-	} // max bounces
+	Material* objectMaterial = closestObject->getMaterial();
+	DoubleVec3D intersection = ray.getOrigin() + smallestPositiveDistance*ray.getDirection();
+	DoubleVec3D normal = closestObject->getNormal(intersection);
+
+	result += rrFactor * DoubleVec3D(objectMaterial->getEmittance());
+	DoubleVec3D newDirection = objectMaterial->getNewDirection(ray, normal, &randomDouble);
+	DoubleVec3D recursiveColour = traceRay(Ray(intersection, newDirection), bounces + 1);
+	result += rrFactor * objectMaterial->computeCurrentColour(recursiveColour, dotProd(newDirection, normal));
+
 	return result;
 }
 
@@ -101,7 +112,7 @@ int main() {
 	// Display doubles with 2 decimals
 	std::cout << std::fixed;
 	std::cout << std::setprecision(2);
-	std::cout << "\r" << "Width=" << PICTURE_WIDTH << "   Height=" << PICTURE_HEIGHT << "   Spp=" << SAMPLE_PER_PIXEL << "   Bounces=" << MAX_BOUNCES << std::endl;
+	std::cout << "\r" << "Width=" << PICTURE_WIDTH << "   Height=" << PICTURE_HEIGHT << "   Spp=" << SAMPLE_PER_PIXEL << "   Bounces=" << MIN_BOUNCES << std::endl;
 
 	// Trace
 	for (unsigned int pixelX = 0; pixelX < PICTURE_WIDTH; pixelX++) {
