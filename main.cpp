@@ -116,14 +116,15 @@ int main() {
 	std::cout << std::fixed;
 	std::cout << std::setprecision(2);
 	// Print informations
-	std::cout << "Width=" << PICTURE_WIDTH << "   Height=" << PICTURE_HEIGHT << "   Sample/Pixel=" << SAMPLE_PER_PIXEL << std::endl;
-	std::cout << "RussianRoulette=" << (RUSSIAN_ROULETTE ? "true" : "false") << "   MinBounces=" << MIN_BOUNCES << "   RrStopProbability=" << RR_STOP_PROBABILITY << std::endl;
+	std::cout << "Width=" << PICTURE_WIDTH << "     Height=" << PICTURE_HEIGHT << "     Sample/Pixel=" << SAMPLE_PER_PIXEL << std::endl;
+	std::cout << "RussianRoulette=" << (RUSSIAN_ROULETTE ? "true" : "false") << "     MinBounces=" << MIN_BOUNCES << "     RrStopProbability=" << RR_STOP_PROBABILITY << std::endl;
 	std::cout << std::endl;
 
 	// Trace rays
 	double loopBeginTime = getCurrentTimeSeconds();
 	for (unsigned int pixelX = 0; pixelX < PICTURE_WIDTH; pixelX++) {
-		std::cout << "\rProgress: " << (double)pixelX / PICTURE_WIDTH * 100 << "%   Estimated time left: " << (getCurrentTimeSeconds() - loopBeginTime)*(PICTURE_WIDTH - pixelX)/pixelX << " seconds       ";
+		double timeAlreadySpent = getCurrentTimeSeconds() - loopBeginTime;
+		std::cout << "\rProgress: " << (double)pixelX / PICTURE_WIDTH * 100 << "%     Time already spent: " << timeAlreadySpent << "s     Estimated time left: " << timeAlreadySpent*(PICTURE_WIDTH - pixelX)/pixelX << "s        ";
 		for (unsigned int pixelY = 0; pixelY < PICTURE_HEIGHT; pixelY++) {
 			// std::cout << "\r" << (double)(pixelX*PICTURE_WIDTH + pixelY) / (PICTURE_WIDTH*PICTURE_HEIGHT) * 100 << "%";
 			for (unsigned int samples = 0; samples < SAMPLE_PER_PIXEL; samples++) {
