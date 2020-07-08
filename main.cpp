@@ -44,6 +44,10 @@ double randomDouble() {
 	return unif(re);
 }
 
+double getCurrentTimeSeconds() {
+	return (double)std::chrono::system_clock::now().time_since_epoch().count() / std::chrono::system_clock::period::den;
+}
+
 DoubleVec3D traceRay(const Ray& ray, unsigned int bounces = 0) {
 	DoubleVec3D result(0.0);
 	double rrFactor = 1.0;
@@ -79,7 +83,7 @@ DoubleVec3D traceRay(const Ray& ray, unsigned int bounces = 0) {
 }
 
 int main() {
-	long long beginningTime = std::chrono::system_clock::now().time_since_epoch().count();
+	double beginningTime = getCurrentTimeSeconds();
 
 	// Make scene
 	// Spheres
@@ -117,9 +121,9 @@ int main() {
 	std::cout << std::endl;
 
 	// Trace rays
-	double loopBeginTime = std::chrono::system_clock::now().time_since_epoch().count();
+	double loopBeginTime = getCurrentTimeSeconds();
 	for (unsigned int pixelX = 0; pixelX < PICTURE_WIDTH; pixelX++) {
-		std::cout << "\rProgress: " << (double)pixelX / PICTURE_WIDTH * 100 << "%   Estimated time left: " << (loopBeginTime < 0 ? 0 : (double)(std::chrono::system_clock::now().time_since_epoch().count() - loopBeginTime)*(PICTURE_WIDTH - pixelX)/pixelX/std::chrono::system_clock::period::den) << " seconds       ";
+		std::cout << "\rProgress: " << (double)pixelX / PICTURE_WIDTH * 100 << "%   Estimated time left: " << (getCurrentTimeSeconds() - loopBeginTime)*(PICTURE_WIDTH - pixelX)/pixelX << " seconds       ";
 		for (unsigned int pixelY = 0; pixelY < PICTURE_HEIGHT; pixelY++) {
 			// std::cout << "\r" << (double)(pixelX*PICTURE_WIDTH + pixelY) / (PICTURE_WIDTH*PICTURE_HEIGHT) * 100 << "%";
 			for (unsigned int samples = 0; samples < SAMPLE_PER_PIXEL; samples++) {
@@ -148,8 +152,7 @@ int main() {
 		delete object;
 
 	// Measure time
-	long long endingTime = std::chrono::system_clock::now().time_since_epoch().count();
-	std::cout << "\nComputed in " << (double)(endingTime - beginningTime) / std::chrono::system_clock::period::den << " seconds.\n";
+	std::cout << "\nComputed in " << getCurrentTimeSeconds() - beginningTime << " seconds.\n";
 
 	return 0;
 }
