@@ -1,23 +1,23 @@
-#include <vector>
-#include <iostream>
-#include <iomanip>
-#include <fstream>
 #include <algorithm>
 #include <chrono>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
 #include <random>
+#include <vector>
 
 #define _USE_MATH_DEFINES  // to be able to use M_PI from math.h
 #include <math.h>
 
+#include "DiffuseMaterial.h"
+#include "DoubleVec3D.h"
 #include "Object3D.h"
-#include "Sphere.h"
-#include "Triangle.h"
 #include "PerspectiveCamera.h"
 #include "Ray.h"
-#include "DoubleVec3D.h"
-#include "DiffuseMaterial.h"
 #include "RefractiveMaterial.h"
 #include "SpecularMaterial.h"
+#include "Sphere.h"
+#include "Triangle.h"
 
 
 // for random

@@ -14,7 +14,7 @@ private:
 
 public:
 	PerspectiveCamera();
-	PerspectiveCamera(unsigned int numberPixelsX, unsigned int numberPixelsY, double focalLength = 1, double fovX = M_PI/4);
+	PerspectiveCamera(unsigned int numberPixelsX, unsigned int numberPixelsY, double focalLength = 1, double fovX = M_PI_4);
 	PerspectiveCamera(const PerspectiveCamera& camera);
 	
 	unsigned int getNumberPixelsX();

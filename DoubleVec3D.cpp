@@ -1,7 +1,8 @@
 #include "DoubleVec3D.h"
 
 // Constructors
-DoubleVec3D::DoubleVec3D(double val /*= 0*/) : x(val), y(val), z(val) {}
+DoubleVec3D::DoubleVec3D(double val /*= 0*/)
+	: x(val), y(val), z(val) {}
 
 DoubleVec3D::DoubleVec3D(double x, double y, double z)
 	: x(x), y(y), z(z) {}
@@ -9,10 +10,12 @@ DoubleVec3D::DoubleVec3D(double x, double y, double z)
 DoubleVec3D::DoubleVec3D(const DoubleVec3D& vec)
 	: x(vec.x), y(vec.y), z(vec.z) {}
 
+
 // Getters
 double DoubleVec3D::getX() const { return this->x; }
 double DoubleVec3D::getY() const { return this->y; }
 double DoubleVec3D::getZ() const { return this->z; }
+
 
 // Setters
 void DoubleVec3D::setX(double x) { this->x = x; }
@@ -24,6 +27,7 @@ void DoubleVec3D::setVals(double x, double y, double z) {
 	this->y = y;
 	this->z = z;
 }
+
 
 // Operators
 void DoubleVec3D::operator+=(const DoubleVec3D& vec) {
@@ -103,10 +107,7 @@ DoubleVec3D crossProd(const DoubleVec3D& vec1, const DoubleVec3D& vec2) {
 }
 
 double dotProd(const DoubleVec3D& vec1, const DoubleVec3D& vec2) {
-	double x = vec1.getX() * vec2.getX();
-	double y = vec1.getY() * vec2.getY();
-	double z = vec1.getZ() * vec2.getZ();
-	return x + y + z;
+	return vec1.getX()*vec2.getX() + vec1.getY()*vec2.getY() + vec1.getZ()*vec2.getZ();
 }
 
 double length(const DoubleVec3D& vec) { return sqrt(dotProd(vec, vec)); }

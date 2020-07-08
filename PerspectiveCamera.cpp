@@ -4,7 +4,7 @@
 PerspectiveCamera::PerspectiveCamera()
     : numberPixelsX(500), numberPixelsY(500), focalLength(1), tanFovX(tan(M_PI_4)) {}
 
-PerspectiveCamera::PerspectiveCamera(unsigned int numberPixelsX, unsigned int numberPixelsY, double focalLength /*= 1*/, double fovX /*= M_PI / 4*/)
+PerspectiveCamera::PerspectiveCamera(unsigned int numberPixelsX, unsigned int numberPixelsY, double focalLength /*= 1*/, double fovX /*= M_PI_4*/)
     : numberPixelsX(numberPixelsX), numberPixelsY(numberPixelsY), focalLength(focalLength), tanFovX(tan(fovX)) {}
 
 PerspectiveCamera::PerspectiveCamera(const PerspectiveCamera& camera)

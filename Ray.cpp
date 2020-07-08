@@ -13,19 +13,12 @@ Ray::Ray(const Ray& ray)
 
 
 // Getters
-DoubleVec3D Ray::getOrigin() const {
-	return origin;
-}
-
-DoubleVec3D Ray::getDirection() const {
-	return direction;
-}
+DoubleVec3D Ray::getOrigin() const { return origin; }
+DoubleVec3D Ray::getDirection() const {	return direction; }
 
 
 // Setters
-void Ray::setOrigin(const DoubleVec3D& origin) {
-	this->origin = origin;
-}
+void Ray::setOrigin(const DoubleVec3D& origin) { this->origin = origin; }
 
 void Ray::setDirection(const DoubleVec3D& direction) {
 	this->direction = direction;

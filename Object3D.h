@@ -1,9 +1,9 @@
 #ifndef DEF_OBJECT3D
 #define DEF_OBJECT3D
 
-#include "Material.h"
 #include "DiffuseMaterial.h"
 #include "DoubleVec3D.h"
+#include "Material.h"
 #include "Ray.h"
 
 class Object3D {

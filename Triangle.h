@@ -1,9 +1,9 @@
 #ifndef DEF_TRIANGLE
 #define DEF_TRIANGLE
 
-#include "Object3D.h"
 #include "DoubleVec3D.h"
 #include "Material.h"
+#include "Object3D.h"
 
 class Triangle : public Object3D {
 private:

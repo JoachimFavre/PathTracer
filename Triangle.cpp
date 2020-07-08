@@ -23,7 +23,7 @@ void Triangle::setVertex2(const DoubleVec3D& vertex) { vertex2 = vertex; }
 void Triangle::setVertex3(const DoubleVec3D& vertex) { vertex3 = vertex; }
 
 
-// Other methods
+// Virtual methods
 double Triangle::closestIntersection(const Ray& ray) const {
 	// Using Möller-Trumbore intersection algorithm (using notations from https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm (accessed on 3rd July 2020)
 	// Return -1 if no intersection

@@ -1,7 +1,7 @@
-#include "Material.h"
 #include "DoubleVec3D.h"
-#include "Ray.h"
+#include "Material.h"
 #include "Object3D.h"
+#include "Ray.h"
 
 #ifndef DEF_REFRACTIVEMATERIAL
 #define DEF_REFRACTIVEMATERIAL

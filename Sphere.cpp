@@ -1,7 +1,8 @@
 #include "Sphere.h"
 
 // Constructors
-Sphere::Sphere() : Object3D(), center(0), radius(1) {}
+Sphere::Sphere()
+	: Object3D(), center(0), radius(1) {}
 
 Sphere::Sphere(const DoubleVec3D& center, double radius, Material* material)
 	: Object3D(material), center(center), radius(radius) {}
@@ -14,11 +15,13 @@ Sphere::Sphere(const Sphere& sphere)
 DoubleVec3D Sphere::getCenter() const { return center; }
 double Sphere::getRadius() const { return radius; }
 
+
 // Setters
 void Sphere::setCenter(const DoubleVec3D& center) { this->center = center; }
 void Sphere::setRadius(double radius) { this->radius = radius; }
 
-// Virtual functions
+
+// Virtual method
 double Sphere::closestIntersection(const Ray& ray) const {
 	// Returns -1 if no solution
 	// Using quadratic equation formula to solve (meaning of a, b, c)

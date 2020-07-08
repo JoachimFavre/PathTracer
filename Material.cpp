@@ -1,11 +1,10 @@
 #include "Material.h"
 
 // Constructors
-Material::Material() : colour(0), emittance(0) {}
-
+Material::Material()
+	: colour(0), emittance(0) {}
 Material::Material(const DoubleVec3D& colour, double emittance /*= 0*/)
 	: colour(colour), emittance(emittance) {}
-
 Material::Material(const Material& material) 
 	: colour(material.colour), emittance(material.emittance) {}
 

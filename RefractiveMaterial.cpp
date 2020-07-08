@@ -2,9 +2,12 @@
 
 
 // Constructors
-RefractiveMaterial::RefractiveMaterial() : Material(), refractiveIndex(1.5) {}
+RefractiveMaterial::RefractiveMaterial()
+	: Material(), refractiveIndex(1.5) {}
+
 RefractiveMaterial::RefractiveMaterial(const DoubleVec3D& colour, double refractiveIndex, double emittance /*= 0*/)
 	: Material(colour, emittance), refractiveIndex(refractiveIndex) {}
+
 RefractiveMaterial::RefractiveMaterial(const RefractiveMaterial& material)
 	: Material(material), refractiveIndex(material.refractiveIndex) {}
 
@@ -14,7 +17,7 @@ double RefractiveMaterial::getRefractiveIndex() const { return refractiveIndex; 
 void RefractiveMaterial::setRefractiveIndex(double refractiveIndex) { this->refractiveIndex = refractiveIndex; }
 
 
-// Other methods
+// Virtual methods
 DoubleVec3D RefractiveMaterial::getNewDirection(const Ray& previousRay, const DoubleVec3D& normal, double (*randomDouble)()) const {
 	double refractiveIndex = this->refractiveIndex;
 	DoubleVec3D normalBis = normal;
