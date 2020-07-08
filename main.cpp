@@ -25,13 +25,17 @@ std::vector<Object3D*> scene;
 
 constexpr unsigned int PICTURE_WIDTH = 500;
 constexpr unsigned int PICTURE_HEIGHT = 500;
-DoubleVec3D picture [PICTURE_WIDTH][PICTURE_HEIGHT];
 constexpr double CAMERA_FOCAL_LENGTH = 3;
 constexpr double CAMERA_FOV_X = M_PI_4;
+
+DoubleVec3D picture [PICTURE_WIDTH][PICTURE_HEIGHT];
 
 constexpr double MAX_DEPTH = 10;
 constexpr unsigned int MAX_BOUNCES = 5;
 constexpr unsigned int SAMPLE_PER_PIXEL = 64;
+
+// Refractive BRDF
+constexpr double REFRACTIVE_INDEX = 1.5;
 
 double randomDouble() {
 	return unif(re);
@@ -85,14 +89,36 @@ DoubleVec3D traceRay(const Ray& ray, unsigned int bounces = 0) {
 			// Refractive BRDF
 			case BRDF::Refractive: 
 			{
-				std::cout << "Refractive BRDF will be implemented later." << std::endl;
+				double refractiveIndex = REFRACTIVE_INDEX;
+				double reflectionProbNormal = pow((1.0 - REFRACTIVE_INDEX) / (1 + REFRACTIVE_INDEX), 2);  // Probability of reflection with normal incidence
+
+				double cosFirstAngle = -dotProd(currentRayDirection, normal);  // Cosine of first angle
+				if (cosFirstAngle > 0)  // Not on right side of surface
+					normal *= -1;
+				else
+					refractiveIndex = 1/refractiveIndex;
+				
+				double cosSecondAngle = 1.0 - refractiveIndex*refractiveIndex * (1.0 - cosFirstAngle * cosFirstAngle);  // 3D <=> 2 angles
+				double reflectionProb = reflectionProbNormal + (1.0 - reflectionProbNormal)*pow(1.0 - cosFirstAngle, 5.0);  // Schlick's approximation
+				DoubleVec3D newDirection;
+				//std::cout << cosSecondAngle << " " << reflectionProb << std::endl;
+				if (cosSecondAngle > 0)
+					// Refraction case
+					newDirection = currentRayDirection*refractiveIndex + normal*(refractiveIndex*cosFirstAngle - sqrt(cosSecondAngle));
+				else
+					// Reflection case
+					newDirection = currentRayDirection + normal*cosFirstAngle*2;
+				
+				DoubleVec3D recursiveColour = traceRay(Ray(intersection, newDirection), bounces + 1);
+				result += recursiveColour; // *1.15 ?
+
 				break;
 			}
 
 			// Specular BRDF
 			case BRDF::Specular:
 			{
-				DoubleVec3D newDirection = ray.getDirection() - normal*dotProd(currentRayDirection, normal)*2;  // gets normalised in ray constructor
+				DoubleVec3D newDirection = currentRayDirection - normal*dotProd(currentRayDirection, normal)*2;  // gets normalised in ray constructor
 				DoubleVec3D recursiveColour = traceRay(Ray(intersection, newDirection), bounces + 1);
 				result += recursiveColour;
 				break;
@@ -112,8 +138,8 @@ int main() {
 	// Make scene
 	// Spheres
 	scene.push_back(new Sphere(DoubleVec3D(0, -1.5, -2.5), 0.5, Material(DoubleVec3D(0), BRDF::Diffuse, 10000)));
-	// scene.push_back(new Sphere(DoubleVec3D(0.5, 1.5, -2), 0.5, Material(DoubleVec3D(0), BRDF::Specular)));
-	scene.push_back(new Sphere(DoubleVec3D(-1, 1.5, -2.5), 0.5, Material(DoubleVec3D(6), BRDF::Diffuse)));
+	scene.push_back(new Sphere(DoubleVec3D(0, -0.5, -3), 0.5, Material(DoubleVec3D(0), BRDF::Refractive)));
+	//scene.push_back(new Sphere(DoubleVec3D(-1, 1.5, -2.5), 0.5, Material(DoubleVec3D(6), BRDF::Diffuse)));
 	// left
 	scene.push_back(new Triangle(DoubleVec3D(-2, 2, 1), DoubleVec3D(-2, -2, 1), DoubleVec3D(-2, -2, -4), Material(DoubleVec3D(2, 2, 10), BRDF::Diffuse)));
 	scene.push_back(new Triangle(DoubleVec3D(-2, 2, 1), DoubleVec3D(-2, -2, -4), DoubleVec3D(-2, 2, -4), Material(DoubleVec3D(2, 2, 10), BRDF::Diffuse)));
