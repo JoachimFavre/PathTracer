@@ -50,5 +50,5 @@ DoubleVec3D Triangle::getNormal(const DoubleVec3D& point) const {
 	DoubleVec3D edge2 = vertex3 - vertex1;
 	DoubleVec3D result = crossProd(edge1, edge2);
 	result.normalise();
-	return result;  // Not sure with the signs
+	return result;  // The triangle can only be seen from one side, vertices have to be defined counterclockwise (point of view of the visible hemisphere).
 }
