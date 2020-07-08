@@ -34,11 +34,11 @@ constexpr double CAMERA_FOV_X = M_PI_4;
 DoubleVec3D picture [PICTURE_WIDTH][PICTURE_HEIGHT];
 
 constexpr double MAX_DEPTH = 10;
-constexpr unsigned int MIN_BOUNCES = 5;
+constexpr unsigned int MIN_BOUNCES = 5;  // Less if hits nothing
 constexpr unsigned int SAMPLE_PER_PIXEL = 64;
 
 constexpr bool RUSSIAN_ROULETTE = true;
-const double RR_STOP_PROBABILITY = 0.1;
+constexpr double RR_STOP_PROBABILITY = 0.9;
 
 double randomDouble() {
 	return unif(re);
@@ -112,7 +112,9 @@ int main() {
 	// Display doubles with 2 decimals
 	std::cout << std::fixed;
 	std::cout << std::setprecision(2);
-	std::cout << "\r" << "Width=" << PICTURE_WIDTH << "   Height=" << PICTURE_HEIGHT << "   Spp=" << SAMPLE_PER_PIXEL << "   Bounces=" << MIN_BOUNCES << std::endl;
+	std::cout << "Width=" << PICTURE_WIDTH << "   Height=" << PICTURE_HEIGHT << "   Sample/Pixel=" << SAMPLE_PER_PIXEL << std::endl;
+	std::cout << "RussianRoulette=" << (RUSSIAN_ROULETTE ? "true" : "false") << "   MinBounces=" << MIN_BOUNCES << "   RrStopProbability=" << RR_STOP_PROBABILITY << std::endl;
+	std::cout << std::endl;
 
 	// Trace
 	for (unsigned int pixelX = 0; pixelX < PICTURE_WIDTH; pixelX++) {
@@ -126,6 +128,8 @@ int main() {
 		}
 	}
 
+	std::cout << "\r" << 100.0 << "%" << std::endl;
+
 	// Write
 	std::ofstream file;
 	file.open("picture.ppm");
@@ -135,11 +139,13 @@ int main() {
 			DoubleVec3D currentColour = picture[pixelX][pixelY];
 			file << std::min(255, (int)currentColour.getX()) << " ";
 			file << std::min(255, (int)currentColour.getY()) << " ";
-			file << std::min(255, (int)currentColour.getZ()) << "   ";
+			file << std::min(255, (int)currentColour.getZ()) << "\n";
 		}
-		file << "\n";
 	}
 	file.close();
+
+	for (Object3D* object : scene)
+		delete object;
 
 	long long endingTime = std::chrono::system_clock::now().time_since_epoch().count();
 	std::cout << "\nComputed in " << (double)(endingTime - beginningTime) / std::chrono::system_clock::period::den << " seconds.\n";
