@@ -38,7 +38,7 @@ constexpr unsigned int MIN_BOUNCES = 5;  // Less if hits nothing
 constexpr unsigned int SAMPLE_PER_PIXEL = 64;
 
 constexpr bool RUSSIAN_ROULETTE = true;
-constexpr double RR_STOP_PROBABILITY = 0.3;
+constexpr double RR_STOP_PROBABILITY = 0.1;
 
 double randomDouble() {
 	return unif(re);
@@ -117,8 +117,9 @@ int main() {
 	std::cout << std::endl;
 
 	// Trace rays
+	double loopBeginTime = std::chrono::system_clock::now().time_since_epoch().count();
 	for (unsigned int pixelX = 0; pixelX < PICTURE_WIDTH; pixelX++) {
-		std::cout << "\r" << (double)pixelX / PICTURE_WIDTH * 100 << "%";
+		std::cout << "\rProgress: " << (double)pixelX / PICTURE_WIDTH * 100 << "%   Estimated time left: " << (loopBeginTime < 0 ? 0 : (double)(std::chrono::system_clock::now().time_since_epoch().count() - loopBeginTime)*(PICTURE_WIDTH - pixelX)/pixelX/std::chrono::system_clock::period::den) << " seconds       ";
 		for (unsigned int pixelY = 0; pixelY < PICTURE_HEIGHT; pixelY++) {
 			// std::cout << "\r" << (double)(pixelX*PICTURE_WIDTH + pixelY) / (PICTURE_WIDTH*PICTURE_HEIGHT) * 100 << "%";
 			for (unsigned int samples = 0; samples < SAMPLE_PER_PIXEL; samples++) {
@@ -127,7 +128,6 @@ int main() {
 			}
 		}
 	}
-	std::cout << "\r" << 100.0 << "%" << std::endl;
 
 	// Write picture
 	std::ofstream file;
