@@ -9,20 +9,25 @@
 
 class PerspectiveCamera {
 private:
-	unsigned int width, height;
-	double fovX;
+	unsigned int numberPixelsX, numberPixelsY;
+	double focalLength, tanFovX;
 
 public:
 	PerspectiveCamera();
-	PerspectiveCamera(unsigned int width, unsigned int height, double fovX = M_PI/4);
+	PerspectiveCamera(unsigned int numberPixelsX, unsigned int numberPixelsY, double focalLength = 1, double fovX = M_PI/4);
 	PerspectiveCamera(const PerspectiveCamera& camera);
 	
-	unsigned int getWidth();
-	unsigned int getHeigt();
-	double getFovX();
+	unsigned int getNumberPixelsX();
+	unsigned int getNumberPixelsY();
+	double getTanFovX();
+	double getTanFovY();
+	double getFocalLength();
+	double getWorldWidth();
+	double getWorldHeight();
 
-	void setWidth(unsigned int width);
-	void setHeight(unsigned int height);
+	void setNumberPixelsX(unsigned int numberPixelsX);
+	void setNumberPixelsY(unsigned int numberPixelsY);
+	void setFocalLength(double focalLength);
 	void setFovX(double fovX);
 
 	Ray getRayGoingThrough(double pixelX, double pixelY);

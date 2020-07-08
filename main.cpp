@@ -26,6 +26,7 @@ std::vector<Object3D*> scene;
 constexpr unsigned int PICTURE_WIDTH = 500;
 constexpr unsigned int PICTURE_HEIGHT = 500;
 DoubleVec3D picture [PICTURE_WIDTH][PICTURE_HEIGHT];
+constexpr double CAMERA_FOCAL_LENGTH = 3;
 constexpr double CAMERA_FOV_X = M_PI_4;
 
 constexpr double MAX_DEPTH = 10;
@@ -132,7 +133,7 @@ int main() {
 	scene.push_back(new Triangle(DoubleVec3D(2, 2, 1), DoubleVec3D(2, -2, 1), DoubleVec3D(-2, -2, 1), Material(DoubleVec3D(6), BRDF::Diffuse)));
 	scene.push_back(new Triangle(DoubleVec3D(-2, 2, 1), DoubleVec3D(2, 2, 1), DoubleVec3D(-2, -2, 1), Material(DoubleVec3D(6), BRDF::Diffuse)));
 	
-	PerspectiveCamera camera(PICTURE_WIDTH, PICTURE_HEIGHT, CAMERA_FOV_X);
+	PerspectiveCamera camera(PICTURE_WIDTH, PICTURE_HEIGHT, CAMERA_FOCAL_LENGTH, CAMERA_FOV_X);
 
 	// Display doubles with 2 decimals
 	std::cout << std::fixed;
