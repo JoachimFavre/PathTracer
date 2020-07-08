@@ -1,30 +1,30 @@
-#include "TrianglePlane.h"
+#include "Triangle.h"
 
 // Constructors
-TrianglePlane::TrianglePlane()
+Triangle::Triangle()
 	: Object3D(), vertex1(1, 0, 0), vertex2(0, 1, 0), vertex3(0, 0, 1) {}
 
-TrianglePlane::TrianglePlane(const DoubleVec3D& vertex1, const DoubleVec3D& vertex2, const DoubleVec3D& vertex3, const Material& material)
+Triangle::Triangle(const DoubleVec3D& vertex1, const DoubleVec3D& vertex2, const DoubleVec3D& vertex3, const Material& material)
 	: Object3D(material), vertex1(vertex1), vertex2(vertex2), vertex3(vertex3) {}
 
-TrianglePlane::TrianglePlane(const TrianglePlane& triangle)
+Triangle::Triangle(const Triangle& triangle)
 	: Object3D(triangle), vertex1(triangle.vertex1), vertex2(triangle.vertex2), vertex3(triangle.vertex3) {}
 
 
 // Getters
-DoubleVec3D TrianglePlane::getVertex1() const { return vertex1; }
-DoubleVec3D TrianglePlane::getVertex2() const { return vertex2; }
-DoubleVec3D TrianglePlane::getVertex3() const { return vertex3; }
+DoubleVec3D Triangle::getVertex1() const { return vertex1; }
+DoubleVec3D Triangle::getVertex2() const { return vertex2; }
+DoubleVec3D Triangle::getVertex3() const { return vertex3; }
 
 
 // Setters
-void TrianglePlane::setVertex1(const DoubleVec3D& vertex) { vertex1 = vertex; }
-void TrianglePlane::setVertex2(const DoubleVec3D& vertex) { vertex2 = vertex; }
-void TrianglePlane::setVertex3(const DoubleVec3D& vertex) { vertex3 = vertex; }
+void Triangle::setVertex1(const DoubleVec3D& vertex) { vertex1 = vertex; }
+void Triangle::setVertex2(const DoubleVec3D& vertex) { vertex2 = vertex; }
+void Triangle::setVertex3(const DoubleVec3D& vertex) { vertex3 = vertex; }
 
 
 // Other methods
-double TrianglePlane::closestIntersection(const Ray& ray) const {
+double Triangle::closestIntersection(const Ray& ray) const {
 	// Using Möller-Trumbore intersection algorithm (using notations from https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm (accessed on 3rd July 2020)
 	// Return -1 if no intersection
 	DoubleVec3D edge1 = vertex2 - vertex1;
@@ -45,7 +45,7 @@ double TrianglePlane::closestIntersection(const Ray& ray) const {
 	return f * dotProd(edge2, q);
 }
 
-DoubleVec3D TrianglePlane::getNormal(const DoubleVec3D& point) const {
+DoubleVec3D Triangle::getNormal(const DoubleVec3D& point) const {
 	DoubleVec3D edge1 = vertex2 - vertex1;
 	DoubleVec3D edge2 = vertex3 - vertex1;
 	DoubleVec3D result = crossProd(edge1, edge2);

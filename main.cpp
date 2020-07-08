@@ -11,7 +11,7 @@
 
 #include "Object3D.h"
 #include "Sphere.h"
-#include "TrianglePlane.h"
+#include "Triangle.h"
 #include "PerspectiveCamera.h"
 #include "Ray.h"
 #include "DoubleVec3D.h"
@@ -114,23 +114,23 @@ int main() {
 	// scene.push_back(new Sphere(DoubleVec3D(0.5, 1.5, -2), 0.5, Material(DoubleVec3D(0), BRDF::Specular)));
 	scene.push_back(new Sphere(DoubleVec3D(-1, 1.5, -2.5), 0.5, Material(DoubleVec3D(6), BRDF::Diffuse)));
 	// left
-	scene.push_back(new TrianglePlane(DoubleVec3D(-2, 2, 1), DoubleVec3D(-2, -2, 1), DoubleVec3D(-2, -2, -4), Material(DoubleVec3D(2, 2, 10), BRDF::Diffuse)));
-	scene.push_back(new TrianglePlane(DoubleVec3D(-2, 2, 1), DoubleVec3D(-2, -2, -4), DoubleVec3D(-2, 2, -4), Material(DoubleVec3D(2, 2, 10), BRDF::Diffuse)));
+	scene.push_back(new Triangle(DoubleVec3D(-2, 2, 1), DoubleVec3D(-2, -2, 1), DoubleVec3D(-2, -2, -4), Material(DoubleVec3D(2, 2, 10), BRDF::Diffuse)));
+	scene.push_back(new Triangle(DoubleVec3D(-2, 2, 1), DoubleVec3D(-2, -2, -4), DoubleVec3D(-2, 2, -4), Material(DoubleVec3D(2, 2, 10), BRDF::Diffuse)));
 	// right
-	scene.push_back(new TrianglePlane(DoubleVec3D(2, -2, -4), DoubleVec3D(2, -2, 1), DoubleVec3D(2, 2, 1), Material(DoubleVec3D(10, 2, 2), BRDF::Diffuse)));
-	scene.push_back(new TrianglePlane(DoubleVec3D(2, 2, -4), DoubleVec3D(2, -2, -4), DoubleVec3D(2, 2, 1), Material(DoubleVec3D(10, 2, 2), BRDF::Diffuse)));
+	scene.push_back(new Triangle(DoubleVec3D(2, -2, -4), DoubleVec3D(2, -2, 1), DoubleVec3D(2, 2, 1), Material(DoubleVec3D(10, 2, 2), BRDF::Diffuse)));
+	scene.push_back(new Triangle(DoubleVec3D(2, 2, -4), DoubleVec3D(2, -2, -4), DoubleVec3D(2, 2, 1), Material(DoubleVec3D(10, 2, 2), BRDF::Diffuse)));
 	// Top
-	scene.push_back(new TrianglePlane(DoubleVec3D(2, 2, -4), DoubleVec3D(-2, 2, 1), DoubleVec3D(-2, 2, -4), Material(DoubleVec3D(3), BRDF::Diffuse)));
-	scene.push_back(new TrianglePlane(DoubleVec3D(-2, 2, 1), DoubleVec3D(2, 2, -4), DoubleVec3D(2, 2, 1), Material(DoubleVec3D(3), BRDF::Diffuse)));
+	scene.push_back(new Triangle(DoubleVec3D(2, 2, -4), DoubleVec3D(-2, 2, 1), DoubleVec3D(-2, 2, -4), Material(DoubleVec3D(3), BRDF::Diffuse)));
+	scene.push_back(new Triangle(DoubleVec3D(-2, 2, 1), DoubleVec3D(2, 2, -4), DoubleVec3D(2, 2, 1), Material(DoubleVec3D(3), BRDF::Diffuse)));
 	// Bottom
-	scene.push_back(new TrianglePlane(DoubleVec3D(-2, -2, 1), DoubleVec3D(2, -2, -4), DoubleVec3D(-2, -2, -4), Material(DoubleVec3D(3), BRDF::Diffuse)));
-	scene.push_back(new TrianglePlane(DoubleVec3D(2, -2, -4), DoubleVec3D(-2, -2, 1), DoubleVec3D(2, -2, 1), Material(DoubleVec3D(3), BRDF::Diffuse)));
+	scene.push_back(new Triangle(DoubleVec3D(-2, -2, 1), DoubleVec3D(2, -2, -4), DoubleVec3D(-2, -2, -4), Material(DoubleVec3D(3), BRDF::Diffuse)));
+	scene.push_back(new Triangle(DoubleVec3D(2, -2, -4), DoubleVec3D(-2, -2, 1), DoubleVec3D(2, -2, 1), Material(DoubleVec3D(3), BRDF::Diffuse)));
 	// Background
-	scene.push_back(new TrianglePlane(DoubleVec3D(-2, 2, -4), DoubleVec3D(-2, -2, -4), DoubleVec3D(2, 2, -4), Material(DoubleVec3D(2, 10, 2), BRDF::Diffuse)));
-	scene.push_back(new TrianglePlane(DoubleVec3D(2, 2, -4), DoubleVec3D(-2, -2, -4), DoubleVec3D(2, -2, -4), Material(DoubleVec3D(2, 10, 2), BRDF::Diffuse)));
+	scene.push_back(new Triangle(DoubleVec3D(-2, 2, -4), DoubleVec3D(-2, -2, -4), DoubleVec3D(2, 2, -4), Material(DoubleVec3D(2, 10, 2), BRDF::Diffuse)));
+	scene.push_back(new Triangle(DoubleVec3D(2, 2, -4), DoubleVec3D(-2, -2, -4), DoubleVec3D(2, -2, -4), Material(DoubleVec3D(2, 10, 2), BRDF::Diffuse)));
 	// Behind camera
-	scene.push_back(new TrianglePlane(DoubleVec3D(2, 2, 1), DoubleVec3D(2, -2, 1), DoubleVec3D(-2, -2, 1), Material(DoubleVec3D(6), BRDF::Diffuse)));
-	scene.push_back(new TrianglePlane(DoubleVec3D(-2, 2, 1), DoubleVec3D(2, 2, 1), DoubleVec3D(-2, -2, 1), Material(DoubleVec3D(6), BRDF::Diffuse)));
+	scene.push_back(new Triangle(DoubleVec3D(2, 2, 1), DoubleVec3D(2, -2, 1), DoubleVec3D(-2, -2, 1), Material(DoubleVec3D(6), BRDF::Diffuse)));
+	scene.push_back(new Triangle(DoubleVec3D(-2, 2, 1), DoubleVec3D(2, 2, 1), DoubleVec3D(-2, -2, 1), Material(DoubleVec3D(6), BRDF::Diffuse)));
 	
 	PerspectiveCamera camera(PICTURE_WIDTH, PICTURE_HEIGHT, CAMERA_FOV_X);
 

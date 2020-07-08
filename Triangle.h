@@ -1,18 +1,18 @@
-#ifndef DEF_TRIANGLEPLANE
-#define DEF_TRIANGLEPLANE
+#ifndef DEF_TRIANGLE
+#define DEF_TRIANGLE
 
 #include "Object3D.h"
 #include "DoubleVec3D.h"
 #include "Material.h"
 
-class TrianglePlane : public Object3D {
+class Triangle : public Object3D {
 private:
 	DoubleVec3D vertex1, vertex2, vertex3;
 
 public:
-	TrianglePlane();
-	TrianglePlane(const DoubleVec3D& vertex1, const DoubleVec3D& vertex2, const DoubleVec3D& vertex3, const Material& material);
-	TrianglePlane(const TrianglePlane& triangle);
+	Triangle();
+	Triangle(const DoubleVec3D& vertex1, const DoubleVec3D& vertex2, const DoubleVec3D& vertex3, const Material& material);
+	Triangle(const Triangle& triangle);
 
 	DoubleVec3D getVertex1() const;
 	DoubleVec3D getVertex2() const;
