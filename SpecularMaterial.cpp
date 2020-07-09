@@ -1,11 +1,8 @@
 #include "SpecularMaterial.h"
 
 // Constructors
-SpecularMaterial::SpecularMaterial()
-	: Material() {}
-
-SpecularMaterial::SpecularMaterial(const DoubleVec3D& colour, double emittance /*= 0*/)
-	: Material(colour, emittance) {}
+SpecularMaterial::SpecularMaterial(double emittance /*= 0*/)
+	: Material(emittance) {}
 
 SpecularMaterial::SpecularMaterial(const SpecularMaterial& material)
 	: Material(material) {}

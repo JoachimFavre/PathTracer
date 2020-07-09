@@ -2,11 +2,8 @@
 
 
 // Constructors
-RefractiveMaterial::RefractiveMaterial()
-	: Material(), refractiveIndex(1.5) {}
-
-RefractiveMaterial::RefractiveMaterial(const DoubleVec3D& colour, double refractiveIndex, double emittance /*= 0*/)
-	: Material(colour, emittance), refractiveIndex(refractiveIndex) {}
+RefractiveMaterial::RefractiveMaterial(double refractiveIndex /*= 1.5*/, double emittance /*= 0*/)
+	: Material(emittance), refractiveIndex(refractiveIndex) {}
 
 RefractiveMaterial::RefractiveMaterial(const RefractiveMaterial& material)
 	: Material(material), refractiveIndex(material.refractiveIndex) {}

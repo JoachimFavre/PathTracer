@@ -10,10 +10,15 @@
 #define DEF_DIFFUSEMATERIAL
 
 class DiffuseMaterial : public Material {
+private:
+	DoubleVec3D colour;
+
 public:
-	DiffuseMaterial();
-	DiffuseMaterial(const DoubleVec3D& colour, double emittance = 0);
+	DiffuseMaterial(const DoubleVec3D& colour = DoubleVec3D(0.0), double emittance = 0);
 	DiffuseMaterial(const DiffuseMaterial& material);
+
+	DoubleVec3D getColour() const;
+	void setColour(const DoubleVec3D& colour);
 
 	DoubleVec3D getNewDirection(const Ray& previousRay, const DoubleVec3D& normal, double (*randomDouble)()) const;
 	DoubleVec3D computeCurrentColour(const DoubleVec3D& recursiveColour, double angleNewDirectionNormal) const;

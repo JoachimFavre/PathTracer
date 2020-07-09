@@ -88,8 +88,8 @@ int main() {
 	// Make scene
 	// Spheres
 	scene.push_back(new Sphere(DoubleVec3D(0, -1.5, -2.5), 0.5, new DiffuseMaterial(DoubleVec3D(0), 10000)));
-	scene.push_back(new Sphere(DoubleVec3D(0.2, 1.5, -3), 0.5, new RefractiveMaterial(DoubleVec3D(0), 1.5)));
-	scene.push_back(new Sphere(DoubleVec3D(1.2, 1.5, -2.4), 0.5, new SpecularMaterial(DoubleVec3D(0))));
+	scene.push_back(new Sphere(DoubleVec3D(0.2, 1.5, -3), 0.5, new RefractiveMaterial(1.5)));
+	scene.push_back(new Sphere(DoubleVec3D(1.2, 1.5, -2.4), 0.5, new SpecularMaterial));
 	scene.push_back(new Sphere(DoubleVec3D(-1, 1.5, -2.3), 0.5, new DiffuseMaterial(DoubleVec3D(6))));
 	// left
 	scene.push_back(new Triangle(DoubleVec3D(-2, 2, 1), DoubleVec3D(-2, -2, 1), DoubleVec3D(-2, -2, -4), new DiffuseMaterial(DoubleVec3D(2, 2, 10))));

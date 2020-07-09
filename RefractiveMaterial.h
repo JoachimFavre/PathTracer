@@ -11,8 +11,7 @@ private:
 	double refractiveIndex;
 
 public:
-	RefractiveMaterial();
-	RefractiveMaterial(const DoubleVec3D& colour, double refractiveIndex, double emittance = 0);
+	RefractiveMaterial(double refractiveIndex = 1.5, double emittance = 0);
 	RefractiveMaterial(const RefractiveMaterial& material);
 
 	double getRefractiveIndex() const;

@@ -1,14 +1,16 @@
 #include "DiffuseMaterial.h"
 
 // Constructors
-DiffuseMaterial::DiffuseMaterial()
-	: Material() {}
-
-DiffuseMaterial::DiffuseMaterial(const DoubleVec3D& colour, double emittance /*=0*/)
-	: Material(colour, emittance) {}
+DiffuseMaterial::DiffuseMaterial(const DoubleVec3D& colour /*= DoubleVec3D(0.0)*/, double emittance /*=0*/)
+	: Material(emittance), colour(colour) {}
 
 DiffuseMaterial::DiffuseMaterial(const DiffuseMaterial& material)
-	: Material(material) {}
+	: Material(material), colour(material.colour) {}
+
+
+// Getters and setters
+DoubleVec3D DiffuseMaterial::getColour() const { return colour; }
+void DiffuseMaterial::setColour(const DoubleVec3D& colour) { this->colour = colour; }
 
 
 // Virtual methods

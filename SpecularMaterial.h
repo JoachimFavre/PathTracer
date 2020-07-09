@@ -8,8 +8,7 @@
 
 class SpecularMaterial : public Material {
 public:
-	SpecularMaterial();
-	SpecularMaterial(const DoubleVec3D& colour, double emittance = 0);
+	SpecularMaterial(double emittance = 0);
 	SpecularMaterial(const SpecularMaterial& material);
 
 	DoubleVec3D getNewDirection(const Ray& previousRay, const DoubleVec3D& normal, double (*randomDouble)()) const;
