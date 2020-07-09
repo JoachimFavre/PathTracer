@@ -34,11 +34,13 @@ constexpr double CAMERA_FOV_X = M_PI_4;
 DoubleVec3D picture [PICTURE_WIDTH][PICTURE_HEIGHT];
 
 constexpr double MAX_DEPTH = 10;
-constexpr unsigned int MIN_BOUNCES = 5;  // Less if hits nothing
-constexpr unsigned int SAMPLE_PER_PIXEL = 64;
+constexpr unsigned int MIN_BOUNCES = 5;  // Less if nothing is hit
+constexpr unsigned int SAMPLE_PER_PIXEL = 1024;
 
 constexpr bool RUSSIAN_ROULETTE = true;
 constexpr double RR_STOP_PROBABILITY = 0.1;
+
+constexpr double MIDDLE_GRAY = 100;
 
 double randomDouble() {
 	return unif(re);
@@ -141,9 +143,10 @@ int main() {
 	for (unsigned int pixelY = 0; pixelY < PICTURE_HEIGHT; pixelY++) {
 		for (unsigned int pixelX = 0; pixelX < PICTURE_WIDTH; pixelX++) {
 			DoubleVec3D currentColour = picture[pixelX][pixelY];
-			file << std::min(255, (int)currentColour.getX()) << " ";
-			file << std::min(255, (int)currentColour.getY()) << " ";
-			file << std::min(255, (int)currentColour.getZ()) << "\n";
+			// Very naive tone mapping
+			file << (int)(255 * currentColour.getX() / (MIDDLE_GRAY+currentColour.getX())) << " ";
+			file << (int)(255 * currentColour.getY() / (MIDDLE_GRAY+currentColour.getY())) << " ";
+			file << (int)(255 * currentColour.getZ() / (MIDDLE_GRAY+currentColour.getZ())) << "\n";
 		}
 	}
 	file.close();
