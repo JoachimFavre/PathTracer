@@ -165,8 +165,9 @@ int main() {
 	for (Object3D* object : scene)
 		delete object;
 
-	// Measure time
+	// Measure time and make sound to warn that it is ended
 	std::cout << "\nComputed in " << getCurrentTimeSeconds() - beginningTime << " seconds.\n";
+	std::cout << "\a";
 
 	return 0;
 }
