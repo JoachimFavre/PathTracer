@@ -35,7 +35,7 @@ DoubleVec3D picture [PICTURE_WIDTH][PICTURE_HEIGHT];
 
 constexpr double MAX_DEPTH = 10;
 constexpr unsigned int MIN_BOUNCES = 5;  // Less if nothing is hit
-constexpr unsigned int SAMPLE_PER_PIXEL = 1024;
+constexpr unsigned int SAMPLE_PER_PIXEL = 64;
 
 constexpr bool RUSSIAN_ROULETTE = true;
 constexpr double RR_STOP_PROBABILITY = 0.1;
@@ -51,6 +51,7 @@ double getCurrentTimeSeconds() {
 }
 
 DoubleVec3D traceRay(const Ray& ray, unsigned int bounces = 0) {
+	// Russian roulette
 	DoubleVec3D result(0.0);
 	double rrFactor = 1.0;
 	if (bounces >= MIN_BOUNCES) {
@@ -59,6 +60,7 @@ DoubleVec3D traceRay(const Ray& ray, unsigned int bounces = 0) {
 		rrFactor = 1.0/(1.0 - RR_STOP_PROBABILITY);
 	}
 
+	// Search for ray intersection
 	double smallestPositiveDistance = MAX_DEPTH + 1;  // Has to be strictly positive -> we don't want it to intersect with same object
 	Object3D* closestObject = nullptr;
 	for (Object3D* object : scene) {
@@ -72,6 +74,7 @@ DoubleVec3D traceRay(const Ray& ray, unsigned int bounces = 0) {
 	if (smallestPositiveDistance > MAX_DEPTH)  // Something must be hit
 		return result;
 
+	// Rendering equation
 	Material* objectMaterial = closestObject->getMaterial();
 	DoubleVec3D intersection = ray.getOrigin() + smallestPositiveDistance*ray.getDirection();
 	DoubleVec3D normal = closestObject->getNormal(intersection);
@@ -113,6 +116,13 @@ int main() {
 	scene.push_back(new Triangle(DoubleVec3D(-2, 2, 1), DoubleVec3D(2, 2, 1), DoubleVec3D(-2, -2, 1), new DiffuseMaterial(DoubleVec3D(6))));
 	
 	PerspectiveCamera camera(PICTURE_WIDTH, PICTURE_HEIGHT, CAMERA_FOCAL_LENGTH, CAMERA_FOV_X);
+
+	// Store pointers of objects that emit light
+	std::vector<Object3D*> lamps;
+	for (Object3D* object : scene)
+		if (object->getMaterial()->getEmittance() > 0)
+			lamps.push_back(object);
+
 
 	// Display doubles with 2 decimals
 	std::cout << std::fixed;
