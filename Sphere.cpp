@@ -49,3 +49,13 @@ DoubleVec3D Sphere::getNormal(const DoubleVec3D& point) const {
 	DoubleVec3D normal(point - center);
 	return normal/radius; // normalised
 }
+
+
+DoubleVec3D Sphere::getRandomPoint(double (*randomDouble)()) const {
+	double theta = 2*M_PI*randomDouble();
+	double phi = 2*M_PI*randomDouble();
+	DoubleVec3D point(sin(theta)*cos(phi),
+		              sin(theta)*sin(phi),
+		              cos(theta));  // random point on sphere of radius 1
+	return center + radius*point;
+}

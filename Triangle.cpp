@@ -52,3 +52,9 @@ DoubleVec3D Triangle::getNormal(const DoubleVec3D& point) const {
 	result.normalise();
 	return result;  // The triangle can only be seen from one side, vertices have to be defined counterclockwise (point of view of the visible hemisphere).
 }
+
+DoubleVec3D Triangle::getRandomPoint(double (*randomDouble)()) const {
+	double rand1 = sqrt(randomDouble());
+	double rand2 = randomDouble();
+	return (1 - rand1)*vertex1 + rand1*(1 - rand2)*vertex2 + rand1*rand2*vertex3;
+}

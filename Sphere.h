@@ -26,6 +26,7 @@ public:
 
 	double closestIntersection(const Ray& ray) const;
 	DoubleVec3D getNormal(const DoubleVec3D& point) const;
+	DoubleVec3D getRandomPoint(double (*randomDouble)()) const;
 };
 
 #endif
