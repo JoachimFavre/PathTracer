@@ -15,8 +15,8 @@ void DiffuseMaterial::setColour(const DoubleVec3D& colour) { this->colour = colo
 
 // Virtual methods
 DoubleVec3D DiffuseMaterial::getNewDirection(const Ray& previousRay, const DoubleVec3D& normal, double (*randomDouble)()) const {
-	double theta = M_PI*(randomDouble() - 0.5);
-	double phi = M_PI*(randomDouble() - 0.5);
+	double theta = 2*M_PI*randomDouble();
+	double phi = 2*M_PI*randomDouble();
 	DoubleVec3D newDirection(sin(theta)*cos(phi),
 		                     sin(theta)*sin(phi),
 		                     cos(theta));  // random vector on sphere of radius 1
