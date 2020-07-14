@@ -25,6 +25,7 @@ std::uniform_real_distribution<double> unif(0, 1);
 std::default_random_engine re(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());  // new seed each time
 
 std::vector<Object3D*> scene;
+std::vector<Object3D*> lamps;
 
 constexpr unsigned int PICTURE_WIDTH = 500;
 constexpr unsigned int PICTURE_HEIGHT = 500;
@@ -35,10 +36,12 @@ DoubleVec3D picture [PICTURE_WIDTH][PICTURE_HEIGHT];
 
 constexpr double MAX_DEPTH = 10;
 constexpr unsigned int MIN_BOUNCES = 5;  // Less if nothing is hit
-constexpr unsigned int SAMPLE_PER_PIXEL = 64;
+constexpr unsigned int SAMPLE_PER_PIXEL = 128;
 
 constexpr bool RUSSIAN_ROULETTE = true;
 constexpr double RR_STOP_PROBABILITY = 0.1;
+
+constexpr bool NEXT_EVENT_ESTIMATION = false;
 
 constexpr double MIDDLE_GRAY = 100;
 
@@ -50,7 +53,7 @@ double getCurrentTimeSeconds() {
 	return (double)std::chrono::system_clock::now().time_since_epoch().count() / std::chrono::system_clock::period::den;
 }
 
-DoubleVec3D traceRay(const Ray& ray, unsigned int bounces = 0) {
+DoubleVec3D traceRay(const Ray& ray, double usedNextEventEstimation = NEXT_EVENT_ESTIMATION, unsigned int bounces = 0) {
 	// Russian roulette
 	DoubleVec3D result(0.0);
 	double rrFactor = 1.0;
@@ -79,9 +82,36 @@ DoubleVec3D traceRay(const Ray& ray, unsigned int bounces = 0) {
 	DoubleVec3D intersection = ray.getOrigin() + smallestPositiveDistance*ray.getDirection();
 	DoubleVec3D normal = closestObject->getNormal(intersection);
 
-	result += rrFactor * DoubleVec3D(objectMaterial->getEmittance());
+	if (NEXT_EVENT_ESTIMATION && objectMaterial->worksWithNextEventEstimation()) {
+		for (Object3D* lamp : lamps) {
+			DoubleVec3D intersectionToLamp = lamp->getRandomPoint(randomDouble) - intersection;
+			if (dotProd(normal, intersectionToLamp) > 0) {
+				double distanceLamp = length(intersectionToLamp);
+				Ray shadowRay(intersection, intersectionToLamp);
+				bool lampIsVisible(true);
+				for (Object3D* object : scene) {
+					if (object != lamp) {
+						double distanceObject = object->closestIntersection(shadowRay);
+						if (distanceObject > DBL_EPSILON && distanceObject < distanceLamp) {
+							lampIsVisible = false;
+							break;
+						}
+					}
+				}
+				if (lampIsVisible) {
+					intersectionToLamp /= distanceLamp;  // Normalised
+					result += rrFactor * objectMaterial->computeCurrentColour(lamp->getMaterial()->getEmittance(), dotProd(intersectionToLamp, normal)) / distanceLamp / distanceLamp / 4 / M_PI;
+					// result += rrFactor * lamp->getMaterial()->getEmittance() / distanceLamp / distanceLamp * 0.1;
+				}
+			}
+		}
+	}
+	if (!NEXT_EVENT_ESTIMATION || !usedNextEventEstimation || bounces == 0)
+		// If use the next event estimation, we don't want to add this emittance twice.
+		result += rrFactor * DoubleVec3D(objectMaterial->getEmittance());
+
 	DoubleVec3D newDirection = objectMaterial->getNewDirection(ray, normal, &randomDouble);
-	DoubleVec3D recursiveColour = traceRay(Ray(intersection, newDirection), bounces + 1);
+	DoubleVec3D recursiveColour = traceRay(Ray(intersection, newDirection), NEXT_EVENT_ESTIMATION && objectMaterial->worksWithNextEventEstimation(), bounces + 1);
 	result += rrFactor * objectMaterial->computeCurrentColour(recursiveColour, dotProd(newDirection, normal));
 
 	return result;
@@ -118,7 +148,6 @@ int main() {
 	PerspectiveCamera camera(PICTURE_WIDTH, PICTURE_HEIGHT, CAMERA_FOCAL_LENGTH, CAMERA_FOV_X);
 
 	// Store pointers of objects that emit light
-	std::vector<Object3D*> lamps;
 	for (Object3D* object : scene)
 		if (object->getMaterial()->getEmittance() > 0)
 			lamps.push_back(object);

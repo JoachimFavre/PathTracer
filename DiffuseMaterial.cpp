@@ -33,3 +33,8 @@ DoubleVec3D DiffuseMaterial::computeCurrentColour(const DoubleVec3D& recursiveCo
 		               recursiveColour.getZ()*colour.getZ())
 		               * angleNewDirectionNormal / M_PI / M_PI;
 }
+
+
+bool DiffuseMaterial::worksWithNextEventEstimation() const {
+	return true;
+}

@@ -17,3 +17,8 @@ DoubleVec3D SpecularMaterial::getNewDirection(const Ray& previousRay, const Doub
 DoubleVec3D SpecularMaterial::computeCurrentColour(const DoubleVec3D& recursiveColour, double angleNewDirectionNormal) const {
 	return recursiveColour;
 }
+
+
+bool SpecularMaterial::worksWithNextEventEstimation() const {
+	return false;
+}

@@ -41,3 +41,8 @@ DoubleVec3D RefractiveMaterial::getNewDirection(const Ray& previousRay, const Do
 DoubleVec3D RefractiveMaterial::computeCurrentColour(const DoubleVec3D& recursiveColour, double angleNewDirectionNormal) const {
 	return recursiveColour;
 }
+
+
+bool RefractiveMaterial::worksWithNextEventEstimation() const {
+	return false;
+}
