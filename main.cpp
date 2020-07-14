@@ -36,12 +36,12 @@ DoubleVec3D picture [PICTURE_WIDTH][PICTURE_HEIGHT];
 
 constexpr double MAX_DEPTH = 10;
 constexpr unsigned int MIN_BOUNCES = 5;  // Less if nothing is hit
-constexpr unsigned int SAMPLE_PER_PIXEL = 128;
+constexpr unsigned int SAMPLE_PER_PIXEL = 8;
 
 constexpr bool RUSSIAN_ROULETTE = true;
 constexpr double RR_STOP_PROBABILITY = 0.1;
 
-constexpr bool NEXT_EVENT_ESTIMATION = false;
+constexpr bool NEXT_EVENT_ESTIMATION = true;
 
 constexpr double MIDDLE_GRAY = 100;
 
@@ -53,7 +53,7 @@ double getCurrentTimeSeconds() {
 	return (double)std::chrono::system_clock::now().time_since_epoch().count() / std::chrono::system_clock::period::den;
 }
 
-DoubleVec3D traceRay(const Ray& ray, double usedNextEventEstimation = NEXT_EVENT_ESTIMATION, unsigned int bounces = 0) {
+DoubleVec3D traceRay(const Ray& ray, double usedNextEventEstimation = false, unsigned int bounces = 0) {
 	// Russian roulette
 	DoubleVec3D result(0.0);
 	double rrFactor = 1.0;
@@ -106,7 +106,7 @@ DoubleVec3D traceRay(const Ray& ray, double usedNextEventEstimation = NEXT_EVENT
 			}
 		}
 	}
-	if (!NEXT_EVENT_ESTIMATION || !usedNextEventEstimation || bounces == 0)
+	if (!NEXT_EVENT_ESTIMATION || !usedNextEventEstimation)
 		// If use the next event estimation, we don't want to add this emittance twice.
 		result += rrFactor * DoubleVec3D(objectMaterial->getEmittance());
 
