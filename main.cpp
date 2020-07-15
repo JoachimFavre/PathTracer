@@ -54,8 +54,9 @@ double getCurrentTimeSeconds() {
 }
 
 DoubleVec3D traceRay(const Ray& ray, double usedNextEventEstimation = false, unsigned int bounces = 0) {
-	// Russian roulette
 	DoubleVec3D result(0.0);
+
+	// Russian roulette
 	double rrFactor = 1.0;
 	if (bounces >= MIN_BOUNCES) {
 		if (!RUSSIAN_ROULETTE || randomDouble() < RR_STOP_PROBABILITY)
@@ -68,7 +69,7 @@ DoubleVec3D traceRay(const Ray& ray, double usedNextEventEstimation = false, uns
 	Object3D* closestObject = nullptr;
 	for (Object3D* object : scene) {
 		double distance = object->closestIntersection(ray);
-		if (distance > DBL_EPSILON && distance < smallestPositiveDistance) {
+		if (distance > 0.00001 && distance < smallestPositiveDistance) {
 			smallestPositiveDistance = distance;
 			closestObject = object;
 		}
@@ -110,7 +111,7 @@ DoubleVec3D traceRay(const Ray& ray, double usedNextEventEstimation = false, uns
 		// If use the next event estimation, we don't want to add this emittance twice.
 		result += rrFactor * DoubleVec3D(objectMaterial->getEmittance());
 
-	DoubleVec3D newDirection = objectMaterial->getNewDirection(ray, normal, &randomDouble);
+	DoubleVec3D newDirection = objectMaterial->getNewDirection(ray, normal, randomDouble);
 	DoubleVec3D recursiveColour = traceRay(Ray(intersection, newDirection), NEXT_EVENT_ESTIMATION && objectMaterial->worksWithNextEventEstimation(), bounces + 1);
 	result += rrFactor * objectMaterial->computeCurrentColour(recursiveColour, dotProd(newDirection, normal));
 

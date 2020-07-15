@@ -22,7 +22,7 @@ DoubleVec3D RefractiveMaterial::getNewDirection(const Ray& previousRay, const Do
 
 	double reflectionProbNormal = pow((1.0 - refractiveIndex) / (1 + refractiveIndex), 2);  // Probability of reflection with normal incidence
 
-	double cosFirstAngle = -dotProd(normalBis, previousRay.getDirection());  // Cosine of first angle
+	double cosFirstAngle = -dotProd(normalBis, previousRayDirection);  // Cosine of first angle
 	if (cosFirstAngle < 0)  // Not on right side of surface
 		normalBis *= -1;
 	else
