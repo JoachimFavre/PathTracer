@@ -111,3 +111,13 @@ double dotProd(const DoubleVec3D& vec1, const DoubleVec3D& vec2) {
 }
 
 double length(const DoubleVec3D& vec) { return sqrt(dotProd(vec, vec)); }
+
+DoubleVec3D randomVectorOnUnitRadiusSphere(double (*randomDouble)()) {
+	double z = 2*randomDouble() - 1;
+	double angle = 2*M_PI*randomDouble();
+	double newRadius = sqrt(1 - z*z);
+	return DoubleVec3D(newRadius*cos(angle),
+					   newRadius*sin(angle),
+					   z);
+}
+

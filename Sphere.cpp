@@ -52,11 +52,6 @@ DoubleVec3D Sphere::getNormal(const DoubleVec3D& point) const {
 
 
 DoubleVec3D Sphere::getRandomPoint(double (*randomDouble)()) const {
-	double z = 2*randomDouble() - 1;
-	double angle = 2*M_PI*randomDouble();
-	double newRadius = sqrt(1 - z*z);
-	DoubleVec3D point(newRadius*cos(angle),
-		              newRadius*sin(angle),
-		              z);  // random point on sphere of radius 1
+	DoubleVec3D point = randomVectorOnUnitRadiusSphere(randomDouble);
 	return center + radius*point;
 }
