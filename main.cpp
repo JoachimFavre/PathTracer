@@ -123,10 +123,10 @@ int main() {
 
 	// Make scene
 	// Spheres
-	scene.push_back(new Sphere(DoubleVec3D(0, -1.5, -2.5), 0.5, new DiffuseMaterial(DoubleVec3D(0), 10000)));
-	scene.push_back(new Sphere(DoubleVec3D(0.2, 1.5, -3), 0.5, new RefractiveMaterial(1.5)));
-	scene.push_back(new Sphere(DoubleVec3D(1.2, 1.5, -2.4), 0.5, new SpecularMaterial));
-	scene.push_back(new Sphere(DoubleVec3D(-1, 1.5, -2.3), 0.5, new DiffuseMaterial(DoubleVec3D(6))));
+	scene.push_back(new Sphere(DoubleVec3D(0, 1.5, -2.5), 0.5, new DiffuseMaterial(DoubleVec3D(0), 10000)));
+	scene.push_back(new Sphere(DoubleVec3D(0.2, -1.5, -3), 0.5, new RefractiveMaterial(1.5)));
+	scene.push_back(new Sphere(DoubleVec3D(1.2, -1.5, -2.4), 0.5, new SpecularMaterial));
+	scene.push_back(new Sphere(DoubleVec3D(-1, -1.5, -2.3), 0.5, new DiffuseMaterial(DoubleVec3D(6))));
 	// left
 	scene.push_back(new Triangle(DoubleVec3D(-2, 2, 1), DoubleVec3D(-2, -2, 1), DoubleVec3D(-2, -2, -4), new DiffuseMaterial(DoubleVec3D(2, 2, 10))));
 	scene.push_back(new Triangle(DoubleVec3D(-2, 2, 1), DoubleVec3D(-2, -2, -4), DoubleVec3D(-2, 2, -4), new DiffuseMaterial(DoubleVec3D(2, 2, 10))));
@@ -170,6 +170,7 @@ int main() {
 		std::cout << "\rProgress: " << (double)pixelX / PICTURE_WIDTH * 100 << "%     Time already spent: " << timeAlreadySpent << "s     Estimated time left: " << timeAlreadySpent*(PICTURE_WIDTH - pixelX)/pixelX << "s        ";
 		for (unsigned int pixelY = 0; pixelY < PICTURE_HEIGHT; pixelY++) {
 			// std::cout << "\r" << (double)(pixelX*PICTURE_WIDTH + pixelY) / (PICTURE_WIDTH*PICTURE_HEIGHT) * 100 << "%";
+			picture[pixelX][pixelY] = DoubleVec3D(0.0);
 			for (unsigned int samples = 0; samples < SAMPLE_PER_PIXEL; samples++) {
 				Ray currentRay = camera.getRayGoingThrough(pixelX + randomDouble() - 0.5, pixelY + randomDouble() - 0.5);
 				picture[pixelX][pixelY] += traceRay(currentRay)/SAMPLE_PER_PIXEL;
