@@ -15,12 +15,12 @@ void DiffuseMaterial::setColour(const DoubleVec3D& colour) { this->colour = colo
 
 // Virtual methods
 DoubleVec3D DiffuseMaterial::getNewDirection(const Ray& previousRay, const DoubleVec3D& normal, double (*randomDouble)()) const {
-	double theta = 2*M_PI*randomDouble();
-	double phi = 2*M_PI*randomDouble();
-	DoubleVec3D newDirection(sin(theta)*cos(phi),
-		                     sin(theta)*sin(phi),
-		                     cos(theta));  // random vector on sphere of radius 1
-
+	double z = 2*randomDouble() - 1;
+	double angle = 2*M_PI*randomDouble();
+	double newRadius = sqrt(1 - z*z);
+	DoubleVec3D newDirection(newRadius*cos(angle),
+							 newRadius*sin(angle),
+							 z);  // random vector on sphere of radius 1
 	if (dotProd(newDirection, normal) < 0) // Wrong hemisphere
 		return -newDirection;
 	return newDirection;
