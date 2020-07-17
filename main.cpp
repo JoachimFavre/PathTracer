@@ -162,7 +162,7 @@ int main() {
 	std::cout << std::fixed;
 	std::cout << std::setprecision(2);
 	// Print informations
-	std::cout << "Width=" << PICTURE_WIDTH << "     Height=" << PICTURE_HEIGHT << "     Sample/Pixel=" << SAMPLE_PER_PIXEL << std::endl;
+	std::cout << "Width=" << PICTURE_WIDTH << "     Height=" << PICTURE_HEIGHT << "     Sample/Pixel=" << SAMPLE_PER_PIXEL << "     Threads=" << NUMBER_THREADS << std::endl;
 	std::cout << "RussianRoulette=" << (RUSSIAN_ROULETTE ? "true" : "false") << "     MinBounces=" << MIN_BOUNCES << "     RrStopProbability=" << RR_STOP_PROBABILITY << std::endl;
 	std::cout << "NextEventEstimation=" << (NEXT_EVENT_ESTIMATION ? "true" : "false") << std::endl;
 	std::cout << std::endl;
