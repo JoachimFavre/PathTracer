@@ -8,6 +8,7 @@
 
 #define _USE_MATH_DEFINES  // to be able to use M_PI from math.h
 #include <math.h>
+#include <omp.h>
 
 #include "DiffuseMaterial.h"
 #include "DoubleVec3D.h"
@@ -33,6 +34,8 @@ constexpr double CAMERA_FOCAL_LENGTH = 3;
 constexpr double CAMERA_FOV_X = M_PI_4;
 
 DoubleVec3D picture [PICTURE_WIDTH][PICTURE_HEIGHT];
+
+constexpr unsigned int NUMBER_THREADS = 8;
 
 constexpr double MAX_DEPTH = 10;
 constexpr unsigned int MIN_BOUNCES = 5;  // Less if nothing is hit
@@ -120,6 +123,7 @@ DoubleVec3D traceRay(const Ray& ray, double usedNextEventEstimation = false, uns
 
 int main() {
 	double beginningTime = getCurrentTimeSeconds();
+	omp_set_num_threads(NUMBER_THREADS);
 
 	// Make scene
 	// Spheres
@@ -168,8 +172,9 @@ int main() {
 	for (unsigned int pixelX = 0; pixelX < PICTURE_WIDTH; pixelX++) {
 		double timeAlreadySpent = getCurrentTimeSeconds() - loopBeginTime;
 		std::cout << "\rProgress: " << (double)pixelX / PICTURE_WIDTH * 100 << "%     Time already spent: " << timeAlreadySpent << "s     Estimated time left: " << timeAlreadySpent*(PICTURE_WIDTH - pixelX)/pixelX << "s        ";
-		for (unsigned int pixelY = 0; pixelY < PICTURE_HEIGHT; pixelY++) {
-			// std::cout << "\r" << (double)(pixelX*PICTURE_WIDTH + pixelY) / (PICTURE_WIDTH*PICTURE_HEIGHT) * 100 << "%";
+
+#pragma omp parallel for
+		for (int pixelY = 0; pixelY < PICTURE_HEIGHT; pixelY++) {  // pixelY must be signed for OpenMP
 			picture[pixelX][pixelY] = DoubleVec3D(0.0);
 			for (unsigned int samples = 0; samples < SAMPLE_PER_PIXEL; samples++) {
 				Ray currentRay = camera.getRayGoingThrough(pixelX + randomDouble() - 0.5, pixelY + randomDouble() - 0.5);
@@ -177,7 +182,6 @@ int main() {
 			}
 		}
 	}
-
 	// Write picture
 	std::ofstream file;
 	file.open("picture.ppm");
