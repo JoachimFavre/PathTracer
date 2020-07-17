@@ -2,6 +2,7 @@
 /.vs
 /Debug
 /Release
+/x64
 BidirectionalPathTracer.sln
 BidirectionalPathTracer.vcxproj
 BidirectionalPathTracer.vcxproj.filters
