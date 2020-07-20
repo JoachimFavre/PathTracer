@@ -31,16 +31,17 @@ void Picture::setValuePix(unsigned int x, unsigned int y, DoubleVec3D value) { p
 
 // Other methods
 void Picture::writeToFile(double middleGray, std::string fileName /* = "picture"*/) const {
+	constexpr unsigned int maxColourValue = 255;  // must be in [1, 65536]
 	std::ofstream file;
 	file.open(fileName + ".ppm");
-	file << "P3" << std::endl << width << " " << height << std::endl << "255" << std::endl;
+	file << "P3" << std::endl << width << " " << height << " " << maxColourValue << std::endl;
 	for (unsigned int pixelY = 0; pixelY < height; pixelY++) {
 		for (unsigned int pixelX = 0; pixelX < width; pixelX++) {
 			DoubleVec3D currentColour = pixels[pixelX][pixelY];
 			// Very naive tone mapping
-			file << (int)(255 * currentColour.getX() / (middleGray + currentColour.getX())) << " ";
-			file << (int)(255 * currentColour.getY() / (middleGray + currentColour.getY())) << " ";
-			file << (int)(255 * currentColour.getZ() / (middleGray + currentColour.getZ())) << std::endl;
+			file << (int)(maxColourValue * currentColour.getX() / (middleGray + currentColour.getX())) << " ";
+			file << (int)(maxColourValue * currentColour.getY() / (middleGray + currentColour.getY())) << " ";
+			file << (int)(maxColourValue * currentColour.getZ() / (middleGray + currentColour.getZ())) << std::endl;
 		}
 	}
 	file.close();
