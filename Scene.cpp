@@ -1,15 +1,50 @@
 #include "Scene.h"
 
 // Constructors & Destructors
-Scene::Scene() : Scene(PerspectiveCamera(), 8, 5, 10) {}
+Scene::Scene() : Scene(PerspectiveCamera(), 8, 5, 10, 0.1) {}
 
-Scene::Scene(PerspectiveCamera camera, unsigned int samplePerPixel, unsigned int minBounces, double maxDepth)
-	: camera(camera), samplePerPixel(samplePerPixel), minBounces(minBounces), maxDepth(maxDepth) {}
+Scene::Scene(PerspectiveCamera camera, unsigned int samplePerPixel, unsigned int minBounces, double maxDepth, double rrStopProbability)
+	: camera(camera), samplePerPixel(samplePerPixel), minBounces(minBounces), maxDepth(maxDepth), rrStopProbability(rrStopProbability) {}
 
 Scene::Scene(const Scene& scene)
-	: Scene(scene.camera, scene.samplePerPixel, scene.minBounces, scene.maxDepth) {}
+	: Scene(scene.camera, scene.samplePerPixel, scene.minBounces, scene.maxDepth, scene.rrStopProbability) {}
 
 Scene::~Scene() { resetObjects(); }
+
+
+// Getters
+std::vector<Object3D*> Scene::getObjects() const { return objects; }
+std::vector<Object3D*> Scene::getLamps() const { return lamps; }
+PerspectiveCamera Scene::getCamera() const { return camera; }
+unsigned int Scene::getSamplePerPixel() const { return samplePerPixel; }
+unsigned int Scene::getMinBounces() const { return minBounces; }
+double Scene::getMaxDepth() const { return maxDepth; }
+bool Scene::getRussianRoulette() const { return russianRoulette; }
+double Scene::getRrStopProbability() const { return rrStopProbability; }
+bool Scene::getNextEventEstimation() const { return nextEventEstimation; }
+unsigned int Scene::getNumberThreads() const { return numberThreads; }
+
+
+// Setters
+void Scene::setObjects(std::vector<Object3D*> objects) {
+	this->objects = objects;
+	lamps = std::vector<Object3D*>();
+	for (Object3D* object : objects)
+		if (object->getMaterial()->getEmittance() > DBL_EPSILON)
+			lamps.push_back(object);
+}
+void Scene::setCamera(PerspectiveCamera camera) { this->camera = camera; }
+void Scene::setSamplePerPixel(unsigned int samplePerPixel) { this->samplePerPixel = samplePerPixel; }
+void Scene::setMinBounces(unsigned int minBounces) { this->minBounces = minBounces; }
+void Scene::setMaxDepth(double maxDepth) { this->maxDepth = maxDepth; }
+void Scene::setRussianRoulette(bool russianRoulette) { this->russianRoulette = russianRoulette; }
+void Scene::setRussianRoulette(bool russianRoulette, double rrStopProbability) {
+	this->russianRoulette = russianRoulette;
+	this->rrStopProbability = rrStopProbability;
+}
+void Scene::setRrStopProbability(double rrStopProbability) { this->rrStopProbability = rrStopProbability; }
+void Scene::setNextEventEstimation(bool nextEventEstimation) { this->nextEventEstimation = nextEventEstimation; }
+void Scene::setNumberThreads(unsigned int numberThreads) { this->numberThreads = numberThreads; }
 
 
 // Add/Remove objects
@@ -24,8 +59,6 @@ void Scene::resetObjects() {
 		delete object;
 	objects = std::vector<Object3D*>();
 }
-
-std::vector<Object3D*> Scene::getObjects() const { return objects; }
 
 
 // Private method

@@ -29,9 +29,9 @@ private:
 	unsigned int samplePerPixel;
 	unsigned int minBounces;
 	double maxDepth;
+	double rrStopProbability;  // Linked to russianRoulette   /  stopProb=1 <=> russianRoulette=false
 
 	bool russianRoulette = true;
-	double rrStopProbability = 0.1;
 	bool nextEventEstimation = true;
 	unsigned int numberThreads = 8;
 
@@ -40,16 +40,36 @@ private:
 
 public:
 	Scene();
-	Scene(PerspectiveCamera camera, unsigned int samplePerPixel, unsigned int minBounces, double maxDepth);
+	Scene(PerspectiveCamera camera, unsigned int samplePerPixel, unsigned int minBounces, double maxDepth, double rrStopProbability);
 	Scene(const Scene& scene);
 	~Scene();
 
+	std::vector<Object3D*> getObjects() const;
+	std::vector<Object3D*> getLamps() const;
+	PerspectiveCamera getCamera() const;
+	unsigned int getSamplePerPixel() const;
+	unsigned int getMinBounces() const;
+	double getMaxDepth() const;
+	bool getRussianRoulette() const;
+	double getRrStopProbability() const;
+	bool getNextEventEstimation() const;
+	unsigned int getNumberThreads() const;
+
+	void setObjects(std::vector<Object3D*> objects);
+	void setCamera(PerspectiveCamera camera);
+	void setSamplePerPixel(unsigned int samplePerPixel);
+	void setMinBounces(unsigned int minBounces);
+	void setMaxDepth(double maxDepth);
+	void setRussianRoulette(bool russianRoulette);
+	void setRussianRoulette(bool russianRoulette, double rrStopProbability);
+	void setRrStopProbability(double rrStopProbability);
+	void setNextEventEstimation(bool nextEventEstimation);
+	void setNumberThreads(unsigned int numberThreads);
+
 	void addObject(Object3D* object);
 	void resetObjects();
-	std::vector<Object3D*> getObjects() const;
 
 	Picture* render() const;
-
 };
 
 #endif

@@ -42,7 +42,10 @@ int main() {
 	std::cout << std::setprecision(2);
 
 	PerspectiveCamera camera(PICTURE_WIDTH, PICTURE_HEIGHT, CAMERA_FOCAL_LENGTH, CAMERA_FOV_X);
-	Scene scene(camera, SAMPLE_PER_PIXEL, MIN_BOUNCES, MAX_DEPTH);
+	Scene scene(camera, SAMPLE_PER_PIXEL, MIN_BOUNCES, MAX_DEPTH, RR_STOP_PROBABILITY);
+	scene.setRussianRoulette(RUSSIAN_ROULETTE);
+	scene.setNextEventEstimation(NEXT_EVENT_ESTIMATION);
+	scene.setNumberThreads(NUMBER_THREADS);
 
 	// Make scene
 	// Spheres
