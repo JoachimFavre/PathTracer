@@ -36,7 +36,6 @@ constexpr double MIDDLE_GRAY = 100;
 
 int main() {
 	double beginningTime = getCurrentTimeSeconds();
-	omp_set_num_threads(NUMBER_THREADS);
 
 	// Display doubles with 2 decimals
 	std::cout << std::fixed;

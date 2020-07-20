@@ -36,6 +36,7 @@ private:
 	unsigned int numberThreads = 8;
 
 	DoubleVec3D traceRay(const Ray& ray, double usedNextEventEstimation = false, unsigned int bounces = 0);
+	void displayRenderingProgression(unsigned int currentPixelX, double loopBeginningTime);
 
 public:
 	Scene();

@@ -95,12 +95,18 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
 	return result;
 }
 
+void Scene::displayRenderingProgression(unsigned int currentPixelX, double loopBeginningTime) {
+	unsigned int pictureWidth = camera.getNumberPixelsX();
+	double timeAlreadySpent = getCurrentTimeSeconds() - loopBeginningTime;
+	std::cout << "\rProgress: " << (double)currentPixelX/pictureWidth*100 << "%     Time already spent: " << timeAlreadySpent;
+	std::cout << "s     Estimated time left: " << timeAlreadySpent*(pictureWidth - currentPixelX)/currentPixelX << "s        ";
+}
+
+
 // Other methods
 Picture* Scene::render() {
-	// New seed each render
 	unsigned int pictureWidth = camera.getNumberPixelsX();
 	unsigned int pictureHeight = camera.getNumberPixelsY();
-
 	omp_set_num_threads(numberThreads);
 
 	// Print informations
@@ -111,19 +117,21 @@ Picture* Scene::render() {
 
 	Picture* result = new Picture(camera.getNumberPixelsX(), camera.getNumberPixelsY());
 
-	double loopBeginTime = getCurrentTimeSeconds();
+	double loopBeginningTime = getCurrentTimeSeconds();
+	// If #pragma omp parallel for is here, it goes faster, but it cannot display percentage or estimated time left.
 	for (unsigned int pixelX = 0; pixelX < pictureWidth; pixelX++) {
-		double timeAlreadySpent = getCurrentTimeSeconds() - loopBeginTime;
-		std::cout << "\rProgress: " << (double)pixelX / pictureWidth * 100 << "%     Time already spent: " << timeAlreadySpent << "s     Estimated time left: " << timeAlreadySpent * (pictureWidth - pixelX) / pixelX << "s        ";
+		displayRenderingProgression(pixelX, loopBeginningTime);
 #pragma omp parallel for
 		for (int pixelY = 0; pixelY < pictureHeight; pixelY++) {  // pixelY must be signed for OpenMP
 			result->setValuePix(pixelX, pixelY, DoubleVec3D(0.0));
-			for (unsigned int samples = 0; samples < samplePerPixel; samples++) {
+			for (unsigned int sample = 0; sample < samplePerPixel; sample++) {
 				Ray currentRay = camera.getRayGoingThrough(pixelX + randomDouble() - 0.5, pixelY + randomDouble() - 0.5);
-				result->addValuePix(pixelX, pixelY, traceRay(currentRay)/samplePerPixel);
+				result->addValuePix(pixelX, pixelY, traceRay(currentRay) / samplePerPixel);
 			}
 		}
 	}
+
+	displayRenderingProgression(pictureWidth, loopBeginningTime);  // To display 100%
 
 	return result;
 }
