@@ -35,8 +35,8 @@ private:
 	bool nextEventEstimation = true;
 	unsigned int numberThreads = 8;
 
-	DoubleVec3D traceRay(const Ray& ray, double usedNextEventEstimation = false, unsigned int bounces = 0);
-	void displayRenderingProgression(unsigned int currentPixelX, double loopBeginningTime);
+	DoubleVec3D traceRay(const Ray& ray, double usedNextEventEstimation = false, unsigned int bounces = 0) const;
+	void displayRenderingProgression(unsigned int currentPixelX, double loopBeginningTime) const;
 
 public:
 	Scene();
@@ -46,9 +46,9 @@ public:
 
 	void addObject(Object3D* object);
 	void resetObjects();
-	std::vector<Object3D*> getObjects();
+	std::vector<Object3D*> getObjects() const;
 
-	Picture* render();
+	Picture* render() const;
 
 };
 

@@ -17,20 +17,20 @@ public:
 	PerspectiveCamera(unsigned int numberPixelsX, unsigned int numberPixelsY, double focalLength = 1, double fovX = M_PI_4);
 	PerspectiveCamera(const PerspectiveCamera& camera);
 	
-	unsigned int getNumberPixelsX();
-	unsigned int getNumberPixelsY();
-	double getTanFovX();
-	double getTanFovY();
-	double getFocalLength();
-	double getWorldWidth();
-	double getWorldHeight();
+	unsigned int getNumberPixelsX() const;
+	unsigned int getNumberPixelsY() const;
+	double getTanFovX() const;
+	double getTanFovY() const;
+	double getFocalLength() const;
+	double getWorldWidth() const;
+	double getWorldHeight() const;
 
 	void setNumberPixelsX(unsigned int numberPixelsX);
 	void setNumberPixelsY(unsigned int numberPixelsY);
 	void setFocalLength(double focalLength);
 	void setFovX(double fovX);
 
-	Ray getRayGoingThrough(double pixelX, double pixelY);
+	Ray getRayGoingThrough(double pixelX, double pixelY) const;
 };
 
 #endif

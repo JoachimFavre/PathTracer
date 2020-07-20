@@ -12,13 +12,13 @@ PerspectiveCamera::PerspectiveCamera(const PerspectiveCamera& camera)
 
 
 // Getters
-unsigned int PerspectiveCamera::getNumberPixelsX() { return numberPixelsX; }
-unsigned int PerspectiveCamera::getNumberPixelsY() { return numberPixelsY; }
-double PerspectiveCamera::getTanFovX() { return tanFovX; }
-double PerspectiveCamera::getTanFovY() { return numberPixelsY/numberPixelsX*tanFovX; }
-double PerspectiveCamera::getFocalLength() { return focalLength; }
-double PerspectiveCamera::getWorldWidth() { return 2*focalLength*tanFovX; }
-double PerspectiveCamera::getWorldHeight() { return 2*focalLength*getTanFovY(); }
+unsigned int PerspectiveCamera::getNumberPixelsX() const { return numberPixelsX; }
+unsigned int PerspectiveCamera::getNumberPixelsY() const { return numberPixelsY; }
+double PerspectiveCamera::getTanFovX() const { return tanFovX; }
+double PerspectiveCamera::getTanFovY() const { return numberPixelsY/numberPixelsX*tanFovX; }
+double PerspectiveCamera::getFocalLength() const { return focalLength; }
+double PerspectiveCamera::getWorldWidth() const { return 2*focalLength*tanFovX; }
+double PerspectiveCamera::getWorldHeight() const { return 2*focalLength*getTanFovY(); }
 
 
 // Setters
@@ -29,7 +29,7 @@ void PerspectiveCamera::setFovX(double fovX) { this->tanFovX = tan(fovX); }
 
 
 // Other methods
-Ray PerspectiveCamera::getRayGoingThrough(double pixelX, double pixelY) {
+Ray PerspectiveCamera::getRayGoingThrough(double pixelX, double pixelY) const {
     DoubleVec3D rayOrigin(0.0);
     double worldWidth = getWorldWidth();
     double worldHeight = getWorldHeight();

@@ -25,11 +25,11 @@ void Scene::resetObjects() {
 	objects = std::vector<Object3D*>();
 }
 
-std::vector<Object3D*> Scene::getObjects() { return objects; }
+std::vector<Object3D*> Scene::getObjects() const { return objects; }
 
 
 // Private method
-DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= false*/, unsigned int bounces /*= 0*/) {
+DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= false*/, unsigned int bounces /*= 0*/) const {
 
 	DoubleVec3D result(0.0);
 
@@ -95,7 +95,7 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
 	return result;
 }
 
-void Scene::displayRenderingProgression(unsigned int currentPixelX, double loopBeginningTime) {
+void Scene::displayRenderingProgression(unsigned int currentPixelX, double loopBeginningTime) const {
 	unsigned int pictureWidth = camera.getNumberPixelsX();
 	double timeAlreadySpent = getCurrentTimeSeconds() - loopBeginningTime;
 	std::cout << "\rProgress: " << (double)currentPixelX/pictureWidth*100 << "%     Time already spent: " << timeAlreadySpent;
@@ -104,7 +104,7 @@ void Scene::displayRenderingProgression(unsigned int currentPixelX, double loopB
 
 
 // Other methods
-Picture* Scene::render() {
+Picture* Scene::render() const {
 	unsigned int pictureWidth = camera.getNumberPixelsX();
 	unsigned int pictureHeight = camera.getNumberPixelsY();
 	omp_set_num_threads(numberThreads);

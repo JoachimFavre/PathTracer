@@ -22,15 +22,15 @@ Picture::~Picture() {
 
 
 // Getters
-unsigned int Picture::getWidth() { return width; }
-unsigned int Picture::getHeight() { return height; }
+unsigned int Picture::getWidth() const { return width; }
+unsigned int Picture::getHeight() const { return height; }
 
 // Modify pixels
 void Picture::addValuePix(unsigned int x, unsigned int y, DoubleVec3D value) { pixels[x][y] += value; }
 void Picture::setValuePix(unsigned int x, unsigned int y, DoubleVec3D value) { pixels[x][y] = value; }
 
 // Other methods
-void Picture::write(double middleGray, std::string fileName /* = "picture"*/) {
+void Picture::writeToFile(double middleGray, std::string fileName /* = "picture"*/) const {
 	std::ofstream file;
 	file.open(fileName + ".ppm");
 	file << "P3\n" << width << " " << height << "\n" << "255\n";

@@ -69,7 +69,7 @@ int main() {
 	scene.addObject(new Triangle(DoubleVec3D(2, 2, 1), DoubleVec3D(2, -2, 1), DoubleVec3D(-2, -2, 1), new DiffuseMaterial(DoubleVec3D(6))));
 	scene.addObject(new Triangle(DoubleVec3D(-2, 2, 1), DoubleVec3D(2, 2, 1), DoubleVec3D(-2, -2, 1), new DiffuseMaterial(DoubleVec3D(6))));
 
-	scene.render()->write(MIDDLE_GRAY);
+	scene.render()->writeToFile(MIDDLE_GRAY);
 
 	// Measure time and make sound to warn that it is ended
 	std::cout << "\nComputed in " << getCurrentTimeSeconds() - beginningTime << " seconds.\n";

@@ -20,13 +20,13 @@ public:
 	Picture(const Picture& picture);
 	~Picture();
 
-	unsigned int getWidth();
-	unsigned int getHeight();
+	unsigned int getWidth() const;
+	unsigned int getHeight() const;
 
 	void addValuePix(unsigned int x, unsigned int y, DoubleVec3D value);
 	void setValuePix(unsigned int x, unsigned int y, DoubleVec3D value);
 
-	void write(double middleGray, std::string fileName = "picture");
+	void writeToFile(double middleGray, std::string fileName = "picture") const;
 };
 
 #endif
