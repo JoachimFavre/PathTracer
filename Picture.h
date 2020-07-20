@@ -1,6 +1,6 @@
 #include <fstream>
-#include <iostream>;
-#include <string>;
+#include <iostream>
+#include <string>
 
 #include "DoubleVec3D.h"
 

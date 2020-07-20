@@ -5,7 +5,7 @@
 
 #include "DoubleVec3D.h"
 #include "Material.h"
-#include "Object3D.h";
+#include "Object3D.h"
 #include "Ray.h"
 
 class Sphere : public Object3D {
