@@ -165,6 +165,7 @@ Picture* Scene::render() const {
 	}
 
 	displayRenderingProgression(pictureWidth, loopBeginningTime);  // To display 100%
+	std::cout << std::endl;
 
 	return result;
 }
