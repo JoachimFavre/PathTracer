@@ -30,7 +30,7 @@ void Picture::addValuePix(unsigned int x, unsigned int y, DoubleVec3D value) { p
 void Picture::setValuePix(unsigned int x, unsigned int y, DoubleVec3D value) { pixels[x][y] = value; }
 
 // Other methods
-void Picture::writeToFile(double middleGray, std::string fileName /* = "picture"*/) const {
+void Picture::writeToFile(double middleGray, std::string fileName /* = "_picture"*/) const {
 	constexpr unsigned int maxColourValue = 255;  // must be in [1, 65536]
 	std::ofstream file;
 	file.open(fileName + ".ppm");

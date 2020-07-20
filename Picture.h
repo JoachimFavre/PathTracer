@@ -26,7 +26,7 @@ public:
 	void addValuePix(unsigned int x, unsigned int y, DoubleVec3D value);
 	void setValuePix(unsigned int x, unsigned int y, DoubleVec3D value);
 
-	void writeToFile(double middleGray, std::string fileName = "picture") const;
+	void writeToFile(double middleGray, std::string fileName = "_picture") const;
 };
 
 #endif
