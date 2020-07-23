@@ -8,9 +8,11 @@
 
 class DoubleVec3D {
 private:
-	double x = 0;
-	double y = 0;
-	double z = 0;
+	double x;
+	double y;
+	double z;
+
+	bool normalised;
 
 public:
 	DoubleVec3D(double val = 0);
@@ -21,10 +23,10 @@ public:
 	double getY() const;
 	double getZ() const;
 
-	void setX(double x);
-	void setY(double y);
-	void setZ(double z);
-	void setVals(double x, double y, double z);
+	// void setX(double x);
+	// void setY(double y);
+	// void setZ(double z);
+	virtual void setVals(double x, double y, double z);
 
 	void operator+=(const DoubleVec3D& vec);
 	void operator-=(const DoubleVec3D& vec);
@@ -32,6 +34,7 @@ public:
 	void operator/=(const double& val);
 
 	void normalise();
+	bool isNormalised();
 };
 
 DoubleVec3D operator+(const DoubleVec3D& vec1, const DoubleVec3D& vec2);

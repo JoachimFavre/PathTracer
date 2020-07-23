@@ -2,30 +2,33 @@
 
 // Constructors
 DoubleVec3D::DoubleVec3D(double val /*= 0*/)
-	: x(val), y(val), z(val) {}
+	: x(val), y(val), z(val), normalised(false) {}
 
 DoubleVec3D::DoubleVec3D(double x, double y, double z)
-	: x(x), y(y), z(z) {}
+	: x(x), y(y), z(z), normalised(false) {}
 
 DoubleVec3D::DoubleVec3D(const DoubleVec3D& vec)
-	: x(vec.x), y(vec.y), z(vec.z) {}
+	: x(vec.x), y(vec.y), z(vec.z), normalised(vec.normalised) {}
 
 
 // Getters
-double DoubleVec3D::getX() const { return this->x; }
-double DoubleVec3D::getY() const { return this->y; }
-double DoubleVec3D::getZ() const { return this->z; }
+double DoubleVec3D::getX() const { return x; }
+double DoubleVec3D::getY() const { return y; }
+double DoubleVec3D::getZ() const { return z; }
 
 
 // Setters
+/*
 void DoubleVec3D::setX(double x) { this->x = x; }
 void DoubleVec3D::setY(double y) { this->y = y; }
 void DoubleVec3D::setZ(double z) { this->z = z; }
+*/
 
 void DoubleVec3D::setVals(double x, double y, double z) {
 	this->x = x;
 	this->y = y;
 	this->z = z;
+	normalised = false;
 }
 
 
@@ -36,7 +39,7 @@ void DoubleVec3D::operator+=(const DoubleVec3D& vec) {
 	z += vec.z;
 }
 
-void DoubleVec3D::operator-=(const DoubleVec3D& vec) { this->operator+=(-vec); }
+void DoubleVec3D::operator-=(const DoubleVec3D& vec) { operator+=(-vec); }
 
 void DoubleVec3D::operator*=(const double& val) {
 	x *= val;
@@ -44,15 +47,24 @@ void DoubleVec3D::operator*=(const double& val) {
 	z *= val;
 }
 
-void DoubleVec3D::operator/=(const double& val) { this->operator*=(1 / val); }
+void DoubleVec3D::operator/=(const double& val) { operator*=(1 / val); }
 
 
 // Other method
 void DoubleVec3D::normalise() {
+	if (normalised)
+		return;
+
 	double lengthSquared = dotProd(*this, *this);
-	if (lengthSquared != 1)  // square roots take a lot of time to compute
-		this->operator/=(sqrt(lengthSquared));
+	if (lengthSquared >= -DBL_EPSILON && lengthSquared <= DBL_EPSILON)
+		x = 1.0; // Should never happend \ y = z = 0.0
+	else 
+		operator/=(sqrt(lengthSquared));
+
+	normalised = true;
 }
+
+bool DoubleVec3D::isNormalised() { return normalised; }
 
 
 // Functions
