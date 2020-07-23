@@ -33,8 +33,8 @@ Ray PerspectiveCamera::getRayGoingThrough(double pixelX, double pixelY) const {
     DoubleVec3D rayOrigin(0.0);
     double worldWidth = getWorldWidth();
     double worldHeight = getWorldHeight();
-    DoubleVec3D rayDirection(worldWidth/numberPixelsX*(pixelX + 0.5) - 0.5*worldWidth,
-                             getWorldHeight()/numberPixelsY*(numberPixelsY - pixelY + 0.5) - 0.5*worldHeight,
-                             -focalLength);  // Gets normalised in ray constructor
+    DoubleUnitVec3D rayDirection(worldWidth/numberPixelsX*(pixelX + 0.5) - 0.5*worldWidth,
+                                 getWorldHeight()/numberPixelsY*(numberPixelsY - pixelY + 0.5) - 0.5*worldHeight,
+                                 -focalLength);
     return Ray(rayOrigin, rayDirection);
 }

@@ -98,7 +98,7 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
 			DoubleVec3D intersectionToLamp = lamp->getRandomPoint(randomDouble) - intersection;
 			if (dotProd(normal, intersectionToLamp) > 0) {
 				double distanceLamp = length(intersectionToLamp);
-				Ray shadowRay(intersection, intersectionToLamp);
+				Ray shadowRay(intersection, intersectionToLamp);  // intersectionToLamp goes in DoubleUnitVec3D constructor => normalised
 				bool lampIsVisible(true);
 				for (Object3D* object : objects) {
 					if (object != lamp) {
@@ -118,10 +118,10 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
 		}
 	}
 	if (!nextEventEstimation || !usedNextEventEstimation)
-		// If use the next event estimation, we don't want to add this emittance twice.
+		// If next event estimation was used by last ray, we would be adding the emittance twice.
 		result += rrFactor * DoubleVec3D(objectMaterial->getEmittance());
 
-	DoubleVec3D newDirection = objectMaterial->getNewDirection(ray, normal, randomDouble);
+	DoubleUnitVec3D newDirection = objectMaterial->getNewDirection(ray, normal, randomDouble);
 	DoubleVec3D recursiveColour = traceRay(Ray(intersection, newDirection), nextEventEstimation && objectMaterial->worksWithNextEventEstimation(), bounces + 1);
 	result += rrFactor * objectMaterial->computeCurrentColour(recursiveColour, dotProd(newDirection, normal));
 
@@ -164,7 +164,7 @@ Picture* Scene::render() const {
 		}
 	}
 
-	displayRenderingProgression(pictureWidth, loopBeginningTime);  // To display 100%
+	displayRenderingProgression(pictureWidth, loopBeginningTime);  // To display the 100%
 	std::cout << std::endl;
 
 	return result;

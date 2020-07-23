@@ -46,7 +46,7 @@ double Sphere::closestIntersection(const Ray& ray) const {
 }	
 
 DoubleUnitVec3D Sphere::getNormal(const DoubleVec3D& point) const {
-	return DoubleUnitVec3D((point - center) / radius, true);
+	return DoubleUnitVec3D((point - center)/radius, true);
 }
 
 

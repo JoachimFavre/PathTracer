@@ -48,8 +48,8 @@ double Triangle::closestIntersection(const Ray& ray) const {
 DoubleUnitVec3D Triangle::getNormal(const DoubleVec3D& point) const {
 	DoubleVec3D edge1 = vertex2 - vertex1;
 	DoubleVec3D edge2 = vertex3 - vertex1;
-	DoubleUnitVec3D result = crossProd(edge1, edge2);
-	return result;  // The triangle can only be seen from one side, vertices have to be defined counterclockwise (point of view of the visible hemisphere).
+	return crossProd(edge1, edge2);  // Casted into DoubleUnitVec3D 
+	// The triangle can only be seen from one side, vertices have to be defined counterclockwise (point of view of the visible hemisphere).
 }
 
 DoubleVec3D Triangle::getRandomPoint(double (*randomDouble)()) const {
