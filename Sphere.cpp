@@ -31,14 +31,14 @@ double Sphere::closestIntersection(const Ray& ray) const {
 	double c = dotProd(differenceOriginCenter, differenceOriginCenter) - radius * radius;
 
 	double discriminant = b*b - 4*c;
-	if (discriminant < 0)
-		return -1;
-	else if (discriminant == 0)
+	if (discriminant < 0.0)
+		return -1.0;
+	else if (discriminant == 0.0)
 		return -b/2;
 	else {
 		double sqrt_discriminant = sqrt(discriminant);
 		double twiceSolution1 = -b - sqrt_discriminant;
-		if (twiceSolution1 > 0)
+		if (twiceSolution1 > 0.0)
 			return twiceSolution1/2; // smallest solution and is positive
 		else
 			return (-b + sqrt_discriminant)/2; // biggest solution but maybe positive
