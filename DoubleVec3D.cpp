@@ -37,6 +37,7 @@ void DoubleVec3D::operator+=(const DoubleVec3D& vec) {
 	x += vec.x;
 	y += vec.y;
 	z += vec.z;
+	normalised = false;
 }
 
 void DoubleVec3D::operator-=(const DoubleVec3D& vec) { operator+=(-vec); }
@@ -45,6 +46,7 @@ void DoubleVec3D::operator*=(const double& val) {
 	x *= val;
 	y *= val;
 	z *= val;
+	normalised = false;
 }
 
 void DoubleVec3D::operator/=(const double& val) { operator*=(1 / val); }
@@ -56,8 +58,8 @@ void DoubleVec3D::normalise() {
 		return;
 
 	double lengthSquared = dotProd(*this, *this);
-	if (lengthSquared >= -DBL_EPSILON && lengthSquared <= DBL_EPSILON)
-		x = 1.0; // Should never happend \ y = z = 0.0
+	if (lengthSquared >= -DBL_EPSILON && lengthSquared <= DBL_EPSILON)  // Should never happend
+		x = 1.0;  // y = z = 0.0
 	else 
 		operator/=(sqrt(lengthSquared));
 
@@ -123,13 +125,4 @@ double dotProd(const DoubleVec3D& vec1, const DoubleVec3D& vec2) {
 }
 
 double length(const DoubleVec3D& vec) { return sqrt(dotProd(vec, vec)); }
-
-DoubleVec3D randomVectorOnUnitRadiusSphere(double (*randomDouble)()) {
-	double z = 2*randomDouble() - 1;
-	double angle = 2*M_PI*randomDouble();
-	double newRadius = sqrt(1 - z*z);
-	return DoubleVec3D(newRadius*cos(angle),
-					   newRadius*sin(angle),
-					   z);
-}
 

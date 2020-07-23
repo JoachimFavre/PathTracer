@@ -12,6 +12,7 @@ private:
 	double y;
 	double z;
 
+protected:
 	bool normalised;
 
 public:
@@ -50,7 +51,5 @@ std::ostream& operator<<(std::ostream& stream, const DoubleVec3D& vec);
 DoubleVec3D crossProd(const DoubleVec3D& vec1, const DoubleVec3D& vec2);
 double dotProd(const DoubleVec3D& vec1, const DoubleVec3D& vec2);
 double length(const DoubleVec3D& vec);
-
-DoubleVec3D randomVectorOnUnitRadiusSphere(double (*randomDouble)());
 
 #endif
