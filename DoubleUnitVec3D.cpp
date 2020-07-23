@@ -4,14 +4,20 @@
 DoubleUnitVec3D::DoubleUnitVec3D()
 	: DoubleVec3D(1, 0, 0) {}  // alerady normalised
 
-DoubleUnitVec3D::DoubleUnitVec3D(double x, double y, double z) 
+DoubleUnitVec3D::DoubleUnitVec3D(double x, double y, double z, bool alreadyNormalised /* = false*/) 
 	: DoubleVec3D(x, y, z) {
-	normalise();
+	if (!alreadyNormalised)
+		normalise();
+	else
+		normalised = true;
 }
 
-DoubleUnitVec3D::DoubleUnitVec3D(const DoubleVec3D& vec)
+DoubleUnitVec3D::DoubleUnitVec3D(const DoubleVec3D& vec, bool alreadyNormalised /* = false*/)
 	: DoubleVec3D(vec) {
-	normalise();
+	if (!alreadyNormalised)
+		normalise();
+	else
+		normalised = true;
 }
 
 DoubleUnitVec3D::DoubleUnitVec3D(const DoubleUnitVec3D& vec) 
@@ -29,4 +35,14 @@ void DoubleUnitVec3D::setVals(double x, double y, double z) {
 void DoubleUnitVec3D::operator=(const DoubleVec3D& vec) {
 	DoubleVec3D::operator=(vec);
 	normalise();
+}
+
+// Other function
+DoubleUnitVec3D randomVectorOnUnitRadiusSphere(double (*randomDouble)()) {
+	double z = 2*randomDouble() - 1;
+	double angle = 2*M_PI*randomDouble();
+	double newRadius = sqrt(1 - z*z);
+	return DoubleUnitVec3D(newRadius*cos(angle),
+						   newRadius*sin(angle),
+					       z, true);  // Already normalised
 }
