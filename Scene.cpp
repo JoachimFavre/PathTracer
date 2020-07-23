@@ -91,7 +91,7 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
 	// Rendering equation
 	Material* objectMaterial = closestObject->getMaterial();
 	DoubleVec3D intersection = ray.getOrigin() + smallestPositiveDistance * ray.getDirection();
-	DoubleVec3D normal = closestObject->getNormal(intersection);
+	DoubleUnitVec3D normal = closestObject->getNormal(intersection);
 
 	if (nextEventEstimation && objectMaterial->worksWithNextEventEstimation()) {
 		for (Object3D* lamp : lamps) {
@@ -103,7 +103,7 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
 				for (Object3D* object : objects) {
 					if (object != lamp) {
 						double distanceObject = object->closestIntersection(shadowRay);
-						if (distanceObject > DBL_EPSILON && distanceObject < distanceLamp) {
+						if (distanceObject > 0.00001 && distanceObject < distanceLamp) {
 							lampIsVisible = false;
 							break;
 						}

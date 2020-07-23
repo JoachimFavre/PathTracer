@@ -4,6 +4,7 @@
 #include <math.h>
 
 #include "DoubleVec3D.h"
+#include "DoubleUnitVec3D.h"
 #include "Material.h"
 #include "Object3D.h"
 #include "Ray.h"
@@ -25,7 +26,7 @@ public:
 	void setRadius(double radius);
 
 	double closestIntersection(const Ray& ray) const;
-	DoubleVec3D getNormal(const DoubleVec3D& point) const;
+	DoubleUnitVec3D getNormal(const DoubleVec3D& point) const;
 	DoubleVec3D getRandomPoint(double (*randomDouble)()) const;
 };
 

@@ -15,10 +15,10 @@ void RefractiveMaterial::setRefractiveIndex(double refractiveIndex) { this->refr
 
 
 // Virtual methods
-DoubleVec3D RefractiveMaterial::getNewDirection(const Ray& previousRay, const DoubleVec3D& normal, double (*randomDouble)()) const {
-	double refractiveIndex = this->refractiveIndex;
-	DoubleVec3D normalBis = normal;
-	DoubleVec3D previousRayDirection = previousRay.getDirection();
+DoubleUnitVec3D RefractiveMaterial::getNewDirection(const Ray& previousRay, const DoubleUnitVec3D& normal, double (*randomDouble)()) const {
+	double refractiveIndex = this->refractiveIndex;  // Must be modified
+	DoubleUnitVec3D normalBis = normal;  // Must be modified
+	DoubleUnitVec3D previousRayDirection = previousRay.getDirection();
 
 	double reflectionProbNormal = pow((1.0 - refractiveIndex) / (1 + refractiveIndex), 2);  // Probability of reflection with normal incidence
 
@@ -30,11 +30,12 @@ DoubleVec3D RefractiveMaterial::getNewDirection(const Ray& previousRay, const Do
 
 	double cosSecondAngle = 1.0 - refractiveIndex*refractiveIndex*(1.0 - cosFirstAngle*cosFirstAngle);  // 3D <=> 2 angles
 	double reflectionProb = reflectionProbNormal + (1.0 - reflectionProbNormal)*pow(1.0 - cosFirstAngle, 5.0);  // Schlick's approximation
+
 	if (cosSecondAngle > 0 && randomDouble() > reflectionProb)
 		// Refraction case
-		return previousRayDirection*refractiveIndex + normalBis*(refractiveIndex*cosFirstAngle - sqrt(cosSecondAngle));
+		return previousRayDirection*refractiveIndex + normalBis*(refractiveIndex*cosFirstAngle - sqrt(cosSecondAngle));  // Casted into DoubleUnitVec3D => normalised
 	// Reflection case
-	return previousRayDirection + normalBis*cosFirstAngle*2;
+	return previousRayDirection + normalBis*cosFirstAngle*2;  // Casted into DoubleUnitVec3D => normalised
 }
 
 

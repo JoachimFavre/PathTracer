@@ -9,8 +9,8 @@ SpecularMaterial::SpecularMaterial(const SpecularMaterial& material)
 
 
 // Virtual methods
-DoubleVec3D SpecularMaterial::getNewDirection(const Ray& previousRay, const DoubleVec3D& normal, double (*randomDouble)()) const {
-	DoubleVec3D previousRayDirection = previousRay.getDirection();
+DoubleUnitVec3D SpecularMaterial::getNewDirection(const Ray& previousRay, const DoubleUnitVec3D& normal, double (*randomDouble)()) const {
+	DoubleUnitVec3D previousRayDirection = previousRay.getDirection();
 	return previousRayDirection - normal*dotProd(previousRayDirection, normal)*2;
 }
 

@@ -2,6 +2,7 @@
 #define DEF_TRIANGLE
 
 #include "DoubleVec3D.h"
+#include "DoubleUnitVec3D.h"
 #include "Material.h"
 #include "Object3D.h"
 
@@ -23,7 +24,7 @@ public:
 	void setVertex3(const DoubleVec3D& vertex);
 
 	double closestIntersection(const Ray& ray) const;
-	DoubleVec3D getNormal(const DoubleVec3D& point) const;
+	DoubleUnitVec3D getNormal(const DoubleVec3D& point) const;
 	DoubleVec3D getRandomPoint(double (*randomDouble)()) const;
 };
 

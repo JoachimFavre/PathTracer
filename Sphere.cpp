@@ -43,11 +43,10 @@ double Sphere::closestIntersection(const Ray& ray) const {
 		else
 			return (-b + sqrt_discriminant)/2; // biggest solution but maybe positive
 	}
-}
+}	
 
-DoubleVec3D Sphere::getNormal(const DoubleVec3D& point) const {
-	DoubleVec3D normal(point - center);
-	return normal/radius; // normalised
+DoubleUnitVec3D Sphere::getNormal(const DoubleVec3D& point) const {
+	return DoubleUnitVec3D((point - center) / radius, true);
 }
 
 
