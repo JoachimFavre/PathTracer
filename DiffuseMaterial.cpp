@@ -26,7 +26,7 @@ DoubleVec3D DiffuseMaterial::computeCurrentColour(const DoubleVec3D& recursiveCo
 	return DoubleVec3D(recursiveColour.getX()*colour.getX(),
 				       recursiveColour.getY()*colour.getY(),
 		               recursiveColour.getZ()*colour.getZ())
-		               * angleNewDirectionNormal / M_PI / M_PI;
+		               * angleNewDirectionNormal * 2;
 }
 
 
