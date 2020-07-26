@@ -46,5 +46,5 @@ void Picture::writeToFile(double middleGray, std::string fileName /* = "_picture
 	}
 	file.close();
 
-	std::cout << "Wrote picture in " << fileName << ".ppm file." << std::endl;
+	std::cout << "Wrote picture in " << fileName << ".ppm file with " << middleGray << " being the middle gray." << std::endl;
 }
