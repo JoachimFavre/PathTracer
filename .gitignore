@@ -8,6 +8,9 @@ BidirectionalPathTracer.vcxproj
 BidirectionalPathTracer.vcxproj.filters
 BidirectionalPathTracer.vcxproj.user
 
+# Required files
+*.fbx
+
 # Generated files
 *.ppm
 
