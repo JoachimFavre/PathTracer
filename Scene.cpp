@@ -147,6 +147,8 @@ Picture* Scene::render() const {
 	std::cout << "RussianRoulette=" << (russianRoulette ? "true" : "false") << "     MinBounces=" << minBounces << "     RrStopProbability=" << rrStopProbability << std::endl;
 	std::cout << "NextEventEstimation=" << (nextEventEstimation ? "true" : "false") << std::endl;
 	std::cout << std::endl;
+	std::cout << "Number objects=" << objects.size() << "     Including lamps=" << lamps.size() << std::endl;
+	std::cout << std::endl;
 
 	Picture* result = new Picture(camera.getNumberPixelsX(), camera.getNumberPixelsY());
 
