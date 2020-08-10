@@ -38,6 +38,9 @@ DoubleMatrix33 operator-(const DoubleMatrix33& matrix1, const DoubleMatrix33& ma
 DoubleMatrix33 operator*(const DoubleMatrix33& matrix1, const DoubleMatrix33& matrix2);
 DoubleVec3D operator*(const DoubleMatrix33& matrix, const DoubleVec3D& vec);
 
-
+DoubleMatrix33 getRotationMatrixX(double roll);
+DoubleMatrix33 getRotationMatrixY(double pitch);
+DoubleMatrix33 getRotationMatrixZ(double yaw);
+DoubleMatrix33 getRotationMatrixXYZ(double roll, double pitch, double yaw);
 
 #endif

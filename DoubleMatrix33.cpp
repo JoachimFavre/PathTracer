@@ -89,3 +89,33 @@ DoubleVec3D operator*(const DoubleMatrix33& matrix, const DoubleVec3D& vec) {
 		               dotProd(matrix.getRow1T(), vec),
 		               dotProd(matrix.getRow2T(), vec));
 }
+
+
+// Rotation matrices
+DoubleMatrix33 getRotationMatrixX(double roll) {
+	DoubleVec3D column0(1, 0, 0);
+	DoubleVec3D column1(0, cos(roll), sin(roll));
+	DoubleVec3D column2(0, -sin(roll), cos(roll));
+
+	return DoubleMatrix33(column0, column1, column2);
+}
+
+DoubleMatrix33 getRotationMatrixY(double pitch) {
+	DoubleVec3D column0(cos(pitch), 0, -sin(pitch));
+	DoubleVec3D column1(0, 1, 0);
+	DoubleVec3D column2(sin(pitch), 0, cos(pitch));
+
+	return DoubleMatrix33(column0, column1, column2);
+}
+
+DoubleMatrix33 getRotationMatrixZ(double yaw) {
+	DoubleVec3D column0(cos(yaw), sin(yaw), 0);
+	DoubleVec3D column1(-sin(yaw), cos(yaw), 0);
+	DoubleVec3D column2(0, 0, 1);
+
+	return DoubleMatrix33(column0, column1, column2);
+}
+
+DoubleMatrix33 getRotationMatrixXYZ(double roll, double pitch, double yaw) {
+	return getRotationMatrixZ(yaw)*getRotationMatrixY(pitch)*getRotationMatrixX(roll);
+}
