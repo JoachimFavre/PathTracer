@@ -1,15 +1,21 @@
+#ifndef DEF_SCENE
+#define DEF_SCENE
+
 #include <chrono>
 #include <random>
 #include <vector>
 
 #include <omp.h>
 
+#include "DoubleMatrix33.h"
 #include "Object3D.h"
+#include "Triangle.h"
 #include "PerspectiveCamera.h"
 #include "Picture.h"
 
-#ifndef DEF_SCENE
-#define DEF_SCENE
+#include <fbxsdk.h>
+#include <fbxsdk/fileio/fbxiosettings.h>
+#include <fbxsdk/utils/fbxgeometryconverter.h>
 
 // New seed each time
 static std::uniform_real_distribution<double> unif(0, 1);
@@ -68,6 +74,7 @@ public:
 
 	void addObject(Object3D* object);
 	void resetObjects();
+	void importFBX(const char* filePath);
 
 	Picture* render() const;
 };

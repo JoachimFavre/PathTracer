@@ -60,6 +60,68 @@ void Scene::resetObjects() {
 	objects = std::vector<Object3D*>();
 }
 
+void Scene::importFBX(const char* filePath) {
+	FbxManager* sdkManager = FbxManager::Create();
+	FbxIOSettings* ios = FbxIOSettings::Create(sdkManager, IOSROOT);
+	sdkManager->SetIOSettings(ios);
+
+	FbxImporter* importer = FbxImporter::Create(sdkManager, "");
+
+	bool importStatus = importer->Initialize(filePath, -1, sdkManager->GetIOSettings());
+
+	if (!importStatus) {
+		printf("Call to FbxImporter::Initialize() failed.\n");
+		printf("Error returned: %s\n\n", importer->GetStatus().GetErrorString());
+		exit(-1);
+	}
+
+	FbxScene* fbxScene = FbxScene::Create(sdkManager, "myScene");
+	importer->Import(fbxScene);
+	importer->Destroy();
+
+	FbxGeometryConverter clsConverter(sdkManager);
+	bool triangulisationStatus = clsConverter.Triangulate(fbxScene, true);
+	if (!triangulisationStatus) {
+		std::cout << "Triangulisation could not be fully done" << std::endl;
+		exit(-1);
+	}
+
+	FbxNode* rootNode = fbxScene->GetRootNode();
+
+	for (int childNumber = 0; childNumber < rootNode->GetChildCount(); childNumber++) {
+		FbxNode* child = rootNode->GetChild(childNumber);
+
+		FbxAMatrix& childGlobalTransform = child->EvaluateGlobalTransform();
+		DoubleVec3D translation = childGlobalTransform.GetT();
+		DoubleVec3D rotation = childGlobalTransform.GetR();
+		// DoubleVec3D scaling = childGlobalTransform.GetS();
+
+		DoubleMatrix33 rotationMatrix = getRotationMatrixXYZ(rotation);
+
+		FbxMesh* mesh = child->GetMesh();
+		if (mesh != nullptr) {
+			FbxVector4* controlPoints = mesh->GetControlPoints();
+			for (int polygonIx = 0; polygonIx < mesh->GetPolygonCount(); polygonIx++) {
+				if (mesh->GetPolygonSize(polygonIx) != 3) {
+					std::cout << "This polygon is not a triangle";
+					exit(-1);
+				}
+
+				DoubleVec3D vertex0 = rotationMatrix * controlPoints[mesh->GetPolygonVertex(polygonIx, 0)] + translation;
+				DoubleVec3D vertex1 = rotationMatrix * controlPoints[mesh->GetPolygonVertex(polygonIx, 1)] + translation;
+				DoubleVec3D vertex2 = rotationMatrix * controlPoints[mesh->GetPolygonVertex(polygonIx, 2)] + translation;
+
+				Triangle* triangle = new Triangle(vertex0, vertex1, vertex2, new DiffuseMaterial(0.8));
+				// Verify normals ?
+
+				addObject(triangle);
+			}
+		}
+	}
+
+	std::cout << filePath << " was successfully oppened!" << std::endl << std::endl;
+}
+
 
 // Private method
 DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= false*/, unsigned int bounces /*= 0*/) const {
