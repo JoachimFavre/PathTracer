@@ -6,6 +6,8 @@
 #define _USE_MATH_DEFINES  // to be able to use M_PI from math.h
 #include <math.h>
 
+#include <fbxsdk.h>
+
 class DoubleVec3D {
 private:
 	double x;
@@ -19,6 +21,8 @@ public:
 	DoubleVec3D(double val = 0);
 	DoubleVec3D(double x, double y, double z);
 	DoubleVec3D(const DoubleVec3D& vec);
+	DoubleVec3D(const FbxDouble3& vec);
+	DoubleVec3D(const FbxDouble4& vec);
 
 	double getX() const;
 	double getY() const;

@@ -10,6 +10,11 @@ DoubleVec3D::DoubleVec3D(double x, double y, double z)
 DoubleVec3D::DoubleVec3D(const DoubleVec3D& vec)
 	: x(vec.x), y(vec.y), z(vec.z), normalised(vec.normalised) {}
 
+DoubleVec3D::DoubleVec3D(const FbxDouble3& vec)
+	: x(vec[0]), y(vec[1]), z(vec[2]), normalised(false) {}
+
+DoubleVec3D::DoubleVec3D(const FbxDouble4& vec)  // ignore fourth value
+	: x(vec[0]), y(vec[1]), z(vec[2]), normalised(false) {}
 
 // Getters
 double DoubleVec3D::getX() const { return x; }
