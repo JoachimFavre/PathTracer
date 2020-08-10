@@ -1,7 +1,7 @@
 #include "DoubleMatrix33.h"
 
 // Constructors
-DoubleMatrix33::DoubleMatrix33(double val = 0)
+DoubleMatrix33::DoubleMatrix33(double val /*= 0*/)
 	: column0(val), column1(val), column2(val) {}
 DoubleMatrix33::DoubleMatrix33(const DoubleVec3D& column0, const DoubleVec3D& column1, const DoubleVec3D& column2)
 	: column0(column0), column1(column1), column2(column2) {}
@@ -118,4 +118,8 @@ DoubleMatrix33 getRotationMatrixZ(double yaw) {
 
 DoubleMatrix33 getRotationMatrixXYZ(double roll, double pitch, double yaw) {
 	return getRotationMatrixZ(yaw)*getRotationMatrixY(pitch)*getRotationMatrixX(roll);
+}
+
+DoubleMatrix33 getRotationMatrixXYZ(const DoubleVec3D& angles) {
+	return getRotationMatrixXYZ(angles.getX(), angles.getY(), angles.getZ());
 }
