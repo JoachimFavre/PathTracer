@@ -49,6 +49,22 @@ void clearScreen() {
 	std::cout << std::endl;
 }
 
+void displayCommands() {
+	// Take into account current page?
+	std::cout << std::endl;
+	std::cout << "**************************" << std::endl;
+	std::cout << std::endl;
+	std::cout << "You can use the following commands:" << std::endl;
+	std::cout << "- [number]: modify the corresponding parameter/object" << std::endl;
+	std::cout << "- e: exit this program" << std::endl;
+	std::cout << "- i: import a FBX file" << std::endl;
+	std::cout << "- l: load a parameter file and overwrite current objects & parameters" << std::endl;
+	std::cout << "- p: switch to object/parameter page" << std::endl;
+	std::cout << "- r: start the rendering" << std::endl;
+	std::cout << "- s: save current objects and parameters to a file" << std::endl;
+	std::cout << std::endl;
+}
+
 void displayInformations() {
 	clearScreen();
 
@@ -57,7 +73,7 @@ void displayInformations() {
 	std::cout << "0) Picture width = " << PICTURE_WIDTH << std::endl;
 	std::cout << "1) Picture height = " << PICTURE_WIDTH << std::endl;
 	std::cout << "2) Focal length = " << CAMERA_FOCAL_LENGTH << std::endl;
-	std::cout << "3) FOV x = " << CAMERA_FOV_X << std::endl;
+	std::cout << "3) X field of view = " << CAMERA_FOV_X << std::endl;
 	std::cout << std::endl;
 
 	std::cout << "Basic parameters" << std::endl;
@@ -75,7 +91,7 @@ void displayInformations() {
 	std::cout << "10) Next event estimation = " << (NEXT_EVENT_ESTIMATION ? "True" : "False") << std::endl;
 	std::cout << std::endl;
 
-	// std::cout << "Write one of this number to modify its linked value, 0 to see and modify the list of current objects or -1 to start the rendering." << std::endl;
+	displayCommands();
 }
 
 void displayObjects() {
@@ -92,6 +108,8 @@ void displayObjects() {
 		std::cout << "-> " << *(currentObject->getMaterial()) << std::endl;
 		std::cout << std::endl;
 	}
+
+	displayCommands();
 }
 
 
