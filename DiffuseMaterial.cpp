@@ -29,7 +29,11 @@ DoubleVec3D DiffuseMaterial::computeCurrentColour(const DoubleVec3D& recursiveCo
 		               * angleNewDirectionNormal * 2;
 }
 
-
 bool DiffuseMaterial::worksWithNextEventEstimation() const {
 	return true;
+}
+
+std::ostream& DiffuseMaterial::getDescription(std::ostream& stream) const {
+	stream << "DiffuseMaterial / Colour = " << colour;
+	return stream;
 }

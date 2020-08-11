@@ -47,3 +47,9 @@ DoubleVec3D RefractiveMaterial::computeCurrentColour(const DoubleVec3D& recursiv
 bool RefractiveMaterial::worksWithNextEventEstimation() const {
 	return false;
 }
+
+
+std::ostream& RefractiveMaterial::getDescription(std::ostream& stream) const {
+	stream << "RefractiveMaterial / refractiveIndex = " << refractiveIndex;
+	return stream;
+}

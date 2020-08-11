@@ -18,7 +18,11 @@ DoubleVec3D SpecularMaterial::computeCurrentColour(const DoubleVec3D& recursiveC
 	return recursiveColour;
 }
 
-
 bool SpecularMaterial::worksWithNextEventEstimation() const {
 	return false;
+}
+
+std::ostream& SpecularMaterial::getDescription(std::ostream& stream) const {
+	stream << "SpecularMaterial";
+	return stream;
 }
