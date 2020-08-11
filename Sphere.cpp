@@ -4,8 +4,8 @@
 Sphere::Sphere()
 	: Object3D(), center(0), radius(1) {}
 
-Sphere::Sphere(const DoubleVec3D& center, double radius, Material* material)
-	: Object3D(material), center(center), radius(radius) {}
+Sphere::Sphere(const std::string& name, const DoubleVec3D& center, double radius, Material* material)
+	: Object3D(name, material), center(center), radius(radius) {}
 
 Sphere::Sphere(const Sphere& sphere) 
 	: Object3D(sphere), center(sphere.center), radius(sphere.radius) {}

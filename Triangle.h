@@ -12,7 +12,7 @@ private:
 
 public:
 	Triangle();
-	Triangle(const DoubleVec3D& vertex1, const DoubleVec3D& vertex2, const DoubleVec3D& vertex3, Material* material);
+	Triangle(const std::string& name, const DoubleVec3D& vertex1, const DoubleVec3D& vertex2, const DoubleVec3D& vertex3, Material* material);
 	Triangle(const Triangle& triangle);
 
 	DoubleVec3D getVertex1() const;

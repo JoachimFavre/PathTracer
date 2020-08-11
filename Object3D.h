@@ -1,6 +1,8 @@
 #ifndef DEF_OBJECT3D
 #define DEF_OBJECT3D
 
+#include <string>
+
 #include "DiffuseMaterial.h"
 #include "DoubleVec3D.h"
 #include "DoubleUnitVec3D.h"
@@ -9,16 +11,20 @@
 
 class Object3D {
 private:
+	std::string name;
 	Material* material;
 
 public:
 	Object3D();
-	Object3D(Material* material);
+	Object3D(const std::string& name, Material* material);
 	Object3D(const Object3D& obj);
 
 	~Object3D();
 
+	std::string getName() const;
 	Material* getMaterial() const;
+
+	void setName(const std::string& name);
 	void setMaterial(Material* material);
 
 	virtual double closestIntersection(const Ray& ray) const = 0;
