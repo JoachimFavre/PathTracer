@@ -40,6 +40,13 @@ constexpr bool useDefaultScene = true;
 
 Scene scene;
 
+
+enum class Page {
+	ParametersPage,
+	ObjectsPage
+};
+
+
 void clearScreen() {
 	std::system("cls");  // clear screen
 
@@ -49,23 +56,31 @@ void clearScreen() {
 	std::cout << std::endl;
 }
 
-void displayCommands() {
-	// Take into account current page?
+void displayCommands(Page currentPage) {
+	bool isParametersPage = currentPage == Page::ParametersPage;
+
 	std::cout << std::endl;
 	std::cout << "**************************" << std::endl;
 	std::cout << std::endl;
 	std::cout << "You can use the following commands:" << std::endl;
-	std::cout << "- [number]: modify the corresponding parameter/object" << std::endl;
+	std::cout << "- [number]: modify the corresponding " << (isParametersPage ? "parameter" : "object") << std::endl;
+
+	if (!isParametersPage)
+		std::cout << "- a: add an object" << std::endl;
+
 	std::cout << "- e: exit this program" << std::endl;
-	std::cout << "- i: import a FBX file" << std::endl;
+
+	if(!isParametersPage)
+		std::cout << "- i: import an object from a FBX file" << std::endl;
+
 	std::cout << "- l: load a parameter file and overwrite current objects & parameters" << std::endl;
-	std::cout << "- p: switch to object/parameter page" << std::endl;
+	std::cout << "- p: switch to " << (isParametersPage ? "objects" : "parameters") << " page" << std::endl;
 	std::cout << "- r: start the rendering" << std::endl;
 	std::cout << "- s: save current objects and parameters to a file" << std::endl;
 	std::cout << std::endl;
 }
 
-void displayInformations() {
+void displayParametersPage() {
 	clearScreen();
 
 	std::cout << "Camera" << std::endl;
@@ -91,10 +106,10 @@ void displayInformations() {
 	std::cout << "10) Next event estimation = " << (NEXT_EVENT_ESTIMATION ? "True" : "False") << std::endl;
 	std::cout << std::endl;
 
-	displayCommands();
+	displayCommands(Page::ParametersPage);
 }
 
-void displayObjects() {
+void displayObjectsPage() {
 	clearScreen();
 
 	std::vector<Object3D*> objects = scene.getObjects();
@@ -109,7 +124,7 @@ void displayObjects() {
 		std::cout << std::endl;
 	}
 
-	displayCommands();
+	displayCommands(Page::ObjectsPage);
 }
 
 
@@ -121,9 +136,9 @@ int main() {
 	std::string information;
 	while (true) {
 		if (!firstPage)
-			displayInformations();
+			displayParametersPage();
 		else
-			displayObjects();
+			displayObjectsPage();
 		firstPage = !firstPage;
 		std::cin >> information;
 	}
