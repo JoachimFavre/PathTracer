@@ -65,7 +65,7 @@ int main() {
 	scene.render()->writeToFile(MIDDLE_GRAY);
 
 	// Measure time and make sound to warn that it is ended
-	std::cout << std::endl << "Computed in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl;
+	std::cout << std::endl << "Total computation time: " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl;
 	std::cout << "\a";
 	return 0;
 }

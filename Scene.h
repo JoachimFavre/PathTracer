@@ -1,7 +1,6 @@
 #ifndef DEF_SCENE
 #define DEF_SCENE
 
-#include <chrono>
 #include <random>
 #include <vector>
 
@@ -25,10 +24,6 @@
 static std::uniform_real_distribution<double> unif(0, 1);
 static std::default_random_engine re(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
 static double randomDouble() { return unif(re); }
-
-static double getCurrentTimeSeconds() {
-	return (double)std::chrono::system_clock::now().time_since_epoch().count() / std::chrono::system_clock::period::den;
-}
 
 class Scene {
 private:

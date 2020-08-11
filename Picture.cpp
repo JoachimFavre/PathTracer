@@ -32,6 +32,8 @@ void Picture::setValuePix(unsigned int x, unsigned int y, DoubleVec3D value) { p
 // Other methods
 void Picture::writeToFile(double middleGray, std::string fileName /* = "_picture"*/) const {
 	constexpr unsigned int maxColourValue = 255;  // must be in [1, 65536]
+	double writingBeginningTime = getCurrentTimeSeconds();
+
 	std::ofstream file;
 	file.open(fileName + ".ppm");
 	file << "P3" << std::endl << width << " " << height << " " << maxColourValue << std::endl;
@@ -46,5 +48,5 @@ void Picture::writeToFile(double middleGray, std::string fileName /* = "_picture
 	}
 	file.close();
 
-	std::cout << "Wrote picture in " << fileName << ".ppm file with " << middleGray << " being the middle gray." << std::endl;
+	std::cout << "The picture was successfully written in " << fileName << ".ppm file with " << middleGray << " being the middle gray in " << getCurrentTimeSeconds() - writingBeginningTime << " seconds!" << std::endl;
 }

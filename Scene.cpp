@@ -87,6 +87,8 @@ void Scene::defaultScene() {
 }
 
 void Scene::importFBX(const char* filePath) {
+	double importationBeginningTime = getCurrentTimeSeconds();
+
 	FbxManager* sdkManager = FbxManager::Create();
 	FbxIOSettings* ios = FbxIOSettings::Create(sdkManager, IOSROOT);
 	sdkManager->SetIOSettings(ios);
@@ -177,7 +179,7 @@ void Scene::importFBX(const char* filePath) {
 		}
 	}
 
-	std::cout << filePath << " was successfully oppened!" << std::endl << std::endl;
+	std::cout << filePath << " was successfully oppened in " << getCurrentTimeSeconds() - importationBeginningTime << " seconds!" << std::endl << std::endl;
 }
 
 
@@ -266,7 +268,6 @@ Picture* Scene::render() const {
 	std::cout << "Width=" << pictureWidth << "     Height=" << pictureHeight << "     Sample/Pixel=" << samplePerPixel << "     Threads=" << numberThreads << std::endl;
 	std::cout << "RussianRoulette=" << (russianRoulette ? "true" : "false") << "     MinBounces=" << minBounces << "     RrStopProbability=" << rrStopProbability << std::endl;
 	std::cout << "NextEventEstimation=" << (nextEventEstimation ? "true" : "false") << std::endl;
-	std::cout << std::endl;
 	std::cout << "Number objects=" << objects.size() << "     Including lamps=" << lamps.size() << std::endl;
 	std::cout << std::endl;
 

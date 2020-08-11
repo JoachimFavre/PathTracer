@@ -1,3 +1,4 @@
+#include <chrono>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -6,6 +7,10 @@
 
 #ifndef DEF_PICTURE
 #define DEF_PICTURE
+
+static double getCurrentTimeSeconds() {
+	return (double)std::chrono::system_clock::now().time_since_epoch().count() / std::chrono::system_clock::period::den;
+}
 
 class Picture
 {
