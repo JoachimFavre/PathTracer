@@ -57,7 +57,7 @@ void DoubleVec3D::operator*=(const double& val) {
 void DoubleVec3D::operator/=(const double& val) { operator*=(1 / val); }
 
 
-// Other method
+// Other methods
 void DoubleVec3D::normalise() {
 	if (normalised)
 		return;
@@ -71,7 +71,11 @@ void DoubleVec3D::normalise() {
 	normalised = true;
 }
 
-bool DoubleVec3D::isNormalised() { return normalised; }
+bool DoubleVec3D::isNormalised() const { return normalised; }
+
+bool DoubleVec3D::isZero() const {
+	return abs(x) <= DBL_EPSILON && abs(y) <= DBL_EPSILON && abs(z) <= DBL_EPSILON;
+}
 
 
 // Functions

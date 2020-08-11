@@ -39,7 +39,8 @@ public:
 	void operator/=(const double& val);
 
 	void normalise();
-	bool isNormalised();
+	bool isNormalised() const;
+	bool isZero() const;
 };
 
 DoubleVec3D operator+(const DoubleVec3D& vec1, const DoubleVec3D& vec2);
