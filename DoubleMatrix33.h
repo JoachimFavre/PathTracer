@@ -44,4 +44,10 @@ DoubleMatrix33 getRotationMatrixZ(double yaw);
 DoubleMatrix33 getRotationMatrixXYZ(double roll, double pitch, double yaw);
 DoubleMatrix33 getRotationMatrixXYZ(const DoubleVec3D& angles);
 
+DoubleMatrix33 getScalingMatrixX(double x);
+DoubleMatrix33 getScalingMatrixY(double y);
+DoubleMatrix33 getScalingMatrixZ(double z);
+DoubleMatrix33 getScalingMatrixXYZ(double x, double y, double z);
+DoubleMatrix33 getScalingMatrixXYZ(const DoubleVec3D& values);
+
 #endif

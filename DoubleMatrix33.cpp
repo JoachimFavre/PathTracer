@@ -123,3 +123,20 @@ DoubleMatrix33 getRotationMatrixXYZ(double roll, double pitch, double yaw) {
 DoubleMatrix33 getRotationMatrixXYZ(const DoubleVec3D& angles) {
 	return getRotationMatrixXYZ(angles.getX(), angles.getY(), angles.getZ());
 }
+
+
+// Scaling matrices
+DoubleMatrix33 getScalingMatrixX(double x) { return getScalingMatrixXYZ(x, 1, 1); }
+DoubleMatrix33 getScalingMatrixY(double y) { return getScalingMatrixXYZ(1, y, 1); }
+DoubleMatrix33 getScalingMatrixZ(double z) { return getScalingMatrixXYZ(1, 1, z); }
+
+DoubleMatrix33 getScalingMatrixXYZ(double x, double y, double z) {
+	DoubleVec3D column0(x, 0, 0);
+	DoubleVec3D column1(0, y, 0);
+	DoubleVec3D column2(0, 0, z);
+	return DoubleMatrix33(column0, column1, column2);
+}
+
+DoubleMatrix33 getScalingMatrixXYZ(const DoubleVec3D& values) {
+	return getScalingMatrixXYZ(values.getX(), values.getY(), values.getZ());
+}
