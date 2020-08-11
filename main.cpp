@@ -37,10 +37,6 @@ constexpr double MIDDLE_GRAY = 100;
 
 const char* FILE_PATH = "_mesh.fbx";
 
-inline double deg2rad(double degrees) {
-	return degrees * M_PI/180;
-}
-
 
 int main() {
 	double beginningTime = getCurrentTimeSeconds();
@@ -55,9 +51,10 @@ int main() {
 	scene.setNextEventEstimation(NEXT_EVENT_ESTIMATION);
 	scene.setNumberThreads(NUMBER_THREADS);
 
+	
 	scene.importFBX(FILE_PATH);
 	scene.addObject(new Sphere(DoubleVec3D(0, 1.5, -2.5), 0.5, new DiffuseMaterial(DoubleVec3D(0), 4000)));
-
+	
 
 	/*
 	// Make scene
@@ -85,7 +82,6 @@ int main() {
 	scene.addObject(new Triangle(DoubleVec3D(2, 2, 1), DoubleVec3D(2, -2, 1), DoubleVec3D(-2, -2, 1), new DiffuseMaterial(DoubleVec3D(0.3))));
 	scene.addObject(new Triangle(DoubleVec3D(-2, 2, 1), DoubleVec3D(2, 2, 1), DoubleVec3D(-2, -2, 1), new DiffuseMaterial(DoubleVec3D(0.3))));
 	*/
-	
 
 	// Render and write picture
 	scene.render()->writeToFile(MIDDLE_GRAY);

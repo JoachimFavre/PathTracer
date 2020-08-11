@@ -93,7 +93,7 @@ void Scene::importFBX(const char* filePath) {
 
 		FbxAMatrix& childGlobalTransform = child->EvaluateGlobalTransform();
 		DoubleVec3D translation = childGlobalTransform.GetT();
-		DoubleVec3D rotation = childGlobalTransform.GetR();
+		DoubleVec3D rotation = childGlobalTransform.GetR() * M_PI/180; // Gets converted in radians
 		// DoubleVec3D scaling = childGlobalTransform.GetS();
 
 		DoubleMatrix33 rotationMatrix = getRotationMatrixXYZ(rotation);
