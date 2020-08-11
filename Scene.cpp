@@ -99,19 +99,51 @@ void Scene::importFBX(const char* filePath) {
 		DoubleMatrix33 rotationMatrix = getRotationMatrixXYZ(rotation);
 
 		FbxMesh* mesh = child->GetMesh();
+
 		if (mesh != nullptr) {
 			FbxVector4* controlPoints = mesh->GetControlPoints();
+
+			// Compute material
+			FbxSurfaceMaterial* material = child->GetMaterial(0); // Assumes there is only one colour for the whole mesh
+			FbxClassId materialClassId = material->GetClassId();
+
+			DoubleVec3D colour;
+			DoubleVec3D emittance;
+
+			// Very hugly but from official documentation: http://help.autodesk.com/view/FBX/2015/ENU/?guid=__cpp_ref__import_scene_2_display_material_8cxx_example_html
+			if (materialClassId.Is(FbxSurfaceLambert::ClassId)) {
+				FbxSurfaceLambert* lambertMaterial = (FbxSurfaceLambert*)material;
+				colour = lambertMaterial->Diffuse.Get();	
+				emittance = lambertMaterial->Emissive.Get();
+			}
+			else if (materialClassId.Is(FbxSurfacePhong::ClassId)) {
+				FbxSurfacePhong* phongMaterial = (FbxSurfacePhong*)material;
+				colour = phongMaterial->Diffuse.Get();
+				emittance = phongMaterial->Emissive.Get();
+			}
+			else {
+				std::cout << "Unrecognised material type" << std::endl;
+				colour = DoubleVec3D(0.8);
+				emittance = DoubleVec3D(0);
+			}
+
+			// Add each triangle to the scene
 			for (int polygonIx = 0; polygonIx < mesh->GetPolygonCount(); polygonIx++) {
 				if (mesh->GetPolygonSize(polygonIx) != 3) {
 					std::cout << "This polygon is not a triangle";
 					exit(-1);
 				}
 
+				// FbxSurfaceMaterial* material = child->GetMaterial(0);  // assumes one material for each face
+				// std::cout << material->GetName() << std::endl;
+				FbxLayer* layer = mesh->GetLayer(0);
+
 				DoubleVec3D vertex0 = rotationMatrix * controlPoints[mesh->GetPolygonVertex(polygonIx, 0)] + translation;
 				DoubleVec3D vertex1 = rotationMatrix * controlPoints[mesh->GetPolygonVertex(polygonIx, 1)] + translation;
 				DoubleVec3D vertex2 = rotationMatrix * controlPoints[mesh->GetPolygonVertex(polygonIx, 2)] + translation;
 
-				Triangle* triangle = new Triangle(vertex0, vertex1, vertex2, new DiffuseMaterial(0.8));
+				Triangle* triangle = new Triangle(vertex0, vertex1, vertex2, new DiffuseMaterial(colour));
+				// I don't use emittance for now
 				// Verify normals ?
 
 				addObject(triangle);
