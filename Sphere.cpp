@@ -54,3 +54,9 @@ DoubleVec3D Sphere::getRandomPoint(double (*randomDouble)()) const {
 	DoubleVec3D point = randomVectorOnUnitRadiusSphere(randomDouble);
 	return center + radius*point;
 }
+
+std::ostream& Sphere::getDescription(std::ostream& stream) const {
+	stream << "Sphere / Center = " << center << " / Radius = " << radius;
+	return stream;
+}
+

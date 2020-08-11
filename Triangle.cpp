@@ -57,3 +57,8 @@ DoubleVec3D Triangle::getRandomPoint(double (*randomDouble)()) const {
 	double rand2 = randomDouble();
 	return (1 - rand1)*vertex1 + rand1*(1 - rand2)*vertex2 + rand1*rand2*vertex3;
 }
+
+std::ostream& Triangle::getDescription(std::ostream& stream) const {
+	stream << "Triangle / Vertex1 = " << vertex1 << " / Vertex2 = " << vertex2 << " / Vertex3 = " << vertex3;
+	return stream;
+}

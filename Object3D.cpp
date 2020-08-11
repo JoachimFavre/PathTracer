@@ -16,3 +16,9 @@ Object3D::~Object3D() { delete material; }
 // Getters & Setters
 Material* Object3D::getMaterial() const { return material; }
 void Object3D::setMaterial(Material* material) { this->material = material; }
+
+
+// Ostream operator
+std::ostream& operator<<(std::ostream& stream, const Object3D& object) {
+	return object.getDescription(stream);
+}
