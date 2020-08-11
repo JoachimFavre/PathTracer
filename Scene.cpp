@@ -171,7 +171,8 @@ void Scene::importFBX(const char* filePath) {
 				DoubleVec3D vertex2 = rotationMatrix * controlPoints[mesh->GetPolygonVertex(polygonIx, 2)] + translation;
 
 				Triangle* triangle = new Triangle(vertex0, vertex1, vertex2, new DiffuseMaterial(colour));
-				// I don't use emittance for now
+				// Emittance is always equal to the diffuse colour -> bug from the library
+
 				// Verify normals ?
 
 				addObject(triangle);

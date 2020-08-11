@@ -35,7 +35,7 @@ constexpr bool NEXT_EVENT_ESTIMATION = true;
 
 constexpr double MIDDLE_GRAY = 100;
 
-constexpr bool useDefaultScene = true;
+constexpr bool useDefaultScene = false;
 const char* FILE_PATH = "_mesh.fbx";
 
 
@@ -53,10 +53,8 @@ int main() {
 	scene.setNumberThreads(NUMBER_THREADS);
 
 	if (useDefaultScene) {
-		// Default scene
 		scene.defaultScene();
-	} else {
-		// Read file
+	} else { // Read file
 		scene.importFBX(FILE_PATH);
 		scene.addObject(new Sphere(DoubleVec3D(0, 1.5, -2.5), 0.5, new DiffuseMaterial(DoubleVec3D(0), 4000)));
 	}
