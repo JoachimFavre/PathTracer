@@ -35,6 +35,7 @@ constexpr bool NEXT_EVENT_ESTIMATION = true;
 
 constexpr double MIDDLE_GRAY = 100;
 
+constexpr bool useDefaultScene = false;
 const char* FILE_PATH = "_mesh.fbx";
 
 
@@ -51,37 +52,14 @@ int main() {
 	scene.setNextEventEstimation(NEXT_EVENT_ESTIMATION);
 	scene.setNumberThreads(NUMBER_THREADS);
 
-	
-	scene.importFBX(FILE_PATH);
-	scene.addObject(new Sphere(DoubleVec3D(0, 1.5, -2.5), 0.5, new DiffuseMaterial(DoubleVec3D(0), 4000)));
-	
-
-	/*
-	// Make scene
-	// Spheres
-	scene.addObject(new Sphere(DoubleVec3D(0, 1.5, -2.5), 0.5, new DiffuseMaterial(DoubleVec3D(0), 4000)));
-	scene.addObject(new Sphere(DoubleVec3D(0.2, -1.5, -3), 0.5, new RefractiveMaterial(1.5)));
-	scene.addObject(new Sphere(DoubleVec3D(1.2, -1.5, -2.4), 0.5, new SpecularMaterial));
-	scene.addObject(new Sphere(DoubleVec3D(-1, -1.5, -2.3), 0.5, new DiffuseMaterial(DoubleVec3D(0.5))));
-	// left
-	scene.addObject(new Triangle(DoubleVec3D(-2, 2, 1), DoubleVec3D(-2, -2, 1), DoubleVec3D(-2, -2, -4), new DiffuseMaterial(DoubleVec3D(0.2, 0.2, 1))));
-	scene.addObject(new Triangle(DoubleVec3D(-2, 2, 1), DoubleVec3D(-2, -2, -4), DoubleVec3D(-2, 2, -4), new DiffuseMaterial(DoubleVec3D(0.2, 0.2, 1))));
-	// right
-	scene.addObject(new Triangle(DoubleVec3D(2, -2, -4), DoubleVec3D(2, -2, 1), DoubleVec3D(2, 2, 1), new DiffuseMaterial(DoubleVec3D(1, 0.2, 0.2))));
-	scene.addObject(new Triangle(DoubleVec3D(2, 2, -4), DoubleVec3D(2, -2, -4), DoubleVec3D(2, 2, 1), new DiffuseMaterial(DoubleVec3D(1, 0.2, 0.2))));
-	// Top
-	scene.addObject(new Triangle(DoubleVec3D(2, 2, -4), DoubleVec3D(-2, 2, 1), DoubleVec3D(-2, 2, -4), new DiffuseMaterial(DoubleVec3D(0.3))));
-	scene.addObject(new Triangle(DoubleVec3D(-2, 2, 1), DoubleVec3D(2, 2, -4), DoubleVec3D(2, 2, 1), new DiffuseMaterial(DoubleVec3D(0.3))));
-	// Bottom
-	scene.addObject(new Triangle(DoubleVec3D(-2, -2, 1), DoubleVec3D(2, -2, -4), DoubleVec3D(-2, -2, -4), new DiffuseMaterial(DoubleVec3D(0.3))));
-	scene.addObject(new Triangle(DoubleVec3D(2, -2, -4), DoubleVec3D(-2, -2, 1), DoubleVec3D(2, -2, 1), new DiffuseMaterial(DoubleVec3D(0.3))));
-	// Background
-	scene.addObject(new Triangle(DoubleVec3D(-2, 2, -4), DoubleVec3D(-2, -2, -4), DoubleVec3D(2, 2, -4), new DiffuseMaterial(DoubleVec3D(0.2, 1, 0.2))));
-	scene.addObject(new Triangle(DoubleVec3D(2, 2, -4), DoubleVec3D(-2, -2, -4), DoubleVec3D(2, -2, -4), new DiffuseMaterial(DoubleVec3D(0.2, 1, 0.2))));
-	// Behind camera
-	scene.addObject(new Triangle(DoubleVec3D(2, 2, 1), DoubleVec3D(2, -2, 1), DoubleVec3D(-2, -2, 1), new DiffuseMaterial(DoubleVec3D(0.3))));
-	scene.addObject(new Triangle(DoubleVec3D(-2, 2, 1), DoubleVec3D(2, 2, 1), DoubleVec3D(-2, -2, 1), new DiffuseMaterial(DoubleVec3D(0.3))));
-	*/
+	if (useDefaultScene) {
+		// Default scene
+		scene.defaultScene();
+	} else {
+		// Read file
+		scene.importFBX(FILE_PATH);
+		scene.addObject(new Sphere(DoubleVec3D(0, 1.5, -2.5), 0.5, new DiffuseMaterial(DoubleVec3D(0), 4000)));
+	}
 
 	// Render and write picture
 	scene.render()->writeToFile(MIDDLE_GRAY);
