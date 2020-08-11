@@ -132,27 +132,27 @@ void Scene::importFBX(const char* filePath) {
 			FbxVector4* controlPoints = mesh->GetControlPoints();
 
 			// Compute material
-			FbxSurfaceMaterial* material = child->GetMaterial(0); // Assumes there is only one colour for the whole mesh
-			FbxClassId materialClassId = material->GetClassId();
+			DoubleVec3D colour(0.8);
+			DoubleVec3D emittance(0);
 
-			DoubleVec3D colour;
-			DoubleVec3D emittance;
+			if (child->GetMaterialCount() > 0) {
+				FbxSurfaceMaterial* material = child->GetMaterial(0); // Assumes there is only one colour for the whole mesh
+				FbxClassId materialClassId = material->GetClassId();
 
-			// Very hugly but from official documentation: http://help.autodesk.com/view/FBX/2015/ENU/?guid=__cpp_ref__import_scene_2_display_material_8cxx_example_html
-			if (materialClassId.Is(FbxSurfaceLambert::ClassId)) {
-				FbxSurfaceLambert* lambertMaterial = (FbxSurfaceLambert*)material;
-				colour = lambertMaterial->Diffuse.Get();	
-				emittance = lambertMaterial->Emissive.Get();
-			}
-			else if (materialClassId.Is(FbxSurfacePhong::ClassId)) {
-				FbxSurfacePhong* phongMaterial = (FbxSurfacePhong*)material;
-				colour = phongMaterial->Diffuse.Get();
-				emittance = phongMaterial->Emissive.Get();
-			}
-			else {
-				std::cout << "Unrecognised material type" << std::endl;
-				colour = DoubleVec3D(0.8);
-				emittance = DoubleVec3D(0);
+				// Very hugly but from official documentation: http://help.autodesk.com/view/FBX/2015/ENU/?guid=__cpp_ref__import_scene_2_display_material_8cxx_example_html
+				if (materialClassId.Is(FbxSurfaceLambert::ClassId)) {
+					FbxSurfaceLambert* lambertMaterial = (FbxSurfaceLambert*)material;
+					colour = lambertMaterial->Diffuse.Get();
+					emittance = lambertMaterial->Emissive.Get();
+				}
+				else if (materialClassId.Is(FbxSurfacePhong::ClassId)) {
+					FbxSurfacePhong* phongMaterial = (FbxSurfacePhong*)material;
+					colour = phongMaterial->Diffuse.Get();
+					emittance = phongMaterial->Emissive.Get();
+				}
+				else {
+					std::cout << "Unrecognised material type" << std::endl;
+				}
 			}
 
 			// Add each triangle to the scene
