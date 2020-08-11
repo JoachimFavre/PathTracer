@@ -122,9 +122,9 @@ void Scene::importFBX(const char* filePath) {
 		FbxAMatrix& childGlobalTransform = child->EvaluateGlobalTransform();
 		DoubleVec3D translation = childGlobalTransform.GetT();
 		DoubleVec3D rotation = childGlobalTransform.GetR() * M_PI/180; // Gets converted in radians
-		// DoubleVec3D scaling = childGlobalTransform.GetS();
+		DoubleVec3D scaling = childGlobalTransform.GetS();
 
-		DoubleMatrix33 rotationMatrix = getRotationMatrixXYZ(rotation);
+		DoubleMatrix33 rotationAndScalingMatrix = getRotationMatrixXYZ(rotation)*getScalingMatrixXYZ(scaling);  // order is important
 
 		FbxMesh* mesh = child->GetMesh();
 
@@ -166,9 +166,9 @@ void Scene::importFBX(const char* filePath) {
 				// std::cout << material->GetName() << std::endl;
 				FbxLayer* layer = mesh->GetLayer(0);
 
-				DoubleVec3D vertex0 = rotationMatrix * controlPoints[mesh->GetPolygonVertex(polygonIx, 0)] + translation;
-				DoubleVec3D vertex1 = rotationMatrix * controlPoints[mesh->GetPolygonVertex(polygonIx, 1)] + translation;
-				DoubleVec3D vertex2 = rotationMatrix * controlPoints[mesh->GetPolygonVertex(polygonIx, 2)] + translation;
+				DoubleVec3D vertex0 = rotationAndScalingMatrix * controlPoints[mesh->GetPolygonVertex(polygonIx, 0)] + translation;
+				DoubleVec3D vertex1 = rotationAndScalingMatrix * controlPoints[mesh->GetPolygonVertex(polygonIx, 1)] + translation;
+				DoubleVec3D vertex2 = rotationAndScalingMatrix * controlPoints[mesh->GetPolygonVertex(polygonIx, 2)] + translation;
 
 				Triangle* triangle = new Triangle(vertex0, vertex1, vertex2, new DiffuseMaterial(colour));
 				// Emittance is always equal to the diffuse colour -> bug from the library
