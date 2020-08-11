@@ -1,7 +1,7 @@
 #include "Material.h"
 
 // Constructors
-Material::Material(double emittance /*= 0*/)
+Material::Material(DoubleVec3D emittance /*= 0*/)
 	: emittance(emittance) {}
 
 Material::Material(const Material& material) 
@@ -9,5 +9,5 @@ Material::Material(const Material& material)
 
 
 // Getters & Setters
-double Material::getEmittance() const { return emittance; }
-void Material::setEmittance(double emittance) { this->emittance = emittance; }
+DoubleVec3D Material::getEmittance() const { return emittance; }
+void Material::setEmittance(DoubleVec3D emittance) { this->emittance = emittance; }

@@ -30,7 +30,7 @@ void Scene::setObjects(std::vector<Object3D*> objects) {
 	this->objects = objects;
 	lamps = std::vector<Object3D*>();
 	for (Object3D* object : objects)
-		if (object->getMaterial()->getEmittance() > DBL_EPSILON)
+		if (!object->getMaterial()->getEmittance().isZero())
 			lamps.push_back(object);
 }
 void Scene::setCamera(PerspectiveCamera camera) { this->camera = camera; }
@@ -50,7 +50,7 @@ void Scene::setNumberThreads(unsigned int numberThreads) { this->numberThreads =
 // Add/Remove objects
 void Scene::addObject(Object3D* object) {
 	objects.push_back(object);
-	if (object->getMaterial()->getEmittance() > DBL_EPSILON)
+	if (!object->getMaterial()->getEmittance().isZero())
 		lamps.push_back(object);
 }
 
@@ -62,7 +62,7 @@ void Scene::resetObjects() {
 
 void Scene::defaultScene() {
 	// Spheres
-	addObject(new Sphere(DoubleVec3D(0, 1.5, -2.5), 0.5, new DiffuseMaterial(DoubleVec3D(0), 4000)));
+	addObject(new Sphere(DoubleVec3D(0, 1.5, -2.5), 0.5, new DiffuseMaterial(DoubleVec3D(0), DoubleVec3D(4000))));
 	addObject(new Sphere(DoubleVec3D(0.2, -1.5, -3), 0.5, new RefractiveMaterial(1.5)));
 	addObject(new Sphere(DoubleVec3D(1.2, -1.5, -2.4), 0.5, new SpecularMaterial));
 	addObject(new Sphere(DoubleVec3D(-1, -1.5, -2.3), 0.5, new DiffuseMaterial(DoubleVec3D(0.5))));
@@ -241,7 +241,7 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
 	}
 	if (!nextEventEstimation || !usedNextEventEstimation)
 		// If next event estimation was used by last ray, we would be adding the emittance twice.
-		result += rrFactor * DoubleVec3D(objectMaterial->getEmittance());
+		result += rrFactor * objectMaterial->getEmittance();
 
 	DoubleUnitVec3D newDirection = objectMaterial->getNewDirection(ray, normal, randomDouble);
 	DoubleVec3D recursiveColour = traceRay(Ray(intersection, newDirection), nextEventEstimation && objectMaterial->worksWithNextEventEstimation(), bounces + 1);

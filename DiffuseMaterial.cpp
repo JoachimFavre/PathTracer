@@ -1,7 +1,7 @@
 #include "DiffuseMaterial.h"
 
 // Constructors
-DiffuseMaterial::DiffuseMaterial(const DoubleVec3D& colour /*= DoubleVec3D(0.0)*/, double emittance /*=0*/)
+DiffuseMaterial::DiffuseMaterial(const DoubleVec3D& colour /*= DoubleVec3D(0.0)*/, DoubleVec3D emittance /*=0*/)
 	: Material(emittance), colour(colour) {}
 
 DiffuseMaterial::DiffuseMaterial(const DiffuseMaterial& material)

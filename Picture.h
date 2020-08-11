@@ -20,6 +20,8 @@ private:
 	DoubleVec3D** pixels;
 
 public:
+	static constexpr unsigned int maxColourValue = 255;  // must be in [1, 65536]
+
 	Picture();
 	Picture(unsigned int width, unsigned int height);
 	Picture(const Picture& picture);

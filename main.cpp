@@ -35,7 +35,7 @@ constexpr bool NEXT_EVENT_ESTIMATION = true;
 
 constexpr double MIDDLE_GRAY = 100;
 
-constexpr bool useDefaultScene = false;
+constexpr bool useDefaultScene = true;
 const char* FILE_PATH = "_mesh.fbx";
 
 

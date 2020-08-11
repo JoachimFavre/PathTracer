@@ -31,7 +31,6 @@ void Picture::setValuePix(unsigned int x, unsigned int y, DoubleVec3D value) { p
 
 // Other methods
 void Picture::writeToFile(double middleGray, std::string fileName /* = "_picture"*/) const {
-	constexpr unsigned int maxColourValue = 255;  // must be in [1, 65536]
 	double writingBeginningTime = getCurrentTimeSeconds();
 
 	std::ofstream file;

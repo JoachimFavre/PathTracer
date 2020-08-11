@@ -14,7 +14,7 @@ private:
 	DoubleVec3D colour;
 
 public:
-	DiffuseMaterial(const DoubleVec3D& colour = DoubleVec3D(0.0), double emittance = 0);
+	DiffuseMaterial(const DoubleVec3D& colour = DoubleVec3D(0.0), DoubleVec3D emittance = 0);
 	DiffuseMaterial(const DiffuseMaterial& material);
 
 	DoubleVec3D getColour() const;
