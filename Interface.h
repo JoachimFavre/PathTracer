@@ -6,27 +6,37 @@
 
 
 const std::string PROMPT = "> ";
+const std::string starSplitter(26, '*');
+const std::string dashSplitter(26, '-');
+const std::string invalidCommand = "Invalid command.";
 
-
-// Header
-void clearScreenPrintHeader() {
+// Common parts in interface
+static void clearScreenPrintHeader() {
 	std::system("cls");
 
 	std::cout << "Joachim Favre's TM" << std::endl;
 	std::cout << "Bidirectional path tracer" << std::endl;
-	std::cout << "**************************" << std::endl;
+	std::cout << starSplitter << std::endl;
 	std::cout << std::endl;
 }
 
 
+static void availableCommandsHeader() {
+	std::cout << std::endl;
+	std::cout << starSplitter << std::endl;
+	std::cout << std::endl;
+	std::cout << "You can use the following commands:" << std::endl;
+}
+
+
 // Conversion into string
-std::string bool2string(bool b) {
+static std::string bool2string(bool b) {
 	return (b ? "True" : "False");
 }
 
 
 // Get from user
-std::string getStringFromUser(std::string question = "") {
+static std::string getStringFromUser(std::string question = "") {
 	std::cout << question << std::endl << PROMPT;
 	std::string userText;
 	std::cin >> userText;
@@ -34,12 +44,12 @@ std::string getStringFromUser(std::string question = "") {
 }
 
 
-char getCharFromUser(std::string question = "") {
+static char getCharFromUser(std::string question = "") {
 	return (getStringFromUser(question))[0];
 }
 
 
-unsigned int getUnsignedIntFromUser(std::string question = "") {
+static unsigned int getUnsignedIntFromUser(std::string question = "") {
 	while (true) {
 		std::string userText = getStringFromUser(question);
 
