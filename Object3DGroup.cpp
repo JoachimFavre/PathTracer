@@ -72,3 +72,16 @@ std::ostream& operator<<(std::ostream& stream, const Object3DGroup& group) {
 	else
 		stream << "Center = " << group.getCenter() << " / " << group.getObjects.size() << " objects";
 }
+
+
+// Other functions
+std::vector<Object3D*> split(std::vector<Object3DGroup> groups) {
+	std::vector<Object3D*> result;
+	
+	for (Object3DGroup group : groups) {
+		std::vector<Object3D*> currentObjects = group.getObjects();
+		result.insert(result.end(), currentObjects.begin(), currentObjects.end());
+	}
+
+	return result;
+}
