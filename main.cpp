@@ -16,102 +16,66 @@
 #include "SpecularMaterial.h"
 #include "Sphere.h"
 #include "Triangle.h"
+#include "Interface.h"
 
-constexpr unsigned int PICTURE_WIDTH = 500;
-constexpr unsigned int PICTURE_HEIGHT = 500;
-constexpr double CAMERA_FOCAL_LENGTH = 3;
-constexpr double CAMERA_FOV_X = M_PI_4;
+unsigned int pictureWidth = 500;
+unsigned int pictureHeight = 500;
+double caneraFocalLength = 3;
+double cameraFovX = M_PI_4;
 
-constexpr unsigned int NUMBER_THREADS = 8;
+unsigned int samplePerPixels = 1;
+unsigned int minBounces = 5;  // Less if nothing is hit
+double maxDepth = 10;
 
-constexpr double MAX_DEPTH = 10;
-constexpr unsigned int MIN_BOUNCES = 5;  // Less if nothing is hit
-constexpr unsigned int SAMPLE_PER_PIXEL = 1;
-
-constexpr bool RUSSIAN_ROULETTE = true;
-constexpr double RR_STOP_PROBABILITY = 0.1;
-
-constexpr bool NEXT_EVENT_ESTIMATION = true;
-
-constexpr double MIDDLE_GRAY = 100;
-
-constexpr bool useDefaultScene = true;
-// const char* FILE_PATH = "_mesh.fbx";
+unsigned int numberThreads = 8;
+bool russianRoulette = true;
+double rrStopProbability = 0.1;
+bool nextEventEstimation = true;
 
 Scene scene;
-
 
 enum class Page {
 	ParametersPage,
 	ObjectsPage
 };
 
+Page currentPage = Page::ParametersPage;
 
-void clearScreen() {
-	std::system("cls");  // clear screen
+void clearScreenPrintHeader();
+void displayParametersPage();
+void displayObjectsPage();
+void receiveAndExecuteCommand();
+void displayCommands();
+void drawCurrentPage();
 
-	std::cout << "Joachim Favre's TM" << std::endl;
-	std::cout << "Bidirectional path tracer" << std::endl;
-	std::cout << "**************************" << std::endl;
-	std::cout << std::endl;
-}
-
-void displayCommands(Page currentPage) {
-	bool isParametersPage = currentPage == Page::ParametersPage;
-
-	std::cout << std::endl;
-	std::cout << "**************************" << std::endl;
-	std::cout << std::endl;
-	std::cout << "You can use the following commands:" << std::endl;
-	std::cout << "- [number]: modify the corresponding " << (isParametersPage ? "parameter" : "object") << std::endl;
-
-	if (!isParametersPage)
-		std::cout << "- a: add an object" << std::endl;
-
-	std::cout << "- e: exit this program" << std::endl;
-
-	if(!isParametersPage)
-		std::cout << "- i: import an object from a FBX file" << std::endl;
-
-	std::cout << "- l: load a parameter file and overwrite current objects & parameters" << std::endl;
-	std::cout << "- p: switch to " << (isParametersPage ? "objects" : "parameters") << " page" << std::endl;
-	std::cout << "- r: start the rendering" << std::endl;
-	std::cout << "- s: save current objects and parameters to a file" << std::endl;
-	std::cout << std::endl;
-}
 
 void displayParametersPage() {
-	clearScreen();
-
 	std::cout << "Camera" << std::endl;
 	std::cout << "--------------------------" << std::endl;
-	std::cout << "0) Picture width = " << PICTURE_WIDTH << std::endl;
-	std::cout << "1) Picture height = " << PICTURE_WIDTH << std::endl;
-	std::cout << "2) Focal length = " << CAMERA_FOCAL_LENGTH << std::endl;
-	std::cout << "3) X field of view = " << CAMERA_FOV_X << std::endl;
+	std::cout << "0) Picture width = " << pictureWidth << std::endl;
+	std::cout << "1) Picture height = " << pictureHeight << std::endl;
+	std::cout << "2) Focal length = " << caneraFocalLength << std::endl;
+	std::cout << "3) X field of view = " << cameraFovX << std::endl;
 	std::cout << std::endl;
 
 	std::cout << "Basic parameters" << std::endl;
 	std::cout << "--------------------------" << std::endl;
-	std::cout << "4) Sample per pixels = " << SAMPLE_PER_PIXEL << std::endl;
-	std::cout << "5) Minimum bounces = " << MIN_BOUNCES << std::endl;
-	std::cout << "6) Max depth = " << MAX_DEPTH << std::endl;
+	std::cout << "4) Sample per pixels = " << samplePerPixels << std::endl;
+	std::cout << "5) Minimum bounces = " << minBounces << std::endl;
+	std::cout << "6) Max depth = " << maxDepth << std::endl;
 	std::cout << std::endl;
 
 	std::cout << "Optimisation parameters" << std::endl;
 	std::cout << "--------------------------" << std::endl;
-	std::cout << "7) Number of threads = " << NUMBER_THREADS << std::endl;
-	std::cout << "8) Russian roulette = " << (RUSSIAN_ROULETTE ? "True" : "False") << std::endl;
-	std::cout << "9) Rr stop probability = " << RR_STOP_PROBABILITY << std::endl;
-	std::cout << "10) Next event estimation = " << (NEXT_EVENT_ESTIMATION ? "True" : "False") << std::endl;
+	std::cout << "7) Number of threads = " << numberThreads << std::endl;
+	std::cout << "8) Russian roulette = " << (russianRoulette ? "True" : "False") << std::endl;
+	std::cout << "9) Rr stop probability = " << rrStopProbability << std::endl;
+	std::cout << "10) Next event estimation = " << (nextEventEstimation ? "True" : "False") << std::endl;
 	std::cout << std::endl;
-
-	displayCommands(Page::ParametersPage);
 }
 
-void displayObjectsPage() {
-	clearScreen();
 
+void displayObjectsPage() {
 	std::vector<Object3DGroup> objectGroups = scene.getObjectsGroups();
 
 	for (unsigned int i = 0; i < objectGroups.size(); i++) {
@@ -119,31 +83,87 @@ void displayObjectsPage() {
 
 		std::cout << i << ") " << currentObjectGroup << std::endl << std::endl;
 	}
+}
 
-	displayCommands(Page::ObjectsPage);
+
+void displayCommands() {
+	bool isParametersPage = currentPage == Page::ParametersPage;
+
+	std::cout << std::endl;
+	std::cout << "**************************" << std::endl;
+	std::cout << std::endl;
+	std::cout << "You can use the following commands:" << std::endl;
+
+	if (!isParametersPage) {
+		std::cout << "- a: add an object group" << std::endl;
+		std::cout << "- d: delete an object group" << std::endl;
+	}
+
+	std::cout << "- e: exit this program" << std::endl;
+
+	if (!isParametersPage)
+		std::cout << "- i: import an object from a FBX file" << std::endl;
+
+	std::cout << "- l: load a parameter file and overwrite current objects & parameters" << std::endl;
+	std::cout << "- m: modify a " << (isParametersPage ? "parameter" : "object group") << std::endl;
+	std::cout << "- p: switch to " << (isParametersPage ? "objects" : "parameters") << " page" << std::endl;
+	std::cout << "- r: start the rendering" << std::endl;
+	std::cout << "- s: save current objects and parameters to a file" << std::endl;
+}
+
+
+void receiveAndExecuteCommand() {
+	while (true) {
+		bool isParametersPage = currentPage == Page::ParametersPage;
+		char command = getCharFromUser();
+
+		switch (command) {
+			case 'a': {
+				Object3DGroup newGroup = Object3DGroup::create();
+				newGroup.modify();
+				return;
+			}
+			case 'e': {
+				std::cout << std::endl << "Have a nice day!" << std::endl;
+				exit(0);
+			}
+			case 'p': {
+				if (isParametersPage)
+					currentPage = Page::ObjectsPage;
+				else
+					currentPage = Page::ParametersPage;
+				return;
+			}
+		}
+	}
+}
+
+
+void drawCurrentPage() {
+	while (true) {
+		clearScreenPrintHeader();
+		if (currentPage == Page::ParametersPage)
+			displayParametersPage();
+		else
+			displayObjectsPage();
+		displayCommands();
+
+		receiveAndExecuteCommand();
+	}
 }
 
 
 int main() {
+	std::cout << std::fixed;
+	std::cout << std::setprecision(2);
+
 	scene.resetObjectGroups();
 	scene.defaultScene();
-	bool firstPage = false;
-
-	std::string information;
-	while (true) {
-		if (!firstPage)
-			displayParametersPage();
-		else
-			displayObjectsPage();
-		firstPage = !firstPage;
-		std::cin >> information;
-	}
-
+	drawCurrentPage();
+	
 	/*
 	double beginningTime = getCurrentTimeSeconds();
 	// Display doubles with 2 decimals
-	std::cout << std::fixed;
-	std::cout << std::setprecision(2);
 
 	// Instantiate camera and scene
 	PerspectiveCamera camera(PICTURE_WIDTH, PICTURE_HEIGHT, CAMERA_FOCAL_LENGTH, CAMERA_FOV_X);
@@ -155,8 +175,8 @@ int main() {
 	if (useDefaultScene) {
 		scene.defaultScene();
 	} else { // Read file
-		scene.importFBX(FILE_PATH);
-		scene.addObject(new Sphere(DoubleVec3D(0, 1.5, -2.5), 0.5, new DiffuseMaterial(DoubleVec3D(0), 4000)));
+		// scene.importFBX(FILE_PATH);
+		// scene.addObject(new Sphere(DoubleVec3D(0, 1.5, -2.5), 0.5, new DiffuseMaterial(DoubleVec3D(0), 4000)));
 	}
 
 	// Render and write picture
@@ -166,5 +186,6 @@ int main() {
 	std::cout << std::endl << "Total computation time: " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl;
 	std::cout << "\a";
 	*/
+	
 	return 0;
 }
