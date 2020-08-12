@@ -31,6 +31,7 @@ public:
 	virtual DoubleUnitVec3D getNormal(const DoubleVec3D& point) const = 0;
 	virtual DoubleVec3D getRandomPoint(double (*randomDouble)()) const = 0;
 	virtual std::ostream& getDescription(std::ostream& stream) const = 0;
+	virtual DoubleVec3D getCenter() const = 0;
 };
 
 std::ostream& operator<<(std::ostream& stream, const Object3D& object);

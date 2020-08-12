@@ -18,6 +18,7 @@ public:
 	DoubleVec3D getVertex1() const;
 	DoubleVec3D getVertex2() const;
 	DoubleVec3D getVertex3() const;
+	DoubleVec3D getCenter() const;  // virtual method
 
 	void setVertex1(const DoubleVec3D& vertex);
 	void setVertex2(const DoubleVec3D& vertex);

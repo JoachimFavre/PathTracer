@@ -16,6 +16,10 @@ DoubleVec3D Triangle::getVertex1() const { return vertex1; }
 DoubleVec3D Triangle::getVertex2() const { return vertex2; }
 DoubleVec3D Triangle::getVertex3() const { return vertex3; }
 
+DoubleVec3D Triangle::getCenter() const {
+	return (vertex1 + vertex2 + vertex3) / 3;
+}
+
 
 // Setters
 void Triangle::setVertex1(const DoubleVec3D& vertex) { vertex1 = vertex; }
