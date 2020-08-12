@@ -6,6 +6,7 @@
 
 #include "DoubleVec3D.h"
 #include "Object3D.h"
+#include "Interface.h"
 
 class Object3DGroup {
 private:
@@ -15,7 +16,7 @@ private:
 
 public:
 	Object3DGroup();
-	Object3DGroup(const std::string& name, std::vector<Object3D*> objects);
+	Object3DGroup(const std::string& name, std::vector<Object3D*> objects = {});
 	Object3DGroup(const Object3DGroup& group);
 	~Object3DGroup();
 
@@ -31,7 +32,10 @@ public:
 	void merge(const Object3DGroup& group);
 	void resetObjects();
 
-	virtual Object3DGroup& operator=(const Object3DGroup& otherGroup);
+	Object3DGroup& operator=(const Object3DGroup& otherGroup);
+
+	static Object3DGroup create();
+	void modify();
 };
 
 std::ostream& operator<<(std::ostream& stream, const Object3DGroup& group);

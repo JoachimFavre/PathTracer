@@ -4,7 +4,7 @@
 Object3DGroup::Object3DGroup()
 	: name("None"), objects(), center(0.0) {}
 
-Object3DGroup::Object3DGroup(const std::string& name, std::vector<Object3D*> objects)
+Object3DGroup::Object3DGroup(const std::string& name, std::vector<Object3D*> objects /* = {}*/)
 	: name(name) {
 	setObjects(objects);
 }
@@ -108,4 +108,53 @@ std::vector<Object3D*> split(std::vector<Object3DGroup> groups) {
 	}
 
 	return result;
+}
+
+
+// For the interface
+Object3DGroup Object3DGroup::create() {
+	clearScreenPrintHeader();
+
+	std::string name;
+
+	system("cls");
+	std::cout << "What is the name of this object group?" << std::endl;
+	std::cout << "> ";
+	std::cin >> name;
+
+	return Object3DGroup(name);
+}
+
+void Object3DGroup::modify() {
+	bool commandWasInvalid = false;
+	while (true) {
+		clearScreenPrintHeader();
+
+		std::cout << name << std::endl << dashSplitter << std::endl << std::endl;
+
+		for (int i = 0; i < objects.size(); i++) {
+			std::cout << i << ") " << *(objects[i]) << std::endl << std::endl;
+		}
+
+		availableCommandsHeader();
+		std::cout << "- a: add an object" << std::endl;
+		std::cout << "- b: go back to the objects page" << std::endl;
+		std::cout << "- m: modify an object" << std::endl;
+		std::cout << "- n: change the name" << std::endl;
+		std::cout << std::endl;
+
+
+		char command = getCharFromUser(commandWasInvalid ? invalidCommand : "");
+		std::cout << std::endl;
+
+		switch (command) {
+		case 'b': return;
+		case 'n': {
+			std::string newName = getStringFromUser("What is the new name ?");
+			name = newName;
+			break;
+		}
+		default: commandWasInvalid = true;
+		}
+	}
 }
