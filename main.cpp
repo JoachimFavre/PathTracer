@@ -112,16 +112,12 @@ void displayParametersPage() {
 void displayObjectsPage() {
 	clearScreen();
 
-	std::vector<Object3D*> objects = scene.getObjects();
+	std::vector<Object3DGroup> objectGroups = scene.getObjectsGroups();
 
-	for (unsigned int i = 0; i < objects.size(); i++) {
-		Object3D* currentObject = objects[i];
+	for (unsigned int i = 0; i < objectGroups.size(); i++) {
+		Object3DGroup currentObjectGroup = objectGroups[i];
 
-		std::cout << i << ") " << currentObject->getName() << std::endl;
-		std::cout << "--------------------------" << std::endl;
-		std::cout << *currentObject << std::endl;
-		std::cout << "-> " << *(currentObject->getMaterial()) << std::endl;
-		std::cout << std::endl;
+		std::cout << i << ") " << currentObjectGroup << std::endl << std::endl;
 	}
 
 	displayCommands(Page::ObjectsPage);
@@ -129,7 +125,7 @@ void displayObjectsPage() {
 
 
 int main() {
-	scene.resetObjects();
+	scene.resetObjectGroups();
 	scene.defaultScene();
 	bool firstPage = false;
 
