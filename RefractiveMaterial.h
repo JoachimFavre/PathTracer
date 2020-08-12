@@ -17,6 +17,7 @@ public:
 	double getRefractiveIndex() const;
 	void setRefractiveIndex(double refractiveIndex);
 
+	Material* deepCopy() const;
 	DoubleUnitVec3D getNewDirection(const Ray& previousRay, const DoubleUnitVec3D& normal, double (*randomDouble)()) const;
 	DoubleVec3D computeCurrentColour(const DoubleVec3D& recursiveColour, double angleNewDirectionNormal) const;
 	bool worksWithNextEventEstimation() const;

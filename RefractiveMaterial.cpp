@@ -15,6 +15,10 @@ void RefractiveMaterial::setRefractiveIndex(double refractiveIndex) { this->refr
 
 
 // Virtual methods
+Material* RefractiveMaterial::deepCopy() const {
+	return new RefractiveMaterial(refractiveIndex, getEmittance());
+}
+
 DoubleUnitVec3D RefractiveMaterial::getNewDirection(const Ray& previousRay, const DoubleUnitVec3D& normal, double (*randomDouble)()) const {
 	double refractiveIndex = this->refractiveIndex;  // Must be modified
 	DoubleUnitVec3D normalBis = normal;  // Must be modified

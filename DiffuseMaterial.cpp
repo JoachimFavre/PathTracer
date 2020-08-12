@@ -14,6 +14,10 @@ void DiffuseMaterial::setColour(const DoubleVec3D& colour) { this->colour = colo
 
 
 // Virtual methods
+Material* DiffuseMaterial::deepCopy() const {
+	return new DiffuseMaterial(colour, getEmittance());
+}
+
 DoubleUnitVec3D DiffuseMaterial::getNewDirection(const Ray& previousRay, const DoubleUnitVec3D& normal, double (*randomDouble)()) const {
 	DoubleUnitVec3D newDirection(randomVectorOnUnitRadiusSphere(randomDouble));
 	if (dotProd(newDirection, normal) < 0) // Wrong hemisphere
