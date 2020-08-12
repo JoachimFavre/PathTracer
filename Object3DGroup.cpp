@@ -4,9 +4,9 @@
 Object3DGroup::Object3DGroup()
 	: name("none"), objects(), center(0.0) {}
 
-Object3DGroup::Object3DGroup(const std::string& name, std::initializer_list<Object3D*> objectsInitList)
+Object3DGroup::Object3DGroup(const std::string& name, std::vector<Object3D*> objects)
 	: name(name) {
-	setObjects(objectsInitList);
+	setObjects(objects);
 }
 
 Object3DGroup::Object3DGroup(const Object3DGroup& group)
