@@ -24,7 +24,7 @@ void Object3D::setMaterial(Material* material) { this->material = material; }
 
 // Ostream operator
 std::ostream& operator<<(std::ostream& stream, const Object3D& object) {
-	return object.getDescription(stream);
+	return object.getDescription(stream) << std::endl << "-> " << *(object.getMaterial());
 }
 
 Object3D& Object3D::operator=(const Object3D& otherObject) {

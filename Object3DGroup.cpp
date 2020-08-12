@@ -2,7 +2,7 @@
 
 // Constructors and destructors
 Object3DGroup::Object3DGroup()
-	: name("none"), objects(), center(0.0) {}
+	: name("None"), objects(), center(0.0) {}
 
 Object3DGroup::Object3DGroup(const std::string& name, std::vector<Object3D*> objects)
 	: name(name) {
@@ -79,14 +79,15 @@ Object3DGroup& Object3DGroup::operator=(const Object3DGroup& otherGroup) {
 std::ostream& operator<<(std::ostream& stream, const Object3DGroup& group) {
 	stream << group.getName() << std::endl;
 	
-	unsigned int numberObjects = group.getObjects().size();
+	std::vector<Object3D*> objects = group.getObjects();
+	unsigned int numberObjects = objects.size();
 
 	if (numberObjects == 0)
-		stream << "EMPTY" << std::endl;
+		stream << "Empty";
 	else if (numberObjects == 1)
-		stream << *(group.getObjects()[0]);
+		stream << *(objects[0]);
 	else
-		stream << "Center = " << group.getCenter() << " / " << group.getObjects().size() << " objects";
+		stream << "Center" << group.getCenter() << " / " << numberObjects << " objects";
 
 	return stream;
 }
