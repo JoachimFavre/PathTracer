@@ -99,7 +99,12 @@ std::vector<Object3D*> split(std::vector<Object3DGroup> groups) {
 	
 	for (Object3DGroup group : groups) {
 		std::vector<Object3D*> currentObjects = group.getObjects();
-		result.insert(result.end(), currentObjects.begin(), currentObjects.end());
+		std::vector<Object3D*> copy;
+
+		for (Object3D* object : currentObjects)
+			copy.push_back(object->deepCopy());
+
+		result.insert(result.end(), copy.begin(), copy.end());
 	}
 
 	return result;
