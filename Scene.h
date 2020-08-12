@@ -9,6 +9,7 @@
 #include "DiffuseMaterial.h"
 #include "DoubleMatrix33.h"
 #include "Object3D.h"
+#include "Object3DGroup.h"
 #include "Triangle.h"
 #include "PerspectiveCamera.h"
 #include "Picture.h"
@@ -27,8 +28,10 @@ static double randomDouble() { return unif(re); }
 
 class Scene {
 private:
+	std::vector<Object3DGroup> objectsGroups;
 	std::vector<Object3D*> objects;
 	std::vector<Object3D*> lamps;
+	bool objectsAndLampsAreUpToDate = false;
 
 	PerspectiveCamera camera;
 	unsigned int samplePerPixel;
@@ -47,10 +50,10 @@ public:
 	Scene();
 	Scene(PerspectiveCamera camera, unsigned int samplePerPixel, unsigned int minBounces, double maxDepth, double rrStopProbability);
 	Scene(const Scene& scene);
-	~Scene();
 
-	std::vector<Object3D*> getObjects() const;
-	std::vector<Object3D*> getLamps() const;
+	std::vector<Object3DGroup> getObjectsGroups();
+	std::vector<Object3D*> getObjects();
+	std::vector<Object3D*> getLamps();
 	PerspectiveCamera getCamera() const;
 	unsigned int getSamplePerPixel() const;
 	unsigned int getMinBounces() const;
@@ -60,7 +63,7 @@ public:
 	bool getNextEventEstimation() const;
 	unsigned int getNumberThreads() const;
 
-	void setObjects(std::vector<Object3D*> objects);
+	void setObjectsGroups(std::vector<Object3DGroup> groups);
 	void setCamera(PerspectiveCamera camera);
 	void setSamplePerPixel(unsigned int samplePerPixel);
 	void setMinBounces(unsigned int minBounces);
@@ -71,12 +74,13 @@ public:
 	void setNextEventEstimation(bool nextEventEstimation);
 	void setNumberThreads(unsigned int numberThreads);
 
-	void addObject(Object3D* object);
-	void resetObjects();
+	void addObjectGroup(const Object3DGroup& group);
+	void resetObjectGroups();
+	void computeObjectsAndLamps();
 	void defaultScene();
 	void importFBX(const char* filePath);
 
-	Picture* render() const;
+	Picture* render();
 };
 
 #endif

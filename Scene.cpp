@@ -9,12 +9,23 @@ Scene::Scene(PerspectiveCamera camera, unsigned int samplePerPixel, unsigned int
 Scene::Scene(const Scene& scene)
 	: Scene(scene.camera, scene.samplePerPixel, scene.minBounces, scene.maxDepth, scene.rrStopProbability) {}
 
-Scene::~Scene() { resetObjects(); }
-
 
 // Getters
-std::vector<Object3D*> Scene::getObjects() const { return objects; }
-std::vector<Object3D*> Scene::getLamps() const { return lamps; }
+std::vector<Object3DGroup> Scene::getObjectsGroups() {
+	return objectsGroups;
+	objectsAndLampsAreUpToDate = false;
+}
+
+std::vector<Object3D*> Scene::getObjects() {
+	computeObjectsAndLamps();
+	return objects;
+}
+
+std::vector<Object3D*> Scene::getLamps() {
+	computeObjectsAndLamps();
+	return lamps;
+}
+
 PerspectiveCamera Scene::getCamera() const { return camera; }
 unsigned int Scene::getSamplePerPixel() const { return samplePerPixel; }
 unsigned int Scene::getMinBounces() const { return minBounces; }
@@ -26,13 +37,11 @@ unsigned int Scene::getNumberThreads() const { return numberThreads; }
 
 
 // Setters
-void Scene::setObjects(std::vector<Object3D*> objects) {
-	this->objects = objects;
-	lamps = std::vector<Object3D*>();
-	for (Object3D* object : objects)
-		if (!object->getMaterial()->getEmittance().isZero())
-			lamps.push_back(object);
+void Scene::setObjectsGroups(std::vector<Object3DGroup> groups) {
+	objectsGroups = groups;
+	objectsAndLampsAreUpToDate = false;
 }
+
 void Scene::setCamera(PerspectiveCamera camera) { this->camera = camera; }
 void Scene::setSamplePerPixel(unsigned int samplePerPixel) { this->samplePerPixel = samplePerPixel; }
 void Scene::setMinBounces(unsigned int minBounces) { this->minBounces = minBounces; }
@@ -47,43 +56,66 @@ void Scene::setNextEventEstimation(bool nextEventEstimation) { this->nextEventEs
 void Scene::setNumberThreads(unsigned int numberThreads) { this->numberThreads = numberThreads; }
 
 
-// Add/Remove objects
-void Scene::addObject(Object3D* object) {
-	objects.push_back(object);
-	if (!object->getMaterial()->getEmittance().isZero())
-		lamps.push_back(object);
+// Objects groups management
+void Scene::addObjectGroup(const Object3DGroup& group) {
+	objectsGroups.push_back(group);
+	objectsAndLampsAreUpToDate = false;
 }
 
-void Scene::resetObjects() {
-	for (Object3D* object : objects)
-		delete object;
-	objects = std::vector<Object3D*>();
+void Scene::resetObjectGroups() {
+	objectsGroups.clear();  // Calls their destructor -> no memory leak
+	objectsAndLampsAreUpToDate = false;
+}
+
+void Scene::computeObjectsAndLamps() {
+	if (!objectsAndLampsAreUpToDate) {
+		objects = split(objectsGroups);
+		lamps.clear();
+
+		for (Object3D* object : objects)
+			if (!object->getMaterial()->getEmittance().isZero())
+				lamps.push_back(object);
+
+		objectsAndLampsAreUpToDate = true;
+	}
 }
 
 void Scene::defaultScene() {
 	// Spheres
-	addObject(new Sphere("Light", DoubleVec3D(0, 1.5, -2.5), 0.5, new DiffuseMaterial(DoubleVec3D(0), DoubleVec3D(4000))));
-	addObject(new Sphere("Glass sphere", DoubleVec3D(0.2, -1.5, -3), 0.5, new RefractiveMaterial(1.5)));
-	addObject(new Sphere("Mirror sphere", DoubleVec3D(1.2, -1.5, -2.4), 0.5, new SpecularMaterial));
-	addObject(new Sphere("Diffuse sphere", DoubleVec3D(-1, -1.5, -2.3), 0.5, new DiffuseMaterial(DoubleVec3D(0.5))));
-	// left
-	addObject(new Triangle("Left wall 1", DoubleVec3D(-2, 2, 1), DoubleVec3D(-2, -2, 1), DoubleVec3D(-2, -2, -4), new DiffuseMaterial(DoubleVec3D(0.2, 0.2, 1))));
-	addObject(new Triangle("Left wall 2", DoubleVec3D(-2, 2, 1), DoubleVec3D(-2, -2, -4), DoubleVec3D(-2, 2, -4), new DiffuseMaterial(DoubleVec3D(0.2, 0.2, 1))));
-	// right
-	addObject(new Triangle("Right wall 1", DoubleVec3D(2, -2, -4), DoubleVec3D(2, -2, 1), DoubleVec3D(2, 2, 1), new DiffuseMaterial(DoubleVec3D(1, 0.2, 0.2))));
-	addObject(new Triangle("Right wall 2", DoubleVec3D(2, 2, -4), DoubleVec3D(2, -2, -4), DoubleVec3D(2, 2, 1), new DiffuseMaterial(DoubleVec3D(1, 0.2, 0.2))));
-	// Top
-	addObject(new Triangle("Ceiling 1", DoubleVec3D(2, 2, -4), DoubleVec3D(-2, 2, 1), DoubleVec3D(-2, 2, -4), new DiffuseMaterial(DoubleVec3D(0.3))));
-	addObject(new Triangle("Ceiling 2", DoubleVec3D(-2, 2, 1), DoubleVec3D(2, 2, -4), DoubleVec3D(2, 2, 1), new DiffuseMaterial(DoubleVec3D(0.3))));
-	// Bottom
-	addObject(new Triangle("Floor 1", DoubleVec3D(-2, -2, 1), DoubleVec3D(2, -2, -4), DoubleVec3D(-2, -2, -4), new DiffuseMaterial(DoubleVec3D(0.3))));
-	addObject(new Triangle("Floor 2", DoubleVec3D(2, -2, -4), DoubleVec3D(-2, -2, 1), DoubleVec3D(2, -2, 1), new DiffuseMaterial(DoubleVec3D(0.3))));
-	// Background
-	addObject(new Triangle("Background wall 1", DoubleVec3D(-2, 2, -4), DoubleVec3D(-2, -2, -4), DoubleVec3D(2, 2, -4), new DiffuseMaterial(DoubleVec3D(0.2, 1, 0.2))));
-	addObject(new Triangle("Background wall 2", DoubleVec3D(2, 2, -4), DoubleVec3D(-2, -2, -4), DoubleVec3D(2, -2, -4), new DiffuseMaterial(DoubleVec3D(0.2, 1, 0.2))));
-	// Behind camera
-	addObject(new Triangle("Wall behind camera 1", DoubleVec3D(2, 2, 1), DoubleVec3D(2, -2, 1), DoubleVec3D(-2, -2, 1), new DiffuseMaterial(DoubleVec3D(0.3))));
-	addObject(new Triangle("Wall behind camera 2", DoubleVec3D(-2, 2, 1), DoubleVec3D(2, 2, 1), DoubleVec3D(-2, -2, 1), new DiffuseMaterial(DoubleVec3D(0.3))));
+	addObjectGroup(Object3DGroup("Light", {
+		new Sphere("Light", DoubleVec3D(0, 1.5, -2.5), 0.5, new DiffuseMaterial(DoubleVec3D(0), DoubleVec3D(4000)))
+		}));
+	addObjectGroup(Object3DGroup("Testing spheres", {
+		new Sphere("Glass sphere", DoubleVec3D(0.2, -1.5, -3), 0.5, new RefractiveMaterial(1.5)),
+		new Sphere("Mirror sphere", DoubleVec3D(1.2, -1.5, -2.4), 0.5, new SpecularMaterial),
+		new Sphere("Diffuse sphere", DoubleVec3D(-1, -1.5, -2.3), 0.5, new DiffuseMaterial(DoubleVec3D(0.5)))
+		}));
+
+	// Walls
+	addObjectGroup(Object3DGroup("Left wall", {
+		new Triangle("Left wall 1", DoubleVec3D(-2, 2, 1), DoubleVec3D(-2, -2, 1), DoubleVec3D(-2, -2, -4), new DiffuseMaterial(DoubleVec3D(0.2, 0.2, 1))),
+		new Triangle("Left wall 2", DoubleVec3D(-2, 2, 1), DoubleVec3D(-2, -2, -4), DoubleVec3D(-2, 2, -4), new DiffuseMaterial(DoubleVec3D(0.2, 0.2, 1)))
+		}));
+	addObjectGroup(Object3DGroup("Right wall", {
+		new Triangle("Right wall 1", DoubleVec3D(2, -2, -4), DoubleVec3D(2, -2, 1), DoubleVec3D(2, 2, 1), new DiffuseMaterial(DoubleVec3D(1, 0.2, 0.2))),
+		new Triangle("Right wall 2", DoubleVec3D(2, 2, -4), DoubleVec3D(2, -2, -4), DoubleVec3D(2, 2, 1), new DiffuseMaterial(DoubleVec3D(1, 0.2, 0.2)))
+		}));
+	addObjectGroup(Object3DGroup("Ceiling", {
+		new Triangle("Ceiling 1", DoubleVec3D(2, 2, -4), DoubleVec3D(-2, 2, 1), DoubleVec3D(-2, 2, -4), new DiffuseMaterial(DoubleVec3D(0.3))),
+		new Triangle("Ceiling 2", DoubleVec3D(-2, 2, 1), DoubleVec3D(2, 2, -4), DoubleVec3D(2, 2, 1), new DiffuseMaterial(DoubleVec3D(0.3)))
+		}));
+	addObjectGroup(Object3DGroup("Floor", {
+		new Triangle("Floor 1", DoubleVec3D(-2, -2, 1), DoubleVec3D(2, -2, -4), DoubleVec3D(-2, -2, -4), new DiffuseMaterial(DoubleVec3D(0.3))),
+		new Triangle("Floor 2", DoubleVec3D(2, -2, -4), DoubleVec3D(-2, -2, 1), DoubleVec3D(2, -2, 1), new DiffuseMaterial(DoubleVec3D(0.3)))
+		}));
+	addObjectGroup(Object3DGroup("Background wall", {
+		new Triangle("Background wall 1", DoubleVec3D(-2, 2, -4), DoubleVec3D(-2, -2, -4), DoubleVec3D(2, 2, -4), new DiffuseMaterial(DoubleVec3D(0.2, 1, 0.2))),
+		new Triangle("Background wall 2", DoubleVec3D(2, 2, -4), DoubleVec3D(-2, -2, -4), DoubleVec3D(2, -2, -4), new DiffuseMaterial(DoubleVec3D(0.2, 1, 0.2)))
+		}));
+	addObjectGroup(Object3DGroup("Wall behind camera", {
+		new Triangle("Wall behind camera 1", DoubleVec3D(2, 2, 1), DoubleVec3D(2, -2, 1), DoubleVec3D(-2, -2, 1), new DiffuseMaterial(DoubleVec3D(0.3))),
+		new Triangle("Wall behind camera 2", DoubleVec3D(-2, 2, 1), DoubleVec3D(2, 2, 1), DoubleVec3D(-2, -2, 1), new DiffuseMaterial(DoubleVec3D(0.3)))
+		}));
 }
 
 void Scene::importFBX(const char* filePath) {
@@ -155,6 +187,8 @@ void Scene::importFBX(const char* filePath) {
 				}
 			}
 
+			std::vector<Object3D*> objects;
+
 			// Add each triangle to the scene
 			for (int polygonIx = 0; polygonIx < mesh->GetPolygonCount(); polygonIx++) {
 				if (mesh->GetPolygonSize(polygonIx) != 3) {
@@ -170,13 +204,15 @@ void Scene::importFBX(const char* filePath) {
 				DoubleVec3D vertex1 = rotationAndScalingMatrix * controlPoints[mesh->GetPolygonVertex(polygonIx, 1)] + translation;
 				DoubleVec3D vertex2 = rotationAndScalingMatrix * controlPoints[mesh->GetPolygonVertex(polygonIx, 2)] + translation;
 
-				Triangle* triangle = new Triangle(filePath, vertex0, vertex1, vertex2, new DiffuseMaterial(colour));
+				Triangle* triangle = new Triangle(filePath + polygonIx, vertex0, vertex1, vertex2, new DiffuseMaterial(colour));
 				// Emittance is always equal to the diffuse colour -> bug from the library
 
 				// Verify normals ?
 
-				addObject(triangle);
+				objects.push_back(triangle);
 			}
+
+			addObjectGroup(Object3DGroup(filePath, objects));
 		}
 	}
 
@@ -260,7 +296,9 @@ void Scene::displayRenderingProgression(unsigned int currentPixelX, double loopB
 
 
 // Other methods
-Picture* Scene::render() const {
+Picture* Scene::render() {
+	computeObjectsAndLamps();
+
 	unsigned int pictureWidth = camera.getNumberPixelsX();
 	unsigned int pictureHeight = camera.getNumberPixelsY();
 	omp_set_num_threads(numberThreads);
