@@ -9,8 +9,9 @@ Object3DGroup::Object3DGroup(const std::string& name, std::vector<Object3D*> obj
 	setObjects(objects);
 }
 
-Object3DGroup::Object3DGroup(const Object3DGroup& group)
-	: name(group.name), objects(group.objects), center(group.center) {}
+Object3DGroup::Object3DGroup(const Object3DGroup& group) {
+	operator=(group);
+}
 
 Object3DGroup::~Object3DGroup() {
 	resetObjects();
@@ -59,6 +60,21 @@ void Object3DGroup::resetObjects() {
 }
 
 
+// Assignment operator
+Object3DGroup& Object3DGroup::operator=(const Object3DGroup& otherGroup) {
+	name = otherGroup.name;
+	center = otherGroup.center;
+
+	std::vector<Object3D*> objectsCopy;
+	for (Object3D* object : otherGroup.objects) {
+		objectsCopy.push_back(object->deepCopy());
+	}
+	objects = objectsCopy;
+
+	return *this;
+}
+
+
 // Ostream operator
 std::ostream& operator<<(std::ostream& stream, const Object3DGroup& group) {
 	stream << group.getName() << std::endl;
@@ -68,9 +84,11 @@ std::ostream& operator<<(std::ostream& stream, const Object3DGroup& group) {
 	if (numberObjects == 0)
 		stream << "EMPTY" << std::endl;
 	else if (numberObjects == 1)
-		stream << group.getObjects()[0];
+		stream << *(group.getObjects()[0]);
 	else
-		stream << "Center = " << group.getCenter() << " / " << group.getObjects.size() << " objects";
+		stream << "Center = " << group.getCenter() << " / " << group.getObjects().size() << " objects";
+
+	return stream;
 }
 
 

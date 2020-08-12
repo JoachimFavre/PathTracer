@@ -30,6 +30,8 @@ public:
 	void addObjects(const std::vector<Object3D*>& newObjects);
 	void merge(const Object3DGroup& group);
 	void resetObjects();
+
+	virtual Object3DGroup& operator=(const Object3DGroup& otherGroup);
 };
 
 std::ostream& operator<<(std::ostream& stream, const Object3DGroup& group);
