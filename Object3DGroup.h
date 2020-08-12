@@ -15,7 +15,7 @@ private:
 
 public:
 	Object3DGroup();
-	Object3DGroup(std::string name, std::initializer_list<Object3D*> objectsInitList);
+	Object3DGroup(const std::string& name, std::initializer_list<Object3D*> objectsInitList);
 	Object3DGroup(const Object3DGroup& group);
 
 	std::string getName() const;
@@ -23,6 +23,8 @@ public:
 	DoubleVec3D getCenter() const;
 
 	void setName(const std::string& name);
+	void setObjects(const std::vector<Object3D*>& objects);
+
 	void addObject(Object3D* object);
 	void addObjects(const std::vector<Object3D*>& objects);
 	void merge(const Object3DGroup& group);
