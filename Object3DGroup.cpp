@@ -18,15 +18,38 @@ std::string Object3DGroup::getName() const { return name; }
 std::vector<Object3D*> Object3DGroup::getObjects() const { return objects; }
 DoubleVec3D Object3DGroup::getCenter() const { return center; }
 
+
 // Setters
 void Object3DGroup::setName(const std::string& name) { this->name = name; }
 
 void Object3DGroup::setObjects(const std::vector<Object3D*>& newObjects) { 
-	this->objects = newObjects; 
-	center = DoubleVec3D(0.0);
-
-	unsigned int numberNewObjects = newObjects.size();
-	for (Object3D* object : newObjects)
-		center += object->getCenter() / numberNewObjects;
+	resetObjects();
+	addObjects(newObjects);
 }
 
+
+// Objects list management
+void Object3DGroup::addObject(Object3D* object) { 
+	std::vector<Object3D*> objectInVector;
+	objectInVector.push_back(object);
+	addObjects(objectInVector);
+}
+
+void Object3DGroup::addObjects(const std::vector<Object3D*>& newObjects) {
+	unsigned int totalNumberObjects = objects.size() + newObjects.size();
+	if (totalNumberObjects > 0) {
+		center *= objects.size() / totalNumberObjects;
+		for (Object3D* object : newObjects) {
+			objects.push_back(object);
+			center += object->getCenter() / totalNumberObjects;
+		}
+	}
+}
+
+void Object3DGroup::merge(const Object3DGroup& group) {	addObjects(group.getObjects()); }
+
+void Object3DGroup::resetObjects() {
+	for (Object3D* object : objects)
+		delete object;
+	objects.clear();
+}

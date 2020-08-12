@@ -23,10 +23,10 @@ public:
 	DoubleVec3D getCenter() const;
 
 	void setName(const std::string& name);
-	void setObjects(const std::vector<Object3D*>& objects);
+	void setObjects(const std::vector<Object3D*>& newObjects);
 
 	void addObject(Object3D* object);
-	void addObjects(const std::vector<Object3D*>& objects);
+	void addObjects(const std::vector<Object3D*>& newObjects);
 	void merge(const Object3DGroup& group);
 	void resetObjects();
 };
