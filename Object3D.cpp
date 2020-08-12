@@ -7,8 +7,9 @@ Object3D::Object3D()
 Object3D::Object3D(const std::string& name, Material* material)
 	: name(name), material(material) {}
 
-Object3D::Object3D(const Object3D& obj)
-	: name(obj.name), material(obj.material) {}
+Object3D::Object3D(const Object3D& obj)  {
+	operator=(obj);
+}
 
 Object3D::~Object3D() { delete material; }
 
@@ -24,4 +25,10 @@ void Object3D::setMaterial(Material* material) { this->material = material; }
 // Ostream operator
 std::ostream& operator<<(std::ostream& stream, const Object3D& object) {
 	return object.getDescription(stream);
+}
+
+Object3D& Object3D::operator=(const Object3D& otherObject) {
+	name = otherObject.name;
+	material = otherObject.material->deepCopy();
+	return *this;
 }

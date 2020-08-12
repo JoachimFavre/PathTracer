@@ -7,7 +7,7 @@ Sphere::Sphere()
 Sphere::Sphere(const std::string& name, const DoubleVec3D& center, double radius, Material* material)
 	: Object3D(name, material), center(center), radius(radius) {}
 
-Sphere::Sphere(const Sphere& sphere) 
+Sphere::Sphere(const Sphere& sphere)
 	: Object3D(sphere), center(sphere.center), radius(sphere.radius) {}
 
 
@@ -22,6 +22,10 @@ void Sphere::setRadius(double radius) { this->radius = radius; }
 
 
 // Virtual method
+Object3D* Sphere::deepCopy() const {
+	return new Sphere(getName(), center, radius, getMaterial()->deepCopy());
+}
+
 double Sphere::closestIntersection(const Ray& ray) const {
 	// Returns -1 if no solution
 	// Using quadratic equation formula to solve (meaning of a, b, c)
@@ -59,4 +63,3 @@ std::ostream& Sphere::getDescription(std::ostream& stream) const {
 	stream << "Sphere / Center = " << center << " / Radius = " << radius;
 	return stream;
 }
-

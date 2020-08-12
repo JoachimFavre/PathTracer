@@ -24,6 +24,7 @@ public:
 	void setVertex2(const DoubleVec3D& vertex);
 	void setVertex3(const DoubleVec3D& vertex);
 
+	Object3D* deepCopy() const;
 	double closestIntersection(const Ray& ray) const;
 	DoubleUnitVec3D getNormal(const DoubleVec3D& point) const;
 	DoubleVec3D getRandomPoint(double (*randomDouble)()) const;

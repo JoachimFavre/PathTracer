@@ -25,6 +25,7 @@ public:
 	void setCenter(const DoubleVec3D& center);
 	void setRadius(double radius);
 
+	Object3D* deepCopy() const;
 	double closestIntersection(const Ray& ray) const;
 	DoubleUnitVec3D getNormal(const DoubleVec3D& point) const;
 	DoubleVec3D getRandomPoint(double (*randomDouble)()) const;

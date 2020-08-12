@@ -10,7 +10,6 @@ Triangle::Triangle(const std::string& name, const DoubleVec3D& vertex1, const Do
 Triangle::Triangle(const Triangle& triangle)
 	: Object3D(triangle), vertex1(triangle.vertex1), vertex2(triangle.vertex2), vertex3(triangle.vertex3) {}
 
-
 // Getters
 DoubleVec3D Triangle::getVertex1() const { return vertex1; }
 DoubleVec3D Triangle::getVertex2() const { return vertex2; }
@@ -28,6 +27,10 @@ void Triangle::setVertex3(const DoubleVec3D& vertex) { vertex3 = vertex; }
 
 
 // Virtual methods
+Object3D* Triangle::deepCopy() const {
+	return new Triangle(getName(), vertex1, vertex2, vertex3, getMaterial()->deepCopy());
+}
+
 double Triangle::closestIntersection(const Ray& ray) const {
 	// Using Möller-Trumbore intersection algorithm (using notations from https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm (accessed on 3rd July 2020)
 	// Return -1 if no intersection
