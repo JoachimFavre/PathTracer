@@ -69,6 +69,9 @@ void Scene::resetObjectGroups() {
 
 void Scene::computeObjectsAndLamps() {
 	if (!objectsAndLampsAreUpToDate) {
+		for (Object3D* object : objects)
+			delete object;
+
 		objects = split(objectsGroups);
 		lamps.clear();
 
