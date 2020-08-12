@@ -57,3 +57,18 @@ void Object3DGroup::resetObjects() {
 		delete object;
 	objects.clear();
 }
+
+
+// Ostream operator
+std::ostream& operator<<(std::ostream& stream, const Object3DGroup& group) {
+	stream << group.getName() << std::endl;
+	
+	unsigned int numberObjects = group.getObjects().size();
+
+	if (numberObjects == 0)
+		stream << "EMPTY" << std::endl;
+	else if (numberObjects == 1)
+		stream << group.getObjects()[0];
+	else
+		stream << "Center = " << group.getCenter() << " / " << group.getObjects.size() << " objects";
+}
