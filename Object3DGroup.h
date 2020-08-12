@@ -17,6 +17,7 @@ public:
 	Object3DGroup();
 	Object3DGroup(const std::string& name, std::initializer_list<Object3D*> objectsInitList);
 	Object3DGroup(const Object3DGroup& group);
+	~Object3DGroup();
 
 	std::string getName() const;
 	std::vector<Object3D*> getObjects() const;

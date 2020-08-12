@@ -1,6 +1,6 @@
 #include "Object3DGroup.h"
 
-// Constructors
+// Constructors and destructors
 Object3DGroup::Object3DGroup()
 	: name("none"), objects(), center(0.0) {}
 
@@ -11,6 +11,10 @@ Object3DGroup::Object3DGroup(const std::string& name, std::initializer_list<Obje
 
 Object3DGroup::Object3DGroup(const Object3DGroup& group)
 	: name(group.name), objects(group.objects), center(group.center) {}
+
+Object3DGroup::~Object3DGroup() {
+	resetObjects();
+}
 
 
 // Getters
