@@ -186,78 +186,91 @@ void receiveAndExecuteObjectsCommands(char command) {
 	case 'a': {
 		Object3DGroup newGroup = Object3DGroup::create();
 		objectGroups.push_back(newGroup);
-		newGroup.modify();
+		objectGroups[objectGroups.size()-1].modify();
 		return;
 	}
 	case 'd': {
-		while (true) {
-			int index = getIntFromUser("What is the index of the objects groups you want to delete? (-1 = cancel / -2 = delete all)");
-			if (index == -1)
-				return;
-			if (index == -2) {
-				std::cout << std::endl;
-				bool confirmation = getBoolFromUser("Do you confirm the deletion of all the objects groups? (True=T=true=t / False=F=false=f)");
-				if (confirmation)
-					scene.resetObjectGroups();
-				return;
+		if (objectGroups.size() >= 1) {
+			while (true) {
+				int index = getIntFromUser("What is the index of the objects groups you want to delete? (-1 = cancel / -2 = delete all)");
+				if (index == -1)
+					return;
+				if (index == -2) {
+					std::cout << std::endl;
+					bool confirmation = getBoolFromUser("Do you confirm the deletion of all the objects groups? (True=T=true=t / False=F=false=f)");
+					if (confirmation)
+						scene.resetObjectGroups();
+					return;
+				}
+				if (index >= 0 && index < objectGroups.size()) {
+					std::cout << std::endl;
+					bool confirmation = getBoolFromUser("Do you confirm the deletion of this objects group? (True=T=true=t / False=F=false=f)");
+					if (confirmation)
+						objectGroups.erase(objectGroups.begin() + index);
+					return;
+				}
+				std::cout << "This index is invalid!" << std::endl << std::endl;
 			}
-			if (index >= 0 && index < objectGroups.size()) {
-				std::cout << std::endl;
-				bool confirmation = getBoolFromUser("Do you confirm the deletion of this objects group? (True=T=true=t / False=F=false=f)");
-				if (confirmation)
-					objectGroups.erase(objectGroups.begin() + index);
-				return;
-			}
-			std::cout << "This index is invalid!" << std::endl << std::endl;
 		}
+		else
+			commandWasInvalid = true;
 	}
 	case 'g': {
-		while (true) {
-			int index1 = getIntFromUser("What is the index of the first objects group? (-1 = cancel)");
-			if (index1 == -1)
-				return;
-			if (index1 >= 0 && index1 < objectGroups.size()) {
-				while (true) {
-					std::cout << std::endl;
-					int index2 = getIntFromUser("What is the index of the second objects group? (-1 = cancel)");
-					if (index2 == -1)
-						return;
-					if (index2 == index1)
-						std::cout << "The second index must be different from the first one" << std::endl << std::endl;
-					else if (index2 >= 0 && index2 < objectGroups.size()) {
+		if(objectGroups.size() >= 2) {
+			while (true) {
+				int index1 = getIntFromUser("What is the index of the first objects group? (-1 = cancel)");
+				if (index1 == -1)
+					return;
+				if (index1 >= 0 && index1 < objectGroups.size()) {
+					while (true) {
 						std::cout << std::endl;
-						std::string newName = getStringFromUser("What is the name of the merged objects group?");
-						objectGroups[index1].merge(objectGroups[index2]);
-						Object3DGroup newObject = objectGroups[index1];
+						int index2 = getIntFromUser("What is the index of the second objects group? (-1 = cancel)");
+						if (index2 == -1)
+							return;
+						if (index2 == index1)
+							std::cout << "The second index must be different from the first one" << std::endl << std::endl;
+						else if (index2 >= 0 && index2 < objectGroups.size()) {
+							std::cout << std::endl;
+							std::string newName = getStringFromUser("What is the name of the merged objects group?");
+							objectGroups[index1].merge(objectGroups[index2]);
+							Object3DGroup newObject = objectGroups[index1];
 
-						objectGroups.erase(objectGroups.begin() + std::max(index1, index2));
-						objectGroups.erase(objectGroups.begin() + std::min(index1, index2));
+							objectGroups.erase(objectGroups.begin() + std::max(index1, index2));
+							objectGroups.erase(objectGroups.begin() + std::min(index1, index2));
 
-						newObject.setName(newName);
-						objectGroups.push_back(newObject);
-						return;
-					} else
-						std::cout << "This index is invalid" << std::endl << std::endl;
+							newObject.setName(newName);
+							objectGroups.push_back(newObject);
+							return;
+						}
+						else
+							std::cout << "This index is invalid" << std::endl << std::endl;
+					}
 				}
+				std::cout << "This index is invalid" << std::endl << std::endl;
 			}
-			std::cout << "This index is invalid" << std::endl << std::endl;
 		}
+		else
+			commandWasInvalid = true;
 	}
 	case 'i': {
 		return;
 	}
 	case 'm': {
-		while (true) {
-			unsigned int index = getUnsignedIntFromUser("What is the index of the objects groups you want to modify (positive integer)");
-	
-			if (index < objectGroups.size()) {
-				objectGroups[index].modify();
-				return;
-			}
-			else {
-				std::cout << "This index is too big!" << std::endl << std::endl;
+		if(objectGroups.size() >= 1) {
+			while (true) {
+				unsigned int index = getUnsignedIntFromUser("What is the index of the objects groups you want to modify (positive integer)");
+
+				if (index < objectGroups.size()) {
+					objectGroups[index].modify();
+					return;
+				}
+				else {
+					std::cout << "This index is too big!" << std::endl << std::endl;
+				}
 			}
 		}
+		else
+			commandWasInvalid = true;
 	}
 	default:
 		commandWasInvalid = true;
