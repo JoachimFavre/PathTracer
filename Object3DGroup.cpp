@@ -113,14 +113,7 @@ std::vector<Object3D*> split(std::vector<Object3DGroup> groups) {
 
 // For the interface
 Object3DGroup Object3DGroup::create() {
-	clearScreenPrintHeader();
-
-	std::string name;
-
-	system("cls");
-	std::cout << "What is the name of this object group?" << std::endl;
-	std::cout << "> ";
-	std::cin >> name;
+	std::string name = getStringFromUser("What is the name of this object group ?");
 
 	return Object3DGroup(name);
 }
@@ -139,12 +132,14 @@ void Object3DGroup::modify() {
 		availableCommandsHeader();
 		std::cout << "- a: add an object" << std::endl;
 		std::cout << "- b: go back to the objects page" << std::endl;
+		std::cout << "- g: merge an other objects group into this one" << std::endl;
 		std::cout << "- m: modify an object" << std::endl;
-		std::cout << "- n: change the name" << std::endl;
+		std::cout << "- n: change the name of this objects group" << std::endl;
 		std::cout << std::endl;
 
 
 		char command = getCharFromUser(commandWasInvalid ? invalidCommand : "");
+		commandWasInvalid = false;
 		std::cout << std::endl;
 
 		switch (command) {
