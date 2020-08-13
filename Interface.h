@@ -46,13 +46,8 @@ static std::string getStringFromUser(std::string question = "") {
 			std::cin.clear();
 			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 		}
-		else {
-			std::string result = userText;
-			if (result == "")
-				std::cout << "You did not write anything..." << std::endl << std::endl;
-			else
-				return result;
-		}
+		else
+			return userText;
 	}
 }
 
@@ -62,17 +57,13 @@ static char getCharFromUser(std::string question = "") {
 }
 
 
-static unsigned int getUnsignedIntFromUser(std::string question = "") {
+// Too many repetitions, I have to correct that
+static int getIntFromUser(std::string question = "") {
 	while (true) {
 		std::string userText = getStringFromUser(question);
 
 		try {
-			int value = std::stoi(userText);
-
-			if (value >= 0)
-				return value;
-			std::cout << "This is not a positive number!";
-
+			return std::stoi(userText);
 		} catch (const std::invalid_argument& exception) {
 			std::cout << "This is not a number!";
 		} catch (const std::out_of_range& exception) {
@@ -83,12 +74,27 @@ static unsigned int getUnsignedIntFromUser(std::string question = "") {
 	}
 }
 
-static double getDoubleFromUser(std::string question = "") {
+
+static unsigned int getUnsignedIntFromUser(std::string question = "") {
+	while (true) {
+		int value = getIntFromUser(question);
+		if (value >= 0)
+			return value;
+		std::cout << "This is not a positive number!" << std::endl << std::endl;
+	}
+}
+
+static double getPositiveDoubleFromUser(std::string question = "") {
 	while (true) {
 		std::string userText = getStringFromUser(question);
 
 		try {
-			return std::stod(userText);
+			double value = std::stod(userText);
+
+			if (value >= 0)
+				return value;
+			std::cout << "This is not a positive number!";
+
 		} catch (const std::invalid_argument& exception) {
 			std::cout << "This is not a number!";
 		} catch (const std::out_of_range& exception) {
