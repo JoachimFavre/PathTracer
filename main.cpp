@@ -1,3 +1,4 @@
+#include <string>
 #include <iomanip>
 #include <iostream>
 
@@ -18,21 +19,9 @@
 #include "Triangle.h"
 #include "Interface.h"
 
-unsigned int pictureWidth = 500;
-unsigned int pictureHeight = 500;
-double caneraFocalLength = 3;
-double cameraFovX = M_PI_4;
-
-unsigned int samplePerPixels = 1;
-unsigned int minBounces = 5;  // Less if nothing is hit
-double maxDepth = 10;
-
-unsigned int numberThreads = 8;
-bool russianRoulette = true;
-double rrStopProbability = 0.1;
-bool nextEventEstimation = true;
-
 Scene scene;
+PerspectiveCamera& camera = scene.getCameraReference();
+std::vector<Object3DGroup>& objectGroups = scene.getObjectsGroupsReference();
 
 enum class Page {
 	ParametersPage,
@@ -45,7 +34,9 @@ bool commandWasInvalid = false;
 void clearScreenPrintHeader();
 void displayParametersPage();
 void displayObjectsPage();
-void receiveAndExecuteCommand();
+void receiveAndExecuteParametersCommands(char command);
+void receiveAndExecuteObjectsCommands(char command);
+void receiveAndExecuteGeneralCommands();
 void displayCommands();
 void drawCurrentPage();
 
@@ -53,25 +44,25 @@ void drawCurrentPage();
 void displayParametersPage() {
 	std::cout << "Camera" << std::endl;
 	std::cout << dashSplitter << std::endl;
-	std::cout << "0) Picture width = " << pictureWidth << std::endl;
-	std::cout << "1) Picture height = " << pictureHeight << std::endl;
-	std::cout << "2) Focal length = " << caneraFocalLength << std::endl;
-	std::cout << "3) X field of view = " << cameraFovX << std::endl;
+	std::cout << "0) Picture width = " << camera.getNumberPixelsX() << std::endl;
+	std::cout << "1) Picture height = " << camera.getNumberPixelsY() << std::endl;
+	std::cout << "2) Focal length = " << camera.getFocalLength() << std::endl;
+	std::cout << "3) X field of view = " << camera.getFovX() << std::endl;
 	std::cout << std::endl;
 
 	std::cout << "Basic parameters" << std::endl;
 	std::cout << dashSplitter << std::endl;
-	std::cout << "4) Sample per pixels = " << samplePerPixels << std::endl;
-	std::cout << "5) Minimum bounces = " << minBounces << std::endl;
-	std::cout << "6) Max depth = " << maxDepth << std::endl;
+	std::cout << "4) Sample per pixels = " << scene.getSamplePerPixel() << std::endl;
+	std::cout << "5) Minimum bounces = " << scene.getMinBounces() << std::endl;
+	std::cout << "6) Max depth = " << scene.getMaxDepth() << std::endl;
 	std::cout << std::endl;
 
 	std::cout << "Optimisation parameters" << std::endl;
 	std::cout << dashSplitter << std::endl;
-	std::cout << "7) Number of threads = " << numberThreads << std::endl;
-	std::cout << "8) Russian roulette = " << bool2string(russianRoulette) << std::endl;
-	std::cout << "9) Rr stop probability = " << rrStopProbability << std::endl;
-	std::cout << "10) Next event estimation = " << bool2string(nextEventEstimation) << std::endl;
+	std::cout << "7) Number of threads = " << scene.getNumberThreads() << std::endl;
+	std::cout << "8) Russian roulette = " << bool2string(scene.getRussianRoulette()) << std::endl;
+	std::cout << "9) Rr stop probability = " << scene.getRrStopProbability() << std::endl;
+	std::cout << "10) Next event estimation = " << bool2string(scene.getNextEventEstimation()) << std::endl;
 	std::cout << std::endl;
 }
 
@@ -110,22 +101,22 @@ void displayCommands() {
 }
 
 
-void receiveAndExecuteCommand() {
+void receiveAndExecuteGeneralCommands() {
 	bool isParametersPage = currentPage == Page::ParametersPage;
 
 	std::cout << std::endl;
 	char command = getCharFromUser(commandWasInvalid ? invalidCommand : "");
 	commandWasInvalid = false;
 
+	std::cout << std::endl;
+
 	switch (command) {
-		case 'a': {
-			Object3DGroup newGroup = Object3DGroup::create();
-			newGroup.modify();
-			return;
-		}
 		case 'e': {
-			std::cout << std::endl << "Have a nice day!" << std::endl;
+			std::cout << "Have a nice day!" << std::endl;
 			exit(0);
+		}
+		case  'l': {
+
 		}
 		case 'p': {
 			if (isParametersPage)
@@ -134,9 +125,71 @@ void receiveAndExecuteCommand() {
 				currentPage = Page::ParametersPage;
 			return;
 		}
-		default: commandWasInvalid = true;
+		case 'r': {
+
+		}
+		case 's': {
+
+		}
+		default: 
+			if (isParametersPage)
+				receiveAndExecuteParametersCommands(command);
+			else
+				receiveAndExecuteObjectsCommands(command);
+			return;
 	}
 }
+
+
+void receiveAndExecuteParametersCommands(char command) {
+	switch (command) {
+	case 'm': {
+		// Modify a parameter
+		while (true) {
+			unsigned int index = getUnsignedIntFromUser("What is the index of the parameter you want to modify (positive integer)");
+			std::cout << std::endl;
+			switch (index) {
+			case 0: camera.setNumberPixelsX(getUnsignedIntFromUser("What is the new camera width? (positive integer)")); return;
+			case 1: camera.setNumberPixelsY(getUnsignedIntFromUser("What is the new camera height? (positive integer)")); return;
+			case 2: camera.setFocalLength(getDoubleFromUser("What is the new camera focal length (number)")); return;
+			case 3: camera.setFovX(getDoubleFromUser("What is the new X field of view? (number)")); return;
+			case 4: scene.setSamplePerPixel(getUnsignedIntFromUser("What is the new number of sample per pixel? (positive integer)")); return;
+			case 5: scene.setMinBounces(getUnsignedIntFromUser("What is the new minimum number of ray bounces? (there can be less if nothing is hit) (positive integer)")); return;
+			case 6: scene.setMaxDepth(getDoubleFromUser("What is the new maximum depth? (number)")); return;
+			case 7: scene.setNumberThreads(getUnsignedIntFromUser("What is the new number of threads that will used during the rendering? (positive integer)")); return;
+			case 8: scene.setRussianRoulette(getBoolFromUser("Will the russian roulette path termination algorithm be used? (True=T=true=t / False=F=false=f)")); return;
+			case 9: scene.setRrStopProbability(getDoubleFromUser("What is the new stop probability for the russian roulette path termination algorithm? (number)")); return;
+			case 10: scene.setNextEventEstimation(getBoolFromUser("Will the next event estimation algorithm be used? (True=T=true=t / False=F=false=f)")); return;
+			default: std::cout << "This index is too big" << std::endl;
+			}
+		}
+	}
+	default:
+		commandWasInvalid = true;
+	}
+}
+
+void receiveAndExecuteObjectsCommands(char command) {
+	switch (command) {
+	case 'a': {
+		Object3DGroup newGroup = Object3DGroup::create();
+		newGroup.modify();
+		return;
+	}
+	case 'd': {
+
+	}
+	case 'i': {
+
+	}
+	case 'm': {
+
+	}
+	default:
+		commandWasInvalid = true;
+	}
+}
+
 
 
 void drawCurrentPage() {
@@ -148,7 +201,7 @@ void drawCurrentPage() {
 			displayObjectsPage();
 		displayCommands();
 
-		receiveAndExecuteCommand();
+		receiveAndExecuteGeneralCommands();
 	}
 }
 
@@ -159,7 +212,6 @@ int main() {
 
 	scene.resetObjectGroups();
 	scene.defaultScene();
-	scene.getObjectsGroups()[5].modify();
 	drawCurrentPage();
 	
 	/*
