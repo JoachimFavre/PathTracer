@@ -4,11 +4,15 @@
 #include <iostream>
 #include <string>
 
-constexpr unsigned int maxLengthStringFromUser = 256;
+#include "DiffuseMaterial.h"
+#include "SpecularMaterial.h"
+#include "RefractiveMaterial.h"
+
+constexpr unsigned int MAX_LENGTH_STRING_FROM_USER = 256;
 const std::string PROMPT = "> ";
-const std::string starSplitter(26, '*');
-const std::string dashSplitter(26, '-');
-const std::string invalidCommand = "Invalid command.";
+const std::string STAR_SPLITTER(26, '*');
+const std::string DASH_SPLITTER(26, '-');
+const std::string INVALID_COMMAND = "Invalid command.";
 
 // Common parts in interface
 static void clearScreenPrintHeader() {
@@ -16,14 +20,14 @@ static void clearScreenPrintHeader() {
 
 	std::cout << "Joachim Favre's TM" << std::endl;
 	std::cout << "Bidirectional path tracer" << std::endl;
-	std::cout << starSplitter << std::endl;
+	std::cout << STAR_SPLITTER << std::endl;
 	std::cout << std::endl;
 }
 
 
 static void availableCommandsHeader() {
 	std::cout << std::endl;
-	std::cout << starSplitter << std::endl;
+	std::cout << STAR_SPLITTER << std::endl;
 	std::cout << std::endl;
 	std::cout << "You can use the following commands:" << std::endl;
 }
@@ -36,11 +40,13 @@ static std::string bool2string(bool b) {
 
 
 // Get from user
-static std::string getStringFromUser(std::string question = "") {
-	char userText[maxLengthStringFromUser];
+static std::string getStringFromUser(std::string question = "", std::string prompt = PROMPT) {
+	char userText[MAX_LENGTH_STRING_FROM_USER];
 	while (true) {
-		std::cout << question << std::endl << PROMPT;
-		std::cin.getline(userText, maxLengthStringFromUser);
+		if (question != "")
+			std::cout << question << std::endl;
+		std::cout << prompt;
+		std::cin.getline(userText, MAX_LENGTH_STRING_FROM_USER);
 		if (std::cin.fail()) {
 			std::cout << "This string is too long." << std::endl << std::endl;
 			std::cin.clear();
@@ -52,15 +58,15 @@ static std::string getStringFromUser(std::string question = "") {
 }
 
 
-static char getCharFromUser(std::string question = "") {
-	return (getStringFromUser(question))[0];
+static char getCharFromUser(std::string question = "", std::string prompt = PROMPT) {
+	return (getStringFromUser(question, prompt))[0];
 }
 
 
 // Too many repetitions, I have to correct that
-static int getIntFromUser(std::string question = "") {
+static int getIntFromUser(std::string question = "", std::string prompt = PROMPT) {
 	while (true) {
-		std::string userText = getStringFromUser(question);
+		std::string userText = getStringFromUser(question, prompt);
 
 		try {
 			return std::stoi(userText);
@@ -75,18 +81,18 @@ static int getIntFromUser(std::string question = "") {
 }
 
 
-static unsigned int getUnsignedIntFromUser(std::string question = "") {
+static unsigned int getUnsignedIntFromUser(std::string question = "", std::string prompt = PROMPT) {
 	while (true) {
-		int value = getIntFromUser(question);
+		int value = getIntFromUser(question, prompt);
 		if (value >= 0)
 			return value;
 		std::cout << "This is not a positive number!" << std::endl << std::endl;
 	}
 }
 
-static double getPositiveDoubleFromUser(std::string question = "") {
+static double getPositiveDoubleFromUser(std::string question = "", std::string prompt = PROMPT) {
 	while (true) {
-		std::string userText = getStringFromUser(question);
+		std::string userText = getStringFromUser(question, prompt);
 
 		try {
 			double value = std::stod(userText);
@@ -105,9 +111,9 @@ static double getPositiveDoubleFromUser(std::string question = "") {
 	}
 }
 
-static bool getBoolFromUser(std::string question = "") {
+static bool getBoolFromUser(std::string question = "", std::string prompt = PROMPT) {
 	while (true) {
-		char userText = getCharFromUser(question);
+		char userText = getCharFromUser(question, prompt);
 
 		if (userText == 'T' || userText == 't')
 			return true;
@@ -119,4 +125,49 @@ static bool getBoolFromUser(std::string question = "") {
 	}
 }
 
+static DoubleVec3D getPositiveDoubleVec3DFromUser(std::string question = "", std::string prompt = PROMPT) {
+	// Use array? + Allow use 'r' 'g' 'b' ?
+	double x = getPositiveDoubleFromUser(question, "x " + prompt);
+	double y = getPositiveDoubleFromUser("", "y " + prompt);
+	double z = getPositiveDoubleFromUser("", "z " + prompt);
+
+	return DoubleVec3D(x, y, z);
+}
+
+
+// Materials
+static Material* createDiffuseMaterial(const DoubleVec3D& emittance) {
+	DoubleVec3D colour = getPositiveDoubleVec3DFromUser("What is the colour of this diffuse material?");
+	std::cout << std::endl;
+	return new DiffuseMaterial(colour, emittance);
+}
+
+static Material* createRefractiveMaterial(const DoubleVec3D& emittance) {
+	double refractiveIndex = getPositiveDoubleFromUser("What is the refractive index of this material? (1 = no refraction / 1.5 = glass)");
+	std::cout << std::endl;
+	return new RefractiveMaterial(refractiveIndex, emittance);
+}
+
+static Material* createSpecularMaterial(const DoubleVec3D& emittance) {
+	return new SpecularMaterial(emittance);
+}
+
+static Material* createMaterial() {
+	while (true) {
+		char command = getCharFromUser("Do you want a (d)iffuse material, a (r)efractive material or a (s)pecular material?");
+		if (command == 'd' || command == 'r' || command == 's') {
+			std::cout << std::endl;
+			DoubleVec3D emittance = getPositiveDoubleVec3DFromUser("What is the emittance of this diffuse material? ((0, 0, 0) if not a lamp)");
+			std::cout << std::endl;
+
+			switch (command) {
+			case 'd': return createDiffuseMaterial(emittance);
+			case 'r': return createRefractiveMaterial(emittance);
+			case 's': return createSpecularMaterial(emittance);
+			}
+		}
+		else
+			std::cout << INVALID_COMMAND << std::endl << std::endl;
+	}
+}
 #endif
