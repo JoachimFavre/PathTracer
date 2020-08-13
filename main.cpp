@@ -94,7 +94,7 @@ void displayCommands() {
 		std::cout << "- i: import an object from a FBX file" << std::endl;
 
 	std::cout << "- l: load a parameter file and overwrite current objects & parameters" << std::endl;
-	std::cout << "- m: modify a " << (isParametersPage ? "parameter" : "object group") << std::endl;
+	std::cout << "- m: modify a" << (isParametersPage ? " parameter" : "n object group") << std::endl;
 	std::cout << "- p: switch to " << (isParametersPage ? "objects" : "parameters") << " page" << std::endl;
 	std::cout << "- r: start the rendering" << std::endl;
 	std::cout << "- s: save current objects and parameters to a file" << std::endl;
@@ -116,7 +116,7 @@ void receiveAndExecuteGeneralCommands() {
 			exit(0);
 		}
 		case  'l': {
-
+			return;
 		}
 		case 'p': {
 			if (isParametersPage)
@@ -126,10 +126,17 @@ void receiveAndExecuteGeneralCommands() {
 			return;
 		}
 		case 'r': {
+			double middleGray = getPositiveDoubleFromUser("What luminance will be the middle-gray? (try 100 if you have no idea) (positive number)");
+			std::cout << std::endl;
+			std::string filePath = getStringFromUser("What is the name of the file in which the picture will be saved?");
+			clearScreenPrintHeader();
+			scene.render()->writeToFile(middleGray, filePath);
 
+			std::cout << std::endl;
+			getStringFromUser("Write anything to continue");
 		}
 		case 's': {
-
+			return;
 		}
 		default: 
 			if (isParametersPage)
@@ -151,16 +158,16 @@ void receiveAndExecuteParametersCommands(char command) {
 			switch (index) {
 			case 0: camera.setNumberPixelsX(getUnsignedIntFromUser("What is the new camera width? (positive integer)")); return;
 			case 1: camera.setNumberPixelsY(getUnsignedIntFromUser("What is the new camera height? (positive integer)")); return;
-			case 2: camera.setFocalLength(getDoubleFromUser("What is the new camera focal length (number)")); return;
-			case 3: camera.setFovX(getDoubleFromUser("What is the new X field of view? (number)")); return;
+			case 2: camera.setFocalLength(getPositiveDoubleFromUser("What is the new camera focal length (positive number)")); return;
+			case 3: camera.setFovX(getPositiveDoubleFromUser("What is the new X field of view? (positive number)")); return;
 			case 4: scene.setSamplePerPixel(getUnsignedIntFromUser("What is the new number of sample per pixel? (positive integer)")); return;
 			case 5: scene.setMinBounces(getUnsignedIntFromUser("What is the new minimum number of ray bounces? (there can be less if nothing is hit) (positive integer)")); return;
-			case 6: scene.setMaxDepth(getDoubleFromUser("What is the new maximum depth? (number)")); return;
+			case 6: scene.setMaxDepth(getPositiveDoubleFromUser("What is the new maximum depth? (positive number)")); return;
 			case 7: scene.setNumberThreads(getUnsignedIntFromUser("What is the new number of threads that will used during the rendering? (positive integer)")); return;
 			case 8: scene.setRussianRoulette(getBoolFromUser("Will the russian roulette path termination algorithm be used? (True=T=true=t / False=F=false=f)")); return;
-			case 9: scene.setRrStopProbability(getDoubleFromUser("What is the new stop probability for the russian roulette path termination algorithm? (number)")); return;
+			case 9: scene.setRrStopProbability(getPositiveDoubleFromUser("What is the new stop probability for the russian roulette path termination algorithm? (positive number in [0, 1])")); return;
 			case 10: scene.setNextEventEstimation(getBoolFromUser("Will the next event estimation algorithm be used? (True=T=true=t / False=F=false=f)")); return;
-			default: std::cout << "This index is too big" << std::endl;
+			default: std::cout << "This index is too big!" << std::endl;
 			}
 		}
 	}
@@ -173,17 +180,47 @@ void receiveAndExecuteObjectsCommands(char command) {
 	switch (command) {
 	case 'a': {
 		Object3DGroup newGroup = Object3DGroup::create();
+		objectGroups.push_back(newGroup);
 		newGroup.modify();
 		return;
 	}
 	case 'd': {
-
+		while (true) {
+			int index = getIntFromUser("What is the index of the objects groups you want to delete? (-1 = cancel / -2 = delete all)");
+			if (index == -1)
+				return;
+			if (index == -2) {
+				std::cout << std::endl;
+				bool confirmation = getBoolFromUser("Do you confirm the deletion of all the objects groups? (True=T=true=t / False=F=false=f)");
+				if (confirmation)
+					scene.resetObjectGroups();
+				return;
+			}
+			if (index >= 0 && index < objectGroups.size()) {
+				std::cout << std::endl;
+				bool confirmation = getBoolFromUser("Do you confirm the deletion of this objects group? (True=T=true=t / False=F=false=f)");
+				if (confirmation)
+					objectGroups.erase(objectGroups.begin() + index);
+				return;
+			}
+			std::cout << "This index is invalid!" << std::endl << std::endl;
+		}
 	}
 	case 'i': {
-
+		return;
 	}
 	case 'm': {
-
+		while (true) {
+			unsigned int index = getUnsignedIntFromUser("What is the index of the objects groups you want to modify (positive integer)");
+	
+			if (index < objectGroups.size()) {
+				objectGroups[index].modify();
+				return;
+			}
+			else {
+				std::cout << "This index is too big!" << std::endl << std::endl;
+			}
+		}
 	}
 	default:
 		commandWasInvalid = true;
@@ -213,7 +250,6 @@ int main() {
 	scene.resetObjectGroups();
 	scene.defaultScene();
 	drawCurrentPage();
-	
 	/*
 	double beginningTime = getCurrentTimeSeconds();
 	// Display doubles with 2 decimals
