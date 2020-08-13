@@ -79,7 +79,7 @@ public:
 	void resetObjectGroups();
 	void computeObjectsAndLamps();
 	void defaultScene();
-	void importFBX(const char* filePath);
+	bool importFBX(const char* filePath, Material* material, std::string name);
 
 	Picture* render();
 };

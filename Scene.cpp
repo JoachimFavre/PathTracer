@@ -113,7 +113,7 @@ void Scene::defaultScene() {
 		}));
 }
 
-void Scene::importFBX(const char* filePath) {
+bool Scene::importFBX(const char* filePath, Material* material, std::string name) {
 	double importationBeginningTime = getCurrentTimeSeconds();
 
 	FbxManager* sdkManager = FbxManager::Create();
@@ -125,9 +125,8 @@ void Scene::importFBX(const char* filePath) {
 	bool importStatus = importer->Initialize(filePath, -1, sdkManager->GetIOSettings());
 
 	if (!importStatus) {
-		printf("Call to FbxImporter::Initialize() failed.\n");
-		printf("Error returned: %s\n\n", importer->GetStatus().GetErrorString());
-		exit(-1);
+		std::cout << "Error in the importation: " << importer->GetStatus().GetErrorString() << std::endl;
+		return false;
 	}
 
 	FbxScene* fbxScene = FbxScene::Create(sdkManager, "myScene");
@@ -137,8 +136,8 @@ void Scene::importFBX(const char* filePath) {
 	FbxGeometryConverter clsConverter(sdkManager);
 	bool triangulisationStatus = clsConverter.Triangulate(fbxScene, true);
 	if (!triangulisationStatus) {
-		std::cout << "Triangulisation could not be fully done" << std::endl;
-		exit(-1);
+		std::cout << "Error in the importation: triangulisation could not be fully done" << std::endl;
+		return false;
 	}
 
 	FbxNode* rootNode = fbxScene->GetRootNode();
@@ -157,38 +156,13 @@ void Scene::importFBX(const char* filePath) {
 
 		if (mesh != nullptr) {
 			FbxVector4* controlPoints = mesh->GetControlPoints();
-
-			// Compute material
-			DoubleVec3D colour(0.8);
-			DoubleVec3D emittance(0);
-
-			if (child->GetMaterialCount() > 0) {
-				FbxSurfaceMaterial* material = child->GetMaterial(0); // Assumes there is only one colour for the whole mesh
-				FbxClassId materialClassId = material->GetClassId();
-
-				// Very hugly but from official documentation: http://help.autodesk.com/view/FBX/2015/ENU/?guid=__cpp_ref__import_scene_2_display_material_8cxx_example_html
-				if (materialClassId.Is(FbxSurfaceLambert::ClassId)) {
-					FbxSurfaceLambert* lambertMaterial = (FbxSurfaceLambert*)material;
-					colour = lambertMaterial->Diffuse.Get();
-					emittance = lambertMaterial->Emissive.Get();
-				}
-				else if (materialClassId.Is(FbxSurfacePhong::ClassId)) {
-					FbxSurfacePhong* phongMaterial = (FbxSurfacePhong*)material;
-					colour = phongMaterial->Diffuse.Get();
-					emittance = phongMaterial->Emissive.Get();
-				}
-				else {
-					std::cout << "Unrecognised material type" << std::endl;
-				}
-			}
-
 			std::vector<Object3D*> objects;
 
 			// Add each triangle to the scene
 			for (int polygonIx = 0; polygonIx < mesh->GetPolygonCount(); polygonIx++) {
 				if (mesh->GetPolygonSize(polygonIx) != 3) {
-					std::cout << "This polygon is not a triangle";
-					exit(-1);
+					std::cout << "Error in the importation: a polygon is not a triangle" << std::endl;
+					return false;
 				}
 
 				// FbxSurfaceMaterial* material = child->GetMaterial(0);  // assumes one material for each face
@@ -199,7 +173,7 @@ void Scene::importFBX(const char* filePath) {
 				DoubleVec3D vertex1 = rotationAndScalingMatrix * controlPoints[mesh->GetPolygonVertex(polygonIx, 1)] + translation;
 				DoubleVec3D vertex2 = rotationAndScalingMatrix * controlPoints[mesh->GetPolygonVertex(polygonIx, 2)] + translation;
 
-				Triangle* triangle = new Triangle(vertex0, vertex1, vertex2, new DiffuseMaterial(colour));
+				Triangle* triangle = new Triangle(vertex0, vertex1, vertex2, material);
 				// Emittance is always equal to the diffuse colour -> bug from the library
 
 				// Verify normals ?
@@ -207,11 +181,12 @@ void Scene::importFBX(const char* filePath) {
 				objects.push_back(triangle);
 			}
 
-			addObjectGroup(Object3DGroup(filePath, objects));
+			addObjectGroup(Object3DGroup(name, objects));
 		}
 	}
 
-	std::cout << filePath << " was successfully oppened in " << getCurrentTimeSeconds() - importationBeginningTime << " seconds!" << std::endl << std::endl;
+	std::cout << filePath << " was successfully opened in " << getCurrentTimeSeconds() - importationBeginningTime << " seconds!" << std::endl;
+	return true;
 }
 
 
