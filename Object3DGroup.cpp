@@ -45,7 +45,7 @@ void Object3DGroup::addObjects(const std::vector<Object3D*>& newObjects) {
 	if (totalNumberObjects > 0) {
 		center *= objects.size() / totalNumberObjects;
 		for (Object3D* object : newObjects) {
-			objects.push_back(object);
+			objects.push_back(object->deepCopy());
 			center += object->getCenter() / totalNumberObjects;
 		}
 	}
@@ -132,7 +132,6 @@ void Object3DGroup::modify() {
 		availableCommandsHeader();
 		std::cout << "- a: add an object" << std::endl;
 		std::cout << "- b: go back to the objects page" << std::endl;
-		std::cout << "- g: merge an other objects group into this one" << std::endl;
 		std::cout << "- m: modify an object" << std::endl;
 		std::cout << "- n: change the name of this objects group" << std::endl;
 		std::cout << std::endl;
@@ -143,6 +142,7 @@ void Object3DGroup::modify() {
 		std::cout << std::endl;
 
 		switch (command) {
+		case 'a': return;
 		case 'b': return;
 		case 'n': {
 			std::string newName = getStringFromUser("What is the new name ?");
