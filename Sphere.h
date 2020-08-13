@@ -16,7 +16,7 @@ private:
 
 public:
 	Sphere();
-	Sphere(const std::string& name, const DoubleVec3D& center, double radius, Material* material);
+	Sphere(const DoubleVec3D& center, double radius, Material* material);
 	Sphere(const Sphere& sphere);
 
 	DoubleVec3D getCenter() const;  // virtual method

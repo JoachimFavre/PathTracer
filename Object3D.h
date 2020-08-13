@@ -11,20 +11,16 @@
 
 class Object3D {
 private:
-	std::string name;
 	Material* material;
 
 public:
 	Object3D();
-	Object3D(const std::string& name, Material* material);
+	Object3D(Material* material);
 	Object3D(const Object3D& obj);
 
 	~Object3D();
 
-	std::string getName() const;
 	Material* getMaterial() const;
-
-	void setName(const std::string& name);
 	void setMaterial(Material* material);
 
 	virtual Object3D* deepCopy() const = 0;

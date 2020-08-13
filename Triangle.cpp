@@ -4,8 +4,8 @@
 Triangle::Triangle()
 	: Object3D(), vertex1(1, 0, 0), vertex2(0, 1, 0), vertex3(0, 0, 1) {}
 
-Triangle::Triangle(const std::string& name, const DoubleVec3D& vertex1, const DoubleVec3D& vertex2, const DoubleVec3D& vertex3, Material* material)
-	: Object3D(name, material), vertex1(vertex1), vertex2(vertex2), vertex3(vertex3) {}
+Triangle::Triangle(const DoubleVec3D& vertex1, const DoubleVec3D& vertex2, const DoubleVec3D& vertex3, Material* material)
+	: Object3D(material), vertex1(vertex1), vertex2(vertex2), vertex3(vertex3) {}
 
 Triangle::Triangle(const Triangle& triangle)
 	: Object3D(triangle), vertex1(triangle.vertex1), vertex2(triangle.vertex2), vertex3(triangle.vertex3) {}
@@ -28,7 +28,7 @@ void Triangle::setVertex3(const DoubleVec3D& vertex) { vertex3 = vertex; }
 
 // Virtual methods
 Object3D* Triangle::deepCopy() const {
-	return new Triangle(getName(), vertex1, vertex2, vertex3, getMaterial()->deepCopy());
+	return new Triangle(vertex1, vertex2, vertex3, getMaterial()->deepCopy());
 }
 
 double Triangle::closestIntersection(const Ray& ray) const {
