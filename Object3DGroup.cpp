@@ -132,6 +132,7 @@ void Object3DGroup::modify() {
 		availableCommandsHeader();
 		std::cout << "- a: add an object" << std::endl;
 		std::cout << "- b: go back to the objects page" << std::endl;
+		std::cout << "- d: delete an object" << std::endl;
 		std::cout << "- m: modify an object" << std::endl;
 		std::cout << "- n: change the name of this objects group" << std::endl;
 		std::cout << "- t: change material of all objects" << std::endl;
@@ -146,8 +147,40 @@ void Object3DGroup::modify() {
 		std::cout << std::endl;
 
 		switch (command) {
-		case 'a': break;
+		case 'a': {
+			Object3D* newObject = createObject3D();
+			addObject(newObject);
+			break;
+		}
 		case 'b': return;
+		case 'd': {
+			if (objects.size() >= 1) {
+				while (true) {
+					int index = getIntFromUser("What is the index of the objects groups you want to delete? (-1 = cancel / -2 = delete all)");
+					if (index == -1)
+						break;
+					if (index == -2) {
+						std::cout << std::endl;
+						bool confirmation = getBoolFromUser("Do you confirm the deletion of all the objects? (True=T=true=t / False=F=false=f)");
+						if (confirmation)
+							objects.clear();
+						break;
+					}
+					if (index >= 0 && index < objects.size()) {
+						std::cout << std::endl;
+						bool confirmation = getBoolFromUser("Do you confirm the deletion of this object? (True=T=true=t / False=F=false=f)");
+						if (confirmation)
+							objects.erase(objects.begin() + index);
+						break;
+					}
+					std::cout << "This index is invalid!" << std::endl << std::endl;
+				}
+			}
+			else
+				commandWasInvalid = true;
+			break;
+		}
+		case 'm': break;
 		case 'n': {
 			std::string newName = getStringFromUser("What is the new name ?");
 			name = newName;
