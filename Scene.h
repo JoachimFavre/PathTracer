@@ -51,10 +51,12 @@ public:
 	Scene(PerspectiveCamera camera, unsigned int samplePerPixel, unsigned int minBounces, double maxDepth, double rrStopProbability);
 	Scene(const Scene& scene);
 
-	std::vector<Object3DGroup> getObjectsGroups();
+	std::vector<Object3DGroup> getObjectsGroups() const;
+	std::vector<Object3DGroup>& getObjectsGroupsReference();  // Reference -> can modify it -> != const
 	std::vector<Object3D*> getObjects();
 	std::vector<Object3D*> getLamps();
 	PerspectiveCamera getCamera() const;
+	PerspectiveCamera& getCameraReference();
 	unsigned int getSamplePerPixel() const;
 	unsigned int getMinBounces() const;
 	double getMaxDepth() const;

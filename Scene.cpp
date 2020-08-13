@@ -11,10 +11,9 @@ Scene::Scene(const Scene& scene)
 
 
 // Getters
-std::vector<Object3DGroup> Scene::getObjectsGroups() {
-	return objectsGroups;
-	objectsAndLampsAreUpToDate = false;
-}
+std::vector<Object3DGroup> Scene::getObjectsGroups() const { return objectsGroups; }
+std::vector<Object3DGroup>& Scene::getObjectsGroupsReference() { return objectsGroups; }
+
 
 std::vector<Object3D*> Scene::getObjects() {
 	computeObjectsAndLamps();
@@ -27,6 +26,7 @@ std::vector<Object3D*> Scene::getLamps() {
 }
 
 PerspectiveCamera Scene::getCamera() const { return camera; }
+PerspectiveCamera& Scene::getCameraReference() { return camera; }
 unsigned int Scene::getSamplePerPixel() const { return samplePerPixel; }
 unsigned int Scene::getMinBounces() const { return minBounces; }
 double Scene::getMaxDepth() const { return maxDepth; }
