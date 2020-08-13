@@ -92,7 +92,7 @@ void displayCommands() {
 
 	if (!isParametersPage) {
 		std::cout << "- g: merge two objects groups" << std::endl;
-		std::cout << "- i: import an object from a FBX file" << std::endl;
+		std::cout << "- i: import an object from a FBX file as an objects group" << std::endl;
 	}
 
 	std::cout << "- l: load a parameter file and overwrite current objects & parameters" << std::endl;
@@ -138,7 +138,7 @@ void receiveAndExecuteGeneralCommands() {
 			scene.render()->writeToFile(middleGray, filePath);
 
 			std::cout << std::endl;
-			getStringFromUser("Write anything to continue");
+			getStringFromUser("Press enter to continue");
 		}
 		case 's': {
 			return;
@@ -253,6 +253,14 @@ void receiveAndExecuteObjectsCommands(char command) {
 			commandWasInvalid = true;
 	}
 	case 'i': {
+		std::string filePath = getStringFromUser("What is the file path of the FBX file?");
+		std::cout << std::endl;
+		std::string name = getStringFromUser("How do you want to call the objects group?");
+		std::cout << std::endl;
+		Material* material = createMaterial();
+		scene.importFBX(filePath.c_str(), material, name);
+		std::cout << std::endl;
+		getStringFromUser("Press enter to continue");
 		return;
 	}
 	case 'm': {
