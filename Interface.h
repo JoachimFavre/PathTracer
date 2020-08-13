@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 
-
+constexpr unsigned int maxLengthStringFromUser = 256;
 const std::string PROMPT = "> ";
 const std::string starSplitter(26, '*');
 const std::string dashSplitter(26, '-');
@@ -37,10 +37,23 @@ static std::string bool2string(bool b) {
 
 // Get from user
 static std::string getStringFromUser(std::string question = "") {
-	std::cout << question << std::endl << PROMPT;
-	std::string userText;
-	std::cin >> userText;
-	return userText;
+	char userText[maxLengthStringFromUser];
+	while (true) {
+		std::cout << question << std::endl << PROMPT;
+		std::cin.getline(userText, maxLengthStringFromUser);
+		if (std::cin.fail()) {
+			std::cout << "This string is too long." << std::endl << std::endl;
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		}
+		else {
+			std::string result = userText;
+			if (result == "")
+				std::cout << "You did not write anything..." << std::endl << std::endl;
+			else
+				return result;
+		}
+	}
 }
 
 
