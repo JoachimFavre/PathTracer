@@ -43,7 +43,7 @@ void drawCurrentPage();
 
 void displayParametersPage() {
 	std::cout << "Camera" << std::endl;
-	std::cout << dashSplitter << std::endl;
+	std::cout << DASH_SPLITTER << std::endl;
 	std::cout << "0) Picture width = " << camera.getNumberPixelsX() << std::endl;
 	std::cout << "1) Picture height = " << camera.getNumberPixelsY() << std::endl;
 	std::cout << "2) Focal length = " << camera.getFocalLength() << std::endl;
@@ -51,14 +51,14 @@ void displayParametersPage() {
 	std::cout << std::endl;
 
 	std::cout << "Basic parameters" << std::endl;
-	std::cout << dashSplitter << std::endl;
+	std::cout << DASH_SPLITTER << std::endl;
 	std::cout << "4) Sample per pixels = " << scene.getSamplePerPixel() << std::endl;
 	std::cout << "5) Minimum bounces = " << scene.getMinBounces() << std::endl;
 	std::cout << "6) Max depth = " << scene.getMaxDepth() << std::endl;
 	std::cout << std::endl;
 
 	std::cout << "Optimisation parameters" << std::endl;
-	std::cout << dashSplitter << std::endl;
+	std::cout << DASH_SPLITTER << std::endl;
 	std::cout << "7) Number of threads = " << scene.getNumberThreads() << std::endl;
 	std::cout << "8) Russian roulette = " << bool2string(scene.getRussianRoulette()) << std::endl;
 	std::cout << "9) Rr stop probability = " << scene.getRrStopProbability() << std::endl;
@@ -107,8 +107,11 @@ void receiveAndExecuteGeneralCommands() {
 	bool isParametersPage = currentPage == Page::ParametersPage;
 
 	std::cout << std::endl;
-	char command = getCharFromUser(commandWasInvalid ? invalidCommand : "");
-	commandWasInvalid = false;
+	if (commandWasInvalid) {
+		commandWasInvalid = false;
+		std::cout << INVALID_COMMAND << std::endl;
+	}
+	char command = getCharFromUser();
 
 	std::cout << std::endl;
 
