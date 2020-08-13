@@ -10,7 +10,7 @@
 class PerspectiveCamera {
 private:
 	unsigned int numberPixelsX, numberPixelsY;
-	double focalLength, tanFovX;
+	double focalLength, fovX, tanFovX;
 
 public:
 	PerspectiveCamera();
@@ -19,6 +19,7 @@ public:
 	
 	unsigned int getNumberPixelsX() const;
 	unsigned int getNumberPixelsY() const;
+	double getFovX() const;
 	double getTanFovX() const;
 	double getTanFovY() const;
 	double getFocalLength() const;
