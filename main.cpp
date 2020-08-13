@@ -90,8 +90,10 @@ void displayCommands() {
 
 	std::cout << "- e: exit this program" << std::endl;
 
-	if (!isParametersPage)
+	if (!isParametersPage) {
+		std::cout << "- g: merge two objects groups" << std::endl;
 		std::cout << "- i: import an object from a FBX file" << std::endl;
+	}
 
 	std::cout << "- l: load a parameter file and overwrite current objects & parameters" << std::endl;
 	std::cout << "- m: modify a" << (isParametersPage ? " parameter" : "n object group") << std::endl;
@@ -204,6 +206,38 @@ void receiveAndExecuteObjectsCommands(char command) {
 				return;
 			}
 			std::cout << "This index is invalid!" << std::endl << std::endl;
+		}
+	}
+	case 'g': {
+		while (true) {
+			int index1 = getIntFromUser("What is the index of the first objects group? (-1 = cancel)");
+			if (index1 == -1)
+				return;
+			if (index1 >= 0 && index1 < objectGroups.size()) {
+				while (true) {
+					std::cout << std::endl;
+					int index2 = getIntFromUser("What is the index of the second objects group? (-1 = cancel)");
+					if (index2 == -1)
+						return;
+					if (index2 == index1)
+						std::cout << "The second index must be different from the first one" << std::endl << std::endl;
+					else if (index2 >= 0 && index2 < objectGroups.size()) {
+						std::cout << std::endl;
+						std::string newName = getStringFromUser("What is the name of the merged objects group?");
+						objectGroups[index1].merge(objectGroups[index2]);
+						Object3DGroup newObject = objectGroups[index1];
+
+						objectGroups.erase(objectGroups.begin() + std::max(index1, index2));
+						objectGroups.erase(objectGroups.begin() + std::min(index1, index2));
+
+						newObject.setName(newName);
+						objectGroups.push_back(newObject);
+						return;
+					} else
+						std::cout << "This index is invalid" << std::endl << std::endl;
+				}
+			}
+			std::cout << "This index is invalid" << std::endl << std::endl;
 		}
 	}
 	case 'i': {
