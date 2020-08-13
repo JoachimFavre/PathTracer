@@ -4,6 +4,9 @@
 #include <iostream>
 #include <string>
 
+#include "Object3D.h"
+#include "Sphere.h"
+#include "Triangle.h"
 #include "DiffuseMaterial.h"
 #include "SpecularMaterial.h"
 #include "RefractiveMaterial.h"
@@ -90,17 +93,12 @@ static unsigned int getUnsignedIntFromUser(std::string question = "", std::strin
 	}
 }
 
-static double getPositiveDoubleFromUser(std::string question = "", std::string prompt = PROMPT) {
+static double getDoubleFromUser(std::string question = "", std::string prompt = PROMPT) {
 	while (true) {
 		std::string userText = getStringFromUser(question, prompt);
 
 		try {
-			double value = std::stod(userText);
-
-			if (value >= 0)
-				return value;
-			std::cout << "This is not a positive number!";
-
+			return std::stod(userText);
 		} catch (const std::invalid_argument& exception) {
 			std::cout << "This is not a number!";
 		} catch (const std::out_of_range& exception) {
@@ -110,6 +108,16 @@ static double getPositiveDoubleFromUser(std::string question = "", std::string p
 		std::cout << std::endl << std::endl;
 	}
 }
+
+static double getPositiveDoubleFromUser(std::string question = "", std::string prompt = PROMPT) {
+	while (true) {
+		double value = getDoubleFromUser(question, prompt);
+		if (value >= 0)
+			return value;
+		std::cout << "This is not a positive number!" << std::endl << std::endl;
+	}
+}
+
 
 static bool getBoolFromUser(std::string question = "", std::string prompt = PROMPT) {
 	while (true) {
@@ -125,11 +133,20 @@ static bool getBoolFromUser(std::string question = "", std::string prompt = PROM
 	}
 }
 
-static DoubleVec3D getPositiveDoubleVec3DFromUser(std::string question = "", std::string prompt = PROMPT) {
-	// Use array? + Allow use 'r' 'g' 'b' ?
-	double x = getPositiveDoubleFromUser(question, "x " + prompt);
-	double y = getPositiveDoubleFromUser("", "y " + prompt);
-	double z = getPositiveDoubleFromUser("", "z " + prompt);
+static DoubleVec3D getXYZDoubleVec3DFromUser(std::string question = "", std::string prompt = PROMPT) {
+	// Use array?
+	double x = getDoubleFromUser(question, "x " + prompt);
+	double y = getDoubleFromUser("", "y " + prompt);
+	double z = getDoubleFromUser("", "z " + prompt);
+
+	return DoubleVec3D(x, y, z);
+}
+
+static DoubleVec3D getRGBDoubleVec3DFromUser(std::string question = "", std::string prompt = PROMPT) {
+	// Use array?
+	double x = getPositiveDoubleFromUser(question, "r " + prompt);
+	double y = getPositiveDoubleFromUser("", "g " + prompt);
+	double z = getPositiveDoubleFromUser("", "b " + prompt);
 
 	return DoubleVec3D(x, y, z);
 }
@@ -137,7 +154,7 @@ static DoubleVec3D getPositiveDoubleVec3DFromUser(std::string question = "", std
 
 // Materials
 static Material* createDiffuseMaterial(const DoubleVec3D& emittance) {
-	DoubleVec3D colour = getPositiveDoubleVec3DFromUser("What is the colour of this diffuse material?");
+	DoubleVec3D colour = getRGBDoubleVec3DFromUser("What is the colour of this diffuse material?");
 	std::cout << std::endl;
 	return new DiffuseMaterial(colour, emittance);
 }
@@ -157,7 +174,7 @@ static Material* createMaterial() {
 		char command = getCharFromUser("Do you want a (d)iffuse material, a (r)efractive material or a (s)pecular material?");
 		if (command == 'd' || command == 'r' || command == 's') {
 			std::cout << std::endl;
-			DoubleVec3D emittance = getPositiveDoubleVec3DFromUser("What is the emittance of this diffuse material? ((0, 0, 0) if not a lamp)");
+			DoubleVec3D emittance = getRGBDoubleVec3DFromUser("What is the emittance of this material? ((0, 0, 0) if not a lamp)");
 			std::cout << std::endl;
 
 			switch (command) {
@@ -170,4 +187,44 @@ static Material* createMaterial() {
 			std::cout << INVALID_COMMAND << std::endl << std::endl;
 	}
 }
+
+
+// Objects
+static Object3D* createSphere(Material* material) {
+	DoubleVec3D center = getXYZDoubleVec3DFromUser("What is the center of the sphere?");
+	std::cout << std::endl;
+	double radius = getPositiveDoubleFromUser("What is the radius of the sphere?");
+	std::cout << std::endl;
+
+	return new Sphere(center, radius, material);
+}
+
+static Object3D* createTriangle(Material* material) {
+	DoubleVec3D vertex1 = getXYZDoubleVec3DFromUser("What is the first vertex of the triangle? (Order is important for the normal, give them counterclockwise from where they are visible.)");
+	std::cout << std::endl;
+	DoubleVec3D vertex2 = getXYZDoubleVec3DFromUser("What is the second vertex of the triangle?");
+	std::cout << std::endl;
+	DoubleVec3D vertex3 = getXYZDoubleVec3DFromUser("What is the third vertex of the triangle?");
+	std::cout << std::endl;
+
+	return new Triangle(vertex1, vertex2, vertex3, material);
+}
+
+static Object3D* createObject3D() {
+	while (true) {
+		char command = getCharFromUser("Do you want a (s)phere or a (t)riangle?");
+		if (command == 's' || command == 't') {
+			std::cout << std::endl;
+			Material* material = createMaterial();
+			
+			switch (command) {
+			case 's': return createSphere(material);
+			case 't': return createTriangle(material);
+			}
+		}
+		else
+			std::cout << INVALID_COMMAND << std::endl << std::endl;
+	}
+}
+
 #endif
