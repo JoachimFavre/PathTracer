@@ -123,7 +123,7 @@ void Object3DGroup::modify() {
 	while (true) {
 		clearScreenPrintHeader();
 
-		std::cout << name << std::endl << dashSplitter << std::endl << std::endl;
+		std::cout << name << std::endl << DASH_SPLITTER << std::endl << std::endl;
 
 		for (int i = 0; i < objects.size(); i++) {
 			std::cout << i << ") " << *(objects[i]) << std::endl << std::endl;
@@ -134,19 +134,29 @@ void Object3DGroup::modify() {
 		std::cout << "- b: go back to the objects page" << std::endl;
 		std::cout << "- m: modify an object" << std::endl;
 		std::cout << "- n: change the name of this objects group" << std::endl;
+		std::cout << "- t: change material of all objects" << std::endl;
 		std::cout << std::endl;
 
 
-		char command = getCharFromUser(commandWasInvalid ? invalidCommand : "");
-		commandWasInvalid = false;
+		if (commandWasInvalid) {
+			std::cout << INVALID_COMMAND << std::endl;
+			commandWasInvalid = false;
+		}
+		char command = getCharFromUser();
 		std::cout << std::endl;
 
 		switch (command) {
-		case 'a': return;
+		case 'a': break;
 		case 'b': return;
 		case 'n': {
 			std::string newName = getStringFromUser("What is the new name ?");
 			name = newName;
+			break;
+		}
+		case 't': {
+			Material* newMaterial = createMaterial();
+			for (Object3D* object : objects)
+				object->setMaterial(newMaterial);
 			break;
 		}
 		default: commandWasInvalid = true;
