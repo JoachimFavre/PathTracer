@@ -31,7 +31,6 @@ private:
 	std::vector<Object3DGroup> objectsGroups;
 	std::vector<Object3D*> objects;
 	std::vector<Object3D*> lamps;
-	bool objectsAndLampsAreUpToDate = false;
 
 	PerspectiveCamera camera;
 	unsigned int samplePerPixel;

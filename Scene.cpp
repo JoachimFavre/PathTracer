@@ -16,11 +16,13 @@ std::vector<Object3DGroup>& Scene::getObjectsGroupsReference() { return objectsG
 
 
 std::vector<Object3D*> Scene::getObjects() {
+	// May take a long time to compute -> must be absolutely necessary
 	computeObjectsAndLamps();
 	return objects;
 }
 
 std::vector<Object3D*> Scene::getLamps() {
+	// May take a long time to compute -> must be absolutely necessary
 	computeObjectsAndLamps();
 	return lamps;
 }
@@ -37,11 +39,7 @@ unsigned int Scene::getNumberThreads() const { return numberThreads; }
 
 
 // Setters
-void Scene::setObjectsGroups(std::vector<Object3DGroup> groups) {
-	objectsGroups = groups;
-	objectsAndLampsAreUpToDate = false;
-}
-
+void Scene::setObjectsGroups(std::vector<Object3DGroup> groups) { objectsGroups = groups; }
 void Scene::setCamera(PerspectiveCamera camera) { this->camera = camera; }
 void Scene::setSamplePerPixel(unsigned int samplePerPixel) { this->samplePerPixel = samplePerPixel; }
 void Scene::setMinBounces(unsigned int minBounces) { this->minBounces = minBounces; }
@@ -59,28 +57,22 @@ void Scene::setNumberThreads(unsigned int numberThreads) { this->numberThreads =
 // Objects groups management
 void Scene::addObjectGroup(const Object3DGroup& group) {
 	objectsGroups.push_back(group);
-	objectsAndLampsAreUpToDate = false;
 }
 
 void Scene::resetObjectGroups() {
 	objectsGroups.clear();  // Calls their destructor -> no memory leak
-	objectsAndLampsAreUpToDate = false;
 }
 
 void Scene::computeObjectsAndLamps() {
-	if (!objectsAndLampsAreUpToDate) {
-		for (Object3D* object : objects)
-			delete object;
+	for (Object3D* object : objects)
+		delete object;
 
-		objects = split(objectsGroups);
-		lamps.clear();
+	objects = split(objectsGroups);
+	lamps.clear();
 
-		for (Object3D* object : objects)
-			if (!object->getMaterial()->getEmittance().isZero())
-				lamps.push_back(object);
-
-		objectsAndLampsAreUpToDate = true;
-	}
+	for (Object3D* object : objects)
+		if (!object->getMaterial()->getEmittance().isZero())
+			lamps.push_back(object);
 }
 
 void Scene::defaultScene() {
