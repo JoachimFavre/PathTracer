@@ -133,7 +133,6 @@ void Object3DGroup::modify() {
 		std::cout << "- a: add an object" << std::endl;
 		std::cout << "- b: go back to the objects page" << std::endl;
 		std::cout << "- d: delete an object" << std::endl;
-		std::cout << "- m: modify an object" << std::endl;
 		std::cout << "- n: change the name of this objects group" << std::endl;
 		std::cout << "- t: change material of all objects" << std::endl;
 		std::cout << std::endl;
@@ -180,7 +179,6 @@ void Object3DGroup::modify() {
 				commandWasInvalid = true;
 			break;
 		}
-		case 'm': break;
 		case 'n': {
 			std::string newName = getStringFromUser("What is the new name ?");
 			name = newName;
