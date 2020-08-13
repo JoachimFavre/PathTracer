@@ -83,5 +83,34 @@ static unsigned int getUnsignedIntFromUser(std::string question = "") {
 	}
 }
 
+static double getDoubleFromUser(std::string question = "") {
+	while (true) {
+		std::string userText = getStringFromUser(question);
+
+		try {
+			return std::stod(userText);
+		} catch (const std::invalid_argument& exception) {
+			std::cout << "This is not a number!";
+		} catch (const std::out_of_range& exception) {
+			std::cout << "This number is either too big or with too many decimals.";
+		}
+
+		std::cout << std::endl << std::endl;
+	}
+}
+
+static bool getBoolFromUser(std::string question = "") {
+	while (true) {
+		char userText = getCharFromUser(question);
+
+		if (userText == 'T' || userText == 't')
+			return true;
+		else if (userText == 'F' || userText == 'f')
+			return false;
+		else
+			std::cout << "This is not a boolean!" << std::endl << std::endl;
+
+	}
+}
 
 #endif
