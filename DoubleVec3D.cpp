@@ -135,3 +135,10 @@ double dotProd(const DoubleVec3D& vec1, const DoubleVec3D& vec2) {
 
 double length(const DoubleVec3D& vec) { return sqrt(dotProd(vec, vec)); }
 
+
+// json
+void to_json(json& j, const DoubleVec3D& vec) {
+	j = json{ { "x/r", vec.getX() },
+			  { "y/g", vec.getY() },
+			  { "z/b", vec.getZ() } };
+}

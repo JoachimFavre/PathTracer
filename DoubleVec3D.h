@@ -61,4 +61,6 @@ DoubleVec3D crossProd(const DoubleVec3D& vec1, const DoubleVec3D& vec2);
 double dotProd(const DoubleVec3D& vec1, const DoubleVec3D& vec2);
 double length(const DoubleVec3D& vec);
 
+void to_json(json& j, const DoubleVec3D& vec);
+
 #endif
