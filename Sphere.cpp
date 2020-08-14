@@ -63,3 +63,12 @@ std::ostream& Sphere::getDescription(std::ostream& stream) const {
 	stream << "Sphere / Center = " << center << " / Radius = " << radius;
 	return stream;
 }
+
+
+// Virtual methods for json
+std::string Sphere::getType() const { return "Sphere"; }
+
+json Sphere::getLocationJson() const {
+	return { {"Center", center},
+			 {"Radius", radius} };
+}

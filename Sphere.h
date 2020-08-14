@@ -19,8 +19,8 @@ public:
 	Sphere(const DoubleVec3D& center, double radius, Material* material);
 	Sphere(const Sphere& sphere);
 
-	DoubleVec3D getCenter() const;  // virtual method
 	double getRadius() const;
+	DoubleVec3D getCenter() const;  // virtual method
 
 	void setCenter(const DoubleVec3D& center);
 	void setRadius(double radius);
@@ -30,6 +30,9 @@ public:
 	DoubleUnitVec3D getNormal(const DoubleVec3D& point) const;
 	DoubleVec3D getRandomPoint(double (*randomDouble)()) const;
 	std::ostream& getDescription(std::ostream& stream) const;
+
+	std::string getType() const;
+	json getLocationJson() const;
 };
 
 #endif

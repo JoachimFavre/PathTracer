@@ -30,6 +30,9 @@ public:
 	virtual std::ostream& getDescription(std::ostream& stream) const = 0;
 	virtual DoubleVec3D getCenter() const = 0;
 
+	virtual std::string getType() const = 0;
+	virtual json getLocationJson() const = 0;
+
 	Object3D& operator=(const Object3D& otherObject);
 };
 

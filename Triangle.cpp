@@ -69,3 +69,13 @@ std::ostream& Triangle::getDescription(std::ostream& stream) const {
 	stream << "Triangle / Vertex1 = " << vertex1 << " / Vertex2 = " << vertex2 << " / Vertex3 = " << vertex3;
 	return stream;
 }
+
+
+// Virtual methods for json
+std::string Triangle::getType() const { return "Triangle"; }
+
+json Triangle::getLocationJson() const {
+	return { {"Vertex1", vertex1},
+             {"Vertex2", vertex2},
+             {"Vertex3", vertex3 } };
+}

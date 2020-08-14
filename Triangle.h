@@ -29,6 +29,9 @@ public:
 	DoubleUnitVec3D getNormal(const DoubleVec3D& point) const;
 	DoubleVec3D getRandomPoint(double (*randomDouble)()) const;
 	std::ostream& getDescription(std::ostream& stream) const;
+
+	std::string getType() const;
+	json getLocationJson() const;
 };
 
 #endif
