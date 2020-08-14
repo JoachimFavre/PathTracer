@@ -6,6 +6,10 @@
 #include <math.h>
 #include <omp.h>
 
+#include "nlohmann/json.hpp"
+using json = nlohmann::json;
+
+#include "Material.h"
 #include "DiffuseMaterial.h"
 #include "DoubleMatrix33.h"
 #include "DoubleVec3D.h"
@@ -13,11 +17,13 @@
 #include "Object3D.h"
 #include "PerspectiveCamera.h"
 #include "RefractiveMaterial.h"
-#include "Scene.h"
 #include "SpecularMaterial.h"
 #include "Sphere.h"
 #include "Triangle.h"
 #include "Interface.h"
+
+#include "Scene.h"
+
 
 Scene scene;
 PerspectiveCamera& camera = scene.getCameraReference();
@@ -141,6 +147,16 @@ void receiveAndExecuteGeneralCommands() {
 			getStringFromUser("Press enter to continue");
 		}
 		case 's': {
+			std::string fileName = getStringFromUser("What is the name of the file where the objects will be saved?");
+			json jsonOutput;
+
+			for (int i = 0; i < objectGroups.size(); i++) {
+				jsonOutput.push_back({ { i, objectGroups[i] } });
+			}
+
+			std::ofstream file;
+			file.open(fileName);
+			file << std::setw(4) << jsonOutput << std::endl;
 			return;
 		}
 		default: 
@@ -301,13 +317,15 @@ void drawCurrentPage() {
 }
 
 
-int main() {
+int main() {	
 	std::cout << std::fixed;
 	std::cout << std::setprecision(2);
 
 	scene.resetObjectGroups();
 	scene.defaultScene();
 	drawCurrentPage();
+
+
 	/*
 	double beginningTime = getCurrentTimeSeconds();
 	// Display doubles with 2 decimals
