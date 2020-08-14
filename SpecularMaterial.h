@@ -1,10 +1,11 @@
+#ifndef DEF_SPECULARMATERIAL
+#define DEF_SPECULARMATERIAL
+
 #include "DoubleVec3D.h"
 #include "Material.h"
 #include "Object3D.h"
 #include "Ray.h"
 
-#ifndef DEF_SPECULARMATERIAL
-#define DEF_SPECULARMATERIAL
 
 class SpecularMaterial : public Material {
 public:

@@ -1,3 +1,6 @@
+#ifndef DEF_DIFFUSEMATERIAL
+#define DEF_DIFFUSEMATERIAL
+
 #define _USE_MATH_DEFINES  // to be able to use M_PI from math.h
 #include <math.h>
 
@@ -6,8 +9,6 @@
 #include "Material.h"
 #include "Ray.h"
 
-#ifndef DEF_DIFFUSEMATERIAL
-#define DEF_DIFFUSEMATERIAL
 
 class DiffuseMaterial : public Material {
 private:
