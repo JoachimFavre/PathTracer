@@ -41,3 +41,8 @@ std::ostream& DiffuseMaterial::getDescription(std::ostream& stream) const {
 	stream << "DiffuseMaterial / Colour = " << colour;
 	return stream;
 }
+
+
+// Virtual methods for json
+std::string DiffuseMaterial::getType() const { return "Diffuse"; }
+json DiffuseMaterial::getSpecificParametersJson() const { return { { "Colour", colour } }; }

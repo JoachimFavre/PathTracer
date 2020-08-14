@@ -23,6 +23,9 @@ public:
 	DoubleVec3D computeCurrentColour(const DoubleVec3D& recursiveColour, double angleNewDirectionNormal) const;
 	bool worksWithNextEventEstimation() const;
 	std::ostream& getDescription(std::ostream& stream) const;
+
+	std::string getType() const;
+	json getSpecificParametersJson() const;
 };
 
 #endif

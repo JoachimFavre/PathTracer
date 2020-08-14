@@ -30,3 +30,8 @@ std::ostream& SpecularMaterial::getDescription(std::ostream& stream) const {
 	stream << "SpecularMaterial";
 	return stream;
 }
+
+
+// Virtual methods for json
+std::string SpecularMaterial::getType() const { return "Specular"; }
+json SpecularMaterial::getSpecificParametersJson() const { return {}; }

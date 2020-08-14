@@ -20,6 +20,9 @@ public:
 	virtual DoubleVec3D computeCurrentColour(const DoubleVec3D& recursiveColour, double angleNewDirectionNormal) const = 0;
 	virtual bool worksWithNextEventEstimation() const = 0;
 	virtual std::ostream& getDescription(std::ostream& stream) const = 0;
+
+	virtual std::string getType() const = 0;
+	virtual json getSpecificParametersJson() const = 0;
 };
 
 std::ostream& operator<<(std::ostream& stream, const Material& material);
