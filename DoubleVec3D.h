@@ -6,6 +6,10 @@
 #define _USE_MATH_DEFINES  // to be able to use M_PI from math.h
 #include <math.h>
 
+// Need to be included before fbxsdk, else creates conflict.
+#include "nlohmann/json.hpp"
+using json = nlohmann::json;
+
 #include <fbxsdk.h>
 
 class DoubleVec3D {
