@@ -87,7 +87,7 @@ std::ostream& operator<<(std::ostream& stream, const Object3DGroup& group) {
 	else if (numberObjects == 1)
 		stream << *(objects[0]);
 	else
-		stream << "Center" << group.getCenter() << " / " << numberObjects << " objects";
+		stream << "Center = " << group.getCenter() << " / " << numberObjects << " objects";
 
 	return stream;
 }
