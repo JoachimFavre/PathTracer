@@ -41,4 +41,6 @@ public:
 std::ostream& operator<<(std::ostream& stream, const Object3DGroup& group);
 std::vector<Object3D*> split(std::vector<Object3DGroup> groups);
 
+void to_json(json& j, const Object3DGroup& group);
+
 #endif
