@@ -9,10 +9,12 @@ BidirectionalPathTracer.vcxproj.filters
 BidirectionalPathTracer.vcxproj.user
 
 # Required files
+/nlohmann
 *.fbx
 
 # Generated files
 *.ppm
+*.json
 
 # Prerequisites
 *.d
