@@ -4,6 +4,9 @@
 #include <iostream>
 #include <string>
 
+#include "nlohmann/json.hpp"
+using json = nlohmann::json;
+
 #include "Object3D.h"
 #include "Sphere.h"
 #include "Triangle.h"
@@ -225,6 +228,15 @@ static Object3D* createObject3D() {
 		else
 			std::cout << INVALID_COMMAND << std::endl << std::endl;
 	}
+}
+
+// Json
+static void to_json(json& j, const Material& mat) {
+	j = json{ {"MaterialType", mat.getType()},  {"Emittance", mat.getEmittance()}, {"SpecificParameters", mat.getSpecificParametersJson()} };
+}
+
+static void to_json(json& j, const Object3D& obj) {
+	j = json{ {"ObjectType", obj.getType()}, {"Material", *(obj.getMaterial())}, {"Location", obj.getLocationJson()} };
 }
 
 #endif
