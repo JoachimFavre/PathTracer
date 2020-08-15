@@ -127,6 +127,18 @@ void receiveAndExecuteGeneralCommands() {
 			exit(0);
 		}
 		case  'l': {
+			std::string fileName = getStringFromUser("What is the name of the file from where the objects will be loaded?");
+			json jsonInput;
+
+			std::ifstream file;
+			file.open(fileName);
+			file >> jsonInput;
+			file.close();
+
+			for (json jsonGroup : jsonInput) {
+				objectGroups.push_back(jsonGroup.get<Object3DGroup>());
+			}
+
 			return;
 		}
 		case 'p': {
@@ -150,8 +162,8 @@ void receiveAndExecuteGeneralCommands() {
 			std::string fileName = getStringFromUser("What is the name of the file where the objects will be saved?");
 			json jsonOutput;
 
-			for (int i = 0; i < objectGroups.size(); i++) {
-				jsonOutput.push_back({ { i, objectGroups[i] } });
+			for (Object3DGroup group : objectGroups) {
+				jsonOutput.push_back(group); 
 			}
 
 			std::ofstream file;
@@ -318,15 +330,14 @@ void drawCurrentPage() {
 }
 
 
-int main() {	
+int main() {
 	std::cout << std::fixed;
 	std::cout << std::setprecision(2);
 
 	scene.resetObjectGroups();
 	scene.defaultScene();
 	drawCurrentPage();
-
-
+	
 	/*
 	double beginningTime = getCurrentTimeSeconds();
 	// Display doubles with 2 decimals
