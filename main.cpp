@@ -157,6 +157,7 @@ void receiveAndExecuteGeneralCommands() {
 			std::ofstream file;
 			file.open(fileName);
 			file << std::setw(4) << jsonOutput << std::endl;
+			file.close();
 			return;
 		}
 		default: 
