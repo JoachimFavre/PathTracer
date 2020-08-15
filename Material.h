@@ -23,6 +23,7 @@ public:
 
 	virtual std::string getType() const = 0;
 	virtual json getSpecificParametersJson() const = 0;
+	virtual void setSpecificParametersJson(const json& j) = 0;
 };
 
 std::ostream& operator<<(std::ostream& stream, const Material& material);

@@ -46,3 +46,4 @@ std::ostream& DiffuseMaterial::getDescription(std::ostream& stream) const {
 // Virtual methods for json
 std::string DiffuseMaterial::getType() const { return "Diffuse"; }
 json DiffuseMaterial::getSpecificParametersJson() const { return { { "Colour", colour } }; }
+void DiffuseMaterial::setSpecificParametersJson(const json& j) { colour = j["Colour"].get<DoubleVec3D>(); }

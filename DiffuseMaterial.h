@@ -29,6 +29,7 @@ public:
 
 	std::string getType() const;
 	json getSpecificParametersJson() const;
+	void setSpecificParametersJson(const json& j);
 };
 
 

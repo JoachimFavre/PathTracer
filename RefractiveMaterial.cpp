@@ -62,3 +62,4 @@ std::ostream& RefractiveMaterial::getDescription(std::ostream& stream) const {
 // Virtual methods for json
 std::string RefractiveMaterial::getType() const { return "Refractive"; }
 json RefractiveMaterial::getSpecificParametersJson() const { return { { "RefractiveIndex", refractiveIndex } }; }
+void RefractiveMaterial::setSpecificParametersJson(const json& j) { refractiveIndex = j["RefractiveIndex"].get<double>(); }
