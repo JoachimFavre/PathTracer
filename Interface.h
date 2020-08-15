@@ -235,8 +235,41 @@ static void to_json(json& j, const Material& mat) {
 	j = json{ {"MaterialType", mat.getType()},  {"Emittance", mat.getEmittance()}, {"SpecificParameters", mat.getSpecificParametersJson()} };
 }
 
+static Material* importMaterialFromJson(const json& j) {
+	std::string materialType = j["MaterialType"].get<std::string>();
+	Material* mat = nullptr;
+
+	if (materialType == "Diffuse")
+		mat = new DiffuseMaterial;
+	else if (materialType == "Refractive")
+		mat = new RefractiveMaterial;
+	else if (materialType == "Specular")  // Use obj.getType static?
+		mat = new SpecularMaterial;
+
+
+	mat->setEmittance(j["Emittance"].get<DoubleVec3D>());
+	mat->setSpecificParametersJson(j["SpecificParameters"]);
+
+	return mat;
+}
+
 static void to_json(json& j, const Object3D& obj) {
 	j = json{ {"ObjectType", obj.getType()}, {"Material", *(obj.getMaterial())}, {"Location", obj.getLocationJson()} };
+}
+
+static Object3D* importObject3DFromJson(const json& j) {
+	std::string objectType = j["ObjectType"].get<std::string>();
+	Object3D* obj = nullptr;
+
+	if (objectType == "Sphere")
+		obj = new Sphere;
+	else if (objectType == "Triangle")
+		obj = new Triangle;
+
+	obj->setMaterial(importMaterialFromJson(j["Material"]));
+	obj->setLocationJson(j["Location"]);
+
+	return obj;
 }
 
 #endif
