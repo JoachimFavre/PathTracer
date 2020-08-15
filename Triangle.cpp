@@ -79,3 +79,10 @@ json Triangle::getLocationJson() const {
              {"Vertex2", vertex2},
              {"Vertex3", vertex3 } };
 }
+
+void Triangle::setLocationJson(const json& j) {
+	vertex1 = j["Vertex1"].get<DoubleVec3D>();
+	vertex2 = j["Vertex2"].get<DoubleVec3D>();
+	vertex3 = j["Vertex3"].get<DoubleVec3D>();
+}
+

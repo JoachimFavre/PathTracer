@@ -32,6 +32,7 @@ public:
 
 	std::string getType() const;
 	json getLocationJson() const;
+	void setLocationJson(const json& j);
 };
 
 #endif

@@ -72,3 +72,8 @@ json Sphere::getLocationJson() const {
 	return { {"Center", center},
 			 {"Radius", radius} };
 }
+
+void Sphere::setLocationJson(const json& j) {
+	center = j["Center"].get<DoubleVec3D>();
+	radius = j["Radius"].get<double>();
+}
