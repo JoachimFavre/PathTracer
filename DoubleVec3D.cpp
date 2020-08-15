@@ -142,3 +142,10 @@ void to_json(json& j, const DoubleVec3D& vec) {
 			  { "y/g", vec.getY() },
 			  { "z/b", vec.getZ() } };
 }
+
+void from_json(const json& j, DoubleVec3D& vec) {
+	double x = j.at("x/r").get<double>();
+	double y = j.at("y/g").get<double>();
+	double z = j.at("z/b").get<double>();
+	vec.setVals(x, y, z);
+}
