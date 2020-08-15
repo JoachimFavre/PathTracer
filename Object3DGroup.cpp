@@ -200,8 +200,20 @@ void Object3DGroup::modify() {
 void to_json(json& j, const Object3DGroup& group) {
 	std::vector<Object3D*> objects = group.getObjects();
 	json objectsJson;
-	for (int i = 0; i < objects.size(); i++)
-		objectsJson.push_back({i, *(objects[i])});
+	for (Object3D* object : objects)
+		objectsJson.push_back(*object);
 
 	j = { { "Name", group.getName() }, {"Objects", objectsJson} };
+}
+
+
+void from_json(const json& j, Object3DGroup& group) {
+	std::vector<Object3D*> objects;
+	for (json jObject : j["Objects"]) {
+		objects.push_back(importObject3DFromJson(jObject));
+	}
+	group.addObjects(objects);
+	
+	std::string name = j["Name"].get<std::string>();
+	group.setName(name);
 }
