@@ -139,18 +139,26 @@ void receiveAndExecuteGeneralCommands() {
 				return;
 			}
 
+
 			json jsonInput;
 
 			std::ifstream file;
-			file.open(fileName);
-			file >> jsonInput;
-			file.close();
+			file.open(fileName);  // File could change name -> need to make another try catch
+			try {
+				file >> jsonInput;
+				file.close();
 
-			for (json jsonGroup : jsonInput) {
-				objectGroups.push_back(jsonGroup.get<Object3DGroup>());
+				for (json jsonGroup : jsonInput) {
+					objectGroups.push_back(jsonGroup.get<Object3DGroup>());
+				}
+				std::cout << "Successfully loaded objects from " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
+
+			} catch (const json::exception& e) {
+				file.close();
+				std::cout << "The file " << fileName << " is corrupted." << std::endl << "Error: " << e.what() << std::endl << std::endl;
 			}
-
-			std::cout << "Successfully loaded objects from " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
+			
+			
 			getStringFromUser("Press enter to continue.");
 			return;
 		}
