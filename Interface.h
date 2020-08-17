@@ -21,6 +21,9 @@ const std::string STAR_SPLITTER(26, '*');
 const std::string DASH_SPLITTER(26, '-');
 const std::string INVALID_COMMAND = "Invalid command.";
 
+const std::string FBX_EXTENSION = "fbx";
+const std::string OBJECTS_SAVE_EXTENSION = "ptobj";
+
 // Common parts in interface
 static void clearScreenPrintHeader() {
 	std::system("cls");
@@ -156,9 +159,28 @@ static DoubleVec3D getRGBDoubleVec3DFromUser(std::string question = "", std::str
 }
 
 
+// File manipulation
 static bool fileExists(std::string fileName) {
 	std::ifstream f(fileName.c_str());
 	return f.good();
+}
+
+static std::string formatFileName(std::string fileName, std::string extension) {
+	if (extension[0] != '.')
+		extension = "." + extension;
+
+	if (fileName.size() < extension.size())
+		return fileName + extension;
+
+	int extensionBeginningInFileName = fileName.size() - extension.size();
+
+	for (int i = 0; i < extension.size(); i++) {
+		if (!(std::tolower(fileName[extensionBeginningInFileName + i]) == std::tolower(extension[i]))) {
+			return fileName + extension;
+		}
+	}
+
+	return fileName;
 }
 
 

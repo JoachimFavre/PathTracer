@@ -127,9 +127,11 @@ void receiveAndExecuteGeneralCommands() {
 			exit(0);
 		}
 		case  'l': {
-			std::string fileName = getStringFromUser("What is the name of the file from where the objects will be loaded?");
-			double beginningTime = getCurrentTimeSeconds();  // don't want to count user time
+			std::string fileName = getStringFromUser("What is the name of the " + OBJECTS_SAVE_EXTENSION + " file from where the object groups will be loaded?");
+			fileName = formatFileName(fileName, OBJECTS_SAVE_EXTENSION);
 			std::cout << std::endl;
+			double beginningTime = getCurrentTimeSeconds();  // don't want to count user time
+			
 			
 
 			bool exists = fileExists(fileName);
@@ -180,9 +182,11 @@ void receiveAndExecuteGeneralCommands() {
 			getStringFromUser("Press enter to continue.");
 		}
 		case 's': {
-			std::string fileName = getStringFromUser("What is the name of the file where the objects will be saved?");
-			double beginningTime = getCurrentTimeSeconds();  // don't want to count user time
+			std::string fileName = getStringFromUser("What is the name of the " + OBJECTS_SAVE_EXTENSION + " file in which the object groups will be saved?");
 			std::cout << std::endl;
+			fileName = formatFileName(fileName, OBJECTS_SAVE_EXTENSION);
+
+			double beginningTime = getCurrentTimeSeconds();  // don't want to count user time
 
 			json jsonOutput;
 			for (Object3DGroup group : objectGroups) {
@@ -308,12 +312,13 @@ void receiveAndExecuteObjectsCommands(char command) {
 			commandWasInvalid = true;
 	}
 	case 'i': {
-		std::string filePath = getStringFromUser("What is the file path of the FBX file?");
+		std::string fileName = getStringFromUser("What is the name of the " + FBX_EXTENSION + " file?");
+		fileName = formatFileName(fileName, FBX_EXTENSION);
 		std::cout << std::endl;
-		bool exists = fileExists(filePath);
+		bool exists = fileExists(fileName);
 
 		if (!exists) {
-			std::cout << "The file " << filePath << " does not exist." << std::endl << std::endl;
+			std::cout << "The file " << fileName << " does not exist." << std::endl << std::endl;
 			getStringFromUser("Press enter to continue.");
 			return;
 		}
@@ -321,7 +326,7 @@ void receiveAndExecuteObjectsCommands(char command) {
 		std::string name = getStringFromUser("How do you want to call the objects group?");
 		std::cout << std::endl;
 		Material* material = createMaterial();
-		scene.importFBX(filePath.c_str(), material, name);
+		scene.importFBX(fileName.c_str(), material, name);
 		std::cout << std::endl;
 		getStringFromUser("Press enter to continue.");
 		return;
@@ -372,6 +377,7 @@ int main() {
 	scene.defaultScene();
 	drawCurrentPage();
 	
+
 	/*
 	double beginningTime = getCurrentTimeSeconds();
 	// Display doubles with 2 decimals
