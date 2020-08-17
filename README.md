@@ -3,7 +3,7 @@ A C++ renderer using the Bidirectional Path Tracing algorithm made through 2020 
 
 ## Dependencies
 ### FBX SDK version 2020.1 by Autodesk
-- [Download](https://www.autodesk.com/developer-network/platform-technologies/fbx-sdk-2020-0 ) (use Runtime Library Option: "MT")
+- [Download](https://www.autodesk.com/developer-network/platform-technologies/fbx-sdk-2020-0 ) (use Runtime Library Option "MT")
 - [Documentation](https://help.autodesk.com/view/FBX/2020/ENU/)
 
 ### JSON for Modern C++ version 3.9.1 by nlohmann
