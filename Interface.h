@@ -69,8 +69,8 @@ static std::string getStringFromUser(std::string question = "", std::string prom
 }
 
 
-static char getCharFromUser(std::string question = "", std::string prompt = PROMPT) {
-	return (getStringFromUser(question, prompt))[0];
+static char getLowerCaseCharFromUser(std::string question = "", std::string prompt = PROMPT) {
+	return std::tolower((getStringFromUser(question, prompt))[0]);
 }
 
 
@@ -129,11 +129,11 @@ static double getPositiveDoubleFromUser(std::string question = "", std::string p
 
 static bool getBoolFromUser(std::string question = "", std::string prompt = PROMPT) {
 	while (true) {
-		char userText = getCharFromUser(question, prompt);
+		char userText = getLowerCaseCharFromUser(question, prompt);
 
-		if (userText == 'T' || userText == 't')
+		if (userText == 't')
 			return true;
-		else if (userText == 'F' || userText == 'f')
+		else if (userText == 'f')
 			return false;
 		else
 			std::cout << "This is not a boolean!" << std::endl << std::endl;
@@ -204,7 +204,7 @@ static Material* createSpecularMaterial(const DoubleVec3D& emittance) {
 
 static Material* createMaterial() {
 	while (true) {
-		char command = getCharFromUser("Do you want a (d)iffuse material, a (r)efractive material or a (s)pecular material?");
+		char command = getLowerCaseCharFromUser("Do you want a (d)iffuse material, a (r)efractive material or a (s)pecular material?");
 		if (command == 'd' || command == 'r' || command == 's') {
 			std::cout << std::endl;
 			DoubleVec3D emittance = getRGBDoubleVec3DFromUser("What is the emittance of this material? ((0, 0, 0) if not a lamp)");
@@ -245,7 +245,7 @@ static Object3D* createTriangle(Material* material) {
 
 static Object3D* createObject3D() {
 	while (true) {
-		char command = getCharFromUser("Do you want a (s)phere or a (t)riangle?");
+		char command = getLowerCaseCharFromUser("Do you want a (s)phere or a (t)riangle?");
 		if (command == 's' || command == 't') {
 			std::cout << std::endl;
 			Material* material = createMaterial();

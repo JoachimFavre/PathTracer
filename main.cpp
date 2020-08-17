@@ -124,8 +124,7 @@ void receiveAndExecuteGeneralCommands() {
 		commandWasInvalid = false;
 		std::cout << INVALID_COMMAND << std::endl;
 	}
-	char command = getCharFromUser();
-	command = std::tolower(command);
+	char command = getLowerCaseCharFromUser();
 
 	std::cout << std::endl;
 

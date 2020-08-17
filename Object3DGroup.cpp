@@ -132,9 +132,9 @@ void Object3DGroup::modify() {
 		availableCommandsHeader();
 		std::cout << "- a: add an object" << std::endl;
 		std::cout << "- b: go back to the objects page" << std::endl;
-		std::cout << "- d: delete an object" << std::endl;
+		std::cout << "- d: delete one or all objects" << std::endl;
+		std::cout << "- m: modify one or all objects' material" << std::endl;
 		std::cout << "- n: change the name of this objects group" << std::endl;
-		std::cout << "- t: change material of all objects" << std::endl;
 		std::cout << std::endl;
 
 
@@ -142,7 +142,7 @@ void Object3DGroup::modify() {
 			std::cout << INVALID_COMMAND << std::endl;
 			commandWasInvalid = false;
 		}
-		char command = getCharFromUser();
+		char command = getLowerCaseCharFromUser();
 		std::cout << std::endl;
 
 		switch (command) {
@@ -179,15 +179,35 @@ void Object3DGroup::modify() {
 				commandWasInvalid = true;
 			break;
 		}
+		case 'm': {
+			if (objects.size() >= 1) {
+				while (true) {
+					int index = getIntFromUser("What is the index of the object whose material you want to modify? (-1 = cancel / -2 = modify all)");
+					if (index == -1)
+						break;
+					if (index == -2) {
+						std::cout << std::endl;
+						Material* newMaterial = createMaterial();
+						for (Object3D* object : objects)
+							object->setMaterial(newMaterial);
+						break;
+					}
+					if (index >= 0 && index < objects.size()) {
+						std::cout << std::endl;
+						Material* newMaterial = createMaterial();
+						objects[index]->setMaterial(newMaterial);
+						break;
+					}
+					std::cout << "This index is invalid!" << std::endl << std::endl;
+				}
+			}
+			else
+				commandWasInvalid = true;
+			break;
+		}
 		case 'n': {
 			std::string newName = getStringFromUser("What is the new name ?");
 			name = newName;
-			break;
-		}
-		case 't': {
-			Material* newMaterial = createMaterial();
-			for (Object3D* object : objects)
-				object->setMaterial(newMaterial);
 			break;
 		}
 		default: commandWasInvalid = true;
