@@ -176,7 +176,7 @@ bool Scene::importFBX(const char* filePath, Material* material, std::string name
 				Triangle* triangle = new Triangle(vertex0, vertex1, vertex2, material);
 				// Emittance is always equal to the diffuse colour -> bug from the library
 
-				// Verify normals ?
+				// Verify normals?
 
 				objects.push_back(triangle);
 			}

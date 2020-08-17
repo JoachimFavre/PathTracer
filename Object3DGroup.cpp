@@ -113,7 +113,7 @@ std::vector<Object3D*> split(std::vector<Object3DGroup> groups) {
 
 // For the interface
 Object3DGroup Object3DGroup::create() {
-	std::string name = getStringFromUser("What is the name of this object group ?");
+	std::string name = getStringFromUser("What is the name of this object group?");
 
 	return Object3DGroup(name);
 }
@@ -206,7 +206,7 @@ void Object3DGroup::modify() {
 			break;
 		}
 		case 'n': {
-			std::string newName = getStringFromUser("What is the new name ?");
+			std::string newName = getStringFromUser("What is the new name?");
 			name = newName;
 			break;
 		}
