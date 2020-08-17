@@ -40,9 +40,9 @@ bool commandWasInvalid = false;
 void clearScreenPrintHeader();
 void displayParametersPage();
 void displayObjectsPage();
-void receiveAndExecuteParametersCommands(char command);
-void receiveAndExecuteObjectsCommands(char command);
 void receiveAndExecuteGeneralCommands();
+void executeParametersCommands(char command);
+void executeObjectsCommands(char command);
 void displayCommands();
 void drawCurrentPage();
 
@@ -125,6 +125,7 @@ void receiveAndExecuteGeneralCommands() {
 		std::cout << INVALID_COMMAND << std::endl;
 	}
 	char command = getCharFromUser();
+	command = std::tolower(command);
 
 	std::cout << std::endl;
 
@@ -152,15 +153,15 @@ void receiveAndExecuteGeneralCommands() {
 		}
 		default: 
 			if (isParametersPage)
-				receiveAndExecuteParametersCommands(command);
+				executeParametersCommands(command);
 			else
-				receiveAndExecuteObjectsCommands(command);
+				executeObjectsCommands(command);
 			return;
 	}
 }
 
 
-void receiveAndExecuteParametersCommands(char command) {
+void executeParametersCommands(char command) {
 	switch (command) {
 	case  'l': {
 		std::string fileName = getStringFromUser("What is the name of the " + PARAMETERS_SAVE_EXTENSION + " file from where the parameters will be loaded?");
@@ -282,7 +283,7 @@ void receiveAndExecuteParametersCommands(char command) {
 	}
 }
 
-void receiveAndExecuteObjectsCommands(char command) {
+void executeObjectsCommands(char command) {
 	switch (command) {
 	case 'a': {
 		Object3DGroup newGroup = Object3DGroup::create();
@@ -456,7 +457,6 @@ void receiveAndExecuteObjectsCommands(char command) {
 		commandWasInvalid = true;
 	}
 }
-
 
 
 void drawCurrentPage() {
