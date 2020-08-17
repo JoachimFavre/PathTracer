@@ -6,6 +6,8 @@
 #include <iostream>
 #include <string>
 
+#include "CImg/CImg.h"
+
 #include "DoubleVec3D.h"
 
 static double getCurrentTimeSeconds() {

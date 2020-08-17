@@ -34,7 +34,7 @@ void Picture::writeToFile(double middleGray, std::string fileName /* = "_picture
 	double writingBeginningTime = getCurrentTimeSeconds();
 
 	std::ofstream file;
-	file.open(fileName);
+	file.open("temp.ppm");
 	file << "P3" << std::endl << width << " " << height << " " << maxColourValue << std::endl;
 	for (unsigned int pixelY = 0; pixelY < height; pixelY++) {
 		for (unsigned int pixelX = 0; pixelX < width; pixelX++) {
@@ -46,6 +46,10 @@ void Picture::writeToFile(double middleGray, std::string fileName /* = "_picture
 		}
 	}
 	file.close();
+
+	cimg_library::CImg<unsigned char> image("temp.ppm");
+	remove("temp.ppm");
+	image.save(fileName.c_str());
 
 	std::cout << "The picture was successfully written in " << fileName << " file with " << middleGray << " being the middle gray in " << getCurrentTimeSeconds() - writingBeginningTime << " seconds!" << std::endl;
 }
