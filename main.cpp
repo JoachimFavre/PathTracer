@@ -186,6 +186,12 @@ void receiveAndExecuteGeneralCommands() {
 			std::cout << std::endl;
 			fileName = formatFileName(fileName, OBJECTS_SAVE_EXTENSION);
 
+			if (fileExists(fileName)) {
+				bool continue_ = getBoolFromUser("The file " + fileName + " already exists, do you want to continue? (True=T=true=t / False=F=false=f)");
+				if (!continue_)
+					return;
+			}
+			std::cout << std::endl;
 			double beginningTime = getCurrentTimeSeconds();  // don't want to count user time
 
 			json jsonOutput;
@@ -313,7 +319,7 @@ void receiveAndExecuteObjectsCommands(char command) {
 	}
 	case 'i': {
 		std::string fileName = getStringFromUser("What is the name of the " + FBX_EXTENSION + " file?");
-		fileName = formatFileName(fileName, FBX_EXTENSION);
+		fileName = formatFileName(fileName, ".fbx");
 		std::cout << std::endl;
 		bool exists = fileExists(fileName);
 
