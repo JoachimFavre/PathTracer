@@ -243,7 +243,6 @@ void executeParametersCommands(char command) {
 			if (!continue_)
 				return;
 		}
-		std::cout << std::endl;
 		double beginningTime = getCurrentTimeSeconds();  // don't want to count user time
 
 		json jsonOutput = {
@@ -436,7 +435,6 @@ void executeObjectsCommands(char command) {
 			if (!continue_)
 				return;
 		}
-		std::cout << std::endl;
 		double beginningTime = getCurrentTimeSeconds();  // don't want to count user time
 
 		json jsonOutput;
@@ -449,7 +447,7 @@ void executeObjectsCommands(char command) {
 		file << std::setw(4) << jsonOutput << std::endl;
 		file.close();
 
-		std::cout << "Successfully saved objects to " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
+		std::cout << "Successfully saved object groups to " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
 		getStringFromUser("Press enter to continue.");
 		return;
 	}
