@@ -38,50 +38,11 @@ Page currentPage = Page::ParametersPage;
 bool commandWasInvalid = false;
 
 void clearScreenPrintHeader();
-void displayParametersPage();
-void displayObjectsPage();
 void receiveAndExecuteGeneralCommands();
 void executeParametersCommands(char command);
 void executeObjectsCommands(char command);
 void displayCommands();
 void drawCurrentPage();
-
-
-void displayParametersPage() {
-	std::cout << "Camera" << std::endl;
-	std::cout << DASH_SPLITTER << std::endl;
-	std::cout << "0) Picture width = " << camera.getNumberPixelsX() << std::endl;
-	std::cout << "1) Picture height = " << camera.getNumberPixelsY() << std::endl;
-	std::cout << "2) Focal length = " << camera.getFocalLength() << std::endl;
-	std::cout << "3) X field of view = " << camera.getFovX() << std::endl;
-	std::cout << std::endl;
-
-	std::cout << "Basic parameters" << std::endl;
-	std::cout << DASH_SPLITTER << std::endl;
-	std::cout << "4) Sample per pixel = " << scene.getSamplePerPixel() << std::endl;
-	std::cout << "5) Minimum bounces = " << scene.getMinBounces() << std::endl;
-	std::cout << "6) Max depth = " << scene.getMaxDepth() << std::endl;
-	std::cout << std::endl;
-
-	std::cout << "Optimisation parameters" << std::endl;
-	std::cout << DASH_SPLITTER << std::endl;
-	std::cout << "7) Number of threads = " << scene.getNumberThreads() << std::endl;
-	std::cout << "8) Russian roulette = " << bool2string(scene.getRussianRoulette()) << std::endl;
-	std::cout << "9) Rr stop probability = " << scene.getRrStopProbability() << std::endl;
-	std::cout << "10) Next event estimation = " << bool2string(scene.getNextEventEstimation()) << std::endl;
-	std::cout << std::endl;
-}
-
-
-void displayObjectsPage() {
-	std::vector<Object3DGroup> objectGroups = scene.getObjectsGroups();
-
-	for (unsigned int i = 0; i < objectGroups.size(); i++) {
-		Object3DGroup currentObjectGroup = objectGroups[i];
-
-		std::cout << i << ") " << currentObjectGroup << std::endl << std::endl;
-	}
-}
 
 
 void displayCommands() {
@@ -158,6 +119,7 @@ void receiveAndExecuteGeneralCommands() {
 			scene.render()->writeToFile(middleGray, fileName);
 
 			std::cout << std::endl;
+
 			getStringFromUser("Press enter to continue.");
 		}
 		default: 
@@ -470,9 +432,9 @@ void drawCurrentPage() {
 	while (true) {
 		clearScreenPrintHeader();
 		if (currentPage == Page::ParametersPage)
-			displayParametersPage();
+			scene.displayParametersPage();
 		else
-			displayObjectsPage();
+			scene.displayObjectsPage();
 		displayCommands();
 
 		receiveAndExecuteGeneralCommands();

@@ -258,6 +258,7 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
 }
 
 void Scene::displayRenderingProgression(unsigned int currentPixelX, double loopBeginningTime) const {
+	// Don't want to redraw the whole picture for speed
 	unsigned int pictureWidth = camera.getNumberPixelsX();
 	double timeAlreadySpent = getCurrentTimeSeconds() - loopBeginningTime;
 	std::cout << "\rProgress: " << (double)currentPixelX/pictureWidth*100 << "%     Time already spent: " << timeAlreadySpent;
@@ -265,7 +266,7 @@ void Scene::displayRenderingProgression(unsigned int currentPixelX, double loopB
 }
 
 
-// Other methods
+// Render method
 Picture* Scene::render() {
 	computeObjectsAndLamps();
 
@@ -274,10 +275,20 @@ Picture* Scene::render() {
 	omp_set_num_threads(numberThreads);
 
 	// Print informations
+	/*
 	std::cout << "Width=" << pictureWidth << "     Height=" << pictureHeight << "     Sample/Pixel=" << samplePerPixel << "     Threads=" << numberThreads << std::endl;
 	std::cout << "RussianRoulette=" << (russianRoulette ? "true" : "false") << "     MinBounces=" << minBounces << "     RrStopProbability=" << rrStopProbability << std::endl;
 	std::cout << "NextEventEstimation=" << (nextEventEstimation ? "true" : "false") << std::endl;
 	std::cout << "Number objects=" << objects.size() << "     Including lamps=" << lamps.size() << std::endl;
+	std::cout << std::endl;
+	*/
+	displayParametersPage(false);
+	std::cout << "Objects" << std::endl;
+	std::cout << DASH_SPLITTER << std::endl;
+	std::cout << "Number objects = " << objects.size() << std::endl;
+	std::cout << "Number objects emitting light = " << lamps.size() << std::endl;
+	std::cout << std::endl;
+	std::cout << STAR_SPLITTER << std::endl;
 	std::cout << std::endl;
 
 	Picture* result = new Picture(camera.getNumberPixelsX(), camera.getNumberPixelsY());
@@ -297,7 +308,51 @@ Picture* Scene::render() {
 	}
 
 	displayRenderingProgression(pictureWidth, loopBeginningTime);  // To display the 100%
-	std::cout << std::endl;
+	std::cout << std::endl << std::endl;
 
 	return result;
+}
+
+
+// Methods for interface
+std::string Scene::getCurrentIndex(int currentIndex, bool displayIndex) const {  // private
+	if (displayIndex)
+		return std::to_string(currentIndex) + ") ";
+	else
+		return "";
+}
+
+void Scene::displayParametersPage(bool displayIndexes /*= true*/) const {
+	int index = 0;
+
+	std::cout << "Camera" << std::endl;
+	std::cout << DASH_SPLITTER << std::endl;
+	std::cout << getCurrentIndex(index++, displayIndexes) + "Picture width = " << camera.getNumberPixelsX() << std::endl;
+	std::cout << getCurrentIndex(index++, displayIndexes) + "Picture height = " << camera.getNumberPixelsY() << std::endl;
+	std::cout << getCurrentIndex(index++, displayIndexes) + "Focal length = " << camera.getFocalLength() << std::endl;
+	std::cout << getCurrentIndex(index++, displayIndexes) + "X field of view = " << camera.getFovX() << std::endl;
+	std::cout << std::endl;
+
+	std::cout << "Basic parameters" << std::endl;
+	std::cout << DASH_SPLITTER << std::endl;
+	std::cout << getCurrentIndex(index++, displayIndexes) + "Sample per pixel = " << samplePerPixel << std::endl;
+	std::cout << getCurrentIndex(index++, displayIndexes) + "Minimum bounces = " << minBounces << std::endl;
+	std::cout << getCurrentIndex(index++, displayIndexes) + "Max depth = " << maxDepth << std::endl;
+	std::cout << std::endl;
+
+	std::cout << "Optimisation parameters" << std::endl;
+	std::cout << DASH_SPLITTER << std::endl;
+	std::cout << getCurrentIndex(index++, displayIndexes) + "Number of threads = " << numberThreads << std::endl;
+	std::cout << getCurrentIndex(index++, displayIndexes) + "Russian roulette = " << bool2string(russianRoulette) << std::endl;
+	std::cout << getCurrentIndex(index++, displayIndexes) + "Rr stop probability = " << rrStopProbability << std::endl;
+	std::cout << getCurrentIndex(index++, displayIndexes) + "Next event estimation = " << bool2string(nextEventEstimation) << std::endl;
+	std::cout << std::endl;
+}
+
+void Scene::displayObjectsPage() const {
+	for (unsigned int i = 0; i < objectsGroups.size(); i++) {
+		Object3DGroup currentObjectGroup = objectsGroups[i];
+
+		std::cout << i << ") " << currentObjectGroup << std::endl << std::endl;
+	}
 }

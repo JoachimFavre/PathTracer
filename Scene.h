@@ -44,6 +44,7 @@ private:
 
 	DoubleVec3D traceRay(const Ray& ray, double usedNextEventEstimation = false, unsigned int bounces = 0) const;
 	void displayRenderingProgression(unsigned int currentPixelX, double loopBeginningTime) const;
+	std::string getCurrentIndex(int currentIndex, bool displayIndex) const;
 
 public:
 	Scene();
@@ -82,6 +83,9 @@ public:
 	bool importFBX(const char* filePath, Material* material, std::string name);
 
 	Picture* render();
+
+	void displayParametersPage(bool displayIndexes = true) const;
+	void displayObjectsPage() const;
 };
 
 #endif
