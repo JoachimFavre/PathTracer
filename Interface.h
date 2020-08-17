@@ -2,6 +2,7 @@
 #define DEF_INTERFACE
 
 #include <iostream>
+#include <fstream>
 #include <string>
 
 #include "nlohmann/json.hpp"
@@ -152,6 +153,12 @@ static DoubleVec3D getRGBDoubleVec3DFromUser(std::string question = "", std::str
 	double z = getPositiveDoubleFromUser("", "b " + prompt);
 
 	return DoubleVec3D(x, y, z);
+}
+
+
+static bool fileExists(std::string fileName) {
+	std::ifstream f(fileName.c_str());
+	return f.good();
 }
 
 

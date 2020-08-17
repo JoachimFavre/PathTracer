@@ -128,6 +128,17 @@ void receiveAndExecuteGeneralCommands() {
 		}
 		case  'l': {
 			std::string fileName = getStringFromUser("What is the name of the file from where the objects will be loaded?");
+			double beginningTime = getCurrentTimeSeconds();  // don't want to count user time
+			std::cout << std::endl;
+			
+
+			bool exists = fileExists(fileName);
+			if (!exists) {
+				std::cout << "The file " << fileName << " does not exist." << std::endl << std::endl;
+				getStringFromUser("Press enter to continue.");
+				return;
+			}
+
 			json jsonInput;
 
 			std::ifstream file;
@@ -139,6 +150,8 @@ void receiveAndExecuteGeneralCommands() {
 				objectGroups.push_back(jsonGroup.get<Object3DGroup>());
 			}
 
+			std::cout << "Successfully loaded objects from " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
+			getStringFromUser("Press enter to continue.");
 			return;
 		}
 		case 'p': {
@@ -156,12 +169,14 @@ void receiveAndExecuteGeneralCommands() {
 			scene.render()->writeToFile(middleGray, filePath);
 
 			std::cout << std::endl;
-			getStringFromUser("Press enter to continue");
+			getStringFromUser("Press enter to continue.");
 		}
 		case 's': {
 			std::string fileName = getStringFromUser("What is the name of the file where the objects will be saved?");
-			json jsonOutput;
+			double beginningTime = getCurrentTimeSeconds();  // don't want to count user time
+			std::cout << std::endl;
 
+			json jsonOutput;
 			for (Object3DGroup group : objectGroups) {
 				jsonOutput.push_back(group); 
 			}
@@ -170,6 +185,9 @@ void receiveAndExecuteGeneralCommands() {
 			file.open(fileName);
 			file << std::setw(4) << jsonOutput << std::endl;
 			file.close();
+
+			std::cout << "Successfully saved objects to " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
+			getStringFromUser("Press enter to continue.");
 			return;
 		}
 		default: 
@@ -284,12 +302,20 @@ void receiveAndExecuteObjectsCommands(char command) {
 	case 'i': {
 		std::string filePath = getStringFromUser("What is the file path of the FBX file?");
 		std::cout << std::endl;
+		bool exists = fileExists(filePath);
+
+		if (!exists) {
+			std::cout << "The file " << filePath << " does not exist." << std::endl << std::endl;
+			getStringFromUser("Press enter to continue.");
+			return;
+		}
+
 		std::string name = getStringFromUser("How do you want to call the objects group?");
 		std::cout << std::endl;
 		Material* material = createMaterial();
 		scene.importFBX(filePath.c_str(), material, name);
 		std::cout << std::endl;
-		getStringFromUser("Press enter to continue");
+		getStringFromUser("Press enter to continue.");
 		return;
 	}
 	case 'm': {

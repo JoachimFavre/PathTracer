@@ -185,7 +185,7 @@ bool Scene::importFBX(const char* filePath, Material* material, std::string name
 		}
 	}
 
-	std::cout << filePath << " was successfully opened in " << getCurrentTimeSeconds() - importationBeginningTime << " seconds!" << std::endl;
+	std::cout << filePath << " was successfully imported in " << getCurrentTimeSeconds() - importationBeginningTime << " seconds!" << std::endl;
 	return true;
 }
 
