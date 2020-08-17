@@ -23,6 +23,7 @@ const std::string INVALID_COMMAND = "Invalid command.";
 
 const std::string FBX_EXTENSION = "fbx";
 const std::string OBJECTS_SAVE_EXTENSION = "ptobj";
+const std::string PARAMETERS_SAVE_EXTENSION = "ptparam";
 
 // Common parts in interface
 static void clearScreenPrintHeader() {

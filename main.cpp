@@ -58,7 +58,7 @@ void displayParametersPage() {
 
 	std::cout << "Basic parameters" << std::endl;
 	std::cout << DASH_SPLITTER << std::endl;
-	std::cout << "4) Sample per pixels = " << scene.getSamplePerPixel() << std::endl;
+	std::cout << "4) Sample per pixel = " << scene.getSamplePerPixel() << std::endl;
 	std::cout << "5) Minimum bounces = " << scene.getMinBounces() << std::endl;
 	std::cout << "6) Max depth = " << scene.getMaxDepth() << std::endl;
 	std::cout << std::endl;
@@ -85,27 +85,34 @@ void displayObjectsPage() {
 
 
 void displayCommands() {
-	bool isParametersPage = currentPage == Page::ParametersPage;
+	bool isObjectsPages = currentPage == Page::ObjectsPage;
 
 	availableCommandsHeader();
 
-	if (!isParametersPage) {
+	if (isObjectsPages) {
 		std::cout << "- a: add an object group" << std::endl;
 		std::cout << "- d: delete an object group" << std::endl;
 	}
 
 	std::cout << "- e: exit this program" << std::endl;
 
-	if (!isParametersPage) {
+	if (isObjectsPages) {
 		std::cout << "- g: merge two objects groups" << std::endl;
 		std::cout << "- i: import an object from a FBX file as an objects group" << std::endl;
+		std::cout << "- l: load object groups from a " << OBJECTS_SAVE_EXTENSION << " file and add them to current ones" << std::endl;
+	}
+	else {
+		std::cout << "- l: load parameters from a " << PARAMETERS_SAVE_EXTENSION << " file and overwrite current ones" << std::endl;
 	}
 
-	std::cout << "- l: load a parameter file and overwrite current objects & parameters" << std::endl;
-	std::cout << "- m: modify a" << (isParametersPage ? " parameter" : "n object group") << std::endl;
-	std::cout << "- p: switch to " << (isParametersPage ? "objects" : "parameters") << " page" << std::endl;
+	std::cout << "- m: modify a" << (isObjectsPages ?  "n object group" : " parameter") << std::endl;
+	std::cout << "- p: switch to " << (isObjectsPages ? "parameters" : "objects") << " page" << std::endl;
 	std::cout << "- r: start the rendering" << std::endl;
-	std::cout << "- s: save current objects and parameters to a file" << std::endl;
+
+	if (isObjectsPages)
+		std::cout << "- s: save current object groups to a " << OBJECTS_SAVE_EXTENSION << " file" << std::endl;
+	else
+		std::cout << "- s: save current parameters to a " << PARAMETERS_SAVE_EXTENSION << " file" << std::endl;
 }
 
 
@@ -126,44 +133,6 @@ void receiveAndExecuteGeneralCommands() {
 			std::cout << "Have a nice day!" << std::endl;
 			exit(0);
 		}
-		case  'l': {
-			std::string fileName = getStringFromUser("What is the name of the " + OBJECTS_SAVE_EXTENSION + " file from where the object groups will be loaded?");
-			fileName = formatFileName(fileName, OBJECTS_SAVE_EXTENSION);
-			std::cout << std::endl;
-			double beginningTime = getCurrentTimeSeconds();  // don't want to count user time
-			
-			
-
-			bool exists = fileExists(fileName);
-			if (!exists) {
-				std::cout << "The file " << fileName << " does not exist." << std::endl << std::endl;
-				getStringFromUser("Press enter to continue.");
-				return;
-			}
-
-
-			json jsonInput;
-
-			std::ifstream file;
-			file.open(fileName);  // File could change name -> need to make another try catch
-			try {
-				file >> jsonInput;
-				file.close();
-
-				for (json jsonGroup : jsonInput) {
-					objectGroups.push_back(jsonGroup.get<Object3DGroup>());
-				}
-				std::cout << "Successfully loaded objects from " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
-
-			} catch (const json::exception& e) {
-				file.close();
-				std::cout << "The file " << fileName << " is corrupted." << std::endl << "Error: " << e.what() << std::endl << std::endl;
-			}
-			
-			
-			getStringFromUser("Press enter to continue.");
-			return;
-		}
 		case 'p': {
 			if (isParametersPage)
 				currentPage = Page::ObjectsPage;
@@ -181,33 +150,6 @@ void receiveAndExecuteGeneralCommands() {
 			std::cout << std::endl;
 			getStringFromUser("Press enter to continue.");
 		}
-		case 's': {
-			std::string fileName = getStringFromUser("What is the name of the " + OBJECTS_SAVE_EXTENSION + " file in which the object groups will be saved?");
-			std::cout << std::endl;
-			fileName = formatFileName(fileName, OBJECTS_SAVE_EXTENSION);
-
-			if (fileExists(fileName)) {
-				bool continue_ = getBoolFromUser("The file " + fileName + " already exists, do you want to continue? (True=T=true=t / False=F=false=f)");
-				if (!continue_)
-					return;
-			}
-			std::cout << std::endl;
-			double beginningTime = getCurrentTimeSeconds();  // don't want to count user time
-
-			json jsonOutput;
-			for (Object3DGroup group : objectGroups) {
-				jsonOutput.push_back(group); 
-			}
-
-			std::ofstream file;
-			file.open(fileName);
-			file << std::setw(4) << jsonOutput << std::endl;
-			file.close();
-
-			std::cout << "Successfully saved objects to " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
-			getStringFromUser("Press enter to continue.");
-			return;
-		}
 		default: 
 			if (isParametersPage)
 				receiveAndExecuteParametersCommands(command);
@@ -220,6 +162,55 @@ void receiveAndExecuteGeneralCommands() {
 
 void receiveAndExecuteParametersCommands(char command) {
 	switch (command) {
+	case  'l': {
+		std::string fileName = getStringFromUser("What is the name of the " + PARAMETERS_SAVE_EXTENSION + " file from where the parameters will be loaded?");
+		fileName = formatFileName(fileName, PARAMETERS_SAVE_EXTENSION);
+		std::cout << std::endl;
+		double beginningTime = getCurrentTimeSeconds();  // don't want to count user time
+
+		bool exists = fileExists(fileName);
+		if (!exists) {
+			std::cout << "The file " << fileName << " does not exist." << std::endl << std::endl;
+			getStringFromUser("Press enter to continue.");
+			return;
+		}
+
+		json jsonInput;
+
+		std::ifstream file;
+		file.open(fileName);  // File could change name -> need to make another try catch
+		try {
+			file >> jsonInput;
+			file.close();
+
+			json jsonCamera = jsonInput["Camera"];
+			camera.setNumberPixelsX(jsonCamera["NumberPixelsX"].get<unsigned int>());
+			camera.setNumberPixelsY(jsonCamera["NumberPixelsY"].get<unsigned int>());
+			camera.setFocalLength(jsonCamera["FocalLength"].get<double>());
+			camera.setFovX(jsonCamera["FovX"].get<double>());
+			
+			json jsonBasicParameters = jsonInput["BasicParameters"];
+			scene.setSamplePerPixel(jsonBasicParameters["SamplePerPixel"].get<unsigned int>());
+			scene.setMinBounces(jsonBasicParameters["MinBounces"].get<unsigned int>());
+			scene.setMaxDepth(jsonBasicParameters["MaxDepth"].get<double>());
+
+			json jsonOptimisationParameters = jsonInput["OptimisationParameters"];
+			scene.setNumberThreads(jsonOptimisationParameters["NumberThreads"].get<unsigned int>());
+			scene.setRussianRoulette(jsonOptimisationParameters["RussianRoulette"].get<bool>());
+			scene.setRrStopProbability(jsonOptimisationParameters["RrStopProbability"].get<double>());
+			scene.setNextEventEstimation(jsonOptimisationParameters["NextEventEstimation"].get<bool>());
+
+			std::cout << "Successfully loaded parameters from " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
+		}
+		catch (const json::exception& e) {
+			if(file.is_open())
+				file.close();
+			std::cout << "The file " << fileName << " is corrupted." << std::endl << "Error: " << e.what() << std::endl << std::endl;
+		}
+
+		getStringFromUser("Press enter to continue.");
+		return;
+	}
 	case 'm': {
 		// Modify a parameter
 		while (true) {
@@ -240,6 +231,51 @@ void receiveAndExecuteParametersCommands(char command) {
 			default: std::cout << "This index is too big!" << std::endl;
 			}
 		}
+	}
+	case 's': {
+		std::string fileName = getStringFromUser("What is the name of the " + PARAMETERS_SAVE_EXTENSION + " file in which the parameters will be saved?");
+		std::cout << std::endl;
+		fileName = formatFileName(fileName, PARAMETERS_SAVE_EXTENSION);
+
+		if (fileExists(fileName)) {
+			bool continue_ = getBoolFromUser("The file " + fileName + " already exists, do you want to continue? (True=T=true=t / False=F=false=f)");
+			if (!continue_)
+				return;
+		}
+		std::cout << std::endl;
+		double beginningTime = getCurrentTimeSeconds();  // don't want to count user time
+
+		json jsonOutput = {
+			{"Camera", {
+				{"NumberPixelsX", camera.getNumberPixelsX()},
+				{"NumberPixelsY", camera.getNumberPixelsY()},
+				{"FocalLength", camera.getFocalLength()},
+				{"FovX", camera.getFovX()}
+				}
+			},
+			{"BasicParameters", {
+				{"SamplePerPixel", scene.getSamplePerPixel()},
+				{"MinBounces", scene.getMinBounces()},
+				{"MaxDepth", scene.getMaxDepth()}
+				}
+			},
+			{"OptimisationParameters", {
+				{"NumberThreads", scene.getNumberThreads()},
+				{"RussianRoulette", scene.getRussianRoulette()},
+				{"RrStopProbability", scene.getRrStopProbability()},
+				{"NextEventEstimation", scene.getNextEventEstimation()}
+				}
+			}
+		};
+
+		std::ofstream file;
+		file.open(fileName);
+		file << std::setw(4) << jsonOutput << std::endl;
+		file.close();
+
+		std::cout << "Successfully saved objects to " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
+		getStringFromUser("Press enter to continue.");
+		return;
 	}
 	default:
 		commandWasInvalid = true;
@@ -337,6 +373,41 @@ void receiveAndExecuteObjectsCommands(char command) {
 		getStringFromUser("Press enter to continue.");
 		return;
 	}
+	case  'l': {
+		std::string fileName = getStringFromUser("What is the name of the " + OBJECTS_SAVE_EXTENSION + " file from where the object groups will be loaded?");
+		fileName = formatFileName(fileName, OBJECTS_SAVE_EXTENSION);
+		std::cout << std::endl;
+		double beginningTime = getCurrentTimeSeconds();  // don't want to count user time
+			
+		bool exists = fileExists(fileName);
+		if (!exists) {
+			std::cout << "The file " << fileName << " does not exist." << std::endl << std::endl;
+			getStringFromUser("Press enter to continue.");
+			return;
+		}
+
+		json jsonInput;
+
+		std::ifstream file;
+		file.open(fileName);  // File could change name -> need to make another try catch
+		try {
+			file >> jsonInput;
+			file.close();
+
+			for (json jsonGroup : jsonInput) {
+				objectGroups.push_back(jsonGroup.get<Object3DGroup>());
+			}
+			std::cout << "Successfully loaded objects from " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
+
+		} catch (const json::exception& e) {
+			if (file.is_open())
+				file.close();
+			std::cout << "The file " << fileName << " is corrupted." << std::endl << "Error: " << e.what() << std::endl << std::endl;
+		}
+			
+		getStringFromUser("Press enter to continue.");
+		return;
+	}
 	case 'm': {
 		if(objectGroups.size() >= 1) {
 			while (true) {
@@ -353,6 +424,33 @@ void receiveAndExecuteObjectsCommands(char command) {
 		}
 		else
 			commandWasInvalid = true;
+	}
+	case 's': {
+		std::string fileName = getStringFromUser("What is the name of the " + OBJECTS_SAVE_EXTENSION + " file in which the object groups will be saved?");
+		std::cout << std::endl;
+		fileName = formatFileName(fileName, OBJECTS_SAVE_EXTENSION);
+
+		if (fileExists(fileName)) {
+			bool continue_ = getBoolFromUser("The file " + fileName + " already exists, do you want to continue? (True=T=true=t / False=F=false=f)");
+			if (!continue_)
+				return;
+		}
+		std::cout << std::endl;
+		double beginningTime = getCurrentTimeSeconds();  // don't want to count user time
+
+		json jsonOutput;
+		for (Object3DGroup group : objectGroups) {
+			jsonOutput.push_back(group); 
+		}
+
+		std::ofstream file;
+		file.open(fileName);
+		file << std::setw(4) << jsonOutput << std::endl;
+		file.close();
+
+		std::cout << "Successfully saved objects to " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
+		getStringFromUser("Press enter to continue.");
+		return;
 	}
 	default:
 		commandWasInvalid = true;
