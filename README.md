@@ -3,7 +3,7 @@ A C++ renderer using the Bidirectional Path Tracing algorithm made through 2020 
 
 ## Dependencies
 ### FBX SDK version 2020.1 by Autodesk
-- [Download](https://www.autodesk.com/developer-network/platform-technologies/fbx-sdk-2020-0 ) (Runtime Library Option: MT)
+- [Download](https://www.autodesk.com/developer-network/platform-technologies/fbx-sdk-2020-0 ) (use Runtime Library Option: "MT")
 - [Documentation](https://help.autodesk.com/view/FBX/2020/ENU/)
 
 ### JSON for Modern C++ version 3.9.1 by nlohmann
@@ -17,11 +17,11 @@ A C++ renderer using the Bidirectional Path Tracing algorithm made through 2020 
 - [List of supported picture format](http://cimg.eu/reference/group__cimg__files__io.html)
 
 ## Visual Studio parametring
-- Make sure to follow [FBX SDK configuration tutorial](https://help.autodesk.com/view/FBX/2020/ENU/?guid=FBX_Developer_Help_getting_started_installing_and_configuring_configuring_the_fbx_sdk_for_wind_html) (using Runtime Library Option "MT")
+- Make sure to follow the [FBX SDK configuration tutorial](https://help.autodesk.com/view/FBX/2020/ENU/?guid=FBX_Developer_Help_getting_started_installing_and_configuring_configuring_the_fbx_sdk_for_wind_html) (using Runtime Library Option "MT")
 - Assert that "Project Properties > C/C++ > Language > Open MP Support" is yes (else multithreading will not work).
 
 ## Fbx file export from Blender
-To export a FBX file from Blender, make sure that:
+To export a FBX file from [Blender](https://www.blender.org/), make sure that:
 - Scale: 0.01
 - Forward: -Z Forward
 - Up: Y up
