@@ -9,11 +9,13 @@ BidirectionalPathTracer.vcxproj.filters
 BidirectionalPathTracer.vcxproj.user
 
 # Required files
+/CImg
 /nlohmann
 *.fbx
 
 # Generated files
 *.ppm
+*.bmp
 *.json
 *.ptobj
 *.ptparam
