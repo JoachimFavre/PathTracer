@@ -34,7 +34,7 @@ void Picture::writeToFile(double middleGray, std::string fileName /* = "_picture
 	double writingBeginningTime = getCurrentTimeSeconds();
 
 	std::ofstream file;
-	file.open(fileName + ".ppm");
+	file.open(fileName);
 	file << "P3" << std::endl << width << " " << height << " " << maxColourValue << std::endl;
 	for (unsigned int pixelY = 0; pixelY < height; pixelY++) {
 		for (unsigned int pixelX = 0; pixelX < width; pixelX++) {
@@ -47,5 +47,5 @@ void Picture::writeToFile(double middleGray, std::string fileName /* = "_picture
 	}
 	file.close();
 
-	std::cout << "The picture was successfully written in " << fileName << ".ppm file with " << middleGray << " being the middle gray in " << getCurrentTimeSeconds() - writingBeginningTime << " seconds!" << std::endl;
+	std::cout << "The picture was successfully written in " << fileName << " file with " << middleGray << " being the middle gray in " << getCurrentTimeSeconds() - writingBeginningTime << " seconds!" << std::endl;
 }
