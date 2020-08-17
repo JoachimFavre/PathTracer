@@ -275,13 +275,6 @@ Picture* Scene::render() {
 	omp_set_num_threads(numberThreads);
 
 	// Print informations
-	/*
-	std::cout << "Width=" << pictureWidth << "     Height=" << pictureHeight << "     Sample/Pixel=" << samplePerPixel << "     Threads=" << numberThreads << std::endl;
-	std::cout << "RussianRoulette=" << (russianRoulette ? "true" : "false") << "     MinBounces=" << minBounces << "     RrStopProbability=" << rrStopProbability << std::endl;
-	std::cout << "NextEventEstimation=" << (nextEventEstimation ? "true" : "false") << std::endl;
-	std::cout << "Number objects=" << objects.size() << "     Including lamps=" << lamps.size() << std::endl;
-	std::cout << std::endl;
-	*/
 	displayParametersPage(false);
 	std::cout << "Objects" << std::endl;
 	std::cout << DASH_SPLITTER << std::endl;
@@ -291,6 +284,7 @@ Picture* Scene::render() {
 	std::cout << STAR_SPLITTER << std::endl;
 	std::cout << std::endl;
 
+	// Compute picture
 	Picture* result = new Picture(camera.getNumberPixelsX(), camera.getNumberPixelsY());
 
 	double loopBeginningTime = getCurrentTimeSeconds();
