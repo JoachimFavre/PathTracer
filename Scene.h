@@ -43,7 +43,6 @@ private:
 	unsigned int numberThreads = 8;
 
 	DoubleVec3D traceRay(const Ray& ray, double usedNextEventEstimation = false, unsigned int bounces = 0) const;
-	void displayRenderingProgression(unsigned int currentPixelX, double loopBeginningTime) const;
 	std::string getCurrentIndex(int currentIndex, bool displayIndex) const;
 
 public:
@@ -87,5 +86,8 @@ public:
 	void displayParametersPage(bool displayIndexes = true) const;
 	void displayObjectsPage() const;
 };
+
+
+void displayRenderingProgression(unsigned int currentPixelX, unsigned int pictureWidth, double loopBeginningTime);
 
 #endif

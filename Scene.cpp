@@ -257,12 +257,17 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
 	return result;
 }
 
-void Scene::displayRenderingProgression(unsigned int currentPixelX, double loopBeginningTime) const {
+void displayRenderingProgression(unsigned int numberPixelXAlreadyComputed, unsigned int pictureWidth, double loopBeginningTime) {
+	// Cannot be put in a thread -> else time estimation is completely wrong at the beginning of long renders
 	// Don't want to redraw the whole picture for speed
-	unsigned int pictureWidth = camera.getNumberPixelsX();
 	double timeAlreadySpent = getCurrentTimeSeconds() - loopBeginningTime;
-	std::cout << "\rProgress: " << (double)currentPixelX/pictureWidth*100 << "%     Time already spent: " << timeAlreadySpent;
-	std::cout << "s     Estimated time left: " << timeAlreadySpent*(pictureWidth - currentPixelX)/currentPixelX << "s        ";
+	double timeEstimation = timeAlreadySpent * (pictureWidth - numberPixelXAlreadyComputed) / numberPixelXAlreadyComputed;
+
+	// Putting std::string and + instead of << removes the cursor blinking, but we cannot modify the decimal precision
+	std::cout << "\rProgress: " << (double)numberPixelXAlreadyComputed/pictureWidth*100
+		      << "%     Time already spent: " << timeAlreadySpent
+			  << "s     Estimated time left: " << timeEstimation
+		      << "s        ";
 }
 
 
@@ -287,21 +292,21 @@ Picture* Scene::render() {
 	// Compute picture
 	Picture* result = new Picture(camera.getNumberPixelsX(), camera.getNumberPixelsY());
 
+	std::cout << "Computing time estimation...";  // That's a lie. We're juste waiting for one iteration of the loop
 	double loopBeginningTime = getCurrentTimeSeconds();
-	// If #pragma omp parallel for is here, it goes faster, but it cannot display percentage or estimated time left.
-	for (unsigned int pixelX = 0; pixelX < pictureWidth; pixelX++) {
-		displayRenderingProgression(pixelX, loopBeginningTime);
+// "#pragma omp parallel for schedule(dynamic)" can be put here, but it makes the time estimation go weird (as a thread can go faster than another)
+	for (unsigned int pixelX = 0; pixelX < pictureWidth; pixelX++) { 
 #pragma omp parallel for
-		for (int pixelY = 0; pixelY < pictureHeight; pixelY++) {  // pixelY must be signed for OpenMP
+		for ( int pixelY = 0; pixelY < pictureHeight; pixelY++) {  // pixelY must be signed for OpenMP
 			result->setValuePix(pixelX, pixelY, DoubleVec3D(0.0));
 			for (unsigned int sample = 0; sample < samplePerPixel; sample++) {
 				Ray currentRay = camera.getRayGoingThrough(pixelX + randomDouble() - 0.5, pixelY + randomDouble() - 0.5);
 				result->addValuePix(pixelX, pixelY, traceRay(currentRay) / samplePerPixel);
 			}
 		}
+		displayRenderingProgression(pixelX + 1, pictureWidth, loopBeginningTime);
 	}
 
-	displayRenderingProgression(pictureWidth, loopBeginningTime);  // To display the 100%
 	std::cout << std::endl << std::endl;
 
 	return result;
