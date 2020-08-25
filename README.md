@@ -1,5 +1,5 @@
-# BidirectionalPathTracer
-A C++ renderer using the Bidirectional Path Tracing algorithm made through 2020 in the context of my Travail de Maturité.
+# PathTracer
+A C++ renderer using the Path Tracing algorithm made through 2020 in the context of my Travail de Maturité.
 
 ## Dependencies
 ### FBX SDK version 2020.1 by Autodesk
