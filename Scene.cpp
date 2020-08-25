@@ -265,9 +265,9 @@ void displayRenderingProgression(unsigned int numberPixelXAlreadyComputed, unsig
 
 	// Putting std::string and + instead of << removes the cursor blinking, but we cannot modify the decimal precision
 	std::cout << "\rProgress: " << (double)numberPixelXAlreadyComputed/pictureWidth*100
-		      << "%     Time already spent: " << timeAlreadySpent
-			  << "s     Estimated time left: " << timeEstimation
-		      << "s        ";
+              << "%     Time already spent: " << timeAlreadySpent
+              << "s     Estimated time left: " << timeEstimation
+              << "s        ";
 }
 
 
@@ -297,7 +297,7 @@ Picture* Scene::render() {
 // "#pragma omp parallel for schedule(dynamic)" can be put here, but it makes the time estimation go weird (as a thread can go faster than another)
 	for (unsigned int pixelX = 0; pixelX < pictureWidth; pixelX++) { 
 #pragma omp parallel for
-		for ( int pixelY = 0; pixelY < pictureHeight; pixelY++) {  // pixelY must be signed for OpenMP
+		for (int pixelY = 0; pixelY < pictureHeight; pixelY++) {  // pixelY must be signed for OpenMP
 			result->setValuePix(pixelX, pixelY, DoubleVec3D(0.0));
 			for (unsigned int sample = 0; sample < samplePerPixel; sample++) {
 				Ray currentRay = camera.getRayGoingThrough(pixelX + randomDouble() - 0.5, pixelY + randomDouble() - 0.5);

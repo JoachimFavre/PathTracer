@@ -31,7 +31,7 @@ static void clearScreenPrintHeader() {
 	std::system("cls");
 
 	std::cout << "Joachim Favre's TM" << std::endl;
-	std::cout << "Bidirectional path tracer" << std::endl;
+	std::cout << "Path Tracer" << std::endl;
 	std::cout << STAR_SPLITTER << std::endl;
 	std::cout << std::endl;
 }
