@@ -1,5 +1,5 @@
 # PathTracer
-A C++ renderer using the Path Tracing algorithm made through 2020 in the context of my Travail de Maturité.
+A C++ renderer using the Path Tracing algorithm made through 2020 in the context of my *Travail de Maturité*.
 
 ## Dependencies
 ### FBX SDK version 2020.1 by Autodesk
@@ -13,7 +13,7 @@ A C++ renderer using the Path Tracing algorithm made through 2020 in the context
 
 ### The CImg Library version 2.9.2 by David Tschumperlé
 - [Website](http://cimg.eu/)
-- [Download](http://cimg.eu/download.shtml) (put CImg.h in BidirectionalPathTracer/CImg)
+- [Download](http://cimg.eu/download.shtml) (put CImg.h in [your project directory]/CImg)
 - [List of supported picture format](http://cimg.eu/reference/group__cimg__files__io.html)
 
 ## Visual Studio parametring
