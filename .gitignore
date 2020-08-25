@@ -3,10 +3,10 @@
 /Debug
 /Release
 /x64
-BidirectionalPathTracer.sln
-BidirectionalPathTracer.vcxproj
-BidirectionalPathTracer.vcxproj.filters
-BidirectionalPathTracer.vcxproj.user
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
 
 # Required files
 /CImg
