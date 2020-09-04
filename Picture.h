@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <chrono>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <string>
 
@@ -35,6 +36,7 @@ public:
 	unsigned int getWidth() const;
 	unsigned int getHeight() const;
 	double getRenderTime() const;
+	std::vector<std::vector<DoubleVec3D>> getPixels() const;
 
 	void addValuePix(unsigned int x, unsigned int y, DoubleVec3D value);
 	void setValuePix(unsigned int x, unsigned int y, DoubleVec3D value);
@@ -44,6 +46,9 @@ public:
 	void writeToFile(double middleGray, std::string fileName, unsigned int movingAverage = 0) const;
 	void modify();
 };
+
+void to_json(json& j, const Picture& picture);
+Picture importPictureFromJson(const json&);
 
 #endif
 

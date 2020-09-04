@@ -31,6 +31,8 @@ void displayCommands() {
 		std::cout << "- s: save current object groups to a " << OBJECTS_SAVE_EXTENSION << " file" << std::endl;
 	else
 		std::cout << "- s: save current parameters to a " << PARAMETERS_SAVE_EXTENSION << " file" << std::endl;
+	
+	std::cout << "- t: load a picture from a " << PICTURE_SAVE_EXTENSION_JSON << " file" << std::endl;
 }
 
 
@@ -63,6 +65,41 @@ void receiveAndExecuteGeneralCommands() {
 		Picture* pict = scene.render();
 		pict->modify();
 		delete pict;
+		return;
+	}
+	case 't': {
+		std::string fileName = getStringFromUser("What is the name of the " + PICTURE_SAVE_EXTENSION_JSON + " file from which the picture will be loaded?");
+		fileName = formatFileName(fileName, PICTURE_SAVE_EXTENSION_JSON);
+		std::cout << std::endl;
+
+		if (!fileExists(fileName)) {
+			std::cout << "The file " << fileName << " does not exist." << std::endl << std::endl;
+			getStringFromUser("Press enter to continue.");
+			return;
+		}
+
+		double beginningTime = getCurrentTimeSeconds();
+		json jsonInput;
+
+		std::ifstream file;
+		try {
+			file.open(fileName);
+			file >> jsonInput;
+			file.close();
+
+			Picture pict = importPictureFromJson(jsonInput);
+			std::cout << "Successfully loaded picture from " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
+			getStringFromUser("Press enter to continue.");
+
+			pict.modify();
+
+		} catch (const json::exception& e) {
+			if (file.is_open())
+				file.close();
+			std::cout << "The file " << fileName << " is corrupted." << std::endl << "Error: " << e.what() << std::endl << std::endl;
+			getStringFromUser("Press enter to continue.");
+		}
+		return;
 	}
 	default:
 		if (isParametersPage)

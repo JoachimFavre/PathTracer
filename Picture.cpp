@@ -26,6 +26,18 @@ unsigned int Picture::getWidth() const { return width; }
 unsigned int Picture::getHeight() const { return height; }
 double Picture::getRenderTime() const { return renderTime; }
 
+std::vector<std::vector<DoubleVec3D>> Picture::getPixels() const {
+	std::vector<std::vector<DoubleVec3D>> result;
+	for (int pixelX = 0; pixelX < width; pixelX++) {
+		std::vector<DoubleVec3D> column;
+		for (int pixelY = 0; pixelY < height; pixelY++) {
+			column.push_back(pixels[pixelX][pixelY]);
+		}
+		result.push_back(column);
+	}
+	return result;
+}
+
 // Modify pixels
 void Picture::addValuePix(unsigned int x, unsigned int y, DoubleVec3D value) { pixels[x][y] += value; }
 void Picture::setValuePix(unsigned int x, unsigned int y, DoubleVec3D value) { pixels[x][y] = value; }
@@ -98,7 +110,7 @@ void Picture::modify() {
 		availableCommandsHeader();
 		std::cout << "- b: leave this page" << std::endl;
 		std::cout << "- e: export this picture as a " << PICTURE_EXTENSION << " file" << std::endl;
-		std::cout << "- s: save picture as a " << PICTURE_SAVE_EXTENSION_JSON << " file" << std::endl;
+		std::cout << "- s: save this picture as a " << PICTURE_SAVE_EXTENSION_JSON << " file" << std::endl;
 		std::cout << std::endl;
 
 
@@ -112,7 +124,7 @@ void Picture::modify() {
 		switch (command) {
 		case 'b': return;
 		case 'e': {
-			std::string fileName = getStringFromUser("What is the name of the " + PICTURE_EXTENSION + " file in which the picture will be saved?");
+			std::string fileName = getStringFromUser("What is the name of the " + PICTURE_EXTENSION + " file in which the picture will be exported?");
 			fileName = formatFileName(fileName, PICTURE_EXTENSION);
 			std::cout << std::endl;
 
@@ -133,8 +145,47 @@ void Picture::modify() {
 			getStringFromUser("Press enter to continue.");
 			break;
 		}
-		case 's': break;
+		case 's': {
+			std::string fileName = getStringFromUser("What is the name of the " + PICTURE_SAVE_EXTENSION_JSON + " file in which the picture will be saved?");
+			fileName = formatFileName(fileName, PICTURE_SAVE_EXTENSION_JSON);
+			std::cout << std::endl;
+			double beginningTime = getCurrentTimeSeconds();
+
+			json jsonOutput = *this;
+
+			std::ofstream file;
+			file.open(fileName);
+			file << std::setw(4) << jsonOutput << std::endl;
+			file.close();
+
+			std::cout << "Successfully saved objects to " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
+			getStringFromUser("Press enter to continue.");
+			break;
+		}
 		default: commandWasInvalid = true;
 		}
 	}
+}
+
+// json
+void to_json(json& j, const Picture& picture) {
+	j = { {"Width", picture.getWidth()}, {"Height", picture.getHeight()}, {"RenderTime", picture.getRenderTime()}, {"Pixels", picture.getPixels()} };
+}
+
+
+Picture importPictureFromJson(const json& j) {
+	unsigned int width = j["Width"].get<unsigned int>();
+	unsigned int height = j["Height"].get<unsigned int>();
+	double renderTime = j["RenderTime"].get<double>();
+	std::vector<std::vector<DoubleVec3D>> pixels = j["Pixels"].get<std::vector<std::vector<DoubleVec3D>>>();
+	Picture result(width, height, renderTime);
+	
+	for (int pixelX = 0; pixelX < pixels.size(); pixelX++) {
+		std::vector<DoubleVec3D> column = pixels[pixelX];
+		for (int pixelY = 0; pixelY < column.size(); pixelY++) {
+			result.setValuePix(pixelX, pixelY, column[pixelY]);
+		}
+	}
+
+	return result;
 }
