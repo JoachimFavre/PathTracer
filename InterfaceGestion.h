@@ -22,6 +22,7 @@ const std::string INVALID_COMMAND = "Invalid command.";
 
 const std::string PICTURE_EXTENSION = "bmp";  // list of available extensions: http://cimg.eu/reference/group__cimg__files__io.html
 const std::string FBX_EXTENSION = "fbx";
+const std::string PICTURE_SAVE_EXTENSION_JSON = "ptpict";
 const std::string OBJECTS_SAVE_EXTENSION = "ptobj";
 const std::string PARAMETERS_SAVE_EXTENSION = "ptparam";
 

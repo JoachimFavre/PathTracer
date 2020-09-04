@@ -59,25 +59,10 @@ void receiveAndExecuteGeneralCommands() {
 		return;
 	}
 	case 'r': {
-		std::string fileName = getStringFromUser("What is the name of the " + PICTURE_EXTENSION + " file in which the picture will be saved?");
-		fileName = formatFileName(fileName, PICTURE_EXTENSION);
-		std::cout << std::endl;
-
-		if (fileExists(fileName)) {
-			bool continue_ = getBoolFromUser("The file " + fileName + " already exists, do you want to continue? (True=T=true=t / False=F=false=f)");
-			if (!continue_)
-				return;
-			std::cout << std::endl;
-		}
-
-		double middleGray = getPositiveDoubleFromUser("What luminance will be the middle-gray? (try 100 if you have no idea) (positive number)");
-
 		clearScreenPrintHeader();
-		scene.render()->writeToFile(middleGray, fileName);
-
-		std::cout << std::endl;
-
-		getStringFromUser("Press enter to continue.");
+		Picture* pict = scene.render();
+		pict->modify();
+		delete pict;
 	}
 	default:
 		if (isParametersPage)

@@ -307,6 +307,7 @@ Picture* Scene::render() {
 		displayRenderingProgression(pixelX + 1, pictureWidth, loopBeginningTime);
 	}
 
+	result->setRenderTime(getCurrentTimeSeconds() - loopBeginningTime);
 	std::cout << std::endl << std::endl;
 
 	return result;
