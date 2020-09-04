@@ -1,19 +1,10 @@
 #ifndef DEF_INTERFACEGESTION
 #define DEF_INTERFACEGESTION
 
-#include <iostream>
 #include <fstream>
 #include <string>
 
-#include "nlohmann/json.hpp"
-using json = nlohmann::json;
-
-#include "Object3D.h"
-#include "Sphere.h"
-#include "Triangle.h"
-#include "DiffuseMaterial.h"
-#include "SpecularMaterial.h"
-#include "RefractiveMaterial.h"
+#include "DoubleVec3D.h"
 
 // Constants
 constexpr unsigned int MAX_LENGTH_STRING_FROM_USER = 256;
@@ -45,19 +36,5 @@ DoubleVec3D getRGBDoubleVec3DFromUser(std::string question = "", std::string pro
 
 bool fileExists(std::string fileName);
 std::string formatFileName(std::string fileName, std::string extension);
-
-Material* createDiffuseMaterial(const DoubleVec3D& emittance);
-Material* createRefractiveMaterial(const DoubleVec3D& emittance);
-Material* createSpecularMaterial(const DoubleVec3D& emittance);
-Material* createMaterial();
-
-Object3D* createSphere(Material* material);
-Object3D* createTriangle(Material* material);
-Object3D* createObject3D();
-
-void to_json(json& j, const Material& mat);
-Material* importMaterialFromJson(const json& j);
-void to_json(json& j, const Object3D& obj);
-Object3D* importObject3DFromJson(const json& j);
 
 #endif
