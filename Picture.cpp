@@ -190,9 +190,9 @@ Picture importPictureFromJson(const json& j) {
 	std::vector<std::vector<DoubleVec3D>> pixels = j["Pixels"].get<std::vector<std::vector<DoubleVec3D>>>();
 	Picture result(width, height, renderTime);
 	
-	for (int pixelX = 0; pixelX < pixels.size(); pixelX++) {
+	for (int pixelX = 0; pixelX < width; pixelX++) {
 		std::vector<DoubleVec3D> column = pixels[pixelX];
-		for (int pixelY = 0; pixelY < column.size(); pixelY++) {
+		for (int pixelY = 0; pixelY < height; pixelY++) {
 			result.setValuePix(pixelX, pixelY, column[pixelY]);
 		}
 	}
