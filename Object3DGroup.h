@@ -6,7 +6,7 @@
 
 #include "DoubleVec3D.h"
 #include "Object3D.h"
-#include "Interface.h"
+#include "InterfaceGestion.h"
 
 class Object3DGroup {
 private:

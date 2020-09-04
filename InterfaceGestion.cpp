@@ -1,4 +1,4 @@
-#include "Interface.h"
+#include "InterfaceGestion.h"
 
 // Common parts in interface
 void clearScreenPrintHeader() {

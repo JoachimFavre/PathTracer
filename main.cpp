@@ -20,7 +20,7 @@ using json = nlohmann::json;
 #include "SpecularMaterial.h"
 #include "Sphere.h"
 #include "Triangle.h"
-#include "Interface.h"
+#include "InterfaceGestion.h"
 
 #include "Scene.h"
 
