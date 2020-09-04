@@ -44,6 +44,16 @@ void Picture::setValuePix(unsigned int x, unsigned int y, DoubleVec3D value) { p
 void Picture::setRenderTime(double renderTime) { this->renderTime = renderTime; }
 
 // Other methods
+
+DoubleVec3D Picture::toneMapping(const DoubleVec3D& luminance, double middleGray) const {
+	// Very naive tone mapping
+	double x = maxColourValue*luminance.getX()/(middleGray + luminance.getX());
+	double y = maxColourValue*luminance.getY()/(middleGray + luminance.getY());
+	double z = maxColourValue*luminance.getZ()/(middleGray + luminance.getZ());
+
+	return DoubleVec3D(x, y, z);
+}
+
 DoubleVec3D Picture::getColourMovingAverage(unsigned int pixelX, unsigned int pixelY, unsigned int size) const {
 	if (size == 0)
 		return pixels[pixelX][pixelY];
@@ -79,10 +89,10 @@ void Picture::writeToFile(double middleGray, std::string fileName, unsigned int 
 	for (unsigned int pixelY = 0; pixelY < height; pixelY++) {
 		for (unsigned int pixelX = 0; pixelX < width; pixelX++) {
 			DoubleVec3D currentColour = getColourMovingAverage(pixelX, pixelY, movingAverageSize);
-			// Very naive tone mapping
-			file << (int)(maxColourValue * currentColour.getX() / (middleGray + currentColour.getX())) << " ";
-			file << (int)(maxColourValue * currentColour.getY() / (middleGray + currentColour.getY())) << " ";
-			file << (int)(maxColourValue * currentColour.getZ() / (middleGray + currentColour.getZ())) << std::endl;
+			currentColour = toneMapping(currentColour, middleGray);
+			file << (int)(currentColour.getX()) << " ";
+			file << (int)(currentColour.getY()) << " ";
+			file << (int)(currentColour.getZ()) << std::endl;
 		}
 	}
 	file.close();

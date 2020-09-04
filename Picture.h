@@ -42,6 +42,7 @@ public:
 	void setValuePix(unsigned int x, unsigned int y, DoubleVec3D value);
 	void setRenderTime(double renderTime);
 
+	DoubleVec3D toneMapping(const DoubleVec3D& luminance, double middleGray) const;
 	DoubleVec3D getColourMovingAverage(unsigned int pixelX, unsigned int pixelY, unsigned int size) const;
 	void writeToFile(double middleGray, std::string fileName, unsigned int movingAverage = 0) const;
 	void modify();
