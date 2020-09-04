@@ -1,5 +1,5 @@
-#ifndef DEF_INTERFACE
-#define DEF_INTERFACE
+#ifndef DEF_INTERFACEGESTION
+#define DEF_INTERFACEGESTION
 
 #include <iostream>
 #include <fstream>
