@@ -19,6 +19,7 @@
 *.json
 *.ptobj
 *.ptparam
+*.ptpict
 
 # Prerequisites
 *.d
