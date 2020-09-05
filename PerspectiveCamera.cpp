@@ -2,44 +2,49 @@
 
 // Constructors
 PerspectiveCamera::PerspectiveCamera()
-    : numberPixelsX(500), numberPixelsY(500), focalLength(1), fovX(M_PI_4), tanFovX(tan(fovX)) {}
+    : PerspectiveCamera(500, 500) {}
 
-PerspectiveCamera::PerspectiveCamera(unsigned int numberPixelsX, unsigned int numberPixelsY, double focalLength /*= 1*/, double fovX /*= M_PI_4*/)
-    : numberPixelsX(numberPixelsX), numberPixelsY(numberPixelsY), focalLength(focalLength), fovX(fovX), tanFovX(tan(fovX)) {}
+PerspectiveCamera::PerspectiveCamera(unsigned int numberPixelsX, unsigned int numberPixelsY, DoubleVec3D origin /*= DoubleVec3D(0.0)*/, DoubleVec3D focal /*= DoubleVec3D(1, 0, 0)*/)
+    : numberPixelsX(numberPixelsX), numberPixelsY(numberPixelsY), origin(origin), focal(focal) {
+	computeBases();
+}
 
 PerspectiveCamera::PerspectiveCamera(const PerspectiveCamera& camera)
-    : numberPixelsX(camera.numberPixelsX), numberPixelsY(camera.numberPixelsY), focalLength(camera.focalLength), fovX(camera.fovX), tanFovX(camera.tanFovX) {}
+    : PerspectiveCamera(camera.numberPixelsX, camera.numberPixelsY, camera.origin, camera.focal) {}
 
 
 // Getters
 unsigned int PerspectiveCamera::getNumberPixelsX() const { return numberPixelsX; }
 unsigned int PerspectiveCamera::getNumberPixelsY() const { return numberPixelsY; }
-double PerspectiveCamera::getFovX() const { return fovX; }
-double PerspectiveCamera::getTanFovX() const { return tanFovX; }
-double PerspectiveCamera::getTanFovY() const { return numberPixelsY/numberPixelsX*tanFovX; }
-double PerspectiveCamera::getFocalLength() const { return focalLength; }
-double PerspectiveCamera::getWorldWidth() const { return 2*focalLength*tanFovX; }
-double PerspectiveCamera::getWorldHeight() const { return 2*focalLength*getTanFovY(); }
+DoubleVec3D PerspectiveCamera::getOrigin() const { return origin; }
+DoubleVec3D PerspectiveCamera::getFocal() const { return focal; }
+double PerspectiveCamera::getWorldWidth() const { return 1; }
+double PerspectiveCamera::getWorldHeight() const { return numberPixelsY/numberPixelsX*getWorldWidth(); }
 
 
 // Setters
-void PerspectiveCamera::setNumberPixelsX(unsigned int numberPixelsX) { this->numberPixelsX = numberPixelsX; }
-void PerspectiveCamera::setNumberPixelsY(unsigned int numberPixelsY) { this->numberPixelsY = numberPixelsY; }
-void PerspectiveCamera::setFocalLength(double focalLength) { this->focalLength = focalLength; }
-
-void PerspectiveCamera::setFovX(double fovX) {
-	this->fovX = fovX; 
-	this->tanFovX = tan(fovX);
-}
+void PerspectiveCamera::setNumberPixelsX(unsigned int numberPixelsX) { this->numberPixelsX = numberPixelsX; computeBases(); }
+void PerspectiveCamera::setNumberPixelsY(unsigned int numberPixelsY) { this->numberPixelsY = numberPixelsY; computeBases(); }
+void PerspectiveCamera::setOrigin(DoubleVec3D origin) { this->origin = origin; computeBases(); }
+void PerspectiveCamera::setFocal(DoubleVec3D focal) { this->focal = focal; computeBases(); }
 
 
 // Other methods
+void PerspectiveCamera::computeBases() {
+	if (-DBL_EPSILON < focal.getX() && focal.getX() < DBL_EPSILON)
+		baseX = DoubleUnitVec3D(1, 0, 0);
+	else
+		baseX = DoubleUnitVec3D(-focal.getZ() / focal.getX(), 0, 1);
+
+	baseY = crossProd(baseX, focal);
+
+	if (baseY.getY() < 0) {
+		baseX = -baseX;
+		baseY = -baseY;
+	}
+}
+
 Ray PerspectiveCamera::getRayGoingThrough(double pixelX, double pixelY) const {
-    DoubleVec3D rayOrigin(0.0);
-    double worldWidth = getWorldWidth();
-    double worldHeight = getWorldHeight();
-    DoubleUnitVec3D rayDirection(worldWidth/numberPixelsX*(pixelX + 0.5) - 0.5*worldWidth,
-                                 getWorldHeight()/numberPixelsY*(numberPixelsY - pixelY + 0.5) - 0.5*worldHeight,
-                                 -focalLength);
-    return Ray(rayOrigin, rayDirection);
+	DoubleUnitVec3D rayDirection = 2.0/numberPixelsX*((pixelX + 0.5 - numberPixelsX/2)*baseX + (-pixelY - 0.5 + numberPixelsY/2)*baseY) + focal;
+	return Ray(origin, rayDirection);
 }

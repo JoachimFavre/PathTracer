@@ -329,8 +329,8 @@ void Scene::displayParametersPage(bool displayIndexes /*= true*/) const {
 	std::cout << DASH_SPLITTER << std::endl;
 	std::cout << getCurrentIndex(index++, displayIndexes) + "Picture width = " << camera.getNumberPixelsX() << std::endl;
 	std::cout << getCurrentIndex(index++, displayIndexes) + "Picture height = " << camera.getNumberPixelsY() << std::endl;
-	std::cout << getCurrentIndex(index++, displayIndexes) + "Focal length = " << camera.getFocalLength() << std::endl;
-	std::cout << getCurrentIndex(index++, displayIndexes) + "X field of view = " << camera.getFovX() << std::endl;
+	std::cout << getCurrentIndex(index++, displayIndexes) + "Origin = " << camera.getOrigin() << std::endl;
+	std::cout << getCurrentIndex(index++, displayIndexes) + "Focal = " << camera.getFocal() << std::endl;
 	std::cout << std::endl;
 
 	std::cout << "Basic parameters" << std::endl;

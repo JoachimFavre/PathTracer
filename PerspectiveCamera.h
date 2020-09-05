@@ -10,26 +10,28 @@
 class PerspectiveCamera {
 private:
 	unsigned int numberPixelsX, numberPixelsY;
-	double focalLength, fovX, tanFovX;
+	DoubleVec3D origin, focal;
+
+	DoubleUnitVec3D baseX;
+	DoubleUnitVec3D baseY;
+	void computeBases();
 
 public:
 	PerspectiveCamera();
-	PerspectiveCamera(unsigned int numberPixelsX, unsigned int numberPixelsY, double focalLength = 1, double fovX = M_PI_4);
+	PerspectiveCamera(unsigned int numberPixelsX, unsigned int numberPixelsY, DoubleVec3D origin = DoubleVec3D(0.0), DoubleVec3D focal = DoubleVec3D(0, 0, -1));
 	PerspectiveCamera(const PerspectiveCamera& camera);
 	
 	unsigned int getNumberPixelsX() const;
 	unsigned int getNumberPixelsY() const;
-	double getFovX() const;
-	double getTanFovX() const;
-	double getTanFovY() const;
-	double getFocalLength() const;
+	DoubleVec3D getOrigin() const;
+	DoubleVec3D getFocal() const;
 	double getWorldWidth() const;
 	double getWorldHeight() const;
 
 	void setNumberPixelsX(unsigned int numberPixelsX);
 	void setNumberPixelsY(unsigned int numberPixelsY);
-	void setFocalLength(double focalLength);
-	void setFovX(double fovX);
+	void setOrigin(DoubleVec3D origin);
+	void setFocal(DoubleVec3D focal);
 
 	Ray getRayGoingThrough(double pixelX, double pixelY) const;
 };

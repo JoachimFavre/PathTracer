@@ -79,6 +79,7 @@ void receiveAndExecuteGeneralCommands() {
 			std::cout << std::endl;
 		}
 
+		std::cout << "\a";  // Make noise to notify end of rendering
 		getStringFromUser("Press enter to continue");
 
 		pict->modify();
@@ -155,8 +156,8 @@ void executeParametersCommands(char command) {
 			json jsonCamera = jsonInput["Camera"];
 			camera.setNumberPixelsX(jsonCamera["NumberPixelsX"].get<unsigned int>());
 			camera.setNumberPixelsY(jsonCamera["NumberPixelsY"].get<unsigned int>());
-			camera.setFocalLength(jsonCamera["FocalLength"].get<double>());
-			camera.setFovX(jsonCamera["FovX"].get<double>());
+			camera.setOrigin(jsonCamera["Origin"].get<double>());
+			camera.setFocal(jsonCamera["Focal"].get<DoubleVec3D>());
 
 			json jsonBasicParameters = jsonInput["BasicParameters"];
 			scene.setSamplePerPixel(jsonBasicParameters["SamplePerPixel"].get<unsigned int>());
@@ -188,8 +189,8 @@ void executeParametersCommands(char command) {
 			switch (index) {
 			case 0: camera.setNumberPixelsX(getUnsignedIntFromUser("What is the new camera width? (positive integer)")); return;
 			case 1: camera.setNumberPixelsY(getUnsignedIntFromUser("What is the new camera height? (positive integer)")); return;
-			case 2: camera.setFocalLength(getPositiveDoubleFromUser("What is the new camera focal length (positive number)")); return;
-			case 3: camera.setFovX(getPositiveDoubleFromUser("What is the new X field of view? (positive number)")); return;
+			case 2: camera.setOrigin(getXYZDoubleVec3DFromUser("What is the new camera origin?")); return;
+			case 3: camera.setFocal(getXYZDoubleVec3DFromUser("What is the new camera focal length?")); return;
 			case 4: scene.setSamplePerPixel(getUnsignedIntFromUser("What is the new number of sample per pixel? (positive integer)")); return;
 			case 5: scene.setMinBounces(getUnsignedIntFromUser("What is the new minimum number of ray bounces? (there can be less if nothing is hit) (positive integer)")); return;
 			case 6: scene.setMaxDepth(getPositiveDoubleFromUser("What is the new maximum depth? (positive number)")); return;
@@ -217,8 +218,8 @@ void executeParametersCommands(char command) {
 			{"Camera", {
 				{"NumberPixelsX", camera.getNumberPixelsX()},
 				{"NumberPixelsY", camera.getNumberPixelsY()},
-				{"FocalLength", camera.getFocalLength()},
-				{"FovX", camera.getFovX()}
+				{"Focal", camera.getFocal()},
+				{"Origin", camera.getOrigin()}
 				}
 			},
 			{"BasicParameters", {
