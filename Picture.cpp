@@ -54,9 +54,9 @@ DoubleVec3D Picture::toneMapping(const DoubleVec3D& luminance, double middleGray
 	return DoubleVec3D(x, y, z);
 }
 
-DoubleVec3D Picture::getColourMovingAverage(unsigned int pixelX, unsigned int pixelY, unsigned int size) const {
+DoubleVec3D Picture::getColourMovingAverage(const std::vector<std::vector<DoubleVec3D>>& pixelValues, unsigned int pixelX, unsigned int pixelY, unsigned int size) const {
 	if (size == 0)
-		return pixels[pixelX][pixelY];
+		return pixelValues[pixelX][pixelY];
 
 	int pixelXInt = (int)pixelX;
 	int pixelYInt = (int)pixelY;
@@ -71,9 +71,9 @@ DoubleVec3D Picture::getColourMovingAverage(unsigned int pixelX, unsigned int pi
 	DoubleVec3D result(0.0);
 	unsigned int numberPixels = (maxPixX - minPixX + 1)*(maxPixY - minPixY + 1);  // not (2*size + 1)^2 because smaller if near an edge
 
-	for (int x = minPixX; x <= maxPixX; x++) {
-		for (int y = minPixY; y <= maxPixY; y++) {
-			result += pixels[x][y] / numberPixels;
+	for (unsigned int y = minPixY; y <= maxPixY; y++) {
+		for (unsigned int x = minPixX; x <= maxPixX; x++) {
+			result += pixelValues[x][y] / numberPixels;
 		}
 	}
 
@@ -83,13 +83,22 @@ DoubleVec3D Picture::getColourMovingAverage(unsigned int pixelX, unsigned int pi
 void Picture::writeToFile(double middleGray, std::string fileName, unsigned int movingAverageSize /*= 0*/) const {
 	double writingBeginningTime = getCurrentTimeSeconds();
 
+	std::vector<std::vector<DoubleVec3D>> pixelValues;
+	for (unsigned int pixelX = 0; pixelX < width; pixelX++) {
+		std::vector<DoubleVec3D> column;
+		for (unsigned int pixelY = 0; pixelY < width; pixelY++) {
+			column.push_back(toneMapping(pixels[pixelX][pixelY], middleGray));
+		}
+		pixelValues.push_back(column);
+	}
+
+
 	std::ofstream file;
 	file.open("temp.ppm");
 	file << "P3" << std::endl << width << " " << height << " " << maxColourValue << std::endl;
 	for (unsigned int pixelY = 0; pixelY < height; pixelY++) {
 		for (unsigned int pixelX = 0; pixelX < width; pixelX++) {
-			DoubleVec3D currentColour = getColourMovingAverage(pixelX, pixelY, movingAverageSize);
-			currentColour = toneMapping(currentColour, middleGray);
+			DoubleVec3D currentColour = getColourMovingAverage(pixelValues, pixelX, pixelY, movingAverageSize);
 			file << (int)(currentColour.getX()) << " ";
 			file << (int)(currentColour.getY()) << " ";
 			file << (int)(currentColour.getZ()) << std::endl;

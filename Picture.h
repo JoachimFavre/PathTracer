@@ -43,7 +43,7 @@ public:
 	void setRenderTime(double renderTime);
 
 	DoubleVec3D toneMapping(const DoubleVec3D& luminance, double middleGray) const;
-	DoubleVec3D getColourMovingAverage(unsigned int pixelX, unsigned int pixelY, unsigned int size) const;
+	DoubleVec3D getColourMovingAverage(const std::vector<std::vector<DoubleVec3D>>& pixelValues, unsigned int pixelX, unsigned int pixelY, unsigned int size) const;
 	void writeToFile(double middleGray, std::string fileName, unsigned int movingAverage = 0) const;
 	void modify();
 };
