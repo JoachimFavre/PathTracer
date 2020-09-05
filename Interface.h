@@ -13,6 +13,9 @@ enum class Page {
 	ObjectsPage
 };
 
+constexpr double smallestRenderTime4PictBackup = 180.0;  // 3 minutes
+const std::string backupFileName = formatFileName("backup", PICTURE_SAVE_EXTENSION_JSON);
+
 static Scene scene;
 static PerspectiveCamera& camera = scene.getCameraReference();
 static std::vector<Object3DGroup>& objectGroups = scene.getObjectsGroupsReference();

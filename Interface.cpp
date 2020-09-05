@@ -63,6 +63,24 @@ void receiveAndExecuteGeneralCommands() {
 	case 'r': {
 		clearScreenPrintHeader();
 		Picture* pict = scene.render();
+
+		if (pict->getRenderTime() > smallestRenderTime4PictBackup) {
+			double beginningTime = getCurrentTimeSeconds();
+			std::cout << "Backing the picture up...";
+
+			json jsonOutput = *pict;
+
+			std::ofstream file;
+			file.open(backupFileName);
+			file << std::setw(4) << jsonOutput << std::endl;
+			file.close();
+
+			std::cout << "\rPicture succesffuly backed up to " << backupFileName << " in " << getCurrentTimeSeconds() - beginningTime << "s " << std::endl;
+			std::cout << std::endl;
+		}
+
+		getStringFromUser("Press enter to continue");
+
 		pict->modify();
 		delete pict;
 		return;

@@ -101,7 +101,7 @@ void Picture::writeToFile(double middleGray, std::string fileName, unsigned int 
 	remove("temp.ppm");
 	image.save(fileName.c_str());
 
-	std::cout << "The picture was successfully written in " << fileName << " file with " << middleGray << " being the middle gray in " << getCurrentTimeSeconds() - writingBeginningTime << " seconds!\a" << std::endl;
+	std::cout << "The picture was successfully written in " << fileName << " file with " << middleGray << " being the middle gray in " << getCurrentTimeSeconds() - writingBeginningTime << " seconds!" << std::endl;
 	system((".\\" + fileName).c_str());
 }
 
@@ -141,7 +141,7 @@ void Picture::modify() {
 			if (fileExists(fileName)) {
 				bool continue_ = getBoolFromUser("The file " + fileName + " already exists, do you want to continue? (True=T=true=t / False=F=false=f)");
 				if (!continue_)
-					return;
+					break;
 				std::cout << std::endl;
 			}
 
@@ -168,7 +168,7 @@ void Picture::modify() {
 			file << std::setw(4) << jsonOutput << std::endl;
 			file.close();
 
-			std::cout << "Successfully saved objects to " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
+			std::cout << "Successfully saved picture to " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
 			getStringFromUser("Press enter to continue.");
 			break;
 		}
