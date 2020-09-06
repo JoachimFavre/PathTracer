@@ -86,7 +86,7 @@ void Picture::writeToFile(double middleGray, std::string fileName, unsigned int 
 	std::vector<std::vector<DoubleVec3D>> pixelValues;
 	for (unsigned int pixelX = 0; pixelX < width; pixelX++) {
 		std::vector<DoubleVec3D> column;
-		for (unsigned int pixelY = 0; pixelY < width; pixelY++) {
+		for (unsigned int pixelY = 0; pixelY < height; pixelY++) {
 			column.push_back(toneMapping(pixels[pixelX][pixelY], middleGray));
 		}
 		pixelValues.push_back(column);
