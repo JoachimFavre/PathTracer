@@ -156,7 +156,7 @@ void executeParametersCommands(char command) {
 			json jsonCamera = jsonInput["Camera"];
 			camera.setNumberPixelsX(jsonCamera["NumberPixelsX"].get<unsigned int>());
 			camera.setNumberPixelsY(jsonCamera["NumberPixelsY"].get<unsigned int>());
-			camera.setOrigin(jsonCamera["Origin"].get<double>());
+			camera.setOrigin(jsonCamera["Origin"].get<DoubleVec3D>());
 			camera.setFocal(jsonCamera["Focal"].get<DoubleVec3D>());
 
 			json jsonBasicParameters = jsonInput["BasicParameters"];
