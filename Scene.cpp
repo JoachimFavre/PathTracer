@@ -78,38 +78,38 @@ void Scene::computeObjectsAndLamps() {
 void Scene::defaultScene() {
 	// Spheres
 	addObjectGroup(Object3DGroup("Light", {
-		new Sphere(DoubleVec3D(0, 1.5, -2.5), 0.5, new DiffuseMaterial(DoubleVec3D(0), DoubleVec3D(4000)))
+		new Sphere(DoubleVec3D(0, 1.5, -3.5), 0.5, new DiffuseMaterial(DoubleVec3D(0), DoubleVec3D(4000)))
 		}));
 	addObjectGroup(Object3DGroup("Testing spheres", {
-		new Sphere(DoubleVec3D(0.2, -1.5, -3), 0.5, new RefractiveMaterial(1.5)),
-		new Sphere(DoubleVec3D(1.2, -1.5, -2.4), 0.5, new SpecularMaterial),
-		new Sphere(DoubleVec3D(-1, -1.5, -2.3), 0.5, new DiffuseMaterial(DoubleVec3D(0.5)))
+		new Sphere(DoubleVec3D(0.2, -1.5, -4), 0.5, new RefractiveMaterial(1.5)),
+		new Sphere(DoubleVec3D(1.2, -1.5, -3.4), 0.5, new SpecularMaterial),
+		new Sphere(DoubleVec3D(-1, -1.5, -3.3), 0.5, new DiffuseMaterial(DoubleVec3D(0.5)))
 		}));
 
 	// Walls
 	addObjectGroup(Object3DGroup("Left wall", {
-		new Triangle(DoubleVec3D(-2, 2, 1), DoubleVec3D(-2, -2, 1), DoubleVec3D(-2, -2, -4), new DiffuseMaterial(DoubleVec3D(0.2, 0.2, 1))),
-		new Triangle(DoubleVec3D(-2, 2, 1), DoubleVec3D(-2, -2, -4), DoubleVec3D(-2, 2, -4), new DiffuseMaterial(DoubleVec3D(0.2, 0.2, 1)))
+		new Triangle(DoubleVec3D(-2, 2, 0), DoubleVec3D(-2, -2, 0), DoubleVec3D(-2, -2, -5), new DiffuseMaterial(DoubleVec3D(0.2, 0.2, 1))),
+		new Triangle(DoubleVec3D(-2, 2, 0), DoubleVec3D(-2, -2, -5), DoubleVec3D(-2, 2, -5), new DiffuseMaterial(DoubleVec3D(0.2, 0.2, 1)))
 		}));
 	addObjectGroup(Object3DGroup("Right wall", {
-		new Triangle(DoubleVec3D(2, -2, -4), DoubleVec3D(2, -2, 1), DoubleVec3D(2, 2, 1), new DiffuseMaterial(DoubleVec3D(1, 0.2, 0.2))),
-		new Triangle(DoubleVec3D(2, 2, -4), DoubleVec3D(2, -2, -4), DoubleVec3D(2, 2, 1), new DiffuseMaterial(DoubleVec3D(1, 0.2, 0.2)))
+		new Triangle(DoubleVec3D(2, -2, -5), DoubleVec3D(2, -2, 0), DoubleVec3D(2, 2, 0), new DiffuseMaterial(DoubleVec3D(1, 0.2, 0.2))),
+		new Triangle(DoubleVec3D(2, 2, -5), DoubleVec3D(2, -2, -5), DoubleVec3D(2, 2, 0), new DiffuseMaterial(DoubleVec3D(1, 0.2, 0.2)))
 		}));
 	addObjectGroup(Object3DGroup("Ceiling", {
-		new Triangle(DoubleVec3D(2, 2, -4), DoubleVec3D(-2, 2, 1), DoubleVec3D(-2, 2, -4), new DiffuseMaterial(DoubleVec3D(0.3))),
-		new Triangle(DoubleVec3D(-2, 2, 1), DoubleVec3D(2, 2, -4), DoubleVec3D(2, 2, 1), new DiffuseMaterial(DoubleVec3D(0.3)))
+		new Triangle(DoubleVec3D(2, 2, -5), DoubleVec3D(-2, 2, 0), DoubleVec3D(-2, 2, -5), new DiffuseMaterial(DoubleVec3D(0.3))),
+		new Triangle(DoubleVec3D(-2, 2, 0), DoubleVec3D(2, 2, -5), DoubleVec3D(2, 2, 0), new DiffuseMaterial(DoubleVec3D(0.3)))
 		}));
 	addObjectGroup(Object3DGroup("Floor", {
-		new Triangle(DoubleVec3D(-2, -2, 1), DoubleVec3D(2, -2, -4), DoubleVec3D(-2, -2, -4), new DiffuseMaterial(DoubleVec3D(0.3))),
-		new Triangle(DoubleVec3D(2, -2, -4), DoubleVec3D(-2, -2, 1), DoubleVec3D(2, -2, 1), new DiffuseMaterial(DoubleVec3D(0.3)))
+		new Triangle(DoubleVec3D(-2, -2, 0), DoubleVec3D(2, -2, -5), DoubleVec3D(-2, -2, -5), new DiffuseMaterial(DoubleVec3D(0.3))),
+		new Triangle(DoubleVec3D(2, -2, -5), DoubleVec3D(-2, -2, 0), DoubleVec3D(2, -2, 0), new DiffuseMaterial(DoubleVec3D(0.3)))
 		}));
 	addObjectGroup(Object3DGroup("Background wall", {
-		new Triangle(DoubleVec3D(-2, 2, -4), DoubleVec3D(-2, -2, -4), DoubleVec3D(2, 2, -4), new DiffuseMaterial(DoubleVec3D(0.2, 1, 0.2))),
-		new Triangle(DoubleVec3D(2, 2, -4), DoubleVec3D(-2, -2, -4), DoubleVec3D(2, -2, -4), new DiffuseMaterial(DoubleVec3D(0.2, 1, 0.2)))
+		new Triangle(DoubleVec3D(-2, 2, -5), DoubleVec3D(-2, -2, -5), DoubleVec3D(2, 2, -5), new DiffuseMaterial(DoubleVec3D(0.2, 1, 0.2))),
+		new Triangle(DoubleVec3D(2, 2, -5), DoubleVec3D(-2, -2, -5), DoubleVec3D(2, -2, -5), new DiffuseMaterial(DoubleVec3D(0.2, 1, 0.2)))
 		}));
 	addObjectGroup(Object3DGroup("Wall behind camera", {
-		new Triangle(DoubleVec3D(2, 2, 1), DoubleVec3D(2, -2, 1), DoubleVec3D(-2, -2, 1), new DiffuseMaterial(DoubleVec3D(0.3))),
-		new Triangle(DoubleVec3D(-2, 2, 1), DoubleVec3D(2, 2, 1), DoubleVec3D(-2, -2, 1), new DiffuseMaterial(DoubleVec3D(0.3)))
+		new Triangle(DoubleVec3D(2, 2, 0), DoubleVec3D(2, -2, 0), DoubleVec3D(-2, -2, 0), new DiffuseMaterial(DoubleVec3D(0.3))),
+		new Triangle(DoubleVec3D(-2, 2, 0), DoubleVec3D(2, 2, 0), DoubleVec3D(-2, -2, 0), new DiffuseMaterial(DoubleVec3D(0.3)))
 		}));
 }
 
