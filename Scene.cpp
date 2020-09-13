@@ -300,7 +300,7 @@ Picture* Scene::render() {
 		for (int pixelY = 0; pixelY < pictureHeight; pixelY++) {  // pixelY must be signed for OpenMP
 			result->setValuePix(pixelX, pixelY, DoubleVec3D(0.0));
 			for (unsigned int sample = 0; sample < samplePerPixel; sample++) {
-				Ray currentRay = camera.getRayGoingThrough(pixelX + randomDouble() - 0.5, pixelY + randomDouble() - 0.5);
+				Ray currentRay = camera.getRayGoingThrough(pixelX + randomDouble(), pixelY + randomDouble());
 				result->addValuePix(pixelX, pixelY, traceRay(currentRay) / samplePerPixel);
 			}
 		}

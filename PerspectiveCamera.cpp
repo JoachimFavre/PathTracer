@@ -45,6 +45,6 @@ void PerspectiveCamera::computeBases() {
 }
 
 Ray PerspectiveCamera::getRayGoingThrough(double pixelX, double pixelY) const {
-	DoubleUnitVec3D rayDirection = 2.0/numberPixelsX*((pixelX + 0.5 - numberPixelsX/2)*baseX + (-pixelY - 0.5 + numberPixelsY/2)*baseY) + focal;
+	DoubleUnitVec3D rayDirection = 1.0/numberPixelsX*((pixelX - numberPixelsX/2)*baseX - (pixelY - numberPixelsY/2)*baseY) + focal;
 	return Ray(origin, rayDirection);
 }
