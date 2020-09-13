@@ -16,6 +16,9 @@ public:
 	void operator=(const DoubleVec3D& vec);
 };
 
+
+DoubleUnitVec3D operator-(const DoubleUnitVec3D& vec);
+
 DoubleUnitVec3D randomVectorOnUnitRadiusSphere(double (*randomDouble)());
 
 #endif

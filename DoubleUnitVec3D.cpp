@@ -37,6 +37,13 @@ void DoubleUnitVec3D::operator=(const DoubleVec3D& vec) {
 	normalise();
 }
 
+
+// Unary minus
+DoubleUnitVec3D operator-(const DoubleUnitVec3D& vec) {
+	return DoubleUnitVec3D(operator-(vec), true);
+}
+
+
 // Other function
 DoubleUnitVec3D randomVectorOnUnitRadiusSphere(double (*randomDouble)()) {
 	double z = 2*randomDouble() - 1;
