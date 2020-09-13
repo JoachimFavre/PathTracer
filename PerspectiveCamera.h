@@ -18,7 +18,7 @@ private:
 
 public:
 	PerspectiveCamera();
-	PerspectiveCamera(unsigned int numberPixelsX, unsigned int numberPixelsY, DoubleVec3D origin = DoubleVec3D(0.0), DoubleVec3D focal = DoubleVec3D(0, 0, -1.5));
+	PerspectiveCamera(unsigned int numberPixelsX, unsigned int numberPixelsY, DoubleVec3D origin = DoubleVec3D(0.0), DoubleVec3D focal = DoubleVec3D(0, 0, -0.75));
 	PerspectiveCamera(const PerspectiveCamera& camera);
 	
 	unsigned int getNumberPixelsX() const;

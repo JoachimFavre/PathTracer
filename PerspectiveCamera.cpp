@@ -4,7 +4,7 @@
 PerspectiveCamera::PerspectiveCamera()
     : PerspectiveCamera(500, 500) {}
 
-PerspectiveCamera::PerspectiveCamera(unsigned int numberPixelsX, unsigned int numberPixelsY, DoubleVec3D origin /*= DoubleVec3D(0.0)*/, DoubleVec3D focal /*= DoubleVec3D(0, 0, -1.5)*/)
+PerspectiveCamera::PerspectiveCamera(unsigned int numberPixelsX, unsigned int numberPixelsY, DoubleVec3D origin /*= DoubleVec3D(0.0)*/, DoubleVec3D focal /*= DoubleVec3D(0, 0, -0.75)*/)
     : numberPixelsX(numberPixelsX), numberPixelsY(numberPixelsY), origin(origin), focal(focal) {
 	computeBases();
 }
