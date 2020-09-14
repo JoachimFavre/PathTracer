@@ -40,7 +40,7 @@ void DoubleUnitVec3D::operator=(const DoubleVec3D& vec) {
 
 // Unary minus
 DoubleUnitVec3D operator-(const DoubleUnitVec3D& vec) {
-	return DoubleUnitVec3D(operator-(vec), true);
+	return DoubleUnitVec3D(operator-((DoubleVec3D)vec), true);
 }
 
 
