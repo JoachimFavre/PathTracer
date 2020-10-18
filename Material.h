@@ -38,7 +38,7 @@ public:
 
 	//! Makes a deep copy of this material.
 	/*!
-		\return A pointer to a deeply copied version of this.
+		\return A pointer to a deeply copied version of this material.
 	*/
 	virtual Material* deepCopy() const = 0;
 	

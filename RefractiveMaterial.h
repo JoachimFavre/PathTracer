@@ -44,7 +44,7 @@ public:
 
 	//! Makes a deep copy of this material.
 	/*!
-		\return A pointer to a deeply copied version of this.
+		\return A pointer to a deeply copied version of this material.
 	*/
 	Material* deepCopy() const;
 
