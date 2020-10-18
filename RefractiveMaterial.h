@@ -81,13 +81,13 @@ public:
 	//! Returns "Refractive"
 	std::string getType() const;
 
-	//! Converts this material to json.
+	//! Converts this material's specific parameters to json.
 	/*!
-		\return This material converted to json.
+		\return This material's specific parameters converted to json.
 	*/
 	json getSpecificParametersJson() const;
 
-	//! Sets this material's values according to json.
+	//! Sets this material's specific parameters according to json.
 	/*!
 		\param j The json input.
 	*/
