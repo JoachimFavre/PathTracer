@@ -209,7 +209,7 @@ DoubleVec3D operator/(const DoubleVec3D& vec, const double& val);
 /*!
 	Displays vectors under the form "(x, y, z)"
 	\param stream The ostream before.
-	\param vec The vecotr that will be added to the stream.
+	\param vec The vector that will be added to the stream.
 	\return The stream with the vector added.
 */
 std::ostream& operator<<(std::ostream& stream, const DoubleVec3D& vec);
