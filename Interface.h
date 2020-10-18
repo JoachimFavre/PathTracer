@@ -29,8 +29,6 @@ static Page currentPage = Page::ParametersPage;
 static bool commandWasInvalid = false;
 
 // Main interface
-//! Clears the console and shows the header.
-void clearScreenPrintHeader();
 
 //! Receives and executes the general commands.
 /*!
