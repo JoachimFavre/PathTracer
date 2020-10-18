@@ -46,7 +46,7 @@ public:
 	
 	//! Returns whether this material works with next event estimation.
 	/*!
-		\return True if this material works with next event estimation, false else.
+		\return False.
 	*/
 	bool worksWithNextEventEstimation() const;
 
