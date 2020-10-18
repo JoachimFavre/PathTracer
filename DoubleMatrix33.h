@@ -77,7 +77,6 @@ public:
 	*/
 	DoubleVec3D getRow2T() const;
 
-	// ##################################### SETTERS #####################################
 
 	//! Setter for the first column
 	/*!
