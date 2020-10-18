@@ -7,7 +7,7 @@
 #include "Ray.h"
 
 
-// Models a specular material
+//! Models a specular material
 class SpecularMaterial : public Material {
 public:
 	//! Default and main constructor.
