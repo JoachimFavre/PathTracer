@@ -14,9 +14,6 @@ using json = nlohmann::json;
 
 
 //! A three-dimensional vector using double values.
-/*!
-	This vector has important operators and methods defined, such as vector addition, multiplication by a scalar, cross product or normalisation.
-*/
 class DoubleVec3D {
 private:
 	double x;
