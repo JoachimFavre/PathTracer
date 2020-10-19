@@ -29,7 +29,7 @@ public:
 
 	//! Copy constructor.
 	/*!
-		\param vec The matrix that will be copied.
+		\param matrix The matrix that will be copied.
 	*/
 	DoubleMatrix33(const DoubleMatrix33& matrix);
 
