@@ -1,7 +1,6 @@
 #ifndef DEF_SCENE
 #define DEF_SCENE
 
-#include <random>
 #include <vector>
 
 #include <omp.h>
@@ -17,6 +16,8 @@
 #include "SpecularMaterial.h"
 #include "Sphere.h"
 
+#include "InterfaceGestion.h"
+
 #include <fbxsdk.h>
 #include <fbxsdk/fileio/fbxiosettings.h>
 #include <fbxsdk/utils/fbxgeometryconverter.h>
@@ -25,10 +26,6 @@
 /*!
 	\file Scene.h
 	\brief Defines the Scene class and the functions around it.
-
-	\fn randomDouble()
-	\brief Computes a random double between 0 and 1
-	\return A random double between 0 and 1 generated following a uniform distrbution.
 
 	\class Scene
 	\brief Stores objects groups and a camera for the render.
@@ -210,10 +207,6 @@
 	\sa render()
 */
 
-
-static std::uniform_real_distribution<double> unif(0, 1);
-static std::default_random_engine re(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
-static double randomDouble() { return unif(re); }
 
 class Scene {
 private:

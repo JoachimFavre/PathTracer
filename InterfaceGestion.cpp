@@ -1,5 +1,6 @@
 #include "InterfaceGestion.h"
 
+
 // Common parts in interface
 void clearScreenPrintHeader() {
 	std::system("cls");
@@ -23,12 +24,15 @@ std::string bool2string(bool b) {
 	return (b ? "True" : "False");
 }
 
-
 // Time
 double getCurrentTimeSeconds() {
 	return (double)std::chrono::system_clock::now().time_since_epoch().count() / std::chrono::system_clock::period::den;
 }
 
+// Random
+double randomDouble() {
+	return unif(re);
+}
 
 // Get from user
 std::string getStringFromUser(std::string question /*= ""*/, std::string prompt /*= PROMPT*/) {

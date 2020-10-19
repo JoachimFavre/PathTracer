@@ -3,6 +3,7 @@
 
 #include <chrono>
 #include <fstream>
+#include <random>
 #include <string>
 
 #include "Material.h"
@@ -62,6 +63,10 @@
 	\fn getCurrentTimeSeconds()
 	\brief Gives the number of seconds since 01/01/1970.
 	\return The time since 01/01/1970 in seconds.
+
+	\fn randomDouble()
+	\brief Computes a random double between 0 and 1
+	\return A random double between 0 and 1 generated following a uniform distrbution.
 
 	\fn getStringFromUser(std::string question = "", std::string prompt = PROMPT)
 	\brief Gets a string from the user.
@@ -216,12 +221,17 @@ const std::string PICTURE_SAVE_EXTENSION_JSON = "ptpict";
 const std::string OBJECTS_SAVE_EXTENSION = "ptobj";
 const std::string PARAMETERS_SAVE_EXTENSION = "ptparam";
 
+static std::uniform_real_distribution<double> unif(0, 1);
+static std::default_random_engine re(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
+
+
 // Functions
 void clearScreenPrintHeader();
 void availableCommandsHeader();
 
 std::string bool2string(bool b);
 double getCurrentTimeSeconds();
+double randomDouble();
 
 std::string getStringFromUser(std::string question = "", std::string prompt = PROMPT);
 char getLowerCaseCharFromUser(std::string question = "", std::string prompt = PROMPT);
