@@ -120,7 +120,7 @@ public:
 /*!
 	Calls the getDescription() method.
 	\param stream The ostream before.
-	\param pbkect The object that will be added to the stream.
+	\param object The object that will be added to the stream.
 	\return The stream with the object added.
 	\sa getDescription()
 */

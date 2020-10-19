@@ -95,7 +95,7 @@ public:
 /*!
 	Calls the getDescription() method.
 	\param stream The ostream before.
-	\param vec The material that will be added to the stream.
+	\param material The material that will be added to the stream.
 	\return The stream with the material added.
 	\sa getDescription()
 */
