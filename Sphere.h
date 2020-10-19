@@ -102,11 +102,11 @@ public:
 
 	//! Converts this objects's location to json.
 	/*!
-		\return This material's location converted to json.
+		\return This sphere's center and radius converted to json.
 	*/
 	json getLocationJson() const;
 
-	//! Sets this material's location according to json.
+	//! Sets this object's location according to json.
 	/*!
 		\param j The json input.
 	*/

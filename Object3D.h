@@ -98,11 +98,11 @@ public:
 
 	//! Converts this objects's location to json.
 	/*!
-		\return This material's location converted to json.
+		\return This object's location converted to json.
 	*/
 	virtual json getLocationJson() const = 0;
 
-	//! Sets this material's location according to json.
+	//! Sets this object's location according to json.
 	/*!
 		\param j The json input.
 	*/
