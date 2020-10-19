@@ -44,42 +44,6 @@ void Picture::setValuePix(unsigned int x, unsigned int y, DoubleVec3D value) { p
 void Picture::setRenderTime(double renderTime) { this->renderTime = renderTime; }
 
 // Other methods
-
-DoubleVec3D Picture::toneMapping(const DoubleVec3D& luminance, double middleGray) const {
-	// Very naive tone mapping
-	double x = maxColourValue*luminance.getX()/(middleGray + luminance.getX());
-	double y = maxColourValue*luminance.getY()/(middleGray + luminance.getY());
-	double z = maxColourValue*luminance.getZ()/(middleGray + luminance.getZ());
-
-	return DoubleVec3D(x, y, z);
-}
-
-DoubleVec3D Picture::getColourMovingAverage(const std::vector<std::vector<DoubleVec3D>>& pixelValues, unsigned int pixelX, unsigned int pixelY, unsigned int size) const {
-	if (size == 0)
-		return pixelValues[pixelX][pixelY];
-
-	int pixelXInt = (int)pixelX;
-	int pixelYInt = (int)pixelY;
-	int sizeInt = (int)size;
-
-	// Decide not to change the picture size
-	int minPixX = std::max(0, pixelXInt - sizeInt);
-	int minPixY = std::max(0, pixelYInt - sizeInt);
-	int maxPixX = std::min((int)width - 1, pixelXInt + sizeInt);
-	int maxPixY = std::min((int)height - 1, pixelYInt + sizeInt);
-
-	DoubleVec3D result(0.0);
-	unsigned int numberPixels = (maxPixX - minPixX + 1)*(maxPixY - minPixY + 1);  // not (2*size + 1)^2 because smaller if near an edge
-
-	for (unsigned int y = minPixY; y <= maxPixY; y++) {
-		for (unsigned int x = minPixX; x <= maxPixX; x++) {
-			result += pixelValues[x][y] / numberPixels;
-		}
-	}
-
-	return result;
-}
-
 void Picture::writeToFile(double middleGray, std::string fileName, unsigned int movingAverageSize /*= 0*/) const {
 	double writingBeginningTime = getCurrentTimeSeconds();
 
@@ -185,6 +149,47 @@ void Picture::modify() {
 		}
 	}
 }
+
+
+// Other functions
+DoubleVec3D toneMapping(const DoubleVec3D& luminance, double middleGray) {
+	// Very naive tone mapping
+	double x = Picture::maxColourValue*luminance.getX() / (middleGray + luminance.getX());
+	double y = Picture::maxColourValue*luminance.getY() / (middleGray + luminance.getY());
+	double z = Picture::maxColourValue*luminance.getZ() / (middleGray + luminance.getZ());
+
+	return DoubleVec3D(x, y, z);
+}
+
+DoubleVec3D getColourMovingAverage(const std::vector<std::vector<DoubleVec3D>>& pixelValues, unsigned int pixelX, unsigned int pixelY, unsigned int size) {
+	if (size == 0)
+		return pixelValues[pixelX][pixelY];
+
+	int pixelXInt = (int)pixelX;
+	int pixelYInt = (int)pixelY;
+	int sizeInt = (int)size;
+
+	int width = pixelValues.size();
+	int height = pixelValues[0].size();
+
+	// Decide not to change the picture size
+	int minPixX = std::max(0, pixelXInt - sizeInt);
+	int minPixY = std::max(0, pixelYInt - sizeInt);
+	int maxPixX = std::min((int)width - 1, pixelXInt + sizeInt);
+	int maxPixY = std::min((int)height - 1, pixelYInt + sizeInt);
+
+	DoubleVec3D result(0.0);
+	unsigned int numberPixels = (maxPixX - minPixX + 1)*(maxPixY - minPixY + 1);  // not (2*size + 1)^2 because smaller if near an edge
+
+	for (unsigned int y = minPixY; y <= maxPixY; y++) {
+		for (unsigned int x = minPixX; x <= maxPixX; x++) {
+			result += pixelValues[x][y] / numberPixels;
+		}
+	}
+
+	return result;
+}
+
 
 // json
 void to_json(json& j, const Picture& picture) {

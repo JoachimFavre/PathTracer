@@ -101,25 +101,6 @@ public:
 	*/
 	void setRenderTime(double renderTime);
 
-
-	//! Concerts a luminance to a colour value.
-	/*!
-		This is a very naive tone mapping. See my TM's report for more explanations.
-		\param luminance The luminance we want to convert.
-		\param middleGray The luminance value that corresponds to the middle-gray.
-		\return The colour that has been computed. Each part of the colour (red, green or blue) range from 0 to maxColourValue.
-	*/
-	DoubleVec3D toneMapping(const DoubleVec3D& luminance, double middleGray) const;
-
-	//! Computes the value of a pixel when having applied a moving average.
-	/*!
-		\param pixelValues The values of all pixels (can be luminance or colour).
-		\param pixelX The *x* coordinate of the pixel.
-		\param pixelY the *y* coordinate of the pixel.
-		\param size The size of the moving average.
-		\return The colour at that pixel after having applied the moving average.
-	*/
-	DoubleVec3D getColourMovingAverage(const std::vector<std::vector<DoubleVec3D>>& pixelValues, unsigned int pixelX, unsigned int pixelY, unsigned int size) const;
 	
 	//! Writes this as a picture file.
 	/*!
@@ -137,6 +118,26 @@ public:
 	*/
 	void modify();
 };
+
+//! Concerts a luminance to a colour value.
+/*!
+	This is a very naive tone mapping. See my TM's report for more explanations.
+	\param luminance The luminance we want to convert.
+	\param middleGray The luminance value that corresponds to the middle-gray.
+	\return The colour that has been computed. Each part of the colour (red, green or blue) range from 0 to maxColourValue.
+*/
+DoubleVec3D toneMapping(const DoubleVec3D& luminance, double middleGray);
+
+//! Computes the value of a pixel when having applied a moving average.
+/*!
+	\param pixelValues The values of all pixels (can be luminance or colour).
+	\param pixelX The *x* coordinate of the pixel.
+	\param pixelY the *y* coordinate of the pixel.
+	\param size The size of the moving average.
+	\return The colour at that pixel after having applied the moving average.
+*/
+DoubleVec3D getColourMovingAverage(const std::vector<std::vector<DoubleVec3D>>& pixelValues, unsigned int pixelX, unsigned int pixelY, unsigned int size);
+
 
 //! Conversion to json.
 /*!
