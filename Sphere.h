@@ -17,6 +17,9 @@ private:
 
 public:
 	//! Default constructor.
+	/*!
+		Sets the center at (0, 0, 0) and the radius at 1.
+	*/
 	Sphere();
 
 	//! Main constructor

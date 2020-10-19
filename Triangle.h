@@ -16,6 +16,9 @@ private:
 
 public:
 	//! Default constructor.
+	/*!
+		Defines vertex1 = (1, 0, 0), vertex2 = (0, 1, 0) and vertex3 = (0, 0, 1)
+	*/
 	Triangle();
 
 	//! Main constructor
