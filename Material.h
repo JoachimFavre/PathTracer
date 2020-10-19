@@ -71,7 +71,7 @@ public:
 	*/
 	virtual std::ostream& getDescription(std::ostream& stream) const = 0;
 
-	// Returns this material type.
+	//! Returns this material type.
 	/*!
 		\return Returns this material type ("Diffuse", "Refractive", ...)
 	*/
