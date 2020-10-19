@@ -6,71 +6,72 @@
 #include "Object3D.h"
 #include "Ray.h"
 
+/*!
+	\file SpecularMaterial.h
+	\brief Defines the SpecularMaterial class.
 
-//! Models a specular material
+	\class SpecularMaterial
+	\brief Models a specular material
+
+	\fn SpecularMaterial::SpecularMaterial(DoubleVec3D emittance = 0)
+	\brief Default and main constructor.
+	\param emittance The light this material emits.
+
+	\fn SpecularMaterial::SpecularMaterial(const SpecularMaterial& material)
+	\brief Copy constructor.
+	\param material The material that will be copied.
+
+	\fn SpecularMaterial::deepCopy()
+	\brief Makes a deep copy of this material.
+	\return A pointer to a deeply copied version of this material.
+
+	\fn SpecularMaterial::getNewDirection(const Ray& previousRay, const DoubleUnitVec3D& normal, double (*randomDouble)())
+	\brief Computes the new ray direction.
+	\param previousRay The ray that hits this material.
+	\param normal The normal at the intersection.
+	\param randomDouble A pointer to a function generating a random double between 0 and 1.
+
+	\fn SpecularMaterial::computeCurrentColour(const DoubleVec3D& recursiveColour, double angleNewDirectionNormal)
+	\brief Computes the new colour.
+	\param recursiveColour The colour recursively obtained.
+	\param angleNewDirectionNormal The angle between the cosine of the angle between the next ray's direction and the normal at the intersection.
+	\return The new colour.
+
+	\fn SpecularMaterial::worksWithNextEventEstimation()
+	\brief Returns whether this material works with next event estimation.
+	\return False.
+
+	\fn SpecularMaterial::getDescription(std::ostream& stream)
+	\brief Returns this material's description.
+	\param stream The current stream.
+	\return The stream with the description.
+
+	\fn SpecularMaterial::getType()
+	\brief Returns "Specular".
+
+	\fn SpecularMaterial::getSpecificParametersJson()
+	\brief Converts this material's specific parameters to json.
+	\return This material's specific parameters converted to json.
+
+	\fn SpecularMaterial::setSpecificParametersJson(const json& j)
+	\brief Sets this material's specific parameters according to json.
+	\param j The json input.
+*/
+
 class SpecularMaterial : public Material {
 public:
-	//! Default and main constructor.
-	/*!
-		\param emittance The light this material emits.
-	*/
 	SpecularMaterial(DoubleVec3D emittance = 0);
-
-	//! Copy constructor.
-	/*!
-		\param material The material that will be copied.
-	*/
 	SpecularMaterial(const SpecularMaterial& material);
 
-	//! Makes a deep copy of this material.
-	/*!
-		\return A pointer to a deeply copied version of this material.
-	*/
 	Material* deepCopy() const;
 
-	//! Computes the new ray direction.
-	/*!
-		\param previousRay The ray that hits this material.
-		\param normal The normal at the intersection.
-		\param randomDouble A pointer to a function generating a random double between 0 and 1.
-	*/
 	DoubleUnitVec3D getNewDirection(const Ray& previousRay, const DoubleUnitVec3D& normal, double (*randomDouble)()) const;
-	
-	//! Computes the new colour.
-	/*!
-		\param recursiveColour The colour recursively obtained.
-		\param angleNewDirectionNormal The angle between the cosine of the angle between the next ray's direction and the normal at the intersection.
-		\return The new colour.
-	*/
 	DoubleVec3D computeCurrentColour(const DoubleVec3D& recursiveColour, double angleNewDirectionNormal) const;
-	
-	//! Returns whether this material works with next event estimation.
-	/*!
-		\return False.
-	*/
 	bool worksWithNextEventEstimation() const;
 
-	//! Returns this material's description.
-	/*!
-		\param stream The current stream.
-		\return The stream with the description.
-	*/
 	std::ostream& getDescription(std::ostream& stream) const;
-
-
-	//! Returns "Specular".
 	std::string getType() const;
-
-	//! Converts this material's specific parameters to json.
-	/*!
-		\return This material's specific parameters converted to json.
-	*/
 	json getSpecificParametersJson() const;
-
-	//! Sets this material's specific parameters according to json.
-	/*!
-		\param j The json input.
-	*/
 	void setSpecificParametersJson(const json& j);
 };
 
