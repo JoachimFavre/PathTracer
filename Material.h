@@ -41,7 +41,7 @@
 	\fn Material::computeCurrentColour(const DoubleVec3D& recursiveColour, double angleNewDirectionNormal)
 	\brief Computes the new colour.
 	\param recursiveColour The colour recursively obtained.
-	\param angleNewDirectionNormal The angle between the cosine of the angle between the next ray's direction and the normal at the intersection.
+	\param angleNewDirectionNormal The cosine of the angle between the direction of the next ray and the normal at the intersection.
 	\return The new colour.
 
 	\fn Material::worksWithNextEventEstimation()
