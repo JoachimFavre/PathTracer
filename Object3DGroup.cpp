@@ -75,42 +75,6 @@ Object3DGroup& Object3DGroup::operator=(const Object3DGroup& otherGroup) {
 }
 
 
-// Ostream operator
-std::ostream& operator<<(std::ostream& stream, const Object3DGroup& group) {
-	stream << group.getName() << std::endl;
-	
-	std::vector<Object3D*> objects = group.getObjects();
-	unsigned int numberObjects = objects.size();
-
-	if (numberObjects == 0)
-		stream << "Empty";
-	else if (numberObjects == 1)
-		stream << *(objects[0]);
-	else
-		stream << "Center = " << group.getCenter() << " / " << numberObjects << " objects";
-
-	return stream;
-}
-
-
-// Other functions
-std::vector<Object3D*> split(std::vector<Object3DGroup> groups) {
-	std::vector<Object3D*> result;
-	
-	for (Object3DGroup group : groups) {
-		std::vector<Object3D*> currentObjects = group.getObjects();
-		std::vector<Object3D*> copy;
-
-		for (Object3D* object : currentObjects)
-			copy.push_back(object->deepCopy());
-
-		result.insert(result.end(), copy.begin(), copy.end());
-	}
-
-	return result;
-}
-
-
 // For the interface
 Object3DGroup Object3DGroup::create() {
 	std::string name = getStringFromUser("What is the name of this object group?");
@@ -213,6 +177,42 @@ void Object3DGroup::modify() {
 		default: commandWasInvalid = true;
 		}
 	}
+}
+
+
+// Ostream operator
+std::ostream& operator<<(std::ostream& stream, const Object3DGroup& group) {
+	stream << group.getName() << std::endl;
+	
+	std::vector<Object3D*> objects = group.getObjects();
+	unsigned int numberObjects = objects.size();
+
+	if (numberObjects == 0)
+		stream << "Empty";
+	else if (numberObjects == 1)
+		stream << *(objects[0]);
+	else
+		stream << "Center = " << group.getCenter() << " / " << numberObjects << " objects";
+
+	return stream;
+}
+
+
+// Other function
+std::vector<Object3D*> split(std::vector<Object3DGroup> groups) {
+	std::vector<Object3D*> result;
+	
+	for (Object3DGroup group : groups) {
+		std::vector<Object3D*> currentObjects = group.getObjects();
+		std::vector<Object3D*> copy;
+
+		for (Object3D* object : currentObjects)
+			copy.push_back(object->deepCopy());
+
+		result.insert(result.end(), copy.begin(), copy.end());
+	}
+
+	return result;
 }
 
 
