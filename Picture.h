@@ -104,6 +104,7 @@ public:
 	
 	//! Writes this as a picture file.
 	/*!
+		Uses the CImg library.
 		\param middleGray The middle-gray value that will be used for the toneMapping() function.
 		\param fileName The path to the file where we want to write this picture.
 		\param movingAverage The size of the moving average (see getColourMovingAverage()).
