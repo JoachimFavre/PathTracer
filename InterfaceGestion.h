@@ -1,6 +1,7 @@
 #ifndef DEF_INTERFACEGESTION
 #define DEF_INTERFACEGESTION
 
+#include <chrono>
 #include <fstream>
 #include <string>
 
@@ -42,12 +43,20 @@ void clearScreenPrintHeader();
 //! Prints a header before printing which commands are available.
 void availableCommandsHeader();
 
+
 //! Converts a boolean to string.
 /*!
 	\param b The boolean that will be converted.
 	\return The boolean converted into a string.
 */
 std::string bool2string(bool b);
+
+//! Gives the number of seconds since 01/01/1970.
+/*!
+	\return The time since 01/01/1970 in seconds.
+*/
+double getCurrentTimeSeconds();
+
 
 //! Gets a string from the user.
 /*!

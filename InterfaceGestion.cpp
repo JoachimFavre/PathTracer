@@ -24,6 +24,12 @@ std::string bool2string(bool b) {
 }
 
 
+// Time
+double getCurrentTimeSeconds() {
+	return (double)std::chrono::system_clock::now().time_since_epoch().count() / std::chrono::system_clock::period::den;
+}
+
+
 // Get from user
 std::string getStringFromUser(std::string question /*= ""*/, std::string prompt /*= PROMPT*/) {
 	char userText[MAX_LENGTH_STRING_FROM_USER];
