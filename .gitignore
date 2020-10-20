@@ -12,9 +12,7 @@ PathTracer/x64
 *.vcxproj.user
 
 # Required files
-/CImg
 PathTracer/CImg
-/nlohmann
 PathTracer/nlohmann
 *.fbx
 
