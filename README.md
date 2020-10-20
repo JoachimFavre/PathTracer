@@ -1,6 +1,6 @@
 # PathTracer
 ## Introduction
-This is a C++ renderer using the Path Tracing algorithm made through 2020 in the context of my *Travail de Maturité*. You can find the code documentation on [GitHub Pages](https://joachimfavre.github.io/PathTracerDocumentation/). The code for the documentation can be found on [another repository](https://github.com/JoachimFavre/PathTracerDocumentation).
+This is a C++ renderer using the Path Tracing algorithm made throughout 2020 in the context of my *Travail de Maturité*. You can find the code documentation on [GitHub Pages](https://joachimfavre.github.io/PathTracerDocumentation/). The code for the documentation can be found on [another repository](https://github.com/JoachimFavre/PathTracerDocumentation).
 
 ## Dependencies
 ### FBX SDK version 2020.1 by Autodesk
