@@ -8,7 +8,7 @@
 	\file Ray.h
 	\brief Defines the Ray class.
 
-	\fn class Ray
+	\class Ray
 	\brief Combination of an origin and a direction.
 
 	\fn Ray::Ray()
