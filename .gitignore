@@ -1,16 +1,19 @@
 # Visual studio files
 /.vs
 /Debug
+PathTracer/Debug
 /Release
+PathTracer/Release
 /x64
+PathTracer/x64
 *.sln
 *.vcxproj
 *.vcxproj.filters
 *.vcxproj.user
 
 # Required files
-/CImg
-/nlohmann
+PathTracer/CImg
+PathTracer/nlohmann
 *.fbx
 
 # Generated files
