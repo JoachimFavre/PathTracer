@@ -3,73 +3,73 @@
 
 #include "DoubleVec3D.h"
 
-//! A three-dimensional unit vector using doubles.
 /*!
-	Inherits of the class DoubleVec3D. Each time a value is changed, automatically calls the normalise() method.
-*/
-class DoubleUnitVec3D : public DoubleVec3D
-{
-public:
-	//! Default constructor.
-	/*!
-		Sets the vector to (1, 0, 0).
-	*/
-	DoubleUnitVec3D();
+	\file DoubleUnitVec3D.h
+	\brief Defines the DoubleUnitVec3D class and the functions around it.
 
-	//! Main constructor.
-	/*!
-		\param x The first coordinate.
-		\param y The second coordinate.
-		\param z The third coordinate.
-		\param alreadyNormalised If true, skips the normalisation when instantiated. 
-		\sa normalise()
-	*/
-	DoubleUnitVec3D(double x, double y, double z, bool alreadyNormalised = false);
+	\class DoubleUnitVec3D
+	\brief A three-dimensional unit vector using doubles.
+	\details Inherits of the class DoubleVec3D. Each time a value is changed, automatically calls the normalise() method.
 
-	//! Converting constructor for the DoubleVec3D class.
-	/*!
-		\param vec The vector that will be converted.
-		\param alreadyNormalised If true, skips the normalisation when instantiated.
-		\sa normalise()
-	*/
-	DoubleUnitVec3D(const DoubleVec3D& vec, bool alreadyNormalised = false);
+	\fn DoubleUnitVec3D::DoubleUnitVec3D()
+	\brief Default constructor.
+	\details Sets the vector to (1, 0, 0).
 
-	//! Copy constructor.
-	/*!
-		\param vec The unit vector that will be copied.
-	*/
-	DoubleUnitVec3D(const DoubleUnitVec3D& vec);
+	\fn DoubleUnitVec3D::DoubleUnitVec3D(double x, double y, double z, bool alreadyNormalised = false)
+	\brief Main constructor.
+	\param x The first coordinate.
+	\param y The second coordinate.
+	\param z The third coordinate.
+	\param alreadyNormalised If true, skips the normalisation when instantiated.
+	\sa normalise()
 
-	//! Setter for all coordinates.
-	/*!
-		Calls the normalisation method after this one.
-		\param x The first coordinate.
-		\param y The second coordinate.
-		\param z The third coordinate.
-		\sa normalise()
-	*/
-	virtual void setVals(double x, double y, double z);
+	\fn DoubleUnitVec3D::DoubleUnitVec3D(const DoubleVec3D& vec, bool alreadyNormalised = false)
+	\brief Converting constructor for the DoubleVec3D class.
+	\param vec The vector that will be converted.
+	\param alreadyNormalised If true, skips the normalisation when instantiated.
+	\sa normalise()
 
-	//! Assignment operator.
-	/*!
-		\param vec The vector to which this will be equal.
-	*/
-	void operator=(const DoubleVec3D& vec);
-};
+	\fn DoubleUnitVec3D(const DoubleUnitVec3D& vec)
+	\brief Copy constructor.
+	\param vec The unit vector that will be copied.
 
-//! Unary minus.
-/*!
-	Allows to skip the conversion from DoubleVec3D to DoubleUnitVec3D.
+	\fn DoubleUnitVec3D::setVals(double x, double y, double z)
+	\brief Setter for all coordinates.
+	\details Calls the normalisation method after this one.
+	\param x The first coordinate.
+	\param y The second coordinate.
+	\param z The third coordinate.
+	\sa normalise()
+
+	\fn DoubleUnitVec3D::operator=(const DoubleVec3D& vec)
+	\brief Assignment operator.
+	\param vec The vector to which this will be equal.
+
+	\fn operator-(const DoubleUnitVec3D& vec)
+	\brief Unary minus.
+	\details Allows to skip the conversion from DoubleVec3D to DoubleUnitVec3D.
 	\param vec The vector that will be inversed.
 	\return The inverse of vec.
-*/
-DoubleUnitVec3D operator-(const DoubleUnitVec3D& vec);
 
-//! Generates a random unit vector on a sphere.
-/*!
+	\fn randomVectorOnUnitRadiusSphere(double (*randomDouble)())
+	\brief Generates a random unit vector on a sphere.
 	\param randomDouble A pointer to a function generating a random double between 0 and 1.
 	\return A random unit vector on a sphere.
 */
+
+class DoubleUnitVec3D : public DoubleVec3D
+{
+public:
+	DoubleUnitVec3D();
+	DoubleUnitVec3D(double x, double y, double z, bool alreadyNormalised = false);
+	DoubleUnitVec3D(const DoubleVec3D& vec, bool alreadyNormalised = false);
+	DoubleUnitVec3D(const DoubleUnitVec3D& vec);
+
+	virtual void setVals(double x, double y, double z);
+	void operator=(const DoubleVec3D& vec);
+};
+
+DoubleUnitVec3D operator-(const DoubleUnitVec3D& vec);
 DoubleUnitVec3D randomVectorOnUnitRadiusSphere(double (*randomDouble)());
 
 #endif
