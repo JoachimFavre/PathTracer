@@ -22,7 +22,7 @@
 	\brief Stores luminance for every pixel.
 
 	\var Picture::MAX_COLOUR_VALUE
-	\brief The maximum value for the colour in the file.
+	\brief The maximum value that will be used to write a colour in a file.
 	\sa toneMapping()
 
 	\fn Picture::Picture()
