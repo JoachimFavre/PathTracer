@@ -198,10 +198,10 @@
 	\details This is one of the main pages.
 	\sa displayParametersPage()
 
-	\fn displayRenderingProgression(unsigned int currentPixelX, unsigned int pictureWidth, double loopBeginningTime)
+	\fn displayRenderingProgression(unsigned int numberPixelXAlreadyComputed, unsigned int pictureWidth, double loopBeginningTime)
 	\brief Prints the progression information
 	\details This is used during the rendering.
-	\param currentPixelX The *x* coordinate of the pixel we are currently treating.
+	\param numberPixelXAlreadyComputed The *x* coordinate of the pixel we are currently treating.
 	\param pictureWidth The width of the picture we are rendering.
 	\param loopBeginningTime The number of seconds between 01/01/1970 and the beginning of the render.
 	\sa render()
@@ -269,6 +269,6 @@ public:
 	void displayObjectsPage() const;
 };
 
-void displayRenderingProgression(unsigned int currentPixelX, unsigned int pictureWidth, double loopBeginningTime);
+void displayRenderingProgression(unsigned int numberPixelXAlreadyComputed, unsigned int pictureWidth, double loopBeginningTime);
 
 #endif
