@@ -21,7 +21,7 @@
 	\class Picture
 	\brief Stores luminance for every pixel.
 
-	\var Picture::maxColourValue
+	\var Picture::MAX_COLOUR_VALUE
 	\brief The maximum value for the colour in the file.
 	\sa toneMapping()
 
@@ -94,7 +94,7 @@
 	\details This is a very naive tone mapping. See my TM's report for more explanations.
 	\param luminance The luminance we want to convert.
 	\param middleGray The luminance value that corresponds to the middle-gray.
-	\return The colour that has been computed. Each part of the colour (red, green or blue) range from 0 to maxColourValue.
+	\return The colour that has been computed. Each part of the colour (red, green or blue) range from 0 to MAX_COLOUR_VALUE.
 
 	\fn getColourMovingAverage(const std::vector<std::vector<DoubleVec3D>>& pixelValues, unsigned int pixelX, unsigned int pixelY, unsigned int size)
 	\brief Computes the value of a pixel when having applied a moving average.
@@ -125,7 +125,7 @@ private:
 	DoubleVec3D** pixels;
 
 public:
-	static constexpr unsigned int maxColourValue = 255;
+	static constexpr unsigned int MAX_COLOUR_VALUE = 255;
 
 	Picture();
 	Picture(unsigned int width, unsigned int height, double renderTime = -1);

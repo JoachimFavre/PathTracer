@@ -59,7 +59,7 @@ void Picture::writeToFile(double middleGray, std::string fileName, unsigned int 
 
 	std::ofstream file;
 	file.open("temp.ppm");
-	file << "P3" << std::endl << width << " " << height << " " << maxColourValue << std::endl;
+	file << "P3" << std::endl << width << " " << height << " " << MAX_COLOUR_VALUE << std::endl;
 	for (unsigned int pixelY = 0; pixelY < height; pixelY++) {
 		for (unsigned int pixelX = 0; pixelX < width; pixelX++) {
 			DoubleVec3D currentColour = getColourMovingAverage(pixelValues, pixelX, pixelY, movingAverageSize);
@@ -154,9 +154,9 @@ void Picture::modify() {
 // Other functions
 DoubleVec3D toneMapping(const DoubleVec3D& luminance, double middleGray) {
 	// Very naive tone mapping
-	double x = Picture::maxColourValue*luminance.getX() / (middleGray + luminance.getX());
-	double y = Picture::maxColourValue*luminance.getY() / (middleGray + luminance.getY());
-	double z = Picture::maxColourValue*luminance.getZ() / (middleGray + luminance.getZ());
+	double x = Picture::MAX_COLOUR_VALUE*luminance.getX() / (middleGray + luminance.getX());
+	double y = Picture::MAX_COLOUR_VALUE*luminance.getY() / (middleGray + luminance.getY());
+	double z = Picture::MAX_COLOUR_VALUE*luminance.getZ() / (middleGray + luminance.getZ());
 
 	return DoubleVec3D(x, y, z);
 }
