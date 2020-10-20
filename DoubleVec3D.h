@@ -13,7 +13,7 @@ using json = nlohmann::json;
 #include <fbxsdk.h>
 
 /*!	\file DoubleVec3D.h
-	\brief File for DoubleVec3D class and around functions.
+	\brief Defines the DoubleVec3D class and the functions around it.
 	
 	\class DoubleVec3D
 	\brief A three-dimensional vector using double values.
