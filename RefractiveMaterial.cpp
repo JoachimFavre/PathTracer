@@ -20,26 +20,35 @@ Material* RefractiveMaterial::deepCopy() const {
 }
 
 DoubleUnitVec3D RefractiveMaterial::getNewDirection(const Ray& previousRay, const DoubleUnitVec3D& normal, double (*randomDouble)()) const {
-	double refractiveIndex = this->refractiveIndex;  // Must be modified
 	DoubleUnitVec3D normalBis = normal;  // Must be modified
 	DoubleUnitVec3D previousRayDirection = previousRay.getDirection();
 
-	double reflectionProbNormal = pow((1.0 - refractiveIndex) / (1 + refractiveIndex), 2);  // Probability of reflection with normal incidence
+	double refractiveIndex1 = 1.0;
+	double refractiveIndex2 = 1.0;
 
-	double cosFirstAngle = -dotProd(normalBis, previousRayDirection);  // Cosine of first angle
-	if (cosFirstAngle < 0)  // Not on right side of surface
+	double cosIncidenceAngle = -dotProd(normalBis, previousRayDirection);
+	if (cosIncidenceAngle < 0) {
+		// Inside the media
 		normalBis *= -1;
-	else
-		refractiveIndex = 1 / refractiveIndex;
+		cosIncidenceAngle *= -1;
+		refractiveIndex1 = this->refractiveIndex;
+	}
+	else {
+		refractiveIndex2 = this->refractiveIndex;
+	}
 
-	double cosSecondAngle = 1.0 - refractiveIndex*refractiveIndex*(1.0 - cosFirstAngle*cosFirstAngle);  // 3D <=> 2 angles
-	double reflectionProb = reflectionProbNormal + (1.0 - reflectionProbNormal)*pow(1.0 - cosFirstAngle, 5.0);  // Schlick's approximation
+	double refractiveQuotient = refractiveIndex1/refractiveIndex2;
 
-	if (cosSecondAngle > 0 && randomDouble() > reflectionProb)
+	double cosRefractionAngleSquared = 1.0 - refractiveQuotient*refractiveQuotient*(1.0 - cosIncidenceAngle*cosIncidenceAngle);
+
+	double reflectionProbNormal = pow((refractiveIndex1 - refractiveIndex2) / (refractiveIndex1 + refractiveIndex2), 2);  // Probability of reflection with normal incidence
+	double reflectionProb = reflectionProbNormal + (1.0 - reflectionProbNormal)*pow(1.0 - cosIncidenceAngle, 5.0);  // Schlick's approximation
+
+	if (cosRefractionAngleSquared > 0 && randomDouble() > reflectionProb)
 		// Refraction case
-		return previousRayDirection*refractiveIndex + normalBis*(refractiveIndex*cosFirstAngle - sqrt(cosSecondAngle));  // Casted into DoubleUnitVec3D => normalised
+		return previousRayDirection*refractiveQuotient + normalBis*(refractiveQuotient*cosIncidenceAngle - sqrt(cosRefractionAngleSquared));  // Casted into DoubleUnitVec3D => normalised
 	// Reflection case
-	return previousRayDirection + normalBis*cosFirstAngle*2;  // Casted into DoubleUnitVec3D => normalised
+	return previousRayDirection + normalBis*cosIncidenceAngle*2;  // Casted into DoubleUnitVec3D => normalised
 }
 
 
