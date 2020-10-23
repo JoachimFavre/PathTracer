@@ -46,6 +46,7 @@ DoubleUnitVec3D operator-(const DoubleUnitVec3D& vec) {
 
 // Other function
 DoubleUnitVec3D randomVectorOnUnitRadiusSphere(double (*randomDouble)()) {
+	// Using https://math.stackexchange.com/a/18695 (see report for a full bibliography)
 	double z = 2*randomDouble() - 1;
 	double angle = 2*M_PI*randomDouble();
 	double newRadius = sqrt(1 - z*z);

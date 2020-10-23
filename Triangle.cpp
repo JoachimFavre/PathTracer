@@ -60,6 +60,7 @@ DoubleUnitVec3D Triangle::getNormal(const DoubleVec3D& point) const {
 }
 
 DoubleVec3D Triangle::getRandomPoint(double (*randomDouble)()) const {
+	// Using p.814 of Robert Osada et al. "Shape distribution" (see report for a full bibliography)
 	double rand1 = sqrt(randomDouble());
 	double rand2 = randomDouble();
 	return (1 - rand1)*vertex1 + rand1*(1 - rand2)*vertex2 + rand1*rand2*vertex3;
