@@ -222,7 +222,9 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
 	DoubleVec3D intersection = ray.getOrigin() + smallestPositiveDistance * ray.getDirection();
 	DoubleUnitVec3D normal = closestObject->getNormal(intersection);
 
+	double neeFactor = 1.0;
 	if (nextEventEstimation && objectMaterial->worksWithNextEventEstimation()) {
+		neeFactor = 1.0/(1.0 + lamps.size());
 		for (Object3D* lamp : lamps) {
 			DoubleVec3D intersectionToLamp = lamp->getRandomPoint(randomDouble) - intersection;
 			if (dotProd(normal, intersectionToLamp) > 0) {
@@ -240,7 +242,7 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
 				}
 				if (lampIsVisible) {
 					intersectionToLamp /= distanceLamp;  // Normalised
-					result += rrFactor * objectMaterial->computeCurrentColour(lamp->getMaterial()->getEmittance(), dotProd(intersectionToLamp, normal)) / distanceLamp / distanceLamp / 4 / M_PI;
+					result += rrFactor * neeFactor * objectMaterial->computeCurrentColour(lamp->getMaterial()->getEmittance(), dotProd(intersectionToLamp, normal)) / distanceLamp / distanceLamp / 2 / M_PI;
 					// result += rrFactor * lamp->getMaterial()->getEmittance() / distanceLamp / distanceLamp * 0.1;
 				}
 			}
@@ -252,7 +254,7 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
 
 	DoubleUnitVec3D newDirection = objectMaterial->getNewDirection(ray, normal, randomDouble);
 	DoubleVec3D recursiveColour = traceRay(Ray(intersection, newDirection), nextEventEstimation && objectMaterial->worksWithNextEventEstimation(), bounces + 1);
-	result += rrFactor * objectMaterial->computeCurrentColour(recursiveColour, dotProd(newDirection, normal));
+	result += rrFactor * neeFactor * objectMaterial->computeCurrentColour(recursiveColour, dotProd(newDirection, normal));
 
 	return result;
 }
