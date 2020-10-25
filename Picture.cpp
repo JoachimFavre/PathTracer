@@ -118,7 +118,7 @@ void Picture::modify() {
 				std::cout << std::endl;
 			}
 
-			double middleGray = getPositiveDoubleFromUser("What luminance will be the middle-gray? (try 100 if you have no idea) (positive number)");
+			double middleGray = getPositiveDoubleFromUser("What luminance will be the middle-gray? (try 10 if you have no idea) (positive number)");
 			std::cout << std::endl;
 			unsigned int movingAverageSize = getUnsignedIntFromUser("What is the size of the moving average you want to use? (0 for no moving average) (positive integer)");
 
