@@ -25,6 +25,7 @@ DoubleUnitVec3D RefractiveMaterial::getNewDirection(const Ray& previousRay, cons
 
 	double refractiveIndex1 = 1.0;
 	double refractiveIndex2 = 1.0;
+	bool insideMedia = false;
 
 	double cosIncidenceAngle = -dotProd(normalBis, previousRayDirection);
 	if (cosIncidenceAngle < 0) {
@@ -32,6 +33,7 @@ DoubleUnitVec3D RefractiveMaterial::getNewDirection(const Ray& previousRay, cons
 		normalBis *= -1;
 		cosIncidenceAngle *= -1;
 		refractiveIndex1 = this->refractiveIndex;
+		insideMedia = true;
 	}
 	else {
 		refractiveIndex2 = this->refractiveIndex;
@@ -44,11 +46,11 @@ DoubleUnitVec3D RefractiveMaterial::getNewDirection(const Ray& previousRay, cons
 	double reflectionProbNormal = pow((refractiveIndex1 - refractiveIndex2) / (refractiveIndex1 + refractiveIndex2), 2);  // Probability of reflection with normal incidence
 	double reflectionProb = reflectionProbNormal + (1.0 - reflectionProbNormal)*pow(1.0 - cosIncidenceAngle, 5.0);  // Schlick's approximation
 
-	if (cosRefractionAngleSquared > 0 && randomDouble() > reflectionProb)
+	if (cosRefractionAngleSquared > 0 && (insideMedia ||  randomDouble() > reflectionProb))
 		// Refraction case
 		return previousRayDirection*refractiveQuotient + normalBis*(refractiveQuotient*cosIncidenceAngle - sqrt(cosRefractionAngleSquared));  // Casted into DoubleUnitVec3D => normalised
 	// Reflection case
-	return previousRayDirection + normalBis*cosIncidenceAngle*2;  // Casted into DoubleUnitVec3D => normalised
+	return previousRayDirection + normalBis*cosIncidenceAngle*2;  // Casted into DoubleUnitVec3D => normalised / cosIncidenceAngle = -cos that is in SpecularMaterial (why + instead of -)
 }
 
 
