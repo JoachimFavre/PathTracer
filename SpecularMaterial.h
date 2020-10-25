@@ -31,10 +31,11 @@
 	\param normal The normal at the intersection.
 	\param randomDouble A pointer to a function generating a random double between 0 and 1.
 
-	\fn SpecularMaterial::computeCurrentColour(const DoubleVec3D& recursiveColour, double angleNewDirectionNormal)
+	\fn SpecularMaterial::computeCurrentColour(const DoubleVec3D& recursiveColour, double angleNewDirectionNormal, bool nextEventEstimation = false)
 	\brief Computes the new colour.
 	\param recursiveColour The colour recursively obtained.
 	\param angleNewDirectionNormal The cosine of the angle between the direction of the next ray and the normal at the intersection.
+	\param nextEventEstimation Whether the colour is obtained using the next event estimation algorithm.
 	\return The new colour.
 
 	\fn SpecularMaterial::worksWithNextEventEstimation()
@@ -66,7 +67,7 @@ public:
 	Material* deepCopy() const;
 
 	DoubleUnitVec3D getNewDirection(const Ray& previousRay, const DoubleUnitVec3D& normal, double (*randomDouble)()) const;
-	DoubleVec3D computeCurrentColour(const DoubleVec3D& recursiveColour, double angleNewDirectionNormal) const;
+	DoubleVec3D computeCurrentColour(const DoubleVec3D& recursiveColour, double angleNewDirectionNormal, bool nextEventEstimation = false) const;
 	bool worksWithNextEventEstimation() const;
 
 	std::ostream& getDescription(std::ostream& stream) const;

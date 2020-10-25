@@ -25,12 +25,17 @@ DoubleUnitVec3D DiffuseMaterial::getNewDirection(const Ray& previousRay, const D
 	return newDirection;
 }
 
-DoubleVec3D DiffuseMaterial::computeCurrentColour(const DoubleVec3D& recursiveColour, double angleNewDirectionNormal) const {
+DoubleVec3D DiffuseMaterial::computeCurrentColour(const DoubleVec3D& recursiveColour, double angleNewDirectionNormal, bool nextEventEstimation /*= false*/) const {
 	DoubleVec3D colour = getColour();
+
+	double neeFactor = 2.0;
+	if (nextEventEstimation)
+		neeFactor = 1.0 / M_PI;
+
 	return DoubleVec3D(recursiveColour.getX()*colour.getX(),
 				       recursiveColour.getY()*colour.getY(),
 		               recursiveColour.getZ()*colour.getZ())
-		               * angleNewDirectionNormal * 2;
+		               * angleNewDirectionNormal * neeFactor;
 }
 
 bool DiffuseMaterial::worksWithNextEventEstimation() const {
