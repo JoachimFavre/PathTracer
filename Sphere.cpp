@@ -28,7 +28,7 @@ void Sphere::setRadius(double radius) { this->radius = radius; computeArea(); }
 
 
 // Virtual methods
-void Sphere::computeArea() { area = M_PI*radius*radius;}
+void Sphere::computeArea() { area = 4*M_PI*radius;}
 
 Object3D* Sphere::deepCopy() const {
 	return new Sphere(center, radius, getMaterial()->deepCopy());

@@ -61,7 +61,7 @@
 
 	\fn Triangle::computeArea()
 	\brief Computes this triangle's area.
-	\details Modifies Object3D::area. It uses the formula A = 0.5 * ||edge1 x edge2||
+	\details Modifies Object3D::area. It uses the formula A = 0.5 * ||edge1 x edge2||.
 
 	\fn Triangle::deepCopy()
 	\brief Makes a deep copy of this object.
