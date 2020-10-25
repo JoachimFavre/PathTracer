@@ -17,6 +17,11 @@
 	\class Object3D
 	\brief Abstract class for a three-dimentional object.
 
+	\var Object3D::area
+	\brief Stores the area of this object.
+	\details It is computed every time the object coordinates are modified.
+	\sa Object3D::getArea(), Object3D::computeArea()
+
 	\fn Object3D::Object3D()
 	\brief Default constructor.
 	\details The default material is a diffuse one.
@@ -36,9 +41,19 @@
 	\brief Getter for the Material.
 	\return A pointer to this object's material.
 
+	\fn Object3D::getArea()
+	\brief Getter for this object's area.
+	\return This object's area.
+	\sa Object3D::area, Object3D::computeArea()
+
 	\fn Object3D::setMaterial(Material* material)
 	\brief Setter for the Material.
 	\param material The new material of this object.
+
+	\fn Object3D::computeArea()
+	\brief Computes this object area.
+	\details Modifies Object3D::area.
+	\sa Object3D::area, Object3D::getArea()
 
 	\fn Object3D::deepCopy()
 	\brief Makes a deep copy of this object.
@@ -99,6 +114,9 @@ class Object3D {
 private:
 	Material* material;
 
+protected:
+	double area;
+
 public:
 	Object3D();
 	Object3D(Material* material);
@@ -106,8 +124,10 @@ public:
 	~Object3D();
 
 	Material* getMaterial() const;
+	double getArea() const;
 	void setMaterial(Material* material);
 
+	virtual void computeArea() = 0;
 	virtual Object3D* deepCopy() const = 0;
 
 	virtual double closestIntersection(const Ray& ray) const = 0;

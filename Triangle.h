@@ -59,6 +59,10 @@
 	\brief Setter for the third vertex.
 	\param vertex The new third vertex of this triangle.
 
+	\fn Triangle::computeArea()
+	\brief Computes this triangle's area.
+	\details Modifies Object3D::area. It uses the formula A = 0.5 * ||edge1 x edge2||
+
 	\fn Triangle::deepCopy()
 	\brief Makes a deep copy of this object.
 	\return A pointer to a deeply copied version of this object.
@@ -115,6 +119,7 @@ public:
 	void setVertex2(const DoubleVec3D& vertex);
 	void setVertex3(const DoubleVec3D& vertex);
 
+	void computeArea();
 	Object3D* deepCopy() const;
 
 	double closestIntersection(const Ray& ray) const;

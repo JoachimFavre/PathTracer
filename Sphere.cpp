@@ -2,13 +2,19 @@
 
 // Constructors
 Sphere::Sphere()
-	: Object3D(), center(0), radius(1) {}
+	: Object3D(), center(0), radius(1) {
+	computeArea();
+}
 
 Sphere::Sphere(const DoubleVec3D& center, double radius, Material* material)
-	: Object3D(material), center(center), radius(radius) {}
+	: Object3D(material), center(center), radius(radius) {
+	computeArea();
+}
 
 Sphere::Sphere(const Sphere& sphere)
-	: Object3D(sphere), center(sphere.center), radius(sphere.radius) {}
+	: Object3D(sphere), center(sphere.center), radius(sphere.radius) {
+	computeArea();
+}
 
 
 // Getters
@@ -18,10 +24,12 @@ double Sphere::getRadius() const { return radius; }
 
 // Setters
 void Sphere::setCenter(const DoubleVec3D& center) { this->center = center; }
-void Sphere::setRadius(double radius) { this->radius = radius; }
+void Sphere::setRadius(double radius) { this->radius = radius; computeArea(); }
 
 
-// Virtual method
+// Virtual methods
+void Sphere::computeArea() { area = M_PI*radius*radius;}
+
 Object3D* Sphere::deepCopy() const {
 	return new Sphere(center, radius, getMaterial()->deepCopy());
 }

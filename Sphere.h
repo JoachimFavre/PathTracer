@@ -46,6 +46,10 @@
 	\brief Setter for the radius.
 	\param radius The new radius of this sphere.
 
+	\fn Sphere::computeArea()
+	\brief Computes this sphere's area.
+	\details Modifies Object3D::area. It uses the formula A = pi*r^2
+
 	\fn Sphere::deepCopy()
 	\brief Makes a deep copy of this object.
 	\return A pointer to a deeply copied version of this object.
@@ -100,6 +104,7 @@ public:
 	void setCenter(const DoubleVec3D& center);
 	void setRadius(double radius);
 
+	void computeArea();
 	Object3D* deepCopy() const;
 
 	double closestIntersection(const Ray& ray) const;

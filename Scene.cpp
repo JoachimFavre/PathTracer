@@ -242,7 +242,7 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
 				}
 				if (lampIsVisible) {
 					intersectionToLamp /= distanceLamp;  // Normalised
-					result += rrFactor * neeFactor * objectMaterial->computeCurrentColour(lamp->getMaterial()->getEmittance(), dotProd(intersectionToLamp, normal)) / distanceLamp / distanceLamp / 2 / M_PI;
+					result += rrFactor * neeFactor * objectMaterial->computeCurrentColour(lamp->getMaterial()->getEmittance(), dotProd(intersectionToLamp, normal)) / distanceLamp / distanceLamp / lamp->getArea();
 					// result += rrFactor * lamp->getMaterial()->getEmittance() / distanceLamp / distanceLamp * 0.1;
 				}
 			}

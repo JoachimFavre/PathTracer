@@ -16,6 +16,7 @@ Object3D::~Object3D() { delete material; }
 
 // Getters & Setters
 Material* Object3D::getMaterial() const { return material; }
+double Object3D::getArea() const { return area; }
 void Object3D::setMaterial(Material* material) { this->material = material; }
 
 

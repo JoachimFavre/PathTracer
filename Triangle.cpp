@@ -2,13 +2,19 @@
 
 // Constructors
 Triangle::Triangle()
-	: Object3D(), vertex1(1, 0, 0), vertex2(0, 1, 0), vertex3(0, 0, 1) {}
+	: Object3D(), vertex1(1, 0, 0), vertex2(0, 1, 0), vertex3(0, 0, 1) {
+	computeArea();
+}
 
 Triangle::Triangle(const DoubleVec3D& vertex1, const DoubleVec3D& vertex2, const DoubleVec3D& vertex3, Material* material)
-	: Object3D(material), vertex1(vertex1), vertex2(vertex2), vertex3(vertex3) {}
+	: Object3D(material), vertex1(vertex1), vertex2(vertex2), vertex3(vertex3) {
+	computeArea();
+}
 
 Triangle::Triangle(const Triangle& triangle)
-	: Object3D(triangle), vertex1(triangle.vertex1), vertex2(triangle.vertex2), vertex3(triangle.vertex3) {}
+	: Object3D(triangle), vertex1(triangle.vertex1), vertex2(triangle.vertex2), vertex3(triangle.vertex3) {
+	computeArea();
+}
 
 // Getters
 DoubleVec3D Triangle::getVertex1() const { return vertex1; }
@@ -21,12 +27,18 @@ DoubleVec3D Triangle::getCenter() const {
 
 
 // Setters
-void Triangle::setVertex1(const DoubleVec3D& vertex) { vertex1 = vertex; }
-void Triangle::setVertex2(const DoubleVec3D& vertex) { vertex2 = vertex; }
-void Triangle::setVertex3(const DoubleVec3D& vertex) { vertex3 = vertex; }
+void Triangle::setVertex1(const DoubleVec3D& vertex) { vertex1 = vertex; computeArea(); }
+void Triangle::setVertex2(const DoubleVec3D& vertex) { vertex2 = vertex; computeArea(); }
+void Triangle::setVertex3(const DoubleVec3D& vertex) { vertex3 = vertex; computeArea(); }
 
 
 // Virtual methods
+void Triangle::computeArea() {
+	DoubleVec3D edge1 = vertex2 - vertex1;
+	DoubleVec3D edge2 = vertex3 - vertex1;
+	area = 0.5 * length(crossProd(edge1, edge2));
+}
+
 Object3D* Triangle::deepCopy() const {
 	return new Triangle(vertex1, vertex2, vertex3, getMaterial()->deepCopy());
 }
