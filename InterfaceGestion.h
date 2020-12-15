@@ -4,8 +4,16 @@
 #include <chrono>
 #include <fstream>
 #include <random>
+#include <iostream>
 
-#include "DoubleVec3D.h"
+#define _USE_MATH_DEFINES  // to be able to use M_PI from math.h
+#include <math.h>
+
+// Needs to be included before fbxsdk, else creates conflict.
+#include "nlohmann/json.hpp"
+using json = nlohmann::json;
+
+#include <fbxsdk.h>
 
 /*!
 	\file InterfaceGestion.h
@@ -114,22 +122,6 @@
 	\return The boolean the user gave.
 	\sa getLowerCaseCharFromUser()
 
-	\fn getXYZDoubleVec3DFromUser(std::string question = "", std::string prompt = PROMPT)
-	\brief Gets a vector from the user.
-	\details Uses three times the getDoubleFromUser() method. Adds "x ", "y " or "z " before the prompt, to show the user which coordinates he or she is giving.
-	\param question The question that will be asked to the user.
-	\param prompt The prompt that will be used to show the user that he or she can write something.
-	\return The vector the user gave.
-	\sa getDoubleFromUser()
-
-	\fn getRGBDoubleVec3DFromUser(std::string question = "", std::string prompt = PROMPT)
-	\brief Gets a vector with only positive coordinates from the user.
-	\details Uses three times the getPositiveDoubleFromUser() method. Adds "r ", "g " or "b " before the prompt, to show the user which coordinates he or she is giving.
-	\param question The question that will be asked to the user.
-	\param prompt The prompt that will be used to show the user that he or she can write something.
-	\return The vector the user gave.
-	\sa getPositiveDoubleFromUser()
-
 	\fn fileExists(std::string fileName)
 	\brief Verifies if the file exists.
 	\param fileName The path to the file.
@@ -175,8 +167,6 @@ unsigned int getUnsignedIntFromUser(std::string question = "", std::string promp
 double getDoubleFromUser(std::string question = "", std::string prompt = PROMPT);
 double getPositiveDoubleFromUser(std::string question = "", std::string prompt = PROMPT);
 bool getBoolFromUser(std::string question = "", std::string prompt = PROMPT);
-DoubleVec3D getXYZDoubleVec3DFromUser(std::string question = "", std::string prompt = PROMPT);
-DoubleVec3D getRGBDoubleVec3DFromUser(std::string question = "", std::string prompt = PROMPT);
 
 bool fileExists(std::string fileName);
 std::string formatFileName(std::string fileName, std::string extension);

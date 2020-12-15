@@ -1,16 +1,7 @@
 #ifndef DEF_DOUBLEVEC3D
 #define DEF_DOUBLEVEC3D
 
-#include <iostream>
-
-#define _USE_MATH_DEFINES  // to be able to use M_PI from math.h
-#include <math.h>
-
-// Needs to be included before fbxsdk, else creates conflict.
-#include "nlohmann/json.hpp"
-using json = nlohmann::json;
-
-#include <fbxsdk.h>
+#include "InterfaceGestion.h"
 
 /*!	\file DoubleVec3D.h
 	\brief Defines the DoubleVec3D class and the functions around it.

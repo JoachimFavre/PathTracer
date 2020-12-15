@@ -14,6 +14,22 @@
 	\file InterfaceCreation.h
 	\brief Defines functions that are used to interactively create 3D objects and materials.
 
+	\fn getXYZDoubleVec3DFromUser(std::string question = "", std::string prompt = PROMPT)
+	\brief Gets a vector from the user.
+	\details Uses three times the getDoubleFromUser() method. Adds "x ", "y " or "z " before the prompt, to show the user which coordinates he or she is giving.
+	\param question The question that will be asked to the user.
+	\param prompt The prompt that will be used to show the user that he or she can write something.
+	\return The vector the user gave.
+	\sa getDoubleFromUser()
+
+	\fn getRGBDoubleVec3DFromUser(std::string question = "", std::string prompt = PROMPT)
+	\brief Gets a vector with only positive coordinates from the user.
+	\details Uses three times the getPositiveDoubleFromUser() method. Adds "r ", "g " or "b " before the prompt, to show the user which coordinates he or she is giving.
+	\param question The question that will be asked to the user.
+	\param prompt The prompt that will be used to show the user that he or she can write something.
+	\return The vector the user gave.
+	\sa getPositiveDoubleFromUser()
+
 	\fn createDiffuseMaterial(const DoubleVec3D& emittance)
 	\brief Interactive creation of a DiffuseMaterial.
 	\param emittance The emittance of the material.
@@ -71,6 +87,9 @@
 	\param j Json input.
 	\return A pointer to the object stored in the json.
 */
+
+DoubleVec3D getXYZDoubleVec3DFromUser(std::string question = "", std::string prompt = PROMPT);
+DoubleVec3D getRGBDoubleVec3DFromUser(std::string question = "", std::string prompt = PROMPT);
 
 Material* createDiffuseMaterial(const DoubleVec3D& emittance);
 Material* createRefractiveMaterial(const DoubleVec3D& emittance);

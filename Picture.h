@@ -6,7 +6,7 @@
 
 #include "CImg/CImg.h"
 
-#include "InterfaceGestion.h"
+#include "DoubleVec3D.h"
 
 
 /*!

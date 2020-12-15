@@ -125,24 +125,6 @@ bool getBoolFromUser(std::string question /*= ""*/, std::string prompt /*= PROMP
 	}
 }
 
-DoubleVec3D getXYZDoubleVec3DFromUser(std::string question /*= ""*/, std::string prompt /*= PROMPT*/) {
-	// Use array?
-	double x = getDoubleFromUser(question, "x " + prompt);
-	double y = getDoubleFromUser("", "y " + prompt);
-	double z = getDoubleFromUser("", "z " + prompt);
-
-	return DoubleVec3D(x, y, z);
-}
-
-DoubleVec3D getRGBDoubleVec3DFromUser(std::string question /*= ""*/, std::string prompt /*= PROMPT*/) {
-	// Use array?
-	double x = getPositiveDoubleFromUser(question, "r " + prompt);
-	double y = getPositiveDoubleFromUser("", "g " + prompt);
-	double z = getPositiveDoubleFromUser("", "b " + prompt);
-
-	return DoubleVec3D(x, y, z);
-}
-
 
 // File manipulation
 bool fileExists(std::string fileName) {
