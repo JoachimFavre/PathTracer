@@ -1,9 +1,6 @@
 #ifndef DEF_TRIANGLE
 #define DEF_TRIANGLE
 
-#include "DoubleVec3D.h"
-#include "DoubleUnitVec3D.h"
-#include "Material.h"
 #include "Object3D.h"
 
 

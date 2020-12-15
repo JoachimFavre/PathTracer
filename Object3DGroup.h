@@ -1,13 +1,9 @@
 #ifndef DEF_OBJECT3DGROUP
 #define DEF_OBJECT3DGROUP
 
-#include <string>
 #include <vector>
 
-#include "DoubleVec3D.h"
-#include "Object3D.h"
 #include "InterfaceGestion.h"
-
 
 /*!
 	\file Object3DGroup.h

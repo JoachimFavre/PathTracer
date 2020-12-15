@@ -4,16 +4,12 @@
 #include <chrono>
 #include <fstream>
 #include <random>
-#include <string>
 
-#include "Material.h"
 #include "DiffuseMaterial.h"
 #include "SpecularMaterial.h"
 #include "RefractiveMaterial.h"
-#include "Object3D.h"
 #include "Sphere.h"
 #include "Triangle.h"
-#include "DoubleVec3D.h"
 
 /*!
 	\file InterfaceGestion.h

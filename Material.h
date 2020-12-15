@@ -1,9 +1,7 @@
 #ifndef DEF_MATERIAL
 #define DEF_MATERIAL
 
-#include "DoubleVec3D.h"
 #include "Ray.h"
-
 
 /*!
 	\file Material.h

@@ -1,13 +1,7 @@
 #ifndef DEF_DIFFUSEMATERIAL
 #define DEF_DIFFUSEMATERIAL
 
-#define _USE_MATH_DEFINES  // to be able to use M_PI from math.h
-#include <math.h>
-
-#include "DoubleVec3D.h"
-#include "DoubleUnitVec3D.h"
 #include "Material.h"
-#include "Ray.h"
 
 
 /*!

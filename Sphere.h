@@ -1,13 +1,7 @@
 #ifndef DEF_SPHERE
 #define DEF_SPHERE
 
-#include <math.h>
-
-#include "DoubleVec3D.h"
-#include "DoubleUnitVec3D.h"
-#include "Material.h"
 #include "Object3D.h"
-#include "Ray.h"
 
 /*!
 	\file Sphere.h

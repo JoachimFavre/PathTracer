@@ -4,10 +4,6 @@
 #include <string>
 
 #include "DiffuseMaterial.h"
-#include "DoubleVec3D.h"
-#include "DoubleUnitVec3D.h"
-#include "Material.h"
-#include "Ray.h"
 
 
 /*!

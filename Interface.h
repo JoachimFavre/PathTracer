@@ -1,12 +1,7 @@
 #ifndef INTERFACE
 #define INTERFACE
 
-#include <iomanip>
-
-#include "InterfaceGestion.h"
 #include "Scene.h"
-#include "PerspectiveCamera.h"
-#include "Object3DGroup.h"
 
 /*!
 	\file Interface.h

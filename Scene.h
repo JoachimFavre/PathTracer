@@ -1,22 +1,12 @@
 #ifndef DEF_SCENE
 #define DEF_SCENE
 
-#include <vector>
-
 #include <omp.h>
 
-#include "DiffuseMaterial.h"
 #include "DoubleMatrix33.h"
-#include "Object3D.h"
 #include "Object3DGroup.h"
-#include "Triangle.h"
 #include "PerspectiveCamera.h"
 #include "Picture.h"
-#include "RefractiveMaterial.h"
-#include "SpecularMaterial.h"
-#include "Sphere.h"
-
-#include "InterfaceGestion.h"
 
 #include <fbxsdk.h>
 #include <fbxsdk/fileio/fbxiosettings.h>

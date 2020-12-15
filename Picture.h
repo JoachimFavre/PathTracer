@@ -2,15 +2,10 @@
 #define DEF_PICTURE
 
 #include <algorithm>
-#include <chrono>
-#include <fstream>
 #include <iomanip>
-#include <iostream>
-#include <string>
 
 #include "CImg/CImg.h"
 
-#include "DoubleVec3D.h"
 #include "InterfaceGestion.h"
 
 
