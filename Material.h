@@ -30,11 +30,10 @@
 	\brief Makes a deep copy of this material.
 	\return A pointer to a deeply copied version of this material.
 
-	\fn Material::getNewDirection(const Ray& previousRay, const DoubleUnitVec3D& normal, double (*randomDouble)())
+	\fn Material::getNewDirection(const Ray& previousRay, const DoubleUnitVec3D& normal)
 	\brief Computes the new ray direction.
 	\param previousRay The ray that hits this material.
 	\param normal The normal at the intersection.
-	\param randomDouble A pointer to a function generating a random double between 0 and 1.
 
 	\fn Material::computeCurrentColour(const DoubleVec3D& recursiveColour, double angleNewDirectionNormal, bool nextEventEstimation = false)
 	\brief Computes the new colour.
@@ -87,7 +86,7 @@ public:
 
 	virtual Material* deepCopy() const = 0;
 	
-	virtual DoubleUnitVec3D getNewDirection(const Ray& previousRay, const DoubleUnitVec3D& normal, double (*randomDouble)()) const = 0;  // Must give pointer to random double because doesn't work with unif and re or including random
+	virtual DoubleUnitVec3D getNewDirection(const Ray& previousRay, const DoubleUnitVec3D& normal) const = 0;
 	virtual DoubleVec3D computeCurrentColour(const DoubleVec3D& recursiveColour, double angleNewDirectionNormal, bool nextEventEstimation = false) const = 0;
 	virtual bool worksWithNextEventEstimation() const = 0;
 

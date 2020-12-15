@@ -71,7 +71,7 @@ DoubleUnitVec3D Triangle::getNormal(const DoubleVec3D& point) const {
 	// The triangle can only be seen from one side, vertices have to be defined counterclockwise (point of view of the visible hemisphere).
 }
 
-DoubleVec3D Triangle::getRandomPoint(double (*randomDouble)()) const {
+DoubleVec3D Triangle::getRandomPoint() const {
 	// Using p.814 of Robert Osada et al. "Shape distribution" (see report for a full bibliography)
 	double rand1 = sqrt(randomDouble());
 	double rand2 = randomDouble();

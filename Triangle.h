@@ -74,9 +74,8 @@
 	\param point The point on the object at which we want to compute the normal.
 	\return The cross product between (vertex2 - vertex1) and (vertex3 - vertex1)
 
-	\fn Triangle::getRandomPoint(double (*randomDouble)())
+	\fn Triangle::getRandomPoint()
 	\brief Computes a random point on the object.
-	\param randomDouble A pointer to a function generating a random double between 0 and 1.
 	\return A random point on this object.
 
 	\fn Triangle::getDescription(std::ostream& stream)
@@ -121,7 +120,7 @@ public:
 
 	double closestIntersection(const Ray& ray) const;
 	DoubleUnitVec3D getNormal(const DoubleVec3D& point) const;
-	DoubleVec3D getRandomPoint(double (*randomDouble)()) const;
+	DoubleVec3D getRandomPoint() const;
 
 	std::ostream& getDescription(std::ostream& stream) const;
 	std::string getType() const;

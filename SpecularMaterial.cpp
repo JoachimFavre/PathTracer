@@ -13,7 +13,7 @@ Material* SpecularMaterial::deepCopy() const {
 	return new SpecularMaterial(getEmittance());
 }
 
-DoubleUnitVec3D SpecularMaterial::getNewDirection(const Ray& previousRay, const DoubleUnitVec3D& normal, double (*randomDouble)()) const {
+DoubleUnitVec3D SpecularMaterial::getNewDirection(const Ray& previousRay, const DoubleUnitVec3D& normal) const {
 	DoubleUnitVec3D previousRayDirection = previousRay.getDirection();
 	return previousRayDirection - normal*dotProd(previousRayDirection, normal)*2;
 }

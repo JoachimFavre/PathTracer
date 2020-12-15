@@ -18,8 +18,8 @@ Material* DiffuseMaterial::deepCopy() const {
 	return new DiffuseMaterial(colour, getEmittance());
 }
 
-DoubleUnitVec3D DiffuseMaterial::getNewDirection(const Ray& previousRay, const DoubleUnitVec3D& normal, double (*randomDouble)()) const {
-	DoubleUnitVec3D newDirection(randomVectorOnUnitRadiusSphere(randomDouble));
+DoubleUnitVec3D DiffuseMaterial::getNewDirection(const Ray& previousRay, const DoubleUnitVec3D& normal) const {
+	DoubleUnitVec3D newDirection(randomVectorOnUnitRadiusSphere());
 	if (dotProd(newDirection, normal) < 0) // Wrong hemisphere
 		return -newDirection;
 	return newDirection;

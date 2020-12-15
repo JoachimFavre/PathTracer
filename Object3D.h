@@ -65,9 +65,8 @@
 	\param point The point on the object at which we want to compute the normal.
 	\return The normal at this point.
 
-	\fn Object3D::getRandomPoint(double (*randomDouble)())
+	\fn Object3D::getRandomPoint()
 	\brief Computes a random point on the object.
-	\param randomDouble A pointer to a function generating a random double between 0 and 1.
 	\return A random point on this object.
 
 	\fn Object3D::getDescription(std::ostream& stream)
@@ -128,7 +127,7 @@ public:
 
 	virtual double closestIntersection(const Ray& ray) const = 0;
 	virtual DoubleUnitVec3D getNormal(const DoubleVec3D& point) const = 0;
-	virtual DoubleVec3D getRandomPoint(double (*randomDouble)()) const = 0;
+	virtual DoubleVec3D getRandomPoint() const = 0;
 	virtual std::ostream& getDescription(std::ostream& stream) const = 0;
 	virtual DoubleVec3D getCenter() const = 0;
 

@@ -226,7 +226,7 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
 	if (nextEventEstimation && objectMaterial->worksWithNextEventEstimation()) {
 		neeFactor = 1.0/(1.0 + lamps.size());
 		for (Object3D* lamp : lamps) {
-			DoubleVec3D intersectionToLamp = lamp->getRandomPoint(randomDouble) - intersection;
+			DoubleVec3D intersectionToLamp = lamp->getRandomPoint() - intersection;
 			if (dotProd(normal, intersectionToLamp) > 0) {
 				double distanceLamp = length(intersectionToLamp);
 				Ray shadowRay(intersection, intersectionToLamp);  // intersectionToLamp goes in DoubleUnitVec3D constructor => normalised
@@ -253,7 +253,7 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
 		// If next event estimation was used by last ray, we would be adding the emittance twice.
 		result += rrFactor * objectMaterial->getEmittance();
 
-	DoubleUnitVec3D newDirection = objectMaterial->getNewDirection(ray, normal, randomDouble);
+	DoubleUnitVec3D newDirection = objectMaterial->getNewDirection(ray, normal);
 	DoubleVec3D recursiveColour = traceRay(Ray(intersection, newDirection), nextEventEstimation && objectMaterial->worksWithNextEventEstimation(), bounces + 1);
 	result += rrFactor * neeFactor * objectMaterial->computeCurrentColour(recursiveColour, dotProd(newDirection, normal));
 

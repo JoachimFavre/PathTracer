@@ -51,9 +51,8 @@
 	\param vec The vector that will be inversed.
 	\return The inverse of vec.
 
-	\fn randomVectorOnUnitRadiusSphere(double (*randomDouble)())
+	\fn randomVectorOnUnitRadiusSphere()
 	\brief Generates a random unit vector on a sphere.
-	\param randomDouble A pointer to a function generating a random double between 0 and 1.
 	\return A random unit vector on a sphere.
 */
 
@@ -70,6 +69,6 @@ public:
 };
 
 DoubleUnitVec3D operator-(const DoubleUnitVec3D& vec);
-DoubleUnitVec3D randomVectorOnUnitRadiusSphere(double (*randomDouble)());
+DoubleUnitVec3D randomVectorOnUnitRadiusSphere();
 
 #endif
