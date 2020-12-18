@@ -171,6 +171,4 @@ bool getBoolFromUser(std::string question = "", std::string prompt = PROMPT);
 bool fileExists(std::string fileName);
 std::string formatFileName(std::string fileName, std::string extension);
 
-
-
 #endif

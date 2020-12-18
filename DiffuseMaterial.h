@@ -3,7 +3,6 @@
 
 #include "Material.h"
 
-
 /*!
     \file DiffuseMaterial.h
     \brief Defines the DiffuseMaterial class.

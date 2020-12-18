@@ -80,7 +80,6 @@
     \param j The json input.
 */
 
-
 class Sphere : public Object3D {
 private:
     DoubleVec3D center;

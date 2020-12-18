@@ -3,7 +3,6 @@
 
 #include "Object3D.h"
 
-
 /*!
     \file Triangle.h
     \brief Defines the Triangle class.
@@ -95,7 +94,6 @@
     \brief Sets this object's location according to json.
     \param j The json input.
 */
-
 
 class Triangle : public Object3D {
 private:

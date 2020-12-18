@@ -197,7 +197,6 @@
     \sa render()
 */
 
-
 class Scene {
 private:
     std::vector<Object3DGroup> objectsGroups;

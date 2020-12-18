@@ -8,7 +8,6 @@
 
 #include "DoubleVec3D.h"
 
-
 /*!
     \file Picture.h
     \brief Defines the Picture class and the functions around it.
@@ -111,8 +110,7 @@
     \return The imported picture.
 */
 
-class Picture
-{
+class Picture {
 private:
     const unsigned int width;
     const unsigned int height;

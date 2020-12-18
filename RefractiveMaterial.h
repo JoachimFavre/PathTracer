@@ -66,7 +66,6 @@
     \param j The json input.
 */
 
-
 class RefractiveMaterial : public Material {
 private:
     double refractiveIndex;

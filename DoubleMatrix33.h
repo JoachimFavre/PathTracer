@@ -3,7 +3,6 @@
 
 #include "DoubleVec3D.h"
 
-
 /*!
     \file DoubleMatrix33.h
     \brief Defines the DoubleMatrix33 class and the functions around it.
@@ -183,7 +182,6 @@
     \param values The first coordinate of this vector is the scaling on the x axis, the second one is the scaling on the y axis and the last one is the scaling on the z axis.
     \return The scaling matrix.
 */
-
 
 class DoubleMatrix33 {
 private:

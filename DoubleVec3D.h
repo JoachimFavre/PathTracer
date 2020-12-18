@@ -182,7 +182,6 @@
     \param vec The output vector.
 */
 
-
 class DoubleVec3D {
 private:
     double x;

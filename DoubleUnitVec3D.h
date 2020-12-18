@@ -56,8 +56,7 @@
     \return A random unit vector on a sphere.
 */
 
-class DoubleUnitVec3D : public DoubleVec3D
-{
+class DoubleUnitVec3D : public DoubleVec3D {
 public:
     DoubleUnitVec3D();
     DoubleUnitVec3D(double x, double y, double z, bool alreadyNormalised = false);

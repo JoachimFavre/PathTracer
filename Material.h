@@ -72,7 +72,6 @@
     \sa getDescription()
 */
 
-
 class Material {
 private:
     DoubleVec3D emittance;

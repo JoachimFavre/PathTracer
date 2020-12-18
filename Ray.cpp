@@ -12,7 +12,7 @@ Ray::Ray(const Ray& ray)
 
 // Getters
 DoubleVec3D Ray::getOrigin() const { return origin; }
-DoubleUnitVec3D Ray::getDirection() const {    return direction; }
+DoubleUnitVec3D Ray::getDirection() const { return direction; }
 
 
 // Setters

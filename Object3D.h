@@ -5,7 +5,6 @@
 
 #include "DiffuseMaterial.h"
 
-
 /*!
     \file Object3D.h
     \brief Defines the Object3D class and the functions around it.
@@ -103,7 +102,6 @@
     \return The stream with the object added.
     \sa getDescription()
 */
-
 
 class Object3D {
 private:
