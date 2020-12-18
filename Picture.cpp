@@ -118,7 +118,7 @@ void Picture::modify() {
 				std::cout << std::endl;
 			}
 
-			double middleGray = getPositiveDoubleFromUser("What luminance will be the middle-gray? (try 10 if you have no idea) (positive number)");
+			double middleGray = getPositiveDoubleFromUser("What radiance will be the middle-gray? (try 10 if you have no idea) (positive number)");
 			std::cout << std::endl;
 			unsigned int movingAverageSize = getUnsignedIntFromUser("What is the size of the moving average you want to use? (0 for no moving average) (positive integer)");
 
@@ -152,11 +152,11 @@ void Picture::modify() {
 
 
 // Other functions
-DoubleVec3D toneMapping(const DoubleVec3D& luminance, double middleGray) {
+DoubleVec3D toneMapping(const DoubleVec3D& radiance, double middleGray) {
 	// Very naive tone mapping
-	double x = Picture::MAX_COLOUR_VALUE*luminance.getX() / (middleGray + luminance.getX());
-	double y = Picture::MAX_COLOUR_VALUE*luminance.getY() / (middleGray + luminance.getY());
-	double z = Picture::MAX_COLOUR_VALUE*luminance.getZ() / (middleGray + luminance.getZ());
+	double x = Picture::MAX_COLOUR_VALUE*radiance.getX() / (middleGray + radiance.getX());
+	double y = Picture::MAX_COLOUR_VALUE*radiance.getY() / (middleGray + radiance.getY());
+	double z = Picture::MAX_COLOUR_VALUE*radiance.getZ() / (middleGray + radiance.getZ());
 
 	return DoubleVec3D(x, y, z);
 }

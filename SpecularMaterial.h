@@ -27,12 +27,12 @@
 	\param previousRay The ray that hits this material.
 	\param normal The normal at the intersection.
 
-	\fn SpecularMaterial::computeCurrentColour(const DoubleVec3D& recursiveColour, double angleNewDirectionNormal, bool nextEventEstimation = false)
-	\brief Computes the new colour.
-	\param recursiveColour The colour recursively obtained.
+	\fn SpecularMaterial::computeCurrentRadiance(const DoubleVec3D& recursiveRadiance, double angleNewDirectionNormal, bool nextEventEstimation = false)
+	\brief Computes the new radiance.
+	\param recursiveRadiance The radiance recursively obtained.
 	\param angleNewDirectionNormal The cosine of the angle between the direction of the next ray and the normal at the intersection.
-	\param nextEventEstimation Whether the colour is obtained using the next event estimation algorithm.
-	\return The new colour.
+	\param nextEventEstimation Whether the radiance is obtained using the next event estimation algorithm.
+	\return The new radiance.
 
 	\fn SpecularMaterial::worksWithNextEventEstimation()
 	\brief Returns whether this material works with next event estimation.
@@ -63,7 +63,7 @@ public:
 	Material* deepCopy() const;
 
 	DoubleUnitVec3D getNewDirection(const Ray& previousRay, const DoubleUnitVec3D& normal) const;
-	DoubleVec3D computeCurrentColour(const DoubleVec3D& recursiveColour, double angleNewDirectionNormal, bool nextEventEstimation = false) const;
+	DoubleVec3D computeCurrentRadiance(const DoubleVec3D& recursiveRadiance, double angleNewDirectionNormal, bool nextEventEstimation = false) const;
 	bool worksWithNextEventEstimation() const;
 
 	std::ostream& getDescription(std::ostream& stream) const;

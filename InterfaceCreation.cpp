@@ -22,9 +22,9 @@ DoubleVec3D getRGBDoubleVec3DFromUser(std::string question /*= ""*/, std::string
 
 // Material creation
 Material* createDiffuseMaterial(const DoubleVec3D& emittance) {
-	DoubleVec3D colour = getRGBDoubleVec3DFromUser("What is the colour of this diffuse material?");
+	DoubleVec3D albedo = getRGBDoubleVec3DFromUser("What is the albedo of this diffuse material?");
 	std::cout << std::endl;
-	return new DiffuseMaterial(colour, emittance);
+	return new DiffuseMaterial(albedo, emittance);
 }
 
 Material* createRefractiveMaterial(const DoubleVec3D& emittance) {

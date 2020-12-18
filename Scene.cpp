@@ -242,7 +242,7 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
 				}
 				if (lampIsVisible) {
 					intersectionToLamp /= distanceLamp;  // Normalised
-					result += rrFactor * neeFactor * objectMaterial->computeCurrentColour(lamp->getMaterial()->getEmittance(), dotProd(intersectionToLamp, normal), true)
+					result += rrFactor * neeFactor * objectMaterial->computeCurrentRadiance(lamp->getMaterial()->getEmittance(), dotProd(intersectionToLamp, normal), true)
 						      / distanceLamp / distanceLamp / lamp->getArea();
 					// result += rrFactor * lamp->getMaterial()->getEmittance() / distanceLamp / distanceLamp * 0.1;
 				}
@@ -254,8 +254,8 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
 		result += rrFactor * objectMaterial->getEmittance();
 
 	DoubleUnitVec3D newDirection = objectMaterial->getNewDirection(ray, normal);
-	DoubleVec3D recursiveColour = traceRay(Ray(intersection, newDirection), nextEventEstimation && objectMaterial->worksWithNextEventEstimation(), bounces + 1);
-	result += rrFactor * neeFactor * objectMaterial->computeCurrentColour(recursiveColour, dotProd(newDirection, normal));
+	DoubleVec3D recursiveRadiance = traceRay(Ray(intersection, newDirection), nextEventEstimation && objectMaterial->worksWithNextEventEstimation(), bounces + 1);
+	result += rrFactor * neeFactor * objectMaterial->computeCurrentRadiance(recursiveRadiance, dotProd(newDirection, normal));
 
 	return result;
 }

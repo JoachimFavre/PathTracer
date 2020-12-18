@@ -14,7 +14,7 @@
 	\brief Defines the Picture class and the functions around it.
 
 	\class Picture
-	\brief Stores luminance for every pixel.
+	\brief Stores radiance for every pixel.
 
 	\var Picture::MAX_COLOUR_VALUE
 	\brief The maximum value that will be used to write a colour in a file.
@@ -52,7 +52,7 @@
 
 	\fn Picture::getPixels()
 	\brief Getter for the pixels.
-	\return A std::vector of std::vector that contains the luminance at each pixel.
+	\return A std::vector of std::vector that contains the radiance at each pixel.
 
 	\fn Picture::addValuePix(unsigned int x, unsigned int y, DoubleVec3D value)
 	\brief Adds a value to a pixel.
@@ -84,16 +84,16 @@
 	\details This is a page on its own. It allows the user to write the picture under different names, different middle-gray values and different moving average size.
 	\sa writeToFile(), toneMapping(), getColourMovingAverage()
 
-	\fn toneMapping(const DoubleVec3D& luminance, double middleGray)
-	\brief Concerts a luminance to a colour value.
+	\fn toneMapping(const DoubleVec3D& radiance, double middleGray)
+	\brief Converts a radiance to a colour value.
 	\details This is a very naive tone mapping. See my TM's report for more explanations.
-	\param luminance The luminance we want to convert.
-	\param middleGray The luminance value that corresponds to the middle-gray.
+	\param radiance The radiance we want to convert.
+	\param middleGray The radiance value that corresponds to the middle-gray.
 	\return The colour that has been computed. Each part of the colour (red, green or blue) range from 0 to MAX_COLOUR_VALUE.
 
 	\fn getColourMovingAverage(const std::vector<std::vector<DoubleVec3D>>& pixelValues, unsigned int pixelX, unsigned int pixelY, unsigned int size)
 	\brief Computes the value of a pixel when having applied a moving average.
-	\param pixelValues The values of all pixels (can be luminance or colour).
+	\param pixelValues The values of all pixels (can be radiance or colour value, depending whether you first use the toneMapping function or not).
 	\param pixelX The *x* coordinate of the pixel.
 	\param pixelY the *y* coordinate of the pixel.
 	\param size The size of the moving average.
@@ -140,7 +140,7 @@ public:
 	void modify();
 };
 
-DoubleVec3D toneMapping(const DoubleVec3D& luminance, double middleGray);
+DoubleVec3D toneMapping(const DoubleVec3D& radiance, double middleGray);
 DoubleVec3D getColourMovingAverage(const std::vector<std::vector<DoubleVec3D>>& pixelValues, unsigned int pixelX, unsigned int pixelY, unsigned int size);
 
 void to_json(json& j, const Picture& picture);

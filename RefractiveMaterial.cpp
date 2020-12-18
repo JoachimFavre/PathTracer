@@ -54,8 +54,8 @@ DoubleUnitVec3D RefractiveMaterial::getNewDirection(const Ray& previousRay, cons
 }
 
 
-DoubleVec3D RefractiveMaterial::computeCurrentColour(const DoubleVec3D& recursiveColour, double angleNewDirectionNormal, bool nextEventEstimation /*= false*/) const {
-	return recursiveColour;
+DoubleVec3D RefractiveMaterial::computeCurrentRadiance(const DoubleVec3D& recursiveRadiance, double angleNewDirectionNormal, bool nextEventEstimation /*= false*/) const {
+	return recursiveRadiance;
 }
 
 
