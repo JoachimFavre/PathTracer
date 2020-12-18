@@ -29,7 +29,7 @@
 	\param alreadyNormalised If true, skips the normalisation when instantiated.
 	\sa normalise()
 
-	\fn DoubleUnitVec3D(const DoubleUnitVec3D& vec)
+	\fn DoubleUnitVec3D::DoubleUnitVec3D(const DoubleUnitVec3D& vec)
 	\brief Copy constructor.
 	\param vec The unit vector that will be copied.
 
