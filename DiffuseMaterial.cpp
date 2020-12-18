@@ -2,10 +2,10 @@
 
 // Constructors
 DiffuseMaterial::DiffuseMaterial(const DoubleVec3D& albedo /*= DoubleVec3D(0.0)*/, DoubleVec3D emittance /*=0*/)
-	: Material(emittance), albedo(albedo) {}
+    : Material(emittance), albedo(albedo) {}
 
 DiffuseMaterial::DiffuseMaterial(const DiffuseMaterial& material)
-	: Material(material), albedo(material.albedo) {}
+    : Material(material), albedo(material.albedo) {}
 
 
 // Getters and setters
@@ -15,36 +15,36 @@ void DiffuseMaterial::setAlbedo(const DoubleVec3D& albedo) { this->albedo = albe
 
 // Virtual methods
 Material* DiffuseMaterial::deepCopy() const {
-	return new DiffuseMaterial(albedo, getEmittance());
+    return new DiffuseMaterial(albedo, getEmittance());
 }
 
 DoubleUnitVec3D DiffuseMaterial::getNewDirection(const Ray& previousRay, const DoubleUnitVec3D& normal) const {
-	DoubleUnitVec3D newDirection(randomVectorOnUnitRadiusSphere());
-	if (dotProd(newDirection, normal) < 0) // Wrong hemisphere
-		return -newDirection;
-	return newDirection;
+    DoubleUnitVec3D newDirection(randomVectorOnUnitRadiusSphere());
+    if (dotProd(newDirection, normal) < 0) // Wrong hemisphere
+        return -newDirection;
+    return newDirection;
 }
 
 DoubleVec3D DiffuseMaterial::computeCurrentRadiance(const DoubleVec3D& recursiveRadiance, double angleNewDirectionNormal, bool nextEventEstimation /*= false*/) const {
-	DoubleVec3D albedo = getAlbedo();
+    DoubleVec3D albedo = getAlbedo();
 
-	double neeFactor = 2.0;
-	if (nextEventEstimation)
-		neeFactor = 1.0 / M_PI;
+    double neeFactor = 2.0;
+    if (nextEventEstimation)
+        neeFactor = 1.0 / M_PI;
 
-	return DoubleVec3D(recursiveRadiance.getX()*albedo.getX(),
-				       recursiveRadiance.getY()*albedo.getY(),
-					   recursiveRadiance.getZ()*albedo.getZ())
-		               * angleNewDirectionNormal * neeFactor;
+    return DoubleVec3D(recursiveRadiance.getX()*albedo.getX(),
+                       recursiveRadiance.getY()*albedo.getY(),
+                       recursiveRadiance.getZ()*albedo.getZ())
+                       * angleNewDirectionNormal * neeFactor;
 }
 
 bool DiffuseMaterial::worksWithNextEventEstimation() const {
-	return true;
+    return true;
 }
 
 std::ostream& DiffuseMaterial::getDescription(std::ostream& stream) const {
-	stream << "DiffuseMaterial / Albedo = " << albedo;
-	return stream;
+    stream << "DiffuseMaterial / Albedo = " << albedo;
+    return stream;
 }
 
 

@@ -1,8 +1,8 @@
 #include "Interface.h"
 
 int main() {
-	initInterface();
+    initInterface();
 
-	return 0;
+    return 0;
 }
 

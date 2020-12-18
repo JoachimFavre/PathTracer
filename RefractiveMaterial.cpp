@@ -3,10 +3,10 @@
 
 // Constructors
 RefractiveMaterial::RefractiveMaterial(double refractiveIndex /*= 1.5*/, DoubleVec3D emittance /*= 0*/)
-	: Material(emittance), refractiveIndex(refractiveIndex) {}
+    : Material(emittance), refractiveIndex(refractiveIndex) {}
 
 RefractiveMaterial::RefractiveMaterial(const RefractiveMaterial& material)
-	: Material(material), refractiveIndex(material.refractiveIndex) {}
+    : Material(material), refractiveIndex(material.refractiveIndex) {}
 
 
 // Getters and setters
@@ -16,57 +16,57 @@ void RefractiveMaterial::setRefractiveIndex(double refractiveIndex) { this->refr
 
 // Virtual methods
 Material* RefractiveMaterial::deepCopy() const {
-	return new RefractiveMaterial(refractiveIndex, getEmittance());
+    return new RefractiveMaterial(refractiveIndex, getEmittance());
 }
 
 DoubleUnitVec3D RefractiveMaterial::getNewDirection(const Ray& previousRay, const DoubleUnitVec3D& normal) const {
-	DoubleUnitVec3D normalBis = normal;  // Must be modified
-	DoubleUnitVec3D previousRayDirection = previousRay.getDirection();
+    DoubleUnitVec3D normalBis = normal;  // Must be modified
+    DoubleUnitVec3D previousRayDirection = previousRay.getDirection();
 
-	double refractiveIndex1 = 1.0;
-	double refractiveIndex2 = 1.0;
-	bool insideMedia = false;
+    double refractiveIndex1 = 1.0;
+    double refractiveIndex2 = 1.0;
+    bool insideMedia = false;
 
-	double cosIncidenceAngle = -dotProd(normalBis, previousRayDirection);
-	if (cosIncidenceAngle < 0) {
-		// Inside the media
-		normalBis *= -1;
-		cosIncidenceAngle *= -1;
-		refractiveIndex1 = this->refractiveIndex;
-		insideMedia = true;
-	}
-	else {
-		refractiveIndex2 = this->refractiveIndex;
-	}
+    double cosIncidenceAngle = -dotProd(normalBis, previousRayDirection);
+    if (cosIncidenceAngle < 0) {
+        // Inside the media
+        normalBis *= -1;
+        cosIncidenceAngle *= -1;
+        refractiveIndex1 = this->refractiveIndex;
+        insideMedia = true;
+    }
+    else {
+        refractiveIndex2 = this->refractiveIndex;
+    }
 
-	double refractiveQuotient = refractiveIndex1/refractiveIndex2;
+    double refractiveQuotient = refractiveIndex1/refractiveIndex2;
 
-	double cosRefractionAngleSquared = 1.0 - refractiveQuotient*refractiveQuotient*(1.0 - cosIncidenceAngle*cosIncidenceAngle);
+    double cosRefractionAngleSquared = 1.0 - refractiveQuotient*refractiveQuotient*(1.0 - cosIncidenceAngle*cosIncidenceAngle);
 
-	double reflectionProbNormal = pow((refractiveIndex1 - refractiveIndex2) / (refractiveIndex1 + refractiveIndex2), 2);  // Probability of reflection with normal incidence
-	double reflectionProb = reflectionProbNormal + (1.0 - reflectionProbNormal)*pow(1.0 - cosIncidenceAngle, 5.0);  // Schlick's approximation
+    double reflectionProbNormal = pow((refractiveIndex1 - refractiveIndex2) / (refractiveIndex1 + refractiveIndex2), 2);  // Probability of reflection with normal incidence
+    double reflectionProb = reflectionProbNormal + (1.0 - reflectionProbNormal)*pow(1.0 - cosIncidenceAngle, 5.0);  // Schlick's approximation
 
-	if (cosRefractionAngleSquared > 0 && (insideMedia ||  randomDouble() > reflectionProb))
-		// Refraction case
-		return previousRayDirection*refractiveQuotient + normalBis*(refractiveQuotient*cosIncidenceAngle - sqrt(cosRefractionAngleSquared));  // Casted into DoubleUnitVec3D => normalised
-	// Reflection case
-	return previousRayDirection + normalBis*cosIncidenceAngle*2;  // Casted into DoubleUnitVec3D => normalised / cosIncidenceAngle = -cos that is in SpecularMaterial (why + instead of -)
+    if (cosRefractionAngleSquared > 0 && (insideMedia ||  randomDouble() > reflectionProb))
+        // Refraction case
+        return previousRayDirection*refractiveQuotient + normalBis*(refractiveQuotient*cosIncidenceAngle - sqrt(cosRefractionAngleSquared));  // Casted into DoubleUnitVec3D => normalised
+    // Reflection case
+    return previousRayDirection + normalBis*cosIncidenceAngle*2;  // Casted into DoubleUnitVec3D => normalised / cosIncidenceAngle = -cos that is in SpecularMaterial (why + instead of -)
 }
 
 
 DoubleVec3D RefractiveMaterial::computeCurrentRadiance(const DoubleVec3D& recursiveRadiance, double angleNewDirectionNormal, bool nextEventEstimation /*= false*/) const {
-	return recursiveRadiance;
+    return recursiveRadiance;
 }
 
 
 bool RefractiveMaterial::worksWithNextEventEstimation() const {
-	return false;
+    return false;
 }
 
 
 std::ostream& RefractiveMaterial::getDescription(std::ostream& stream) const {
-	stream << "RefractiveMaterial / refractiveIndex = " << refractiveIndex;
-	return stream;
+    stream << "RefractiveMaterial / refractiveIndex = " << refractiveIndex;
+    return stream;
 }
 
 

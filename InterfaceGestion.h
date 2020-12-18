@@ -16,123 +16,123 @@ using json = nlohmann::json;
 #include <fbxsdk.h>
 
 /*!
-	\file InterfaceGestion.h
-	\brief Defines functions that are used when drawing the interface.
+    \file InterfaceGestion.h
+    \brief Defines functions that are used when drawing the interface.
 
-	\var MAX_LENGTH_STRING_FROM_USER
-	\brief Maximum length for a string the user can give.
+    \var MAX_LENGTH_STRING_FROM_USER
+    \brief Maximum length for a string the user can give.
 
-	\var PROMPT
-	\brief String that signal that the user can write a command.
+    \var PROMPT
+    \brief String that signal that the user can write a command.
 
-	\var STAR_SPLITTER
-	\brief A line of stars.
+    \var STAR_SPLITTER
+    \brief A line of stars.
 
-	\var DASH_SPLITTER
-	\brief A line of dashs.
+    \var DASH_SPLITTER
+    \brief A line of dashs.
 
-	\var INVALID_COMMAND
-	\brief String used when the command is invalid.
+    \var INVALID_COMMAND
+    \brief String used when the command is invalid.
 
-	\var PICTURE_EXTENSION
-	\brief File extension for pictures.
+    \var PICTURE_EXTENSION
+    \brief File extension for pictures.
 
-	\var FBX_EXTENSION
-	\brief File extension for FBX files.
+    \var FBX_EXTENSION
+    \brief File extension for FBX files.
 
-	\var PICTURE_SAVE_EXTENSION_JSON
-	\brief Custom file extension to save pictures.
+    \var PICTURE_SAVE_EXTENSION_JSON
+    \brief Custom file extension to save pictures.
 
-	\var OBJECTS_SAVE_EXTENSION
-	\brief Custom file extension to save objects groups.
+    \var OBJECTS_SAVE_EXTENSION
+    \brief Custom file extension to save objects groups.
 
-	\var PARAMETERS_SAVE_EXTENSION
-	\brief Custom file extension to save parameters.
+    \var PARAMETERS_SAVE_EXTENSION
+    \brief Custom file extension to save parameters.
 
-	\fn clearScreenPrintHeader()
-	\brief Clears the console and shows the header.
+    \fn clearScreenPrintHeader()
+    \brief Clears the console and shows the header.
 
-	\fn availableCommandsHeader()
-	\brief Prints a header before printing which commands are available.
+    \fn availableCommandsHeader()
+    \brief Prints a header before printing which commands are available.
 
-	\fn bool2string(bool b)
-	\brief Converts a boolean to string.
-	\param b The boolean that will be converted.
-	\return The boolean converted into a string.
+    \fn bool2string(bool b)
+    \brief Converts a boolean to string.
+    \param b The boolean that will be converted.
+    \return The boolean converted into a string.
 
-	\fn getCurrentTimeSeconds()
-	\brief Gives the number of seconds since 01/01/1970.
-	\return The time since 01/01/1970 in seconds.
+    \fn getCurrentTimeSeconds()
+    \brief Gives the number of seconds since 01/01/1970.
+    \return The time since 01/01/1970 in seconds.
 
-	\fn randomDouble()
-	\brief Computes a random double between 0 and 1
-	\return A random double between 0 and 1 generated following a uniform distrbution.
+    \fn randomDouble()
+    \brief Computes a random double between 0 and 1
+    \return A random double between 0 and 1 generated following a uniform distrbution.
 
-	\fn getStringFromUser(std::string question = "", std::string prompt = PROMPT)
-	\brief Gets a string from the user.
-	\param question The question that will be asked to the user.
-	\param prompt The prompt that will be used to show the user that he or she can write something.
-	\return The string the user gave.
+    \fn getStringFromUser(std::string question = "", std::string prompt = PROMPT)
+    \brief Gets a string from the user.
+    \param question The question that will be asked to the user.
+    \param prompt The prompt that will be used to show the user that he or she can write something.
+    \return The string the user gave.
 
-	\fn getLowerCaseCharFromUser(std::string question = "", std::string prompt = PROMPT)
-	\brief Gets a lowercase character from the user.
-	\details Uses the getStringFromUser() method and takes the first character of this string.
-	\param question The question that will be asked to the user.
-	\param prompt The prompt that will be used to show the user that he or she can write something.
-	\return The character the user gave.
-	\sa getStringFromUser()
+    \fn getLowerCaseCharFromUser(std::string question = "", std::string prompt = PROMPT)
+    \brief Gets a lowercase character from the user.
+    \details Uses the getStringFromUser() method and takes the first character of this string.
+    \param question The question that will be asked to the user.
+    \param prompt The prompt that will be used to show the user that he or she can write something.
+    \return The character the user gave.
+    \sa getStringFromUser()
 
-	\fn getIntFromUser(std::string question = "", std::string prompt = PROMPT)
-	\brief Gets an integer from the user.
-	\details Uses the getStringFromUser() method. Will continue to ask the question until the user gives a string that can be converted to an int.
-	\param question The question that will be asked to the user.
-	\param prompt The prompt that will be used to show the user that he or she can write something.
-	\return The integer the user gave.
-	\sa getStringFromUser()
+    \fn getIntFromUser(std::string question = "", std::string prompt = PROMPT)
+    \brief Gets an integer from the user.
+    \details Uses the getStringFromUser() method. Will continue to ask the question until the user gives a string that can be converted to an int.
+    \param question The question that will be asked to the user.
+    \param prompt The prompt that will be used to show the user that he or she can write something.
+    \return The integer the user gave.
+    \sa getStringFromUser()
 
-	\fn getUnsignedIntFromUser(std::string question = "", std::string prompt = PROMPT)
-	\brief Gets a positive integer from the user.
-	\details Uses the getIntFromUser() method. Will continue to ask the question until the user gives a positive integer.
-	\param question The question that will be asked to the user.
-	\param prompt The prompt that will be used to show the user that he or she can write something.
-	\return The postive integer the user gave.
-	\sa getIntFromUser()
+    \fn getUnsignedIntFromUser(std::string question = "", std::string prompt = PROMPT)
+    \brief Gets a positive integer from the user.
+    \details Uses the getIntFromUser() method. Will continue to ask the question until the user gives a positive integer.
+    \param question The question that will be asked to the user.
+    \param prompt The prompt that will be used to show the user that he or she can write something.
+    \return The postive integer the user gave.
+    \sa getIntFromUser()
 
-	\fn getDoubleFromUser(std::string question = "", std::string prompt = PROMPT)
-	\brief Gets a number from the user.
-	\details Uses the getStringFromUser() method. Will continue to ask the question until the user gives a string that can be converted to a double.
-	\param question The question that will be asked to the user.
-	\param prompt The prompt that will be used to show the user that he or she can write something.
-	\return The double the user gave.
-	\sa getStringFromUser()
+    \fn getDoubleFromUser(std::string question = "", std::string prompt = PROMPT)
+    \brief Gets a number from the user.
+    \details Uses the getStringFromUser() method. Will continue to ask the question until the user gives a string that can be converted to a double.
+    \param question The question that will be asked to the user.
+    \param prompt The prompt that will be used to show the user that he or she can write something.
+    \return The double the user gave.
+    \sa getStringFromUser()
 
-	\fn getPositiveDoubleFromUser(std::string question = "", std::string prompt = PROMPT)
-	\brief Gets a positive number from the user.
-	\details Uses the getDoubleFromUser() method. Will continue to ask the question until the user gives a positive double.
-	\param question The question that will be asked to the user.
-	\param prompt The prompt that will be used to show the user that he or she can write something.
-	\return The postive double the user gave.
-	\sa getDoubleFromUser()
+    \fn getPositiveDoubleFromUser(std::string question = "", std::string prompt = PROMPT)
+    \brief Gets a positive number from the user.
+    \details Uses the getDoubleFromUser() method. Will continue to ask the question until the user gives a positive double.
+    \param question The question that will be asked to the user.
+    \param prompt The prompt that will be used to show the user that he or she can write something.
+    \return The postive double the user gave.
+    \sa getDoubleFromUser()
 
-	\fn getBoolFromUser(std::string question = "", std::string prompt = PROMPT)
-	\brief Gets a boolean from the user.
-	\details Uses the getLowerCaseCharFromUser() method. Will continue to ask the question until the user gives a 't' or 'f'.
-	\param question The question that will be asked to the user.
-	\param prompt The prompt that will be used to show the user that he or she can write something.
-	\return The boolean the user gave.
-	\sa getLowerCaseCharFromUser()
+    \fn getBoolFromUser(std::string question = "", std::string prompt = PROMPT)
+    \brief Gets a boolean from the user.
+    \details Uses the getLowerCaseCharFromUser() method. Will continue to ask the question until the user gives a 't' or 'f'.
+    \param question The question that will be asked to the user.
+    \param prompt The prompt that will be used to show the user that he or she can write something.
+    \return The boolean the user gave.
+    \sa getLowerCaseCharFromUser()
 
-	\fn fileExists(std::string fileName)
-	\brief Verifies if the file exists.
-	\param fileName The path to the file.
-	\return True if the file exists, false else.
+    \fn fileExists(std::string fileName)
+    \brief Verifies if the file exists.
+    \param fileName The path to the file.
+    \return True if the file exists, false else.
 
-	\fn formatFileName(std::string fileName, std::string extension)
-	\brief Formats the name of the file the user gave and the extension we want.
-	\details For example, it will format "test.txt" into "test.txt" and "test" into "test.txt".
-	\param fileName The path to the file we want to format.
-	\param extension The file extension with which we want to format the file.
-	\return The formated file name.
+    \fn formatFileName(std::string fileName, std::string extension)
+    \brief Formats the name of the file the user gave and the extension we want.
+    \details For example, it will format "test.txt" into "test.txt" and "test" into "test.txt".
+    \param fileName The path to the file we want to format.
+    \param extension The file extension with which we want to format the file.
+    \return The formated file name.
 */
 
 // Constants

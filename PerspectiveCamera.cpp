@@ -6,7 +6,7 @@ PerspectiveCamera::PerspectiveCamera()
 
 PerspectiveCamera::PerspectiveCamera(unsigned int numberPixelsX, unsigned int numberPixelsY, DoubleVec3D origin /*= DoubleVec3D(0.0)*/, DoubleVec3D focal /*= DoubleVec3D(0, 0, -0.75)*/)
     : numberPixelsX(numberPixelsX), numberPixelsY(numberPixelsY), origin(origin), focal(focal) {
-	computeBases();
+    computeBases();
 }
 
 PerspectiveCamera::PerspectiveCamera(const PerspectiveCamera& camera)
@@ -31,20 +31,20 @@ void PerspectiveCamera::setFocal(DoubleVec3D focal) { this->focal = focal; compu
 
 // Other methods
 void PerspectiveCamera::computeBases() {
-	if (-DBL_EPSILON < focal.getX() && focal.getX() < DBL_EPSILON)
-		baseX = DoubleUnitVec3D(1, 0, 0);
-	else
-		baseX = DoubleUnitVec3D(-focal.getZ() / focal.getX(), 0, 1);
+    if (-DBL_EPSILON < focal.getX() && focal.getX() < DBL_EPSILON)
+        baseX = DoubleUnitVec3D(1, 0, 0);
+    else
+        baseX = DoubleUnitVec3D(-focal.getZ() / focal.getX(), 0, 1);
 
-	baseY = crossProd(baseX, focal);
+    baseY = crossProd(baseX, focal);
 
-	if (baseY.getY() < 0) {
-		baseX = -baseX;
-		baseY = -baseY;
-	}
+    if (baseY.getY() < 0) {
+        baseX = -baseX;
+        baseY = -baseY;
+    }
 }
 
 Ray PerspectiveCamera::getRayGoingThrough(double pixelX, double pixelY) const {
-	DoubleUnitVec3D rayDirection = 1.0/numberPixelsX*((pixelX - numberPixelsX/2)*baseX - (pixelY - numberPixelsY/2)*baseY) + focal;
-	return Ray(origin, rayDirection);
+    DoubleUnitVec3D rayDirection = 1.0/numberPixelsX*((pixelX - numberPixelsX/2)*baseX - (pixelY - numberPixelsY/2)*baseY) + focal;
+    return Ray(origin, rayDirection);
 }
