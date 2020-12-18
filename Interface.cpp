@@ -41,12 +41,18 @@ void receiveAndExecuteGeneralCommands() {
 
     std::cout << std::endl;
     if (commandWasInvalid) {
-        commandWasInvalid = false;
         std::cout << INVALID_COMMAND << std::endl;
     }
     char command = getLowerCaseCharFromUser();
 
+    if (commandWasInvalid) {
+        // Reprint everything to remove the "invalid command"
+        printAll();
+        std::cout << std::endl << PROMPT << command << std::endl;
+        commandWasInvalid = false;
+    }
     std::cout << std::endl;
+
 
     switch (command) {
     case 'e': {
@@ -185,6 +191,7 @@ void executeParametersCommands(char command) {
         // Modify a parameter
         while (true) {
             int index = getIntFromUser("What is the index of the parameter you want to modify (positive integer) (-1 = cancel)");
+            std::cout << std::endl;
             switch (index) {
             case -1: return;
             case 0: camera.setNumberPixelsX(getUnsignedIntFromUser("What is the new camera width? (positive integer)")); return;
@@ -434,6 +441,15 @@ void executeObjectsCommands(char command) {
 }
 
 
+void printAll() {
+    clearScreenPrintHeader();
+    if (currentPage == Page::ParametersPage)
+        scene.displayParametersPage();
+    else
+        scene.displayObjectsPage();
+    displayCommands();
+}
+
 void initInterface() {
     std::cout << std::fixed;
     std::cout << std::setprecision(2);
@@ -442,13 +458,7 @@ void initInterface() {
     scene.defaultScene();
 
     while (true) {
-        clearScreenPrintHeader();
-        if (currentPage == Page::ParametersPage)
-            scene.displayParametersPage();
-        else
-            scene.displayObjectsPage();
-        displayCommands();
-
+        printAll();
         receiveAndExecuteGeneralCommands();
     }
 }

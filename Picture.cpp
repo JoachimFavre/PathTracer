@@ -78,30 +78,40 @@ void Picture::writeToFile(double middleGray, std::string fileName, unsigned int 
     system((".\\" + fileName).c_str());
 }
 
+void Picture::printAll() const {
+    clearScreenPrintHeader();
+
+    std::cout << "Picture" << std::endl << DASH_SPLITTER << std::endl;
+    std::cout << "Width: " << width << std::endl;
+    std::cout << "Height: " << height << std::endl;
+    std::cout << "Render time: " << renderTime << "s " << std::endl;
+    std::cout << std::endl;
+
+
+    availableCommandsHeader();
+    std::cout << "- b: leave this page" << std::endl;
+    std::cout << "- e: export this picture as a " << PICTURE_EXTENSION << " file" << std::endl;
+    std::cout << "- s: save this picture as a " << PICTURE_SAVE_EXTENSION_JSON << " file" << std::endl;
+}
+
 void Picture::modify() {
     bool commandWasInvalid = false;
     while (true) {
-        clearScreenPrintHeader();
-
-        std::cout << "Picture" << std::endl << DASH_SPLITTER << std::endl;
-        std::cout << "Width: " << width << std::endl;
-        std::cout << "Height: " << height << std::endl;
-        std::cout << "Render time: " << renderTime << "s " << std::endl;
+        printAll();
         std::cout << std::endl;
-        
-
-        availableCommandsHeader();
-        std::cout << "- b: leave this page" << std::endl;
-        std::cout << "- e: export this picture as a " << PICTURE_EXTENSION << " file" << std::endl;
-        std::cout << "- s: save this picture as a " << PICTURE_SAVE_EXTENSION_JSON << " file" << std::endl;
-        std::cout << std::endl;
-
-
         if (commandWasInvalid) {
             std::cout << INVALID_COMMAND << std::endl;
+        }
+
+        char command = getLowerCaseCharFromUser();
+
+        if (commandWasInvalid) {
+            // Reprint everything to remove the "invalid command"
+            printAll();
+            std::cout << std::endl << PROMPT << command << std::endl;
             commandWasInvalid = false;
         }
-        char command = getLowerCaseCharFromUser();
+
         std::cout << std::endl;
 
         switch (command) {

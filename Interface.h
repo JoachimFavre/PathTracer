@@ -19,7 +19,7 @@
 
     \fn receiveAndExecuteGeneralCommands()
     \brief Receives and executes the general commands.
-    \details Asks a command to the user. If it is general to both main pages (exit, for example), executes it, else, calls executeParametersCommands() or exercuteObjectsCommands().
+    \details Asks a command to the user. If it is general to both main pages (exit, for example), executes it, else, calls executeParametersCommands() or executeObjectsCommands().
 
     \fn executeParametersCommands(char command)
     \brief Executes a command specific to the parameters page.
@@ -30,6 +30,11 @@
     \fn displayCommands()
     \brief Prints the available command.
     \details The available commands change depending on the active page.
+
+    \fn printAll()
+    \brief Prints the whole page.
+    \details Clears the page, prints the header, information and the available commands.
+    \sa clearScreenPrintHeader(), Scene::displayParametersPage(), Scene::displayObjectsPage(), displayCommands()
 
     \fn initInterface()
     \brief Starts the infinite loop of the interface.
@@ -56,6 +61,7 @@ void executeParametersCommands(char command);
 void executeObjectsCommands(char command);
 
 void displayCommands();
+void printAll();
 void initInterface();
 
 #endif

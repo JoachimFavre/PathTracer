@@ -78,6 +78,11 @@
     \param movingAverage The size of the moving average (see getColourMovingAverage()).
     \sa toneMapping(), getColourMovingAverage()
 
+    \fn Picture::printAll()
+    \brief Prints the whole page.
+    \details Clears the page, prints the header, information and the available commands.
+    \sa clearScreenPrintHeader()
+
     \fn Picture::modify()
     \brief Interactive modification of this picture.
     \details This is a page on its own. It allows the user to write the picture under different names, different middle-gray values and different moving average size.
@@ -135,6 +140,7 @@ public:
     void setRenderTime(double renderTime);
 
     void writeToFile(double middleGray, std::string fileName, unsigned int movingAverage = 0) const;
+    void printAll() const;
     void modify();
 };
 

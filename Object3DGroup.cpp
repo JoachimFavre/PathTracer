@@ -82,31 +82,40 @@ Object3DGroup Object3DGroup::create() {
     return Object3DGroup(name);
 }
 
+void Object3DGroup::printAll() const {
+    clearScreenPrintHeader();
+
+    std::cout << name << std::endl << DASH_SPLITTER << std::endl << std::endl;
+
+    for (int i = 0; i < objects.size(); i++) {
+        std::cout << i << ") " << *(objects[i]) << std::endl << std::endl;
+    }
+
+    availableCommandsHeader();
+    std::cout << "- a: add an object" << std::endl;
+    std::cout << "- b: go back to the objects page" << std::endl;
+    std::cout << "- d: delete one or all objects" << std::endl;
+    std::cout << "- m: modify one or all objects' material" << std::endl;
+    std::cout << "- n: change the name of this objects group" << std::endl;
+}
+
 void Object3DGroup::modify() {
     bool commandWasInvalid = false;
     while (true) {
-        clearScreenPrintHeader();
+        printAll();
 
-        std::cout << name << std::endl << DASH_SPLITTER << std::endl << std::endl;
-
-        for (int i = 0; i < objects.size(); i++) {
-            std::cout << i << ") " << *(objects[i]) << std::endl << std::endl;
-        }
-
-        availableCommandsHeader();
-        std::cout << "- a: add an object" << std::endl;
-        std::cout << "- b: go back to the objects page" << std::endl;
-        std::cout << "- d: delete one or all objects" << std::endl;
-        std::cout << "- m: modify one or all objects' material" << std::endl;
-        std::cout << "- n: change the name of this objects group" << std::endl;
         std::cout << std::endl;
-
-
         if (commandWasInvalid) {
             std::cout << INVALID_COMMAND << std::endl;
-            commandWasInvalid = false;
         }
         char command = getLowerCaseCharFromUser();
+
+        if (commandWasInvalid) {
+            // Reprint everything to remove the "invalid command"
+            printAll();
+            std::cout << std::endl << PROMPT << command << std::endl;
+            commandWasInvalid = false;
+        }
         std::cout << std::endl;
 
         switch (command) {

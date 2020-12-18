@@ -82,6 +82,11 @@
     \brief Interactive creation of an objects group.
     \return The interactively created objects group.
 
+    \fn Object3DGroup::printAll()
+    \brief Prints the whole page.
+    \details Clears the page, prints the header, information and the available commands.
+    \sa clearScreenPrintHeader()
+
     \fn Object3DGroup::modify()
     \brief Interactive modification of this objects group.
     \details This is a page on its own.
@@ -137,6 +142,7 @@ public:
     Object3DGroup& operator=(const Object3DGroup& otherGroup);
 
     static Object3DGroup create();
+    void printAll() const;
     void modify();
 };
 
