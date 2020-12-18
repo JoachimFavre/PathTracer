@@ -184,9 +184,10 @@ void executeParametersCommands(char command) {
     case 'm': {
         // Modify a parameter
         while (true) {
-            unsigned int index = getUnsignedIntFromUser("What is the index of the parameter you want to modify (positive integer)");
+            int index = getIntFromUser("What is the index of the parameter you want to modify (positive integer) (-1 = cancel)");
             std::cout << std::endl;
             switch (index) {
+            case -1: return;
             case 0: camera.setNumberPixelsX(getUnsignedIntFromUser("What is the new camera width? (positive integer)")); return;
             case 1: camera.setNumberPixelsY(getUnsignedIntFromUser("What is the new camera height? (positive integer)")); return;
             case 2: camera.setOrigin(getXYZDoubleVec3DFromUser("What is the new camera origin?")); return;
@@ -198,7 +199,7 @@ void executeParametersCommands(char command) {
             case 8: scene.setRussianRoulette(getBoolFromUser("Will the russian roulette path termination algorithm be used? (True=T=true=t / False=F=false=f)")); return;
             case 9: scene.setRrStopProbability(getPositiveDoubleFromUser("What is the new stop probability for the russian roulette path termination algorithm? (positive number in [0, 1])")); return;
             case 10: scene.setNextEventEstimation(getBoolFromUser("Will the next event estimation algorithm be used? (True=T=true=t / False=F=false=f)")); return;
-            default: std::cout << "This index is too big!" << std::endl;
+            default: std::cout << "This index is invalid!" << std::endl;
             }
         }
     }
@@ -384,14 +385,17 @@ void executeObjectsCommands(char command) {
     case 'm': {
         if (objectGroups.size() >= 1) {
             while (true) {
-                unsigned int index = getUnsignedIntFromUser("What is the index of the objects groups you want to modify (positive integer)");
+                int index = getIntFromUser("What is the index of the objects groups you want to modify (positive integer) (-1 = cancel)");
+
+                if (index == -1)
+                    return;
 
                 if (index < objectGroups.size()) {
                     objectGroups[index].modify();
                     return;
                 }
                 else {
-                    std::cout << "This index is too big!" << std::endl << std::endl;
+                    std::cout << "This index is invalid!" << std::endl << std::endl;
                 }
             }
         }
