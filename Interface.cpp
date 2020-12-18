@@ -285,6 +285,7 @@ void executeObjectsCommands(char command) {
         }
         else
             commandWasInvalid = true;
+        return;
     }
     case 'g': {
         if (objectGroups.size() >= 2) {
@@ -322,6 +323,7 @@ void executeObjectsCommands(char command) {
         }
         else
             commandWasInvalid = true;
+        return;
     }
     case 'i': {
         std::string fileName = getStringFromUser("What is the name of the " + FBX_EXTENSION + " file?");
@@ -395,6 +397,7 @@ void executeObjectsCommands(char command) {
         }
         else
             commandWasInvalid = true;
+        return;
     }
     case 's': {
         std::string fileName = getStringFromUser("What is the name of the " + OBJECTS_SAVE_EXTENSION + " file in which the object groups will be saved?");
