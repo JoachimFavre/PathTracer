@@ -117,6 +117,9 @@
 
 class Object3DGroup {
 private:
+    static const unsigned int MIN_OBJECTS_HIDE = 20;
+    bool hide = false;
+
     std::string name;
     std::vector<Object3D*> objects;
     DoubleVec3D center;

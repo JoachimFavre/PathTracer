@@ -87,19 +87,26 @@ void Object3DGroup::printAll() const {
 
     std::cout << name << std::endl << DASH_SPLITTER << std::endl << std::endl;
 
-    for (int i = 0; i < objects.size(); i++) {
-        std::cout << i << ") " << *(objects[i]) << std::endl << std::endl;
+    if (hide) {
+        std::cout << objects.size() << " objects are hidden." << std::endl << "Press h to show them." << std::endl << std::endl;
+    } else {
+        for (int i = 0; i < objects.size(); i++) {
+            std::cout << i << ") " << *(objects[i]) << std::endl << std::endl;
+        }
     }
 
     availableCommandsHeader();
     std::cout << "- a: add an object" << std::endl;
     std::cout << "- b: go back to the objects page" << std::endl;
     std::cout << "- d: delete one or all objects" << std::endl;
+    std::cout << "- h: " << (hide ? "show" : "hide") << " all objects" << std::endl;
     std::cout << "- m: modify one or all objects' material" << std::endl;
     std::cout << "- n: change the name of this objects group" << std::endl;
 }
 
+
 void Object3DGroup::modify() {
+    hide = objects.size() >= MIN_OBJECTS_HIDE;
     bool commandWasInvalid = false;
     while (true) {
         printAll();
@@ -150,6 +157,13 @@ void Object3DGroup::modify() {
             }
             else
                 commandWasInvalid = true;
+            break;
+        }
+        case 'h': {
+            if (hide && objects.size() >= MIN_OBJECTS_HIDE)
+                if (!getBoolFromUser("There are more than " + std::to_string(MIN_OBJECTS_HIDE) + " hidden objects, are you sure you want to show them? (True=T=true=t / False=F=false=f)"))
+                    break;
+            hide = !hide;
             break;
         }
         case 'm': {
