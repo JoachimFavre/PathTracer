@@ -135,7 +135,7 @@ void Object3DGroup::modify() {
         case 'd': {
             if (objects.size() >= 1) {
                 while (true) {
-                    int index = getIntFromUser("What is the index of the objects groups you want to delete? (-1 = cancel / -2 = delete all)");
+                    int index = getIntFromUser("What is the index of the object you want to delete? (-1 = cancel / -2 = delete all)");
                     if (index == -1)
                         break;
                     if (index == -2) {
