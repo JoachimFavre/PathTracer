@@ -70,10 +70,10 @@
     \details This method can be used if the time was not set when the picture was instanciated (which is very likely to happen).
     \param renderTime The new time this picture took to be computed.
 
-    \fn Picture::writeToFile(double middleGray, std::string fileName, unsigned int movingAverage = 0)
+    \fn Picture::writeToFile(double middleGrey, std::string fileName, unsigned int movingAverage = 0)
     \brief Writes this as a picture file.
     \details Uses the CImg library.
-    \param middleGray The middle-gray value that will be used for the toneMapping() function.
+    \param middleGrey The middle-grey value that will be used for the toneMapping() function.
     \param fileName The path to the file where we want to write this picture. If it is "-", it will give a very nice bugged result. This could be easily fixed, but it is very fun and purely nondestructive.
     \param movingAverage The size of the moving average (see getColourMovingAverage()).
     \sa toneMapping(), getColourMovingAverage()
@@ -85,14 +85,14 @@
 
     \fn Picture::modify()
     \brief Interactive modification of this picture.
-    \details This is a page on its own. It allows the user to write the picture under different names, different middle-gray values and different moving average size.
+    \details This is a page on its own. It allows the user to write the picture under different names, different middle-grey values and different moving average size.
     \sa writeToFile(), toneMapping(), getColourMovingAverage()
 
-    \fn toneMapping(const DoubleVec3D& radiance, double middleGray)
+    \fn toneMapping(const DoubleVec3D& radiance, double middleGrey)
     \brief Converts a radiance to a colour value.
     \details This is a very naive tone mapping. See my TM's report for more explanations.
     \param radiance The radiance we want to convert.
-    \param middleGray The radiance value that corresponds to the middle-gray.
+    \param middleGrey The radiance value that corresponds to the middle-grey.
     \return The colour that has been computed. Each part of the colour (red, green or blue) range from 0 to MAX_COLOUR_VALUE.
 
     \fn getColourMovingAverage(const std::vector<std::vector<DoubleVec3D>>& pixelValues, unsigned int pixelX, unsigned int pixelY, unsigned int size)
@@ -139,12 +139,12 @@ public:
     void setValuePix(unsigned int x, unsigned int y, DoubleVec3D value);
     void setRenderTime(double renderTime);
 
-    void writeToFile(double middleGray, std::string fileName, unsigned int movingAverage = 0) const;
+    void writeToFile(double middleGrey, std::string fileName, unsigned int movingAverage = 0) const;
     void printAll() const;
     void modify();
 };
 
-DoubleVec3D toneMapping(const DoubleVec3D& radiance, double middleGray);
+DoubleVec3D toneMapping(const DoubleVec3D& radiance, double middleGrey);
 DoubleVec3D getColourMovingAverage(const std::vector<std::vector<DoubleVec3D>>& pixelValues, unsigned int pixelX, unsigned int pixelY, unsigned int size);
 
 void to_json(json& j, const Picture& picture);

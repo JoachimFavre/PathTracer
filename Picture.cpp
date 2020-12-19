@@ -44,14 +44,14 @@ void Picture::setValuePix(unsigned int x, unsigned int y, DoubleVec3D value) { p
 void Picture::setRenderTime(double renderTime) { this->renderTime = renderTime; }
 
 // Other methods
-void Picture::writeToFile(double middleGray, std::string fileName, unsigned int movingAverageSize /*= 0*/) const {
+void Picture::writeToFile(double middleGrey, std::string fileName, unsigned int movingAverageSize /*= 0*/) const {
     double writingBeginningTime = getCurrentTimeSeconds();
 
     std::vector<std::vector<DoubleVec3D>> pixelValues;
     for (unsigned int pixelX = 0; pixelX < width; pixelX++) {
         std::vector<DoubleVec3D> column;
         for (unsigned int pixelY = 0; pixelY < height; pixelY++) {
-            column.push_back(toneMapping(pixels[pixelX][pixelY], middleGray));
+            column.push_back(toneMapping(pixels[pixelX][pixelY], middleGrey));
         }
         pixelValues.push_back(column);
     }
@@ -74,7 +74,7 @@ void Picture::writeToFile(double middleGray, std::string fileName, unsigned int 
     remove("temp.ppm");
     image.save(fileName.c_str());
 
-    std::cout << "The picture was successfully written in " << fileName << " file with " << middleGray << " being the middle gray in " << getCurrentTimeSeconds() - writingBeginningTime << " seconds!" << std::endl;
+    std::cout << "The picture was successfully written in " << fileName << " file with " << middleGrey << " being the middle-grey in " << getCurrentTimeSeconds() - writingBeginningTime << " seconds!" << std::endl;
     system((".\\" + fileName).c_str());
 }
 
@@ -128,11 +128,11 @@ void Picture::modify() {
                 std::cout << std::endl;
             }
 
-            double middleGray = getPositiveDoubleFromUser("What radiance will be the middle-gray? (try 10 if you have no idea) (positive number)");
+            double middleGrey = getPositiveDoubleFromUser("What radiance will be the middle-grey? (try 10 if you have no idea) (positive number)");
             std::cout << std::endl;
             unsigned int movingAverageSize = getUnsignedIntFromUser("What is the size of the moving average you want to use? (0 for no moving average) (positive integer)");
 
-            writeToFile(middleGray, fileName, movingAverageSize);
+            writeToFile(middleGrey, fileName, movingAverageSize);
 
             std::cout << std::endl;
             getStringFromUser("Press enter to continue.");
@@ -162,11 +162,11 @@ void Picture::modify() {
 
 
 // Other functions
-DoubleVec3D toneMapping(const DoubleVec3D& radiance, double middleGray) {
+DoubleVec3D toneMapping(const DoubleVec3D& radiance, double middleGrey) {
     // Very naive tone mapping
-    double x = Picture::MAX_COLOUR_VALUE*radiance.getX() / (middleGray + radiance.getX());
-    double y = Picture::MAX_COLOUR_VALUE*radiance.getY() / (middleGray + radiance.getY());
-    double z = Picture::MAX_COLOUR_VALUE*radiance.getZ() / (middleGray + radiance.getZ());
+    double x = Picture::MAX_COLOUR_VALUE*radiance.getX() / (middleGrey + radiance.getX());
+    double y = Picture::MAX_COLOUR_VALUE*radiance.getY() / (middleGrey + radiance.getY());
+    double z = Picture::MAX_COLOUR_VALUE*radiance.getZ() / (middleGrey + radiance.getZ());
 
     return DoubleVec3D(x, y, z);
 }
