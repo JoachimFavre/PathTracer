@@ -78,6 +78,23 @@ DoubleVec3D Triangle::getRandomPoint() const {
     return (1 - rand1)*vertex1 + rand1*(1 - rand2)*vertex2 + rand1*rand2*vertex3;
 }
 
+
+DoubleVec3D Triangle::getMinCoord() const {
+    double minX = std::min(vertex1.getX(), std::min(vertex2.getX(), vertex3.getX()));
+    double minY = std::min(vertex1.getY(), std::min(vertex2.getY(), vertex3.getY()));
+    double minZ = std::min(vertex1.getZ(), std::min(vertex2.getZ(), vertex3.getZ()));
+
+    return DoubleVec3D(minX, minY, minZ);
+}
+
+DoubleVec3D Triangle::getMaxCoord() const {
+    double maxX = std::max(vertex1.getX(), std::max(vertex2.getX(), vertex3.getX()));
+    double maxY = std::max(vertex1.getY(), std::max(vertex2.getY(), vertex3.getY()));
+    double maxZ = std::max(vertex1.getZ(), std::max(vertex2.getZ(), vertex3.getZ()));
+
+    return DoubleVec3D(maxX, maxY, maxZ);
+}
+
 std::ostream& Triangle::getDescription(std::ostream& stream) const {
     stream << "Triangle / Vertex1 = " << vertex1 << " / Vertex2 = " << vertex2 << " / Vertex3 = " << vertex3;
     return stream;

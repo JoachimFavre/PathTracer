@@ -67,6 +67,14 @@ DoubleVec3D Sphere::getRandomPoint() const {
     return center + radius*point;
 }
 
+DoubleVec3D Sphere::getMinCoord() const {
+    return center - DoubleVec3D(radius);
+}
+
+DoubleVec3D Sphere::getMaxCoord() const {
+    return center + DoubleVec3D(radius);
+}
+
 std::ostream& Sphere::getDescription(std::ostream& stream) const {
     stream << "Sphere / Center = " << center << " / Radius = " << radius;
     return stream;

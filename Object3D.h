@@ -128,6 +128,8 @@ public:
     virtual DoubleVec3D getRandomPoint() const = 0;
     virtual std::ostream& getDescription(std::ostream& stream) const = 0;
     virtual DoubleVec3D getCenter() const = 0;
+    virtual DoubleVec3D getMinCoord() const = 0;
+    virtual DoubleVec3D getMaxCoord() const = 0;
 
     virtual std::string getType() const = 0;
     virtual json getLocationJson() const = 0;

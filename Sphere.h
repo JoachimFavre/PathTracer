@@ -102,6 +102,8 @@ public:
     double closestIntersection(const Ray& ray) const;
     DoubleUnitVec3D getNormal(const DoubleVec3D& point) const;
     DoubleVec3D getRandomPoint() const;
+    DoubleVec3D getMinCoord() const;
+    DoubleVec3D getMaxCoord() const;
 
     std::ostream& getDescription(std::ostream& stream) const;
     std::string getType() const;
