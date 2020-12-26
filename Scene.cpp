@@ -299,7 +299,10 @@ Picture* Scene::render() {
     std::cout << STAR_SPLITTER << std::endl;
     std::cout << std::endl;
 
+    std::cout << "Creating a k-d tree...";
+    double KDTreeBeginningTime = getCurrentTimeSeconds();
     KDTreeRoot = new KDTreeNode(objects, 10, 20);
+    std::cout << "\rCreated a k-d tree in " << getCurrentTimeSeconds() - KDTreeBeginningTime << "s" << std::endl;
     /*
     json jsonOutput = *KDTreeRoot;
     std::ofstream file;
