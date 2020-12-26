@@ -4,6 +4,7 @@
 #include <omp.h>
 
 #include "DoubleMatrix33.h"
+#include "KDTreeNode.h"
 #include "Object3DGroup.h"
 #include "PerspectiveCamera.h"
 #include "Picture.h"
@@ -213,6 +214,7 @@ private:
     bool nextEventEstimation = true;
     unsigned int numberThreads = 8;
 
+    Intersection bruteForceIntersection(const Ray& ray) const;
     DoubleVec3D traceRay(const Ray& ray, double usedNextEventEstimation = false, unsigned int bounces = 0) const;
     std::string getCurrentIndex(int currentIndex, bool displayIndex) const;
 

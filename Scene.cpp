@@ -191,6 +191,19 @@ bool Scene::importFBX(const char* filePath, Material* material, std::string name
 
 
 // Private method
+Intersection Scene::bruteForceIntersection(const Ray& ray) const {
+    double smallestPositiveDistance = INFINITY;  // Has to be strictly positive -> we don't want it to intersect with same object
+    Object3D* closestObject = nullptr;
+    for (Object3D* object : objects) {
+        double distance = object->closestIntersection(ray);
+        if (distance > 0.00001 && distance < smallestPositiveDistance) {
+            smallestPositiveDistance = distance;
+            closestObject = object;
+        }
+    }
+    return Intersection(closestObject, smallestPositiveDistance);
+}
+
 DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= false*/, unsigned int bounces /*= 0*/) const {
 
     DoubleVec3D result(0.0);
@@ -204,43 +217,26 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
     }
 
     // Search for ray intersection
-    double smallestPositiveDistance = maxDepth + 1;  // Has to be strictly positive -> we don't want it to intersect with same object
-    Object3D* closestObject = nullptr;
-    for (Object3D* object : objects) {
-        double distance = object->closestIntersection(ray);
-        if (distance > 0.00001 && distance < smallestPositiveDistance) {
-            smallestPositiveDistance = distance;
-            closestObject = object;
-        }
-    }
+    Intersection intersection = bruteForceIntersection(ray);
 
-    if (smallestPositiveDistance > maxDepth)  // Something must be hit
+    if (intersection.object != nullptr)  // Something must be hit
         return result;
 
     // Rendering equation
-    Material* objectMaterial = closestObject->getMaterial();
-    DoubleVec3D intersection = ray.getOrigin() + smallestPositiveDistance * ray.getDirection();
-    DoubleUnitVec3D normal = closestObject->getNormal(intersection);
+    Material* objectMaterial = intersection.object->getMaterial();
+    DoubleVec3D intersectionPoint = ray.getOrigin() + intersection.distance * ray.getDirection();
+    DoubleUnitVec3D normal = intersection.object->getNormal(intersectionPoint);
 
     double neeFactor = 1.0;
     if (nextEventEstimation && objectMaterial->worksWithNextEventEstimation()) {
         neeFactor = 1.0/(1.0 + lamps.size());
         for (Object3D* lamp : lamps) {
-            DoubleVec3D intersectionToLamp = lamp->getRandomPoint() - intersection;
+            DoubleVec3D intersectionToLamp = lamp->getRandomPoint() - intersectionPoint;
             if (dotProd(normal, intersectionToLamp) > 0) {
                 double distanceLamp = length(intersectionToLamp);
-                Ray shadowRay(intersection, intersectionToLamp);  // intersectionToLamp goes in DoubleUnitVec3D constructor => normalised
-                bool lampIsVisible(true);
-                for (Object3D* object : objects) {
-                    if (object != lamp) {
-                        double distanceObject = object->closestIntersection(shadowRay);
-                        if (distanceObject > 0.00001 && distanceObject < distanceLamp) {
-                            lampIsVisible = false;
-                            break;
-                        }
-                    }
-                }
-                if (lampIsVisible) {
+                Ray shadowRay(intersectionPoint, intersectionToLamp);  // intersectionToLamp goes in DoubleUnitVec3D constructor => normalised
+                Intersection shadowRayIntersection = bruteForceIntersection(shadowRay);
+                if (shadowRayIntersection.object == lamp) {
                     intersectionToLamp /= distanceLamp;  // Normalised
                     result += rrFactor * neeFactor * objectMaterial->computeCurrentRadiance(lamp->getMaterial()->getEmittance(), dotProd(intersectionToLamp, normal), true)
                               / distanceLamp / distanceLamp / lamp->getArea();
@@ -254,7 +250,7 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
         result += rrFactor * objectMaterial->getEmittance();
 
     DoubleUnitVec3D newDirection = objectMaterial->getNewDirection(ray, normal);
-    DoubleVec3D recursiveRadiance = traceRay(Ray(intersection, newDirection), nextEventEstimation && objectMaterial->worksWithNextEventEstimation(), bounces + 1);
+    DoubleVec3D recursiveRadiance = traceRay(Ray(intersectionPoint, newDirection), nextEventEstimation && objectMaterial->worksWithNextEventEstimation(), bounces + 1);
     result += rrFactor * neeFactor * objectMaterial->computeCurrentRadiance(recursiveRadiance, dotProd(newDirection, normal));
 
     return result;
