@@ -20,11 +20,18 @@ public:
     KDTreeNode(std::vector<Object3D*> objects, DoubleVec3D minCoord, DoubleVec3D maxCoord, unsigned int maxObjectNumber, unsigned int maxDepth, KDTreeNode* parent = nullptr, unsigned int depth = 0);
     ~KDTreeNode();
 
-    bool intersects(Ray ray);
-    Object3D* getIntersection(Ray ray, KDTreeNode* ignore = nullptr);
+    bool intersects(const Ray& ray);
+    Object3D* getIntersection(const Ray& ray, KDTreeNode* ignore = nullptr);
 };
 
 DoubleVec3D getMinCoord(std::vector<Object3D*> objects);
 DoubleVec3D getMaxCoord(std::vector<Object3D*> objects);
+
+struct Intersection {
+    Object3D* object;
+    double distance;
+
+    Intersection(Object3D* object = nullptr, double distance = 0);
+};
 
 #endif

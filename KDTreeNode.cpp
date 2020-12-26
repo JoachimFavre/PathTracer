@@ -130,3 +130,8 @@ DoubleVec3D getMaxCoord(std::vector<Object3D*> objects) {
     }
     return DoubleVec3D(maxX, maxY, maxZ);
 }
+
+
+// Intersection struct
+Intersection::Intersection(Object3D* object /*= nullptr*/, double distance /*= 0*/) 
+    : object(object), distance(distance) {}
