@@ -1,14 +1,20 @@
 #include "KDTreeNode.h"
 
+
+// Intersection struct
+KDTreeNode::Intersection::Intersection(Object3D* object /*= nullptr*/, double distance /*= INFINITY*/, const KDTreeNode* kdTreeNode /*= nullptr*/)
+    : object(object), distance(distance), kdTreeNode(kdTreeNode) {}
+
+
 // Constructors and destructors
 KDTreeNode::KDTreeNode() 
     : depth(0), minCoord(0.0), maxCoord(0.0) {}
 
 KDTreeNode::KDTreeNode(std::vector<Object3D*> objects, unsigned int maxObjectNumber, unsigned int maxDepth, KDTreeNode* parent /*= nullptr*/, unsigned int depth /*= 0*/) 
-    : KDTreeNode(objects, getMinCoord(objects), getMaxCoord(objects), maxObjectNumber, maxDepth, parent, depth) {}
+    : KDTreeNode(objects, getMinPoint(objects), getMaxPoint(objects), maxObjectNumber, maxDepth, parent, depth) {}
 
 KDTreeNode::KDTreeNode(std::vector<Object3D*> objects, DoubleVec3D minCoord, DoubleVec3D maxCoord, unsigned int maxObjectNumber, unsigned int maxDepth, KDTreeNode* parent /*= nullptr*/, unsigned int depth /*= 0*/) 
-    : objects(objects), minCoord(minCoord), maxCoord(maxCoord), depth(depth) {
+    : objects(objects), minCoord(minCoord), maxCoord(maxCoord), parent(parent), depth(depth) {
 
     // Recursion
     if (objects.size() > maxObjectNumber && depth < maxDepth) {
@@ -37,6 +43,7 @@ KDTreeNode::KDTreeNode(std::vector<Object3D*> objects, DoubleVec3D minCoord, Dou
         else
             cut = (centers[(centersSize - 1) / 2] + centers[(centersSize + 1) / 2]) / 2;
 
+        // Compute min/max coordinates for children
         DoubleVec3D maxCoordChildSmaller(maxCoord);
         DoubleVec3D minCoordChildGreater(minCoord);
 
@@ -85,7 +92,6 @@ KDTreeNode::KDTreeNode(std::vector<Object3D*> objects, DoubleVec3D minCoord, Dou
         childSmaller = new KDTreeNode(objectsChildSmaller, minCoord, maxCoordChildSmaller, maxObjectNumber, maxDepth, this, depth + 1);
         childGreater = new KDTreeNode(objectsChildGreater, minCoordChildGreater, maxCoord, maxObjectNumber, maxDepth, this, depth + 1);
     }
-
 }
 
 KDTreeNode::~KDTreeNode() {
@@ -94,8 +100,176 @@ KDTreeNode::~KDTreeNode() {
 }
 
 
+// Getters
+unsigned int KDTreeNode::getDepth() const { return depth; }
+DoubleVec3D KDTreeNode::getMinCoord() const { return minCoord; }
+DoubleVec3D KDTreeNode::getMaxCoord() const { return maxCoord; }
+std::vector<Object3D*> KDTreeNode::getObjects() const { return objects; }
+KDTreeNode* KDTreeNode::getParent() const { return parent; }
+KDTreeNode* KDTreeNode::getChildSmaller() const { return childSmaller; }
+KDTreeNode* KDTreeNode::getChildGreater() const { return childGreater; }
+
+// Methods
+double KDTreeNode::intersectionDistance(const Ray& ray) const {
+    DoubleVec3D rayOrigin = ray.getOrigin();
+    DoubleVec3D rayDirection = ray.getDirection();
+    double smallestPositiveDistance = INFINITY;
+
+    double distance;
+    DoubleVec3D intersectionPoint;
+
+    if (rayDirection.getX() > DBL_EPSILON || rayDirection.getX() < -DBL_EPSILON) {  // not parallel with x-planes
+        // Min plane
+        distance = (minCoord.getX() - rayOrigin.getX()) / rayDirection.getX();  // x0 + d*a = k <=> d = (k - x0)/a
+        intersectionPoint = rayOrigin + rayDirection*distance;
+        if (minCoord.getY() <= intersectionPoint.getY() && intersectionPoint.getY() <= maxCoord.getY())
+            if (minCoord.getZ() <= intersectionPoint.getZ() && intersectionPoint.getZ() <= maxCoord.getZ())
+                if (distance < smallestPositiveDistance && distance > 0.00001)
+                    smallestPositiveDistance = distance;
+
+        // Max plane
+        distance = (maxCoord.getX() - rayOrigin.getX()) / rayDirection.getX();
+        intersectionPoint = rayOrigin + rayDirection * distance;
+        if (minCoord.getY() <= intersectionPoint.getY() && intersectionPoint.getY() <= maxCoord.getY())
+            if (minCoord.getZ() <= intersectionPoint.getZ() && intersectionPoint.getZ() <= maxCoord.getZ())
+                if (distance < smallestPositiveDistance && distance > 0.00001)
+                    smallestPositiveDistance = distance;
+    }
+    if (rayDirection.getY() > DBL_EPSILON || rayDirection.getY() < -DBL_EPSILON) {  // not parallel with y-planes
+        // Min plane
+        distance = (minCoord.getY() - rayOrigin.getY()) / rayDirection.getY();
+        intersectionPoint = rayOrigin + rayDirection * distance;
+        if (minCoord.getX() <= intersectionPoint.getX() && intersectionPoint.getX() <= maxCoord.getX())
+            if (minCoord.getZ() <= intersectionPoint.getZ() && intersectionPoint.getZ() <= maxCoord.getZ())
+                if (distance < smallestPositiveDistance && distance > 0.00001)
+                    smallestPositiveDistance = distance;
+
+        // Max plane
+        distance = (maxCoord.getY() - rayOrigin.getY()) / rayDirection.getY();
+        intersectionPoint = rayOrigin + rayDirection * distance;
+        if (minCoord.getX() <= intersectionPoint.getX() && intersectionPoint.getX() <= maxCoord.getX())
+            if (minCoord.getZ() <= intersectionPoint.getZ() && intersectionPoint.getZ() <= maxCoord.getZ())
+                if (distance < smallestPositiveDistance && distance > 0.00001)
+                    smallestPositiveDistance = distance;
+    }
+    if (rayDirection.getZ() > DBL_EPSILON || rayDirection.getZ() < -DBL_EPSILON) {  // not parallel with z-planes
+        // Min plane
+        distance = (minCoord.getZ() - rayOrigin.getZ()) / rayDirection.getZ();
+        intersectionPoint = rayOrigin + rayDirection * distance;
+        if (minCoord.getX() <= intersectionPoint.getX() && intersectionPoint.getX() <= maxCoord.getX())
+            if (minCoord.getY() <= intersectionPoint.getY() && intersectionPoint.getY() <= maxCoord.getY())
+                if (distance < smallestPositiveDistance && distance > 0.00001)
+                    smallestPositiveDistance = distance;
+
+        distance = (maxCoord.getZ() - rayOrigin.getZ()) / rayDirection.getZ();
+        intersectionPoint = rayOrigin + rayDirection * distance;
+        if (minCoord.getX() <= intersectionPoint.getX() && intersectionPoint.getX() <= maxCoord.getX())
+            if (minCoord.getY() <= intersectionPoint.getY() && intersectionPoint.getY() <= maxCoord.getY())
+                if (distance < smallestPositiveDistance && distance > 0.00001)
+                    smallestPositiveDistance = distance;
+    }
+    return smallestPositiveDistance;
+}
+
+KDTreeNode::Intersection KDTreeNode::getIntersectionForward(const Ray& ray) const {
+    if (childSmaller != nullptr) {  // both children are nullptr at the same time
+        double distanceChildSmaller = childSmaller->intersectionDistance(ray);
+        double distanceChildGreater = childGreater->intersectionDistance(ray);
+        
+        if (distanceChildSmaller == INFINITY && distanceChildGreater == INFINITY)
+            return Intersection(nullptr, INFINITY, this);
+
+        if (distanceChildSmaller == INFINITY)
+            return childGreater->getIntersectionForward(ray);
+        if (distanceChildGreater == INFINITY)
+            return childSmaller->getIntersectionForward(ray);
+
+        /*
+        Intersection intersection1 = childSmaller->getIntersectionForward(ray);
+        Intersection intersection2 = childGreater->getIntersectionForward(ray);
+        Intersection trueIntersection;
+        if (intersection1.object != nullptr && intersection1.distance < intersection2.distance)
+            trueIntersection = intersection1;
+        else
+            trueIntersection = intersection2;
+
+        return trueIntersection
+        */
+
+        if (distanceChildGreater >= distanceChildSmaller - 0.00001 && distanceChildGreater <= distanceChildSmaller + 0.00001) {
+            Intersection intersection1 = childSmaller->getIntersectionForward(ray);
+            Intersection intersection2 = childGreater->getIntersectionForward(ray);
+            if (intersection1.object != nullptr && intersection1.distance < intersection2.distance)
+                return intersection1;
+            else
+                return intersection2;
+        }
+
+        if (distanceChildGreater < distanceChildSmaller) {
+            Intersection intersection = childGreater->getIntersectionForward(ray);
+            if (intersection.object != nullptr)
+                return intersection;
+            else
+                return childSmaller->getIntersectionForward(ray);
+        }
+
+        // distanceChildSmaller < distanceChildGreater  
+        Intersection intersection = childSmaller->getIntersectionForward(ray);
+        if (intersection.object != nullptr)
+            return intersection;
+        else
+            return childGreater->getIntersectionForward(ray);
+    }
+    else {
+        double smallestPositiveDistance = INFINITY;  // Has to be strictly positive -> we don't want it to intersect with same object
+        Object3D* closestObject = nullptr;
+        for (Object3D* object : objects) {
+            double distance = object->closestIntersection(ray);
+            if (distance > 0.00001 && distance < smallestPositiveDistance) {
+                smallestPositiveDistance = distance;
+                closestObject = object;
+            }
+        }
+        return Intersection(closestObject, smallestPositiveDistance, this);
+    }
+}
+
+KDTreeNode::Intersection KDTreeNode::getIntersectionBackward(const Ray& ray, const KDTreeNode* ignore /*= nullptr*/) const {
+    if (childSmaller == nullptr) {
+        Intersection intersection = getIntersectionForward(ray);
+        if (intersection.object != nullptr)
+            return intersection;
+
+        if (parent == nullptr)
+            return Intersection(nullptr, INFINITY, this);
+        else
+            return parent->getIntersectionBackward(ray, this);
+    }
+    // One of the children must be ignored
+    if (childSmaller == ignore) {
+        Intersection intersection = childGreater->getIntersectionForward(ray);
+        if(intersection.object == nullptr && parent != nullptr)
+            return parent->getIntersectionBackward(ray, this);
+        return intersection;
+    }
+    if (childGreater == ignore) {
+        Intersection intersection = childSmaller->getIntersectionForward(ray);
+        if (intersection.object == nullptr && parent != nullptr)
+            return parent->getIntersectionBackward(ray, this);
+        return intersection;
+    }
+
+    // No child must be ignored
+    Intersection intersection = getIntersectionForward(ray);
+    if (intersection.object != nullptr)
+        return intersection;
+    if (parent != nullptr)
+        return parent->getIntersectionBackward(ray, this);
+    return intersection;
+}
+
 // Functions
-DoubleVec3D getMinCoord(std::vector<Object3D*> objects) {
+DoubleVec3D getMinPoint(std::vector<Object3D*> objects) {
     double minX = INFINITY;
     double minY = INFINITY;
     double minZ = INFINITY;
@@ -113,7 +287,7 @@ DoubleVec3D getMinCoord(std::vector<Object3D*> objects) {
     return DoubleVec3D(minX, minY, minZ);
 }
 
-DoubleVec3D getMaxCoord(std::vector<Object3D*> objects) {
+DoubleVec3D getMaxPoint(std::vector<Object3D*> objects) {
     double maxX = -INFINITY;
     double maxY = -INFINITY;
     double maxZ = -INFINITY;
@@ -132,6 +306,29 @@ DoubleVec3D getMaxCoord(std::vector<Object3D*> objects) {
 }
 
 
-// Intersection struct
-Intersection::Intersection(Object3D* object /*= nullptr*/, double distance /*= 0*/) 
-    : object(object), distance(distance) {}
+// Json
+void to_json(json& j, const KDTreeNode& node) {
+    DoubleVec3D center;
+    for (Object3D* object : node.getObjects())
+        center += object->getCenter();
+    center /= node.getObjects().size();
+
+    json childrenJson;
+    if (node.getChildSmaller() == nullptr) {
+        std::vector<Object3D*> objects = node.getObjects();
+        json objectsJson;
+        for (Object3D* object : objects)
+            objectsJson.push_back(*object);
+        childrenJson = {"6) Objects", objectsJson};
+    }
+    else
+        childrenJson = { { "6) ChildSmaller", *(node.getChildSmaller()) },
+                         { "7) ChildGreater", *(node.getChildGreater()) } };
+    
+    j = json{ {"1) MinCoord", node.getMinCoord()},
+              {"2) MaxCoord", node.getMaxCoord()},
+              {"3) Depth", node.getDepth()},
+              {"4) ObjectsNumber", node.getObjects().size()},
+              {"5) Center", center},
+              childrenJson};
+}

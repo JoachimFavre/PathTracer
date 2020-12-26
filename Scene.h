@@ -203,6 +203,7 @@ private:
     std::vector<Object3DGroup> objectsGroups;
     std::vector<Object3D*> objects;
     std::vector<Object3D*> lamps;
+    KDTreeNode* KDTreeRoot;
 
     PerspectiveCamera camera;
     unsigned int samplePerPixel;
@@ -213,9 +214,10 @@ private:
     bool russianRoulette = true;
     bool nextEventEstimation = true;
     unsigned int numberThreads = 8;
+    bool kdTree = true;
 
-    Intersection bruteForceIntersection(const Ray& ray) const;
-    DoubleVec3D traceRay(const Ray& ray, double usedNextEventEstimation = false, unsigned int bounces = 0) const;
+    KDTreeNode::Intersection bruteForceIntersection(const Ray& ray) const;
+    DoubleVec3D traceRay(const Ray& ray, double usedNextEventEstimation = false, const KDTreeNode* lastNode = nullptr, unsigned int bounces = 0) const;
     std::string getCurrentIndex(int currentIndex, bool displayIndex) const;
 
 public:

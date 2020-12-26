@@ -191,7 +191,7 @@ bool Scene::importFBX(const char* filePath, Material* material, std::string name
 
 
 // Private method
-Intersection Scene::bruteForceIntersection(const Ray& ray) const {
+KDTreeNode::Intersection Scene::bruteForceIntersection(const Ray& ray) const {
     double smallestPositiveDistance = INFINITY;  // Has to be strictly positive -> we don't want it to intersect with same object
     Object3D* closestObject = nullptr;
     for (Object3D* object : objects) {
@@ -201,10 +201,10 @@ Intersection Scene::bruteForceIntersection(const Ray& ray) const {
             closestObject = object;
         }
     }
-    return Intersection(closestObject, smallestPositiveDistance);
+    return KDTreeNode::Intersection(closestObject, smallestPositiveDistance);
 }
 
-DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= false*/, unsigned int bounces /*= 0*/) const {
+DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= false*/, const KDTreeNode* lastNode /*= nullptr*/, unsigned int bounces /*= 0*/) const {
 
     DoubleVec3D result(0.0);
 
@@ -217,9 +217,13 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
     }
 
     // Search for ray intersection
-    Intersection intersection = bruteForceIntersection(ray);
+    KDTreeNode::Intersection intersection;
+    if (lastNode == nullptr)
+        intersection = KDTreeRoot->getIntersectionForward(ray);
+    else
+        intersection = lastNode->getIntersectionBackward(ray);
 
-    if (intersection.object != nullptr)  // Something must be hit
+    if (intersection.object == nullptr)  // Something must be hit
         return result;
 
     // Rendering equation
@@ -235,7 +239,13 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
             if (dotProd(normal, intersectionToLamp) > 0) {
                 double distanceLamp = length(intersectionToLamp);
                 Ray shadowRay(intersectionPoint, intersectionToLamp);  // intersectionToLamp goes in DoubleUnitVec3D constructor => normalised
-                Intersection shadowRayIntersection = bruteForceIntersection(shadowRay);
+
+                KDTreeNode::Intersection shadowRayIntersection;
+                if (lastNode == nullptr)
+                    shadowRayIntersection = KDTreeRoot->getIntersectionForward(shadowRay);
+                else
+                    shadowRayIntersection = lastNode->getIntersectionBackward(shadowRay, intersection.kdTreeNode);
+
                 if (shadowRayIntersection.object == lamp) {
                     intersectionToLamp /= distanceLamp;  // Normalised
                     result += rrFactor * neeFactor * objectMaterial->computeCurrentRadiance(lamp->getMaterial()->getEmittance(), dotProd(intersectionToLamp, normal), true)
@@ -250,7 +260,8 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
         result += rrFactor * objectMaterial->getEmittance();
 
     DoubleUnitVec3D newDirection = objectMaterial->getNewDirection(ray, normal);
-    DoubleVec3D recursiveRadiance = traceRay(Ray(intersectionPoint, newDirection), nextEventEstimation && objectMaterial->worksWithNextEventEstimation(), bounces + 1);
+
+    DoubleVec3D recursiveRadiance = traceRay(Ray(intersectionPoint, newDirection), nextEventEstimation && objectMaterial->worksWithNextEventEstimation(), intersection.kdTreeNode, bounces + 1);
     result += rrFactor * neeFactor * objectMaterial->computeCurrentRadiance(recursiveRadiance, dotProd(newDirection, normal));
 
     return result;
@@ -287,6 +298,15 @@ Picture* Scene::render() {
     std::cout << std::endl;
     std::cout << STAR_SPLITTER << std::endl;
     std::cout << std::endl;
+
+    KDTreeRoot = new KDTreeNode(objects, 10, 20);
+    /*
+    json jsonOutput = *KDTreeRoot;
+    std::ofstream file;
+    file.open("_tree.json");
+    file << std::setw(4) << jsonOutput << std::endl;
+    file.close();
+    */
 
     // Compute picture
     Picture* result = new Picture(camera.getNumberPixelsX(), camera.getNumberPixelsY());
