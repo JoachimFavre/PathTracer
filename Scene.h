@@ -21,17 +21,11 @@
     \class Scene
     \brief Stores objects groups and a camera for the render.
 
-    \fn Scene::Scene()
-    \brief Default constructor.
-    \details By default, samplePerPixel is set to 8, minBounces is set to 5, maxDepth is set to 10 and rrStopProbability is set to 0.1.
-
-    \fn Scene::Scene(PerspectiveCamera camera, unsigned int samplePerPixel, unsigned int minBounces, double maxDepth, double rrStopProbability)
+    \fn Scene::Scene(PerspectiveCamera camera = PerspectiveCamera(), unsigned int samplePerPixel = 8, unsigned int minBounces = 5)
     \brief Main constructor.
     \param camera The camera that will be used for the render.
     \param samplePerPixel The number of ray casted per pixel. Increasing it will give a higher quality, but at a cost of a linearly increasing time.
     \param minBounces The minimum number of bounces that each ray will do. It can be less if the ray does not intersect with any object.
-    \param maxDepth The maximum distance each ray can do between two bounces.
-    \param rrStopProbability The probability that the ray stops. See russian roulette path termination in my TM's report for further information.
 
     \fn Scene::Scene(const Scene& scene)
     \brief Copy constructor.
@@ -75,11 +69,6 @@
     \return The minimum number of bounces that will be used during the render.
     \sa Scene()
 
-    \fn Scene::getMaxDepth()
-    \brief Getter for the maximum depth.
-    \return The maximum depth that will be used during the render.
-    \sa Scene()
-
     \fn Scene::getRussianRoulette()
     \brief Getter for the russian roulette.
     \details See my TM's report for further information on this algorithm.
@@ -89,6 +78,7 @@
     \fn Scene::getRrStopProbability()
     \brief Getter for the russian roulette stop probability.
     \details Russian roulette stop probability that will be used during the render.
+    \return The russian roulette stop probability.
     \sa Scene(), getRussianRoulette()
 
     \fn Scene::getNextEventEstimation()
@@ -99,6 +89,24 @@
     \fn Scene::getNumberThreads()
     \brief Getter for the number of CPU threads.
     \return The number of threads that will be used on the CPU during the render.
+
+    \fn Scene::getKDTree()
+    \brief Getter for the k-d tree.
+    \details See my TM's report for further information on this data structure. 
+    \return Whether a k-d tree will be used during the render.
+    \sa Scene::getKDMaxObjectNumber(), Scene::getKDMaxDepth()
+
+    \fn Scene::getKDMaxObjectNumber()
+    \brief Getter for the maximum number of objects in a k-d tree branch.
+    \details One of the two recursion stop conditions, along with Scene::getKDMaxDepth(). If one of them is fulfilled, the k-d tree recursive creation stops. See my TM's report for further information on this data structure.
+    \return The maximum number of objects in a k-d tree branch.
+    \sa Scene::getKDTree(), Scene::getKDMaxDepth()
+    
+    \fn Scene::getKDMaxDepth()
+    \brief Getter for the maximum depth recursion of the k-d tree.
+    \details One of the two recursion stop conditions, along with Scene::getKDMaxObjectNumber(). If one of them is fulfilled, the k-d tree recursive creation stops. See my TM's report for further information on this data structure.
+    \return The maximum number of recursive steps of the k-d tree.
+    \sa Scene::getKDTree(), Scene::getKDMaxObjectNumber()
 
     \fn Scene::setObjectsGroups(std::vector<Object3DGroup> groups)
     \brief Setter for the objects groups.
@@ -116,11 +124,6 @@
     \fn Scene::setMinBounces(unsigned int minBounces)
     \brief Setter for the minimum number of bounces.
     \param minBounces The new minimum number of bounces that will be used during the render.
-    \sa Scene()
-
-    \fn Scene::setMaxDepth(double maxDepth)
-    \brief Setter for the maximum depth.
-    \param maxDepth The new maximum depth that will be used during the render.
     \sa Scene()
 
     \fn Scene::setRussianRoulette(bool russianRoulette)
@@ -149,6 +152,24 @@
     \fn Scene::setNumberThreads(unsigned int numberThreads)
     \brief Setter for the number of CPU threads.
     \param numberThreads The new number of threads that will be used on the CPU during the render.
+
+    \fn Scene::setKDTree(bool kdTree)
+    \brief Setter for the k-d tree.
+    \details See my TM's report for further information on this data structure.
+    \param kdTree Whether a k-d tree will be used during the render.
+    \sa Scene::setKDMaxObjectNumber(unsigned int kdMaxObjectNumber), Scene::setKDMaxDepth(unsigned int kdMaxDepth)
+
+    \fn Scene::setKDMaxObjectNumber(unsigned int kdMaxObjectNumber)
+    \brief Setter for the maximum number of objects in a k-d tree branch. 
+    \details One of the two recursion stop conditions, along with Scene::setKDMaxDepth(). If one of them is fulfilled, the k-d tree recursive creation stops. See my TM's report for further information on this data structure.
+    \param kdMaxObjectNumber The new maximum number of objects in a k-d tree branch.
+    \sa Scene::setKDTree(bool kdTree), Scene::setKDMaxDepth(unsigned int kdMaxDepth)
+
+    \fn Scene::setKDMaxDepth(unsigned int kdMaxDepth)
+    \brief Setter for the maximum depth recursion of the k-d tree.
+    \details One of the two recursion stop conditions, along with Scene::setKDMaxObjectNumber(). If one of them is fulfilled, the k-d tree recursive creation stops. See my TM's report for further information on this data structure.
+    \param kdMaxDepth The new maximum number of recursive steps of the k-d tree.
+    \sa Scene::setKDTree(bool kdTree), Scene::setKDMaxObjectNumber(unsigned int kdMaxObjectNumber)
 
     \fn Scene::addObjectGroup(const Object3DGroup& group)
     \brief Adds an objects group to the current ones.
