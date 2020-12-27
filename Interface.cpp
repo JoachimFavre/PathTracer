@@ -208,7 +208,7 @@ void executeParametersCommands(char command) {
             case 9: scene.setNextEventEstimation(getBoolFromUser("Will the next event estimation algorithm be used? (True=T=true=t / False=F=false=f)")); return;
             case 10: scene.setKDTree(getBoolFromUser("Will the a k-d tree be used ? (True = T = true = t / False = F = false = f)")); return;
             case 11: scene.setKDMaxDepth(getUnsignedIntFromUser("What is the new maximum k-d tree depth? (positive integer)")); return;
-            case 12: scene.setKDMaxObjectNumber(getUnsignedIntFromUser("What is the new maximum of objects contained in a k-d tree branch? (positive integer)")); return;
+            case 12: scene.setKDMaxObjectNumber(getUnsignedIntFromUser("What is the new maximum of objects contained in a k-d tree leaf? (positive integer)")); return;
             default: std::cout << "This index is invalid!" << std::endl << std::endl;
             }
         }

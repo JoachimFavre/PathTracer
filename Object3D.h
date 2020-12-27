@@ -77,6 +77,14 @@
     \brief Returns this object's center.
     \return The center of this object.
 
+    \fn Object3D::getMinCoord()
+    \brief Returns the minimum coordinate of a cuboid containing this object.
+    \return The minimum coordinate of a cuboid containing this object.
+
+    \fn Object3D::getMaxCoord()
+    \brief Returns the maximum coordinate of a cuboid containing this object.
+    \return The maximum coordinate of a cuboid containing this object.
+
     \fn Object3D::getType()
     \brief Returns this object type.
     \return Returns this object type ("Sphere", "Triangle", ...).

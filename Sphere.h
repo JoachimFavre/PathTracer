@@ -62,6 +62,16 @@
     \brief Computes a random point on the object.
     \return A random point on this object.
 
+    \fn Object3D::getMinCoord()
+    \brief Returns the minimum coordinate of a cuboid containing this object.
+    \details This is computed using the following formula: center - DoubleVec3D(radius).
+    \return The minimum coordinate of a cuboid containing this object.
+
+    \fn Object3D::getMaxCoord()
+    \brief Returns the maximum coordinate of a cuboid containing this object.
+    \details This is computed using the following formula: center + DoubleVec3D(radius).
+    \return The maximum coordinate of a cuboid containing this object.
+
     \fn Sphere::getDescription(std::ostream& stream)
     \brief Returns this object's description.
     \param stream The current stream.

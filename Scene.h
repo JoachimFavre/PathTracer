@@ -97,9 +97,9 @@
     \sa Scene::getKDMaxObjectNumber(), Scene::getKDMaxDepth()
 
     \fn Scene::getKDMaxObjectNumber()
-    \brief Getter for the maximum number of objects in a k-d tree branch.
+    \brief Getter for the maximum number of objects in a k-d tree leaf.
     \details One of the two recursion stop conditions, along with Scene::getKDMaxDepth(). If one of them is fulfilled, the k-d tree recursive creation stops. See my TM's report for further information on this data structure.
-    \return The maximum number of objects in a k-d tree branch.
+    \return The maximum number of objects in a k-d tree leaf.
     \sa Scene::getKDTree(), Scene::getKDMaxDepth()
     
     \fn Scene::getKDMaxDepth()
@@ -160,9 +160,9 @@
     \sa Scene::setKDMaxObjectNumber(unsigned int kdMaxObjectNumber), Scene::setKDMaxDepth(unsigned int kdMaxDepth)
 
     \fn Scene::setKDMaxObjectNumber(unsigned int kdMaxObjectNumber)
-    \brief Setter for the maximum number of objects in a k-d tree branch. 
+    \brief Setter for the maximum number of objects in a k-d tree leaf. 
     \details One of the two recursion stop conditions, along with Scene::setKDMaxDepth(). If one of them is fulfilled, the k-d tree recursive creation stops. See my TM's report for further information on this data structure.
-    \param kdMaxObjectNumber The new maximum number of objects in a k-d tree branch.
+    \param kdMaxObjectNumber The new maximum number of objects in a k-d tree leaf.
     \sa Scene::setKDTree(bool kdTree), Scene::setKDMaxDepth(unsigned int kdMaxDepth)
 
     \fn Scene::setKDMaxDepth(unsigned int kdMaxDepth)
