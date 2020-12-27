@@ -168,13 +168,15 @@ void executeParametersCommands(char command) {
             json jsonBasicParameters = jsonInput["BasicParameters"];
             scene.setSamplePerPixel(jsonBasicParameters["SamplePerPixel"].get<unsigned int>());
             scene.setMinBounces(jsonBasicParameters["MinBounces"].get<unsigned int>());
-            scene.setMaxDepth(jsonBasicParameters["MaxDepth"].get<double>());
 
             json jsonOptimisationParameters = jsonInput["OptimisationParameters"];
             scene.setNumberThreads(jsonOptimisationParameters["NumberThreads"].get<unsigned int>());
             scene.setRussianRoulette(jsonOptimisationParameters["RussianRoulette"].get<bool>());
             scene.setRrStopProbability(jsonOptimisationParameters["RrStopProbability"].get<double>());
             scene.setNextEventEstimation(jsonOptimisationParameters["NextEventEstimation"].get<bool>());
+            scene.setKDTree(jsonOptimisationParameters["KDTree"].get<bool>());
+            scene.setKDMaxDepth(jsonOptimisationParameters["KDMaxDepth"].get<unsigned int>());
+            scene.setKDMaxObjectNumber(jsonOptimisationParameters["KDMaxObjectNumber"].get<unsigned int>());
 
             std::cout << "Successfully loaded parameters from " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
         }
@@ -200,11 +202,13 @@ void executeParametersCommands(char command) {
             case 3: camera.setFocal(getXYZDoubleVec3DFromUser("What is the new camera focal?")); return;
             case 4: scene.setSamplePerPixel(getUnsignedIntFromUser("What is the new number of sample per pixel? (positive integer)")); return;
             case 5: scene.setMinBounces(getUnsignedIntFromUser("What is the new minimum number of ray bounces? (there can be less if nothing is hit) (positive integer)")); return;
-            case 6: scene.setMaxDepth(getPositiveDoubleFromUser("What is the new maximum depth? (positive number)")); return;
-            case 7: scene.setNumberThreads(getUnsignedIntFromUser("What is the new number of threads that will used during the rendering? (positive integer)")); return;
-            case 8: scene.setRussianRoulette(getBoolFromUser("Will the russian roulette path termination algorithm be used? (True=T=true=t / False=F=false=f)")); return;
-            case 9: scene.setRrStopProbability(getPositiveDoubleFromUser("What is the new stop probability for the russian roulette path termination algorithm? (positive number in [0, 1])")); return;
-            case 10: scene.setNextEventEstimation(getBoolFromUser("Will the next event estimation algorithm be used? (True=T=true=t / False=F=false=f)")); return;
+            case 6: scene.setNumberThreads(getUnsignedIntFromUser("What is the new number of threads that will used during the rendering? (positive integer)")); return;
+            case 7: scene.setRussianRoulette(getBoolFromUser("Will the russian roulette path termination algorithm be used? (True=T=true=t / False=F=false=f)")); return;
+            case 8: scene.setRrStopProbability(getPositiveDoubleFromUser("What is the new stop probability for the russian roulette path termination algorithm? (positive number in [0, 1])")); return;
+            case 9: scene.setNextEventEstimation(getBoolFromUser("Will the next event estimation algorithm be used? (True=T=true=t / False=F=false=f)")); return;
+            case 10: scene.setKDTree(getBoolFromUser("Will the a k-d tree be used ? (True = T = true = t / False = F = false = f)")); return;
+            case 11: scene.setKDMaxDepth(getUnsignedIntFromUser("What is the new maximum k-d tree depth? (positive integer)")); return;
+            case 12: scene.setKDMaxObjectNumber(getUnsignedIntFromUser("What is the new maximum of objects contained in a k-d tree branch? (positive integer)")); return;
             default: std::cout << "This index is invalid!" << std::endl << std::endl;
             }
         }
@@ -231,15 +235,17 @@ void executeParametersCommands(char command) {
             },
             {"BasicParameters", {
                 {"SamplePerPixel", scene.getSamplePerPixel()},
-                {"MinBounces", scene.getMinBounces()},
-                {"MaxDepth", scene.getMaxDepth()}
+                {"MinBounces", scene.getMinBounces()}
                 }
             },
             {"OptimisationParameters", {
                 {"NumberThreads", scene.getNumberThreads()},
                 {"RussianRoulette", scene.getRussianRoulette()},
                 {"RrStopProbability", scene.getRrStopProbability()},
-                {"NextEventEstimation", scene.getNextEventEstimation()}
+                {"NextEventEstimation", scene.getNextEventEstimation()},
+                {"KDTree", scene.getKDTree()},
+                {"KDMaxDepth", scene.getKDMaxDepth()},
+                {"KDMaxObjectNumber", scene.getKDMaxObjectNumber()}
                 }
             }
         };

@@ -1,13 +1,11 @@
 #include "Scene.h"
 
 // Constructors & Destructors
-Scene::Scene() : Scene(PerspectiveCamera(), 8, 5, 10, 0.1) {}
-
-Scene::Scene(PerspectiveCamera camera, unsigned int samplePerPixel, unsigned int minBounces, double maxDepth, double rrStopProbability)
-    : camera(camera), samplePerPixel(samplePerPixel), minBounces(minBounces), maxDepth(maxDepth), rrStopProbability(rrStopProbability) {}
+Scene::Scene(PerspectiveCamera camera /*= PerspectiveCamera()*/, unsigned int samplePerPixel /*= 8*/, unsigned int minBounces /*= 5*/)
+    : camera(camera), samplePerPixel(samplePerPixel), minBounces(minBounces) {}
 
 Scene::Scene(const Scene& scene)
-    : Scene(scene.camera, scene.samplePerPixel, scene.minBounces, scene.maxDepth, scene.rrStopProbability) {}
+    : Scene(scene.camera, scene.samplePerPixel, scene.minBounces) {}
 
 
 // Getters
@@ -31,11 +29,13 @@ PerspectiveCamera Scene::getCamera() const { return camera; }
 PerspectiveCamera& Scene::getCameraReference() { return camera; }
 unsigned int Scene::getSamplePerPixel() const { return samplePerPixel; }
 unsigned int Scene::getMinBounces() const { return minBounces; }
-double Scene::getMaxDepth() const { return maxDepth; }
 bool Scene::getRussianRoulette() const { return russianRoulette; }
 double Scene::getRrStopProbability() const { return rrStopProbability; }
 bool Scene::getNextEventEstimation() const { return nextEventEstimation; }
 unsigned int Scene::getNumberThreads() const { return numberThreads; }
+bool Scene::getKDTree() const { return kdTree; }
+unsigned int Scene::getKDMaxObjectNumber() const { return kdMaxObjectNumber; }
+unsigned int Scene::getKDMaxDepth() const { return kdMaxDepth; }
 
 
 // Setters
@@ -43,7 +43,6 @@ void Scene::setObjectsGroups(std::vector<Object3DGroup> groups) { objectsGroups 
 void Scene::setCamera(PerspectiveCamera camera) { this->camera = camera; }
 void Scene::setSamplePerPixel(unsigned int samplePerPixel) { this->samplePerPixel = samplePerPixel; }
 void Scene::setMinBounces(unsigned int minBounces) { this->minBounces = minBounces; }
-void Scene::setMaxDepth(double maxDepth) { this->maxDepth = maxDepth; }
 void Scene::setRussianRoulette(bool russianRoulette) { this->russianRoulette = russianRoulette; }
 void Scene::setRussianRoulette(bool russianRoulette, double rrStopProbability) {
     this->russianRoulette = russianRoulette;
@@ -52,6 +51,9 @@ void Scene::setRussianRoulette(bool russianRoulette, double rrStopProbability) {
 void Scene::setRrStopProbability(double rrStopProbability) { this->rrStopProbability = rrStopProbability; }
 void Scene::setNextEventEstimation(bool nextEventEstimation) { this->nextEventEstimation = nextEventEstimation; }
 void Scene::setNumberThreads(unsigned int numberThreads) { this->numberThreads = numberThreads; }
+void Scene::setKDTree(bool kdTree) { this->kdTree = kdTree; }
+void Scene::setKDMaxObjectNumber(unsigned int kdMaxObjectNumber) { this->kdMaxObjectNumber = kdMaxObjectNumber; }
+void Scene::setKDMaxDepth(unsigned int kdMaxDepth) { this->kdMaxDepth = kdMaxDepth; }
 
 
 // Objects groups management
@@ -306,7 +308,7 @@ Picture* Scene::render() {
     if (kdTree) {
         std::cout << "Creating a k-d tree...";
         double KDTreeBeginningTime = getCurrentTimeSeconds();
-        KDTreeRoot = new KDTreeNode(objects, 10, 10);
+        KDTreeRoot = new KDTreeNode(objects, kdMaxObjectNumber, kdMaxDepth);
         std::cout << "\rCreated a k-d tree in " << getCurrentTimeSeconds() - KDTreeBeginningTime << "s" << std::endl;
     }
     /*
@@ -365,7 +367,6 @@ void Scene::displayParametersPage(bool displayIndexes /*= true*/) const {
     std::cout << DASH_SPLITTER << std::endl;
     std::cout << getCurrentIndex(index++, displayIndexes) + "Sample per pixel = " << samplePerPixel << std::endl;
     std::cout << getCurrentIndex(index++, displayIndexes) + "Minimum bounces = " << minBounces << std::endl;
-    std::cout << getCurrentIndex(index++, displayIndexes) + "Max depth = " << maxDepth << std::endl;
     std::cout << std::endl;
 
     std::cout << "Optimisation parameters" << std::endl;
@@ -374,6 +375,9 @@ void Scene::displayParametersPage(bool displayIndexes /*= true*/) const {
     std::cout << getCurrentIndex(index++, displayIndexes) + "Russian roulette = " << bool2string(russianRoulette) << std::endl;
     std::cout << getCurrentIndex(index++, displayIndexes) + "Rr stop probability = " << rrStopProbability << std::endl;
     std::cout << getCurrentIndex(index++, displayIndexes) + "Next event estimation = " << bool2string(nextEventEstimation) << std::endl;
+    std::cout << getCurrentIndex(index++, displayIndexes) + "K-d tree = " << bool2string(kdTree) << std::endl;
+    std::cout << getCurrentIndex(index++, displayIndexes) + "K-d maximum depth = " << kdMaxDepth << std::endl;
+    std::cout << getCurrentIndex(index++, displayIndexes) + "K-d maximum object number = " << kdMaxObjectNumber << std::endl;
     std::cout << std::endl;
 }
 

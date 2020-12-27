@@ -205,24 +205,24 @@ private:
     std::vector<Object3D*> lamps;
     KDTreeNode* KDTreeRoot = nullptr;
 
-    PerspectiveCamera camera;
-    unsigned int samplePerPixel;
-    unsigned int minBounces;
-    double maxDepth;
-    double rrStopProbability;  // Linked to russianRoulette   /  stopProb=1 <=> russianRoulette=false
+    PerspectiveCamera camera = PerspectiveCamera();
+    unsigned int samplePerPixel = 8;
+    unsigned int minBounces = 10;
 
     bool russianRoulette = true;
+    double rrStopProbability = 0.1;  // Linked to russianRoulette   /  stopProb=1 <=> russianRoulette=false
     bool nextEventEstimation = true;
     unsigned int numberThreads = 8;
     bool kdTree = true;
+    unsigned int kdMaxObjectNumber = 10;
+    unsigned int kdMaxDepth = 10;
 
     KDTreeNode::Intersection bruteForceIntersection(const Ray& ray) const;
     DoubleVec3D traceRay(const Ray& ray, double usedNextEventEstimation = false, const KDTreeNode* lastNode = nullptr, unsigned int bounces = 0) const;
     std::string getCurrentIndex(int currentIndex, bool displayIndex) const;
 
 public:
-    Scene();
-    Scene(PerspectiveCamera camera, unsigned int samplePerPixel, unsigned int minBounces, double maxDepth, double rrStopProbability);
+    Scene(PerspectiveCamera camera = PerspectiveCamera(), unsigned int samplePerPixel = 8, unsigned int minBounces = 5);
     Scene(const Scene& scene);
 
     std::vector<Object3DGroup> getObjectsGroups() const;
@@ -233,22 +233,26 @@ public:
     PerspectiveCamera& getCameraReference();
     unsigned int getSamplePerPixel() const;
     unsigned int getMinBounces() const;
-    double getMaxDepth() const;
     bool getRussianRoulette() const;
     double getRrStopProbability() const;
     bool getNextEventEstimation() const;
     unsigned int getNumberThreads() const;
+    bool getKDTree() const;
+    unsigned int getKDMaxObjectNumber() const;
+    unsigned int getKDMaxDepth() const;
 
     void setObjectsGroups(std::vector<Object3DGroup> groups);
     void setCamera(PerspectiveCamera camera);
     void setSamplePerPixel(unsigned int samplePerPixel);
     void setMinBounces(unsigned int minBounces);
-    void setMaxDepth(double maxDepth);
     void setRussianRoulette(bool russianRoulette);
     void setRussianRoulette(bool russianRoulette, double rrStopProbability);
     void setRrStopProbability(double rrStopProbability);
     void setNextEventEstimation(bool nextEventEstimation);
     void setNumberThreads(unsigned int numberThreads);
+    void setKDTree(bool kdTree);
+    void setKDMaxObjectNumber(unsigned int kdMaxObjectNumber);
+    void setKDMaxDepth(unsigned int kdMaxDepth);
 
     void addObjectGroup(const Object3DGroup& group);
     void resetObjectGroups();
