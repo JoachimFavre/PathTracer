@@ -245,10 +245,10 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
                 KDTreeNode::Intersection shadowRayIntersection;
                 if (!kdTree)
                     shadowRayIntersection = bruteForceIntersection(shadowRay);
-                else if (lastNode == nullptr)
+                else if (intersection.kdTreeNode == nullptr)
                     shadowRayIntersection = KDTreeRoot->getIntersectionForward(shadowRay);
                 else
-                    shadowRayIntersection = lastNode->getIntersectionBackward(shadowRay);
+                    shadowRayIntersection = intersection.kdTreeNode->getIntersectionBackward(shadowRay);
 
                 if (shadowRayIntersection.object == lamp) {
                     intersectionToLamp /= distanceLamp;  // Normalised
@@ -306,7 +306,7 @@ Picture* Scene::render() {
     if (kdTree) {
         std::cout << "Creating a k-d tree...";
         double KDTreeBeginningTime = getCurrentTimeSeconds();
-        KDTreeRoot = new KDTreeNode(objects, 10, 20);
+        KDTreeRoot = new KDTreeNode(objects, 10, 10);
         std::cout << "\rCreated a k-d tree in " << getCurrentTimeSeconds() - KDTreeBeginningTime << "s" << std::endl;
     }
     /*
