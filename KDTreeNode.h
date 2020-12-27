@@ -37,7 +37,9 @@ public:
     KDTreeNode* getChildSmaller() const;
     KDTreeNode* getChildGreater() const;
 
+
     double intersectionDistance(const Ray& ray) const;
+    bool isIn(DoubleVec3D point) const;
     Intersection getIntersectionForward(const Ray& ray) const;
     Intersection getIntersectionBackward(const Ray& ray, const KDTreeNode* ignore = nullptr) const;
 };

@@ -218,7 +218,9 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
 
     // Search for ray intersection
     KDTreeNode::Intersection intersection;
-    if (lastNode == nullptr)
+    if (!kdTree)
+        intersection = bruteForceIntersection(ray);
+    else if (lastNode == nullptr)
         intersection = KDTreeRoot->getIntersectionForward(ray);
     else
         intersection = lastNode->getIntersectionBackward(ray);
@@ -236,15 +238,17 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
         neeFactor = 1.0/(1.0 + lamps.size());
         for (Object3D* lamp : lamps) {
             DoubleVec3D intersectionToLamp = lamp->getRandomPoint() - intersectionPoint;
-            if (dotProd(normal, intersectionToLamp) > 0) {
+            if (dotProd(normal, intersectionToLamp) > -0.0001) {
                 double distanceLamp = length(intersectionToLamp);
                 Ray shadowRay(intersectionPoint, intersectionToLamp);  // intersectionToLamp goes in DoubleUnitVec3D constructor => normalised
 
                 KDTreeNode::Intersection shadowRayIntersection;
-                if (lastNode == nullptr)
+                if (!kdTree)
+                    shadowRayIntersection = bruteForceIntersection(shadowRay);
+                else if (lastNode == nullptr)
                     shadowRayIntersection = KDTreeRoot->getIntersectionForward(shadowRay);
                 else
-                    shadowRayIntersection = lastNode->getIntersectionBackward(shadowRay, intersection.kdTreeNode);
+                    shadowRayIntersection = lastNode->getIntersectionBackward(shadowRay);
 
                 if (shadowRayIntersection.object == lamp) {
                     intersectionToLamp /= distanceLamp;  // Normalised
@@ -299,10 +303,12 @@ Picture* Scene::render() {
     std::cout << STAR_SPLITTER << std::endl;
     std::cout << std::endl;
 
-    std::cout << "Creating a k-d tree...";
-    double KDTreeBeginningTime = getCurrentTimeSeconds();
-    KDTreeRoot = new KDTreeNode(objects, 10, 20);
-    std::cout << "\rCreated a k-d tree in " << getCurrentTimeSeconds() - KDTreeBeginningTime << "s" << std::endl;
+    if (kdTree) {
+        std::cout << "Creating a k-d tree...";
+        double KDTreeBeginningTime = getCurrentTimeSeconds();
+        KDTreeRoot = new KDTreeNode(objects, 10, 20);
+        std::cout << "\rCreated a k-d tree in " << getCurrentTimeSeconds() - KDTreeBeginningTime << "s" << std::endl;
+    }
     /*
     json jsonOutput = *KDTreeRoot;
     std::ofstream file;

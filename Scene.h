@@ -203,7 +203,7 @@ private:
     std::vector<Object3DGroup> objectsGroups;
     std::vector<Object3D*> objects;
     std::vector<Object3D*> lamps;
-    KDTreeNode* KDTreeRoot;
+    KDTreeNode* KDTreeRoot = nullptr;
 
     PerspectiveCamera camera;
     unsigned int samplePerPixel;
