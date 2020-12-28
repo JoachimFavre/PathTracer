@@ -14,6 +14,21 @@
     \struct KDTreeNode::Intersection
     \brief A struct binding a pointer to an Object3D, a distance, and a pointer to a KDTreeNode.
 
+    \var KDTreeNode::Intersection::object
+    \brief The Object3D with which the ray intersects.
+
+    \var KDTreeNode::Intersection::distance
+    \brief The distance between the ray origin and the intersection point.
+
+    \var KDTreeNode::Intersection::kdTreeNode
+    \brief The KDTreeNode in which the ray and the object intersect.
+
+    \fn KDTreeNode::Intersection::Intersection(Object3D* object = nullptr, double distance = INFINITY, const KDTreeNode* kdTreeNode = nullptr)
+    \brief Main constructor.
+    \param object The Object3D with which the ray intersects.
+    \param distance The distance between the ray origin and the intersection point.
+    \param kdTreeNode The KDTreeNode in which the ray and the object intersect.
+
     \fn KDTreeNode::KDTreeNode()
     \brief Default constructor. Everything is set to 0 by default.
 
