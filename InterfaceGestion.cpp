@@ -18,6 +18,14 @@ void availableCommandsHeader() {
     std::cout << "You can use the following commands:" << std::endl;
 }
 
+void showCMDCursor(bool show) {
+    // From: https://stackoverflow.com/questions/18028808/remove-blinking-underscore-on-console-cmd-prompt (see the documentation or the report for complete bibliography)
+    HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_CURSOR_INFO cursorInfo;
+    GetConsoleCursorInfo(out, &cursorInfo);
+    cursorInfo.bVisible = show;
+    SetConsoleCursorInfo(out, &cursorInfo);
+}
 
 // Conversion into string
 std::string bool2string(bool b) {

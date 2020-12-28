@@ -289,6 +289,8 @@ void displayRenderingProgression(unsigned int numberPixelXAlreadyComputed, unsig
 
 // Render method
 Picture* Scene::render() {
+    showCMDCursor(false);
+
     computeObjectsAndLamps();
 
     unsigned int pictureWidth = camera.getNumberPixelsX();
@@ -343,6 +345,7 @@ Picture* Scene::render() {
     if (kdTree)
         delete KDTreeRoot;
 
+    showCMDCursor(true);
     return result;
 }
 

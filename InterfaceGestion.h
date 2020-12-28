@@ -15,6 +15,9 @@ using json = nlohmann::json;
 
 #include <fbxsdk.h>
 
+#define NOMINMAX  // So that window.h does not interfere with std::min and std::max
+#include <windows.h>  // To hide CMD cursor
+
 /*!
     \file InterfaceGestion.h
     \brief Defines functions that are used when drawing the interface.
@@ -54,6 +57,11 @@ using json = nlohmann::json;
 
     \fn availableCommandsHeader()
     \brief Prints a header before printing which commands are available.
+
+    \fn showCMDCursor(bool show)
+    \brief Shows or hide the cursor in the interface.
+    \details Used code from Captain Obvlious. Remove blinking underscore on console / cmd prompt. [Accessed 28 December 2020]. Stackoverflow. Aug. 3, 2013. URL: https://stackoverflow.com/questions/18028808/remove-blinking-underscore-on-console-cmd-prompt.
+    \param show Whether the cursor will shown or hidden.
 
     \fn bool2string(bool b)
     \brief Converts a boolean to string.
@@ -155,6 +163,7 @@ static std::default_random_engine re(std::chrono::duration_cast<std::chrono::mil
 // Functions
 void clearScreenPrintHeader();
 void availableCommandsHeader();
+void showCMDCursor(bool show);
 
 std::string bool2string(bool b);
 double getCurrentTimeSeconds();
