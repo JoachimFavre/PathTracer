@@ -340,6 +340,9 @@ Picture* Scene::render() {
     result->setRenderTime(getCurrentTimeSeconds() - loopBeginningTime);
     std::cout << std::endl << std::endl;
 
+    if (kdTree)
+        delete KDTreeRoot;
+
     return result;
 }
 
