@@ -191,24 +191,32 @@ void executeParametersCommands(char command) {
     case 'm': {
         // Modify a parameter
         while (true) {
-            int index = getIntFromUser("What is the index of the parameter you want to modify (positive integer) (-1 = cancel)");
+            int index = getIntFromUser("What is the index of the parameter you want to modify (-1 = cancel) " + POSITIVE_INT_INFO);
             if (0 <= index && index <= 12)
                 std::cout << std::endl;
             switch (index) {
             case -1: return;
-            case 0: camera.setNumberPixelsX(getUnsignedIntFromUser("What is the new camera width? (positive integer)")); return;
-            case 1: camera.setNumberPixelsY(getUnsignedIntFromUser("What is the new camera height? (positive integer)")); return;
+            case 0: camera.setNumberPixelsX(getUnsignedIntFromUser("What is the new camera width? " + POSITIVE_INT_INFO)); return;
+            case 1: camera.setNumberPixelsY(getUnsignedIntFromUser("What is the new camera height? " + POSITIVE_INT_INFO)); return;
             case 2: camera.setOrigin(getXYZDoubleVec3DFromUser("What is the new camera origin?")); return;
             case 3: camera.setFocal(getXYZDoubleVec3DFromUser("What is the new camera focal?")); return;
-            case 4: scene.setSamplePerPixel(getUnsignedIntFromUser("What is the new number of sample per pixel? (positive integer)")); return;
-            case 5: scene.setMinBounces(getUnsignedIntFromUser("What is the new minimum number of ray bounces? (there can be less if nothing is hit) (positive integer)")); return;
-            case 6: scene.setNumberThreads(getUnsignedIntFromUser("What is the new number of threads that will used during the rendering? (positive integer)")); return;
-            case 7: scene.setRussianRoulette(getBoolFromUser("Will the russian roulette path termination algorithm be used? (True=T=true=t / False=F=false=f)")); return;
-            case 8: scene.setRrStopProbability(getPositiveDoubleFromUser("What is the new stop probability for the russian roulette path termination algorithm? (positive number in [0, 1])")); return;
-            case 9: scene.setNextEventEstimation(getBoolFromUser("Will the next event estimation algorithm be used? (True=T=true=t / False=F=false=f)")); return;
-            case 10: scene.setKDTree(getBoolFromUser("Will the a k-d tree be used ? (True = T = true = t / False = F = false = f)")); return;
-            case 11: scene.setKDMaxDepth(getUnsignedIntFromUser("What is the new maximum k-d tree depth? (positive integer)")); return;
-            case 12: scene.setKDMaxObjectNumber(getUnsignedIntFromUser("What is the new maximum of objects contained in a k-d tree leaf? (positive integer)")); return;
+            case 4: scene.setSamplePerPixel(getUnsignedIntFromUser("What is the new number of sample per pixel? " + POSITIVE_INT_INFO)); return;
+            case 5: scene.setMinBounces(getUnsignedIntFromUser("What is the new minimum number of ray bounces? (there can be less if nothing is hit) " + POSITIVE_INT_INFO)); return;
+            case 6: scene.setNumberThreads(getUnsignedIntFromUser("What is the new number of threads that will used during the rendering? " + POSITIVE_INT_INFO)); return;
+            case 7: scene.setRussianRoulette(getBoolFromUser("Will the russian roulette path termination algorithm be used? " + BOOL_INFO)); return;
+            case 8:
+                while (true) {
+                    double probability = getPositiveDoubleFromUser("What is the new stop probability for the russian roulette path termination algorithm? (positive number between 0 and 1)");
+                    if (probability >= 0 && probability <= 1) {
+                        scene.setRrStopProbability(probability);
+                        return;
+                    }
+                    std::cout << "This number is not between 0 and 1!" << std::endl << std::endl;
+                }
+            case 9: scene.setNextEventEstimation(getBoolFromUser("Will the next event estimation algorithm be used? " + BOOL_INFO)); return;
+            case 10: scene.setKDTree(getBoolFromUser("Will the a k-d tree be used? " + BOOL_INFO)); return;
+            case 11: scene.setKDMaxDepth(getUnsignedIntFromUser("What is the new maximum k-d tree depth? " + POSITIVE_INT_INFO)); return;
+            case 12: scene.setKDMaxObjectNumber(getUnsignedIntFromUser("What is the new maximum of objects contained in a k-d tree leaf? " + POSITIVE_INT_INFO)); return;
             default: std::cout << "This index is invalid!" << std::endl << std::endl;
             }
         }
@@ -219,7 +227,7 @@ void executeParametersCommands(char command) {
         fileName = formatFileName(fileName, PARAMETERS_SAVE_EXTENSION);
 
         if (fileExists(fileName)) {
-            bool continue_ = getBoolFromUser("The file " + fileName + " already exists, do you want to continue? (True=T=true=t / False=F=false=f)");
+            bool continue_ = getBoolFromUser("The file " + fileName + " already exists, do you want to continue? " + BOOL_INFO);
             if (!continue_)
                 return;
         }
@@ -281,14 +289,14 @@ void executeObjectsCommands(char command) {
                     return;
                 if (index == -2) {
                     std::cout << std::endl;
-                    bool confirmation = getBoolFromUser("Do you confirm the deletion of all the objects groups? (True=T=true=t / False=F=false=f)");
+                    bool confirmation = getBoolFromUser("Do you confirm the deletion of all the objects groups? " + BOOL_INFO);
                     if (confirmation)
                         scene.resetObjectGroups();
                     return;
                 }
                 if (index >= 0 && index < objectGroups.size()) {
                     std::cout << std::endl;
-                    bool confirmation = getBoolFromUser("Do you confirm the deletion of this objects group? (True=T=true=t / False=F=false=f)");
+                    bool confirmation = getBoolFromUser("Do you confirm the deletion of this objects group? " + BOOL_INFO);
                     if (confirmation)
                         objectGroups.erase(objectGroups.begin() + index);
                     return;
@@ -397,7 +405,7 @@ void executeObjectsCommands(char command) {
     case 'm': {
         if (objectGroups.size() >= 1) {
             while (true) {
-                int index = getIntFromUser("What is the index of the objects groups you want to modify (positive integer) (-1 = cancel)");
+                int index = getIntFromUser("What is the index of the objects groups you want to modify (-1 = cancel) " + POSITIVE_INT_INFO);
 
                 if (index == -1)
                     return;
@@ -421,7 +429,7 @@ void executeObjectsCommands(char command) {
         fileName = formatFileName(fileName, OBJECTS_SAVE_EXTENSION);
 
         if (fileExists(fileName)) {
-            bool continue_ = getBoolFromUser("The file " + fileName + " already exists, do you want to continue? (True=T=true=t / False=F=false=f)");
+            bool continue_ = getBoolFromUser("The file " + fileName + " already exists, do you want to continue? " + BOOL_INFO);
             if (!continue_)
                 return;
         }

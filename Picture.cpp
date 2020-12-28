@@ -122,15 +122,15 @@ void Picture::modify() {
             std::cout << std::endl;
 
             if (fileExists(fileName)) {
-                bool continue_ = getBoolFromUser("The file " + fileName + " already exists, do you want to continue? (True=T=true=t / False=F=false=f)");
+                bool continue_ = getBoolFromUser("The file " + fileName + " already exists, do you want to continue? " + BOOL_INFO);
                 if (!continue_)
                     break;
                 std::cout << std::endl;
             }
 
-            double middleGrey = getPositiveDoubleFromUser("What radiance will be the middle-grey? (try 10 if you have no idea) (positive number)");
+            double middleGrey = getPositiveDoubleFromUser("What radiance will be the middle-grey? (try 10 if you have no idea) " + POSITIVE_DOUBLE_INFO);
             std::cout << std::endl;
-            unsigned int movingAverageSize = getUnsignedIntFromUser("What is the size of the moving average you want to use? (0 for no moving average) (positive integer)");
+            unsigned int movingAverageSize = getUnsignedIntFromUser("What is the size of the moving average you want to use? (0 for no moving average) " + POSITIVE_INT_INFO);
 
             writeToFile(middleGrey, fileName, movingAverageSize);
 

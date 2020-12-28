@@ -156,6 +156,10 @@ const std::string PICTURE_SAVE_EXTENSION_JSON = "ptpict";
 const std::string OBJECTS_SAVE_EXTENSION = "ptobj";
 const std::string PARAMETERS_SAVE_EXTENSION = "ptparam";
 
+const std::string POSITIVE_DOUBLE_INFO = "(positive number)";
+const std::string POSITIVE_INT_INFO = "(positive integer)";
+const std::string BOOL_INFO = "(True / False)";
+
 static std::uniform_real_distribution<double> unif(0, 1);
 static std::default_random_engine re(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
 

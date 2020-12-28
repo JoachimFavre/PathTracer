@@ -140,14 +140,14 @@ void Object3DGroup::modify() {
                         break;
                     if (index == -2) {
                         std::cout << std::endl;
-                        bool confirmation = getBoolFromUser("Do you confirm the deletion of all the objects? (True=T=true=t / False=F=false=f)");
+                        bool confirmation = getBoolFromUser("Do you confirm the deletion of all the objects? " + BOOL_INFO);
                         if (confirmation)
                             objects.clear();
                         break;
                     }
                     if (index >= 0 && index < objects.size()) {
                         std::cout << std::endl;
-                        bool confirmation = getBoolFromUser("Do you confirm the deletion of this object? (True=T=true=t / False=F=false=f)");
+                        bool confirmation = getBoolFromUser("Do you confirm the deletion of this object? " + BOOL_INFO);
                         if (confirmation)
                             objects.erase(objects.begin() + index);
                         break;
@@ -161,7 +161,7 @@ void Object3DGroup::modify() {
         }
         case 'h': {
             if (hide && objects.size() >= MIN_OBJECTS_HIDE)
-                if (!getBoolFromUser("There are more than " + std::to_string(MIN_OBJECTS_HIDE) + " hidden objects, are you sure you want to show them? (True=T=true=t / False=F=false=f)"))
+                if (!getBoolFromUser("There are more than " + std::to_string(MIN_OBJECTS_HIDE) + " hidden objects, are you sure you want to show them? " + BOOL_INFO))
                     break;
             hide = !hide;
             break;
