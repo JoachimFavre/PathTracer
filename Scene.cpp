@@ -223,7 +223,7 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
     if (!kdTree)
         intersection = bruteForceIntersection(ray);
     else if (lastNode == nullptr)
-        intersection = KDTreeRoot->getIntersectionForward(ray);
+        intersection = kdTreeRoot->getIntersectionForward(ray);
     else
         intersection = lastNode->getIntersectionBackward(ray);
 
@@ -248,7 +248,7 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
                 if (!kdTree)
                     shadowRayIntersection = bruteForceIntersection(shadowRay);
                 else if (intersection.kdTreeNode == nullptr)
-                    shadowRayIntersection = KDTreeRoot->getIntersectionForward(shadowRay);
+                    shadowRayIntersection = kdTreeRoot->getIntersectionForward(shadowRay);
                 else
                     shadowRayIntersection = intersection.kdTreeNode->getIntersectionBackward(shadowRay);
 
@@ -309,12 +309,12 @@ Picture* Scene::render() {
 
     if (kdTree) {
         std::cout << "Creating a k-d tree...";
-        double KDTreeBeginningTime = getCurrentTimeSeconds();
-        KDTreeRoot = new KDTreeNode(objects, kdMaxObjectNumber, kdMaxDepth);
-        std::cout << "\rCreated a k-d tree in " << getCurrentTimeSeconds() - KDTreeBeginningTime << "s" << std::endl;
+        double kdTreeBeginningTime = getCurrentTimeSeconds();
+        kdTreeRoot = new KDTreeNode(objects, kdMaxObjectNumber, kdMaxDepth);
+        std::cout << "\rCreated a k-d tree in " << getCurrentTimeSeconds() - kdTreeBeginningTime << "s" << std::endl;
     }
     /*
-    json jsonOutput = *KDTreeRoot;
+    json jsonOutput = *kdTreeRoot;
     std::ofstream file;
     file.open("_tree.json");
     file << std::setw(4) << jsonOutput << std::endl;
@@ -343,7 +343,7 @@ Picture* Scene::render() {
     std::cout << std::endl << std::endl;
 
     if (kdTree)
-        delete KDTreeRoot;
+        delete kdTreeRoot;
 
     showCMDCursor(true);
     return result;

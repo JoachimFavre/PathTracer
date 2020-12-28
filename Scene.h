@@ -224,7 +224,7 @@ private:
     std::vector<Object3DGroup> objectsGroups;
     std::vector<Object3D*> objects;
     std::vector<Object3D*> lamps;
-    KDTreeNode* KDTreeRoot = nullptr;
+    KDTreeNode* kdTreeRoot = nullptr;
 
     PerspectiveCamera camera = PerspectiveCamera();
     unsigned int samplePerPixel = 8;
