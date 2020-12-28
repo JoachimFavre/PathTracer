@@ -193,7 +193,8 @@ void executeParametersCommands(char command) {
         // Modify a parameter
         while (true) {
             int index = getIntFromUser("What is the index of the parameter you want to modify (positive integer) (-1 = cancel)");
-            std::cout << std::endl;
+            if (0 <= index && index <= 12)
+                std::cout << std::endl;
             switch (index) {
             case -1: return;
             case 0: camera.setNumberPixelsX(getUnsignedIntFromUser("What is the new camera width? (positive integer)")); return;

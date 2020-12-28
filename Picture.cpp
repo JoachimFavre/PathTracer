@@ -74,7 +74,7 @@ void Picture::writeToFile(double middleGrey, std::string fileName, unsigned int 
     remove("temp.ppm");
     image.save(fileName.c_str());
 
-    std::cout << "The picture was successfully written in " << fileName << " file with " << middleGrey << " being the middle-grey in " << getCurrentTimeSeconds() - writingBeginningTime << " seconds!" << std::endl;
+    std::cout << std::endl << "The picture was successfully written in " << fileName << " file with " << middleGrey << " being the middle-grey in " << getCurrentTimeSeconds() - writingBeginningTime << " seconds!" << std::endl;
     system((".\\" + fileName).c_str());
 }
 
