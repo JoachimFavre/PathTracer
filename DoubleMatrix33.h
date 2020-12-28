@@ -129,57 +129,57 @@
     \return The product between matrix and vec.
 
     \fn getRotationMatrixX(double roll)
-    \brief Rotation matrix around the x axis.
+    \brief Rotation matrix around the *x* axis.
     \param roll The angle of the rotation.
     \return The rotation matrix.
 
     \fn getRotationMatrixY(double pitch)
-    \brief Rotation matrix around the y axis.
+    \brief Rotation matrix around the *y* axis.
     \param pitch The angle of the rotation.
     \return The rotation matrix.
 
     \fn getRotationMatrixZ(double yaw)
-    \brief Rotation matrix around the z axis.
+    \brief Rotation matrix around the *z* axis.
     \param yaw The angle of the rotation.
     \return The rotation matrix.
 
     \fn getRotationMatrixXYZ(double roll, double pitch, double yaw)
-    \brief Rotation matrix around the z, y and then x axis.
-    \param roll Angle of the rotation around the x axis.
-    \param pitch Angle of the rotation around the y axis.
-    \param yaw Angle of the rotation around the z axis.
-    \return The product of the rotation matrices (z, y and then x).
+    \brief Rotation matrix around the *z*, *y* and then *x* axis.
+    \param roll Angle of the rotation around the *x* axis.
+    \param pitch Angle of the rotation around the *y* axis.
+    \param yaw Angle of the rotation around the *z* axis.
+    \return The product of the rotation matrices (*z*, *y* and then *x*).
 
     \fn getRotationMatrixXYZ(const DoubleVec3D& angles)
-    \brief Rotation matrix around the z, y and then x axis.
-    \param angles The first coordinate of this vector is the rotation around the x axis, the second one is the rotation around the y axis and the last one is the rotation around the z axis.
-    \return The product of the rotation matrices (z, y and then x).
+    \brief Rotation matrix around the *z*, *y* and then *x* axis.
+    \param angles The first coordinate of this vector is the rotation around the *x* axis, the second one is the rotation around the *y* axis and the last one is the rotation around the *z* axis.
+    \return The product of the rotation matrices (*z*, *y* and then *x*).
 
     \fn getScalingMatrixX(double x)
-    \brief Scaling matrix on the x axis.
+    \brief Scaling matrix on the *x* axis.
     \param x The factor of the scaling.
     \return The scaling matrix.
 
     \fn getScalingMatrixY(double y)
-    \brief Scaling matrix on the y axis.
+    \brief Scaling matrix on the *y* axis.
     \param y The factor of the scaling.
     \return The scaling matrix.
 
     \fn getScalingMatrixZ(double z)
-    \brief Scaling matrix on the z axis.
+    \brief Scaling matrix on the *z* axis.
     \param z The factor of the scaling.
     \return The scaling matrix.
 
     \fn getScalingMatrixXYZ(double x, double y, double z)
-    \brief Scaling matrix on the x, y and z axis.
-    \param x The factor of the scaling on the x axis.
-    \param y The factor of the scaling on the y axis.
-    \param z The factor of the scaling on the z axis.
+    \brief Scaling matrix on the *x*, *y* and *z* axis.
+    \param x The factor of the scaling on the *x* axis.
+    \param y The factor of the scaling on the *y* axis.
+    \param z The factor of the scaling on the *z* axis.
     \return The scaling matrix.
 
     \fn getScalingMatrixXYZ(const DoubleVec3D& values)
-    \brief Scaling matrix on the x, y and z axis.
-    \param values The first coordinate of this vector is the scaling on the x axis, the second one is the scaling on the y axis and the last one is the scaling on the z axis.
+    \brief Scaling matrix on the *x*, *y* and *z* axis.
+    \param values The first coordinate of this vector is the scaling on the *x* axis, the second one is the scaling on the *y* axis and the last one is the scaling on the *z* axis.
     \return The scaling matrix.
 */
 
