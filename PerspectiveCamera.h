@@ -47,7 +47,7 @@
 
     \fn PerspectiveCamera::getWorldHeight()
     \brief Getter for the camera world height.
-    \return The width of the camera in the virtual height.
+    \return The width of the camera in the virtual world.
 
     \fn PerspectiveCamera::setNumberPixelsX(unsigned int numberPixelsX)
     \brief Setter for the number of pixels in *x*.
@@ -68,8 +68,8 @@
     \fn PerspectiveCamera::getRayGoingThrough(double pixelX, double pixelY)
     \brief Returns a ray going through some pixels.
     \details See my TM's report for an explanation on how it works.
-    \param pixelX The $x$ coordinate of the pixel through which we want the ray.
-    \param pixelY The $y$ coordinate of the pixel through which we want the ray.
+    \param pixelX The *x* coordinate of the pixel through which we want the ray.
+    \param pixelY The *y* coordinate of the pixel through which we want the ray.
     \return A ray which origin is the camera's and which direction is such that it goes through the requested pixel.
 */
 
