@@ -11,9 +11,7 @@ void displayCommands() {
         std::cout << "- a: add an object group" << std::endl;
         std::cout << "- d: delete an object group" << std::endl;
     }
-
-    std::cout << "- e: exit this program" << std::endl;
-
+    
     if (isObjectsPages) {
         std::cout << "- g: merge two objects groups" << std::endl;
         std::cout << "- i: import an object from a FBX file as an objects group" << std::endl;
@@ -33,6 +31,7 @@ void displayCommands() {
         std::cout << "- s: save current parameters to a " << PARAMETERS_SAVE_EXTENSION << " file" << std::endl;
     
     std::cout << "- t: load a picture from a " << PICTURE_SAVE_EXTENSION_JSON << " file" << std::endl;
+    std::cout << "- x: exit this program" << std::endl;
 }
 
 
@@ -55,10 +54,6 @@ void receiveAndExecuteGeneralCommands() {
 
 
     switch (command) {
-    case 'e': {
-        std::cout << "Have a nice day!" << std::endl;
-        exit(0);
-    }
     case 'p': {
         if (isParametersPage)
             currentPage = Page::ObjectsPage;
@@ -125,6 +120,10 @@ void receiveAndExecuteGeneralCommands() {
             getStringFromUser("Press enter to continue.");
         }
         return;
+    }
+    case 'x': {
+        std::cout << "Have a nice day!" << std::endl;
+        exit(0);
     }
     default:
         if (isParametersPage)
