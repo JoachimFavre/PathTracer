@@ -343,8 +343,8 @@ Picture* Scene::render() {
     displayParametersPage(false);
     std::cout << "Objects" << std::endl;
     std::cout << DASH_SPLITTER << std::endl;
-    std::cout << "Number objects = " << objects.size() << std::endl;
-    std::cout << "Number objects emitting light = " << lamps.size() << std::endl;
+    std::cout << "Number of objects = " << objects.size() << std::endl;
+    std::cout << "Number of objects emitting light = " << lamps.size() << std::endl;
     std::cout << std::endl;
     std::cout << STAR_SPLITTER << std::endl;
     std::cout << std::endl;
