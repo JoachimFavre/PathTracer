@@ -332,6 +332,13 @@ void displayRenderingProgression(unsigned int numberPixelXAlreadyComputed, unsig
 
 // Render method
 Picture* Scene::render() {
+    computeObjectsAndLamps();
+
+    unsigned int pictureWidth = camera.getNumberPixelsX();
+    unsigned int pictureHeight = camera.getNumberPixelsY();
+    omp_set_num_threads(numberThreads);
+    showCMDCursor(false);
+
     // Print informations
     displayParametersPage(false);
     std::cout << "Objects" << std::endl;
@@ -342,15 +349,17 @@ Picture* Scene::render() {
     std::cout << STAR_SPLITTER << std::endl;
     std::cout << std::endl;
 
-    std::cout << "Backing parameters up...";
+    std::cout << "Backing up parameters...";
     double parametersBackupBeginningTime = getCurrentTimeSeconds();
-    std::cout << "Backing object groups up...";
+    std::string parametersBackupFileName = formatFileName(backupFileName, PARAMETERS_SAVE_EXTENSION);
+    saveParameters2File(parametersBackupFileName);
+    std::cout << "\rSuccessfully backed up parameters to " << parametersBackupFileName << " in " << getCurrentTimeSeconds() - parametersBackupBeginningTime << " seconds." << std::endl;
 
-    computeObjectsAndLamps();
-
-    unsigned int pictureWidth = camera.getNumberPixelsX();
-    unsigned int pictureHeight = camera.getNumberPixelsY();
-    omp_set_num_threads(numberThreads);
+    std::cout << "Backing up object groups...";
+    double objectGroupsBackupBeginningTime = getCurrentTimeSeconds();
+    std::string objectGroupsBackupFileName = formatFileName(backupFileName, OBJECTS_SAVE_EXTENSION);
+    saveObjectGroups2File(objectGroupsBackupFileName);
+    std::cout << "\rSuccessfully backed up object groups to " << objectGroupsBackupFileName << " in " << getCurrentTimeSeconds() - objectGroupsBackupBeginningTime << " seconds." << std::endl;
 
     if (kdTree) {
         std::cout << "Creating a k-d tree...";
@@ -371,8 +380,6 @@ Picture* Scene::render() {
     double pictureMemoryAllocationBeginningTime = getCurrentTimeSeconds();
     Picture* result = new Picture(camera.getNumberPixelsX(), camera.getNumberPixelsY());
     std::cout << "\rSuccessfully allocated memory for the picture in " << getCurrentTimeSeconds() - pictureMemoryAllocationBeginningTime  << " seconds." << std::endl << std::endl;
-
-    showCMDCursor(false);
 
     std::cout << "Computing time estimation...";  // That's a lie. We're juste waiting for one iteration of the loop
     double loopBeginningTime = getCurrentTimeSeconds();

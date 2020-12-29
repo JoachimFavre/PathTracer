@@ -11,12 +11,6 @@
     \brief Different current main pages possible.
     \details Could have been defined using a boolean, but it is not something that really needs to be optimised and an enumeration is, I think, more readable.
 
-    \var double smallestRenderTime4PictBackup
-    \brief If the render time takes more time, the render will be backed up.
-
-    \var std::string backupFileName
-    \brief The name of the file in which the backup will be made.
-
     \fn void receiveAndExecuteGeneralCommands()
     \brief Receives and executes the general commands.
     \details Asks a command to the user. If it is general to both main pages (exit, for example), executes it, else, calls executeParametersCommands() or executeObjectsCommands().
@@ -44,10 +38,6 @@ enum class Page {
     ParametersPage,
     ObjectsPage
 };
-
-
-constexpr double smallestRenderTime4PictBackup = 180.0;  // Three minutes
-const std::string backupFileName = formatFileName("backup", PICTURE_SAVE_EXTENSION_JSON);
 
 static Scene scene;
 static PerspectiveCamera& camera = scene.getCameraReference();
