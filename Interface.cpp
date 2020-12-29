@@ -76,7 +76,7 @@ void receiveAndExecuteGeneralCommands() {
             file << std::setw(4) << jsonOutput << std::endl;
             file.close();
 
-            std::cout << "\rPicture succesffuly backed up to " << backupFileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl;
+            std::cout << "\rSuccessfully backed the picture up to " << backupFileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl;
             std::cout << std::endl;
         }
 
@@ -84,6 +84,7 @@ void receiveAndExecuteGeneralCommands() {
         getStringFromUser("Press enter to continue");
 
         pict->modify();
+        std::cout << "Deleting the picture from memory...";
         delete pict;
         return;
     }

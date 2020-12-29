@@ -311,7 +311,7 @@ Picture* Scene::render() {
         std::cout << "Creating a k-d tree...";
         double kdTreeBeginningTime = getCurrentTimeSeconds();
         kdTreeRoot = new KDTreeNode(objects, kdMaxObjectNumber, kdMaxDepth);
-        std::cout << "\rCreated a k-d tree in " << getCurrentTimeSeconds() - kdTreeBeginningTime << "s" << std::endl;
+        std::cout << "\rSuccessfully created a k-d tree in " << getCurrentTimeSeconds() - kdTreeBeginningTime << " seconds." << std::endl;
     }
     /*
     json jsonOutput = *kdTreeRoot;
@@ -322,7 +322,10 @@ Picture* Scene::render() {
     */
 
     // Compute picture
+    std::cout << "Allocating memory for the picture...";
+    double pictureMemoryAllocationBeginningTime = getCurrentTimeSeconds();
     Picture* result = new Picture(camera.getNumberPixelsX(), camera.getNumberPixelsY());
+    std::cout << "\rSuccessfully allocated memory for the picture in " << getCurrentTimeSeconds() - pictureMemoryAllocationBeginningTime  << " seconds." << std::endl << std::endl;
 
     std::cout << "Computing time estimation...";  // That's a lie. We're juste waiting for one iteration of the loop
     double loopBeginningTime = getCurrentTimeSeconds();
