@@ -16,8 +16,8 @@ Picture::Picture(const Picture& picture) : Picture(picture.width, picture.height
 
 Picture::~Picture() {
     for (int pixelX = 0; pixelX < width; pixelX++)
-        delete pixels[pixelX];
-    delete pixels;
+        delete[] pixels[pixelX];
+    delete[] pixels;
 }
 
 
