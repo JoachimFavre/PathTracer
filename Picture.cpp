@@ -44,7 +44,7 @@ void Picture::setValuePix(unsigned int x, unsigned int y, DoubleVec3D value) { p
 void Picture::setRenderTime(double renderTime) { this->renderTime = renderTime; }
 
 // Other methods
-void Picture::writeToFile(double middleGrey, std::string fileName, unsigned int movingAverageSize /*= 0*/) const {
+void Picture::export2File(double middleGrey, std::string fileName, unsigned int movingAverageSize /*= 0*/) const {
     std::cout << std::endl << "Exporting the picture...";
     double writingBeginningTime = getCurrentTimeSeconds();
 
@@ -133,7 +133,7 @@ void Picture::modify() {
             std::cout << std::endl;
             unsigned int movingAverageSize = getUnsignedIntFromUser("What is the size of the moving average you want to use? (0 for no moving average) " + POSITIVE_INT_INFO);
 
-            writeToFile(middleGrey, fileName, movingAverageSize);
+            export2File(middleGrey, fileName, movingAverageSize);
 
             std::cout << std::endl;
             getStringFromUser("Press enter to continue.");

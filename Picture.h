@@ -70,7 +70,7 @@
     \details This method can be used if the time was not set when the picture was instanciated (which is very likely to happen).
     \param renderTime The new time this picture took to be computed.
 
-    \fn void Picture::writeToFile(double middleGrey, std::string fileName, unsigned int movingAverage = 0)
+    \fn void Picture::export2File(double middleGrey, std::string fileName, unsigned int movingAverage = 0)
     \brief Writes this as a picture file.
     \details Uses the CImg library.
     \param middleGrey The middle-grey value that will be used for the toneMapping() function.
@@ -139,7 +139,7 @@ public:
     void setValuePix(unsigned int x, unsigned int y, DoubleVec3D value);
     void setRenderTime(double renderTime);
 
-    void writeToFile(double middleGrey, std::string fileName, unsigned int movingAverage = 0) const;
+    void export2File(double middleGrey, std::string fileName, unsigned int movingAverage = 0) const;
     void printAll() const;
     void modify();
 };
