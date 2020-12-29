@@ -69,7 +69,7 @@ using json = nlohmann::json;
 
     \fn showCMDCursor(bool show)
     \brief Shows or hide the cursor in the interface.
-    \details Used code from Captain Obvlious. Remove blinking underscore on console / cmd prompt. [Accessed 28 December 2020]. Stackoverflow. Aug. 3, 2013. URL: https://stackoverflow.com/questions/18028808/remove-blinking-underscore-on-console-cmd-prompt.
+    \details Used code from Captain Obvlious. Remove blinking underscore on console / cmd prompt. [Accessed 28 December 2020]. Stackoverflow. Aug. 3, 2013. URL: https://stackoverflow.com/a/18028927/12637970.
     \param show Whether the cursor will shown or hidden.
 
     \fn bool2string(bool b)

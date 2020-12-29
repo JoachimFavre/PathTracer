@@ -19,7 +19,7 @@ void availableCommandsHeader() {
 }
 
 void showCMDCursor(bool show) {
-    // From: https://stackoverflow.com/questions/18028808/remove-blinking-underscore-on-console-cmd-prompt (see the documentation or the report for complete bibliography)
+    // From: https://stackoverflow.com/a/18028927/12637970 (see the documentation or the report for complete bibliography)
     HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_CURSOR_INFO cursorInfo;
     GetConsoleCursorInfo(out, &cursorInfo);
