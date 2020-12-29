@@ -76,7 +76,7 @@ void receiveAndExecuteGeneralCommands() {
             file << std::setw(4) << jsonOutput << std::endl;
             file.close();
 
-            std::cout << "\rPicture succesffuly backed up to " << backupFileName << " in " << getCurrentTimeSeconds() - beginningTime << "s " << std::endl;
+            std::cout << "\rPicture succesffuly backed up to " << backupFileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl;
             std::cout << std::endl;
         }
 
@@ -98,17 +98,17 @@ void receiveAndExecuteGeneralCommands() {
             return;
         }
 
+        std::cout << "Loading picture...";
         double beginningTime = getCurrentTimeSeconds();
-        json jsonInput;
-
         std::ifstream file;
+        file.open(fileName);
         try {
-            file.open(fileName);
+            json jsonInput;
             file >> jsonInput;
             file.close();
 
             Picture pict = importPictureFromJson(jsonInput);
-            std::cout << "Successfully loaded picture from " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
+            std::cout << "\rSuccessfully loaded picture from " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
             getStringFromUser("Press enter to continue.");
 
             pict.modify();
@@ -116,7 +116,7 @@ void receiveAndExecuteGeneralCommands() {
         } catch (const json::exception& e) {
             if (file.is_open())
                 file.close();
-            std::cout << "The file " << fileName << " is corrupted." << std::endl << "Error: " << e.what() << std::endl << std::endl;
+            std::cout << "\rThe file " << fileName << " is corrupted." << std::endl << "Error: " << e.what() << std::endl << std::endl;
             getStringFromUser("Press enter to continue.");
         }
         return;
@@ -141,7 +141,6 @@ void executeParametersCommands(char command) {
         std::string fileName = getStringFromUser("What is the name of the " + PARAMETERS_SAVE_EXTENSION + " file from where the parameters will be loaded?");
         fileName = formatFileName(fileName, PARAMETERS_SAVE_EXTENSION);
         std::cout << std::endl;
-        double beginningTime = getCurrentTimeSeconds();  // don't want to count user time
 
         bool exists = fileExists(fileName);
         if (!exists) {
@@ -150,11 +149,13 @@ void executeParametersCommands(char command) {
             return;
         }
 
-        json jsonInput;
 
+        std::cout << "Loading parameters...";
+        double beginningTime = getCurrentTimeSeconds();  // don't want to count user time
         std::ifstream file;
-        file.open(fileName);  // File could change name -> need to make another try catch
+        file.open(fileName);
         try {
+            json jsonInput;
             file >> jsonInput;
             file.close();
 
@@ -177,12 +178,12 @@ void executeParametersCommands(char command) {
             scene.setKDMaxDepth(jsonOptimisationParameters["KDMaxDepth"].get<unsigned int>());
             scene.setKDMaxObjectNumber(jsonOptimisationParameters["KDMaxObjectNumber"].get<unsigned int>());
 
-            std::cout << "Successfully loaded parameters from " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
+            std::cout << "\rSuccessfully loaded parameters from " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
         }
         catch (const json::exception& e) {
             if (file.is_open())
                 file.close();
-            std::cout << "The file " << fileName << " is corrupted." << std::endl << "Error: " << e.what() << std::endl << std::endl;
+            std::cout << "\rThe file " << fileName << " is corrupted." << std::endl << "Error: " << e.what() << std::endl << std::endl;
         }
 
         getStringFromUser("Press enter to continue.");
@@ -231,8 +232,9 @@ void executeParametersCommands(char command) {
             if (!continue_)
                 return;
         }
-        double beginningTime = getCurrentTimeSeconds();  // don't want to count user time
 
+        double beginningTime = getCurrentTimeSeconds();  // don't want to count user time
+        std::cout << "Saving parameters...";
         json jsonOutput = {
             {"Camera", {
                 {"NumberPixelsX", camera.getNumberPixelsX()},
@@ -263,7 +265,7 @@ void executeParametersCommands(char command) {
         file << std::setw(4) << jsonOutput << std::endl;
         file.close();
 
-        std::cout << "Successfully saved objects to " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
+        std::cout << "\rSuccessfully saved parameters to " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
         getStringFromUser("Press enter to continue.");
         return;
     }
@@ -370,7 +372,6 @@ void executeObjectsCommands(char command) {
         std::string fileName = getStringFromUser("What is the name of the " + OBJECTS_SAVE_EXTENSION + " file from where the object groups will be loaded?");
         fileName = formatFileName(fileName, OBJECTS_SAVE_EXTENSION);
         std::cout << std::endl;
-        double beginningTime = getCurrentTimeSeconds();  // don't want to count user time
 
         bool exists = fileExists(fileName);
         if (!exists) {
@@ -379,24 +380,25 @@ void executeObjectsCommands(char command) {
             return;
         }
 
-        json jsonInput;
-
+        std::cout << "Loading object groups...";
+        double beginningTime = getCurrentTimeSeconds();
         std::ifstream file;
-        file.open(fileName);  // File could change name -> need to make another try catch
+        file.open(fileName);
         try {
+            json jsonInput;
             file >> jsonInput;
             file.close();
 
             for (json jsonGroup : jsonInput) {
                 objectGroups.push_back(jsonGroup.get<Object3DGroup>());
             }
-            std::cout << "Successfully loaded objects from " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
+            std::cout << "\rSuccessfully loaded objects from " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
 
         }
         catch (const json::exception& e) {
             if (file.is_open())
                 file.close();
-            std::cout << "The file " << fileName << " is corrupted." << std::endl << "Error: " << e.what() << std::endl << std::endl;
+            std::cout << "\rThe file " << fileName << " is corrupted." << std::endl << "Error: " << e.what() << std::endl << std::endl;
         }
 
         getStringFromUser("Press enter to continue.");
@@ -433,8 +435,9 @@ void executeObjectsCommands(char command) {
             if (!continue_)
                 return;
         }
-        double beginningTime = getCurrentTimeSeconds();  // don't want to count user time
 
+        double beginningTime = getCurrentTimeSeconds();
+        std::cout << "Saving object groups...";
         json jsonOutput;
         for (Object3DGroup group : objectGroups) {
             jsonOutput.push_back(group);
@@ -445,7 +448,7 @@ void executeObjectsCommands(char command) {
         file << std::setw(4) << jsonOutput << std::endl;
         file.close();
 
-        std::cout << "Successfully saved object groups to " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
+        std::cout << "\rSuccessfully saved object groups to " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
         getStringFromUser("Press enter to continue.");
         return;
     }

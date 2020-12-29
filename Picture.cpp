@@ -45,6 +45,7 @@ void Picture::setRenderTime(double renderTime) { this->renderTime = renderTime; 
 
 // Other methods
 void Picture::writeToFile(double middleGrey, std::string fileName, unsigned int movingAverageSize /*= 0*/) const {
+    std::cout << std::endl << "Exporting the picture...";
     double writingBeginningTime = getCurrentTimeSeconds();
 
     std::vector<std::vector<DoubleVec3D>> pixelValues;
@@ -55,7 +56,6 @@ void Picture::writeToFile(double middleGrey, std::string fileName, unsigned int 
         }
         pixelValues.push_back(column);
     }
-
 
     std::ofstream file;
     file.open("temp.ppm");
@@ -75,7 +75,7 @@ void Picture::writeToFile(double middleGrey, std::string fileName, unsigned int 
     remove("temp.ppm");
     image.save(fileName.c_str());
 
-    std::cout << std::endl << "The picture was successfully written in " << fileName << " file with " << middleGrey << " being the middle-grey in " << getCurrentTimeSeconds() - writingBeginningTime << " seconds!" << std::endl;
+    std::cout << "\rSuccessfully exported the picture to " << fileName << " file with " << middleGrey << " being the middle-grey in " << getCurrentTimeSeconds() - writingBeginningTime << " seconds!" << std::endl;
     system((".\\" + fileName).c_str());
 }
 
@@ -143,8 +143,9 @@ void Picture::modify() {
             std::string fileName = getStringFromUser("What is the name of the " + PICTURE_SAVE_EXTENSION_JSON + " file in which the picture will be saved?");
             fileName = formatFileName(fileName, PICTURE_SAVE_EXTENSION_JSON);
             std::cout << std::endl;
-            double beginningTime = getCurrentTimeSeconds();
 
+            std::cout << "Saving the picture...";
+            double beginningTime = getCurrentTimeSeconds();
             json jsonOutput = *this;
 
             std::ofstream file;
@@ -152,7 +153,7 @@ void Picture::modify() {
             file << std::setw(4) << jsonOutput << std::endl;
             file.close();
 
-            std::cout << "Successfully saved picture to " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
+            std::cout << "\rSuccessfully saved the picture to " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
             getStringFromUser("Press enter to continue.");
             break;
         }
