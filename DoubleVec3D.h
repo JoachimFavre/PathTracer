@@ -152,7 +152,7 @@
 
     \fn crossProd(const DoubleVec3D& vec1, const DoubleVec3D& vec2)
     \brief Cross product.
-    \details A cross prodct gives a third vector, orthogonal to the two previous.
+    \details A cross prodct gives a third vector, orthogonal to the two previous. Its length is given by the area of the parallelogram drawn by the two others.
     \param vec1 The fisrt vector for the product.
     \param vec2 The second vector for the product.
     \return The cross product between vec1 and vec2.
