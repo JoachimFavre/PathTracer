@@ -153,7 +153,6 @@ bool Scene::importFBXFile(const char* filePath, Material* material, std::string 
     return true;
 }
 
-
 bool importTrianglesFromFbxNode(FbxNode* node, Material* material, std::vector<Object3D*>& objects) {
     for (int childNumber = 0; childNumber < node->GetChildCount(); childNumber++) {
         FbxNode* child = node->GetChild(childNumber);
@@ -192,6 +191,51 @@ bool importTrianglesFromFbxNode(FbxNode* node, Material* material, std::vector<O
 }
 
 
+// Save
+void Scene::saveParameters2File(std::string fileName) const {
+    json jsonOutput = {
+    {"Camera", {
+        {"NumberPixelsX", camera.getNumberPixelsX()},
+        {"NumberPixelsY", camera.getNumberPixelsY()},
+        {"Focal", camera.getFocal()},
+        {"Origin", camera.getOrigin()}
+        }
+    },
+    {"BasicParameters", {
+        {"SamplePerPixel", samplePerPixel},
+        {"MinBounces", minBounces}
+        }
+    },
+    {"OptimisationParameters", {
+        {"NumberThreads", numberThreads},
+        {"RussianRoulette", russianRoulette},
+        {"RrStopProbability", rrStopProbability},
+        {"NextEventEstimation", nextEventEstimation},
+        {"KDTree", kdTree},
+        {"KDMaxDepth", kdMaxDepth},
+        {"KDMaxObjectNumber", kdMaxObjectNumber}
+        }
+    }
+    };
+
+    std::ofstream file;
+    file.open(fileName);
+    file << std::setw(4) << jsonOutput << std::endl;
+    file.close();
+}
+
+void Scene::saveObjectGroups2File(std::string fileName) const {
+    json jsonOutput;
+    for (Object3DGroup group : objectsGroups) {
+        jsonOutput.push_back(group);
+    }
+
+    std::ofstream file;
+    file.open(fileName);
+    file << std::setw(4) << jsonOutput << std::endl;
+    file.close();
+}
+
 // Private method
 KDTreeNode::Intersection Scene::bruteForceIntersection(const Ray& ray) const {
     double smallestPositiveDistance = INFINITY;  // Has to be strictly positive -> we don't want it to intersect with same object
@@ -207,7 +251,6 @@ KDTreeNode::Intersection Scene::bruteForceIntersection(const Ray& ray) const {
 }
 
 DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= false*/, const KDTreeNode* lastNode /*= nullptr*/, unsigned int bounces /*= 0*/) const {
-
     DoubleVec3D result(0.0);
 
     // Russian roulette
@@ -289,14 +332,6 @@ void displayRenderingProgression(unsigned int numberPixelXAlreadyComputed, unsig
 
 // Render method
 Picture* Scene::render() {
-    showCMDCursor(false);
-
-    computeObjectsAndLamps();
-
-    unsigned int pictureWidth = camera.getNumberPixelsX();
-    unsigned int pictureHeight = camera.getNumberPixelsY();
-    omp_set_num_threads(numberThreads);
-
     // Print informations
     displayParametersPage(false);
     std::cout << "Objects" << std::endl;
@@ -306,6 +341,16 @@ Picture* Scene::render() {
     std::cout << std::endl;
     std::cout << STAR_SPLITTER << std::endl;
     std::cout << std::endl;
+
+    std::cout << "Backing parameters up...";
+    double parametersBackupBeginningTime = getCurrentTimeSeconds();
+    std::cout << "Backing object groups up...";
+
+    computeObjectsAndLamps();
+
+    unsigned int pictureWidth = camera.getNumberPixelsX();
+    unsigned int pictureHeight = camera.getNumberPixelsY();
+    omp_set_num_threads(numberThreads);
 
     if (kdTree) {
         std::cout << "Creating a k-d tree...";
@@ -326,6 +371,8 @@ Picture* Scene::render() {
     double pictureMemoryAllocationBeginningTime = getCurrentTimeSeconds();
     Picture* result = new Picture(camera.getNumberPixelsX(), camera.getNumberPixelsY());
     std::cout << "\rSuccessfully allocated memory for the picture in " << getCurrentTimeSeconds() - pictureMemoryAllocationBeginningTime  << " seconds." << std::endl << std::endl;
+
+    showCMDCursor(false);
 
     std::cout << "Computing time estimation...";  // That's a lie. We're juste waiting for one iteration of the loop
     double loopBeginningTime = getCurrentTimeSeconds();

@@ -288,6 +288,9 @@ public:
     void computeObjectsAndLamps();
     void defaultScene();
 
+    void saveParameters2File(std::string fileName) const;
+    void saveObjectGroups2File(std::string fileName) const;
+
     bool importFBXFile(const char* filePath, Material* material, std::string name);
 
     Picture* render();

@@ -234,38 +234,9 @@ void executeParametersCommands(char command) {
                 return;
         }
 
-        double beginningTime = getCurrentTimeSeconds();  // don't want to count user time
+        double beginningTime = getCurrentTimeSeconds();
         std::cout << "Saving parameters...";
-        json jsonOutput = {
-            {"Camera", {
-                {"NumberPixelsX", camera.getNumberPixelsX()},
-                {"NumberPixelsY", camera.getNumberPixelsY()},
-                {"Focal", camera.getFocal()},
-                {"Origin", camera.getOrigin()}
-                }
-            },
-            {"BasicParameters", {
-                {"SamplePerPixel", scene.getSamplePerPixel()},
-                {"MinBounces", scene.getMinBounces()}
-                }
-            },
-            {"OptimisationParameters", {
-                {"NumberThreads", scene.getNumberThreads()},
-                {"RussianRoulette", scene.getRussianRoulette()},
-                {"RrStopProbability", scene.getRrStopProbability()},
-                {"NextEventEstimation", scene.getNextEventEstimation()},
-                {"KDTree", scene.getKDTree()},
-                {"KDMaxDepth", scene.getKDMaxDepth()},
-                {"KDMaxObjectNumber", scene.getKDMaxObjectNumber()}
-                }
-            }
-        };
-
-        std::ofstream file;
-        file.open(fileName);
-        file << std::setw(4) << jsonOutput << std::endl;
-        file.close();
-
+        scene.saveParameters2File(fileName);
         std::cout << "\rSuccessfully saved parameters to " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
         getStringFromUser("Press enter to continue.");
         return;
@@ -439,16 +410,7 @@ void executeObjectsCommands(char command) {
 
         double beginningTime = getCurrentTimeSeconds();
         std::cout << "Saving object groups...";
-        json jsonOutput;
-        for (Object3DGroup group : objectGroups) {
-            jsonOutput.push_back(group);
-        }
-
-        std::ofstream file;
-        file.open(fileName);
-        file << std::setw(4) << jsonOutput << std::endl;
-        file.close();
-
+        scene.saveObjectGroups2File(fileName);
         std::cout << "\rSuccessfully saved object groups to " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
         getStringFromUser("Press enter to continue.");
         return;
