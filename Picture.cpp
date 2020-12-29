@@ -60,8 +60,8 @@ void Picture::writeToFile(double middleGrey, std::string fileName, unsigned int 
     std::ofstream file;
     file.open("temp.ppm");
     file << "P3" << std::endl << width << " " << height << " " << MAX_COLOUR_VALUE << std::endl;
-    for (unsigned int pixelY = 0; pixelY < height; pixelY++) {
-        for (unsigned int pixelX = 0; pixelX < width; pixelX++) {
+    for (unsigned int pixelX = 0; pixelX < width; pixelX++) {
+        for (unsigned int pixelY = 0; pixelY < height; pixelY++) {
             DoubleVec3D currentColour = getColourMovingAverage(pixelValues, pixelX, pixelY, movingAverageSize);
             file << (int)(currentColour.getX()) << " ";
             file << (int)(currentColour.getY()) << " ";
@@ -191,9 +191,9 @@ DoubleVec3D getColourMovingAverage(const std::vector<std::vector<DoubleVec3D>>& 
     DoubleVec3D result(0.0);
     unsigned int numberPixels = (maxPixX - minPixX + 1)*(maxPixY - minPixY + 1);  // not (2*size + 1)^2 because smaller if near an edge
 
-    for (unsigned int y = minPixY; y <= maxPixY; y++) {
-        for (unsigned int x = minPixX; x <= maxPixX; x++) {
-            result += pixelValues[x][y] / numberPixels;
+    for (unsigned int pixelX = minPixX; pixelX <= maxPixX; pixelX++) {
+        for (unsigned int pixelY = minPixY; pixelY <= maxPixY; pixelY++) {
+            result += pixelValues[pixelX][pixelY] / numberPixels;
         }
     }
 
