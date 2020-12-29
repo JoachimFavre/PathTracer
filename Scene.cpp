@@ -115,7 +115,7 @@ void Scene::defaultScene() {
         }));
 }
 
-bool Scene::importFBX(const char* filePath, Material* material, std::string name) {
+bool Scene::importFBXFile(const char* filePath, Material* material, std::string name) {
     double importationBeginningTime = getCurrentTimeSeconds();
 
     FbxManager* sdkManager = FbxManager::Create();
@@ -143,23 +143,34 @@ bool Scene::importFBX(const char* filePath, Material* material, std::string name
     }
 
     FbxNode* rootNode = fbxScene->GetRootNode();
+    std::vector<Object3D*> objects;
 
-    for (int childNumber = 0; childNumber < rootNode->GetChildCount(); childNumber++) {
-        FbxNode* child = rootNode->GetChild(childNumber);
+    if (!importTrianglesFromFbxNode(rootNode, material, objects))
+        return false;
 
-        FbxAMatrix& childGlobalTransform = child->EvaluateGlobalTransform();
-        DoubleVec3D translation = childGlobalTransform.GetT();
-        DoubleVec3D rotation = childGlobalTransform.GetR() * M_PI/180; // Gets converted in radians
-        DoubleVec3D scaling = childGlobalTransform.GetS();
+    addObjectGroup(Object3DGroup(name, objects));
+    std::cout << filePath << " was successfully imported in " << getCurrentTimeSeconds() - importationBeginningTime << " seconds!" << std::endl;
+    return true;
+}
 
-        DoubleMatrix33 rotationAndScalingMatrix = getRotationMatrixXYZ(rotation)*getScalingMatrixXYZ(scaling);  // order is important
+
+bool importTrianglesFromFbxNode(FbxNode* node, Material* material, std::vector<Object3D*>& objects) {
+    for (int childNumber = 0; childNumber < node->GetChildCount(); childNumber++) {
+        FbxNode* child = node->GetChild(childNumber);
+        
+        if (!importTrianglesFromFbxNode(child, material, objects))  // Recursive call
+            return false;
 
         FbxMesh* mesh = child->GetMesh();
 
         if (mesh != nullptr) {
-            FbxVector4* controlPoints = mesh->GetControlPoints();
-            std::vector<Object3D*> objects;
+            FbxAMatrix& childGlobalTransform = child->EvaluateGlobalTransform();
+            DoubleVec3D translation = childGlobalTransform.GetT();
+            DoubleVec3D rotation = childGlobalTransform.GetR() * M_PI / 180; // Gets converted in radians
+            DoubleVec3D scaling = childGlobalTransform.GetS();
+            DoubleMatrix33 rotationAndScalingMatrix = getRotationMatrixXYZ(rotation)*getScalingMatrixXYZ(scaling);  // order is important
 
+            FbxVector4* controlPoints = mesh->GetControlPoints();
             // Add each triangle to the scene
             for (int polygonIx = 0; polygonIx < mesh->GetPolygonCount(); polygonIx++) {
                 if (mesh->GetPolygonSize(polygonIx) != 3) {
@@ -167,27 +178,16 @@ bool Scene::importFBX(const char* filePath, Material* material, std::string name
                     return false;
                 }
 
-                // FbxSurfaceMaterial* material = child->GetMaterial(0);  // assumes one material for each face
-                // std::cout << material->GetName() << std::endl;
                 FbxLayer* layer = mesh->GetLayer(0);
 
                 DoubleVec3D vertex0 = rotationAndScalingMatrix * controlPoints[mesh->GetPolygonVertex(polygonIx, 0)] + translation;
                 DoubleVec3D vertex1 = rotationAndScalingMatrix * controlPoints[mesh->GetPolygonVertex(polygonIx, 1)] + translation;
                 DoubleVec3D vertex2 = rotationAndScalingMatrix * controlPoints[mesh->GetPolygonVertex(polygonIx, 2)] + translation;
 
-                Triangle* triangle = new Triangle(vertex0, vertex1, vertex2, material);
-                // Emittance is always equal to the diffuse colour -> bug from the library
-
-                // Verify normals?
-
-                objects.push_back(triangle);
+                objects.push_back(new Triangle(vertex0, vertex1, vertex2, material));
             }
-
-            addObjectGroup(Object3DGroup(name, objects));
         }
     }
-
-    std::cout << filePath << " was successfully imported in " << getCurrentTimeSeconds() - importationBeginningTime << " seconds!" << std::endl;
     return true;
 }
 

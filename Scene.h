@@ -186,13 +186,14 @@
     \brief Sets this scene's objects to default ones.
     \details The look is similar to the Cornell box.
 
-    \fn bool Scene::importFBX(const char* filePath, Material* material, std::string name)
+    \fn bool Scene::importFBXFile(const char* filePath, Material* material, std::string name)
     \brief Imports a FBX file as triangles.
     \details Uses the FBX SDK library.
     \param filePath The path the FBX file.
     \param material The material that will be used for all the triangles which will be imported.
     \param name The name of the objects group in which all triangles will be stored.
     \return True if the importation was successful, false else.
+    \sa importTrianglesFromFbxNode()
 
     \fn Picture* Scene::render()
     \brief Start the render of the picture.
@@ -209,6 +210,13 @@
     \brief Prints the objects page.
     \details This is one of the main pages.
     \sa displayParametersPage()
+
+    \fn bool importTrianglesFromFbxNode(FbxNode* node, Material* material, std::vector<Object3D*>& objects)
+    \brief Imports recursively all triangles present in a FBXNode.
+    \param node The node from which we want to import the mesh.
+    \param material The material with which the triangles will be instanciated.
+    \param objects A reference to a vector of objects in which the triangles will be added.
+    \sa Scene::importFBXFile()
 
     \fn void displayRenderingProgression(unsigned int numberPixelXAlreadyComputed, unsigned int pictureWidth, double loopBeginningTime)
     \brief Prints the progression information
@@ -279,13 +287,16 @@ public:
     void resetObjectGroups();
     void computeObjectsAndLamps();
     void defaultScene();
-    bool importFBX(const char* filePath, Material* material, std::string name);
+
+    bool importFBXFile(const char* filePath, Material* material, std::string name);
 
     Picture* render();
 
     void displayParametersPage(bool displayIndexes = true) const;
     void displayObjectsPage() const;
 };
+
+bool importTrianglesFromFbxNode(FbxNode* node, Material* material, std::vector<Object3D*>& objects);
 
 void displayRenderingProgression(unsigned int numberPixelXAlreadyComputed, unsigned int pictureWidth, double loopBeginningTime);
 

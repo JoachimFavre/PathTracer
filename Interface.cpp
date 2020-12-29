@@ -361,7 +361,7 @@ void executeObjectsCommands(char command) {
         std::string name = getStringFromUser("How do you want to call the objects group?");
         std::cout << std::endl;
         Material* material = createMaterial();
-        scene.importFBX(fileName.c_str(), material, name);
+        scene.importFBXFile(fileName.c_str(), material, name);
         std::cout << std::endl;
         getStringFromUser("Press enter to continue.");
         return;
