@@ -68,14 +68,14 @@ Object3D* createSphere(Material* material) {
 }
 
 Object3D* createTriangle(Material* material) {
-    DoubleVec3D vertex1 = getXYZDoubleVec3DFromUser("What is the first vertex of the triangle? (Order is important for the normal, give them counterclockwise from where they are visible.)");
+    DoubleVec3D vertex0 = getXYZDoubleVec3DFromUser("What is the first vertex of the triangle? (Order is important for the normal, give them counterclockwise from where they are visible.)");
     std::cout << std::endl;
-    DoubleVec3D vertex2 = getXYZDoubleVec3DFromUser("What is the second vertex of the triangle?");
+    DoubleVec3D vertex1 = getXYZDoubleVec3DFromUser("What is the second vertex of the triangle?");
     std::cout << std::endl;
-    DoubleVec3D vertex3 = getXYZDoubleVec3DFromUser("What is the third vertex of the triangle?");
+    DoubleVec3D vertex2 = getXYZDoubleVec3DFromUser("What is the third vertex of the triangle?");
     std::cout << std::endl;
 
-    return new Triangle(vertex1, vertex2, vertex3, material);
+    return new Triangle(vertex0, vertex1, vertex2, material);
 }
 
 Object3D* createObject3D() {
