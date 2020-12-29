@@ -186,6 +186,16 @@
     \brief Sets this scene's objects to default ones.
     \details The look is similar to the Cornell box.
 
+    \fn void Scene::saveParameters2File(std::string fileName) const
+    \brief Saves parameters to a file.
+    \param fileName The name of the file to which the prameters will be saved. It is recommended that this file extension ends with PARAMETERS_SAVE_EXTENSION.
+    \sa formatFileName()
+
+    \fn void Scene::saveObjectGroups2File(std::string fileName) const
+    \brief Saves object groups to a file.
+    \param fileName The name of the file to which the object groups will be saved. It is recommended that this file extension ends with OBJECTS_SAVE_EXTENSION.
+    \sa formatFileName()
+
     \fn bool Scene::importFBXFile(const char* filePath, Material* material, std::string name)
     \brief Imports a FBX file as triangles.
     \details Uses the FBX SDK library.
