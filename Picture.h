@@ -49,7 +49,7 @@
     \brief Getter for the render time.
     \return The time it took to compute this picture.
 
-    \fn std::vector<std::vector<DoubleVec3D>> Picture::getPixels()
+    \fn Picture::getPixels()
     \brief Getter for the pixels.
     \return A std::vector of std::vector that contains the radiance at each pixel.
 
