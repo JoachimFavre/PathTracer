@@ -27,80 +27,80 @@
     \brief Copy constructor.
     \param triangle The triangle that will be copied.
 
-    \fn Triangle::getVertex1()
+    \fn DoubleVec3D Triangle::getVertex1()
     \brief Getter for the first vertex.
     \return This triangle's first vertex.
 
-    \fn Triangle::getVertex2()
+    \fn DoubleVec3D Triangle::getVertex2()
     \brief Getter for the second vertex.
     \return This triangle's second vertex.
 
-    \fn Triangle::getVertex3()
+    \fn DoubleVec3D Triangle::getVertex3()
     \brief Getter for the third vertex.
     \return This triangle's third vertex.
 
-    \fn Triangle::getCenter()
+    \fn DoubleVec3D Triangle::getCenter()
     \brief Getter for the center.
     \return The average of the three vertices.
 
-    \fn Triangle::setVertex1(const DoubleVec3D& vertex)
+    \fn void Triangle::setVertex1(const DoubleVec3D& vertex)
     \brief Setter for the first vertex.
     \param vertex The new first vertex of this triangle.
 
-    \fn Triangle::setVertex2(const DoubleVec3D& vertex)
+    \fn void Triangle::setVertex2(const DoubleVec3D& vertex)
     \brief Setter for the second vertex.
     \param vertex The new second vertex of this triangle.
 
-    \fn Triangle::setVertex3(const DoubleVec3D& vertex)
+    \fn void Triangle::setVertex3(const DoubleVec3D& vertex)
     \brief Setter for the third vertex.
     \param vertex The new third vertex of this triangle.
 
-    \fn Triangle::computeArea()
+    \fn void Triangle::computeArea()
     \brief Computes this triangle's area.
     \details Modifies Object3D::area. It uses the formula A = 0.5 * ||edge1 x edge2||.
 
-    \fn Triangle::deepCopy()
+    \fn Object3D* Triangle::deepCopy()
     \brief Makes a deep copy of this object.
     \return A pointer to a deeply copied version of this object.
 
-    \fn Triangle::closestIntersection(const Ray& ray)
-    \brief Computes the closes intersection between the ray and this object.
+    \fn double Triangle::closestIntersection(const Ray& ray)
+    \brief Computes the closest intersection between the ray and this object.
     \param ray The ray with wich we want to compute the intersection.
     \return The distance between the ray origin and the intersection. Returns -1 if the ray does not intersect with the object.
 
-    \fn Triangle::getNormal(const DoubleVec3D& point)
+    \fn DoubleUnitVec3D Triangle::getNormal(const DoubleVec3D& point)
     \brief Computes the normal at a point on the object.
     \param point The point on the object at which we want to compute the normal.
     \return The cross product between (vertex2 - vertex1) and (vertex3 - vertex1)
 
-    \fn Triangle::getRandomPoint()
+    \fn DoubleVec3D Triangle::getRandomPoint()
     \brief Computes a random point on the object.
     \return A random point on this object.
 
-    \fn Triangle::getMinCoord()
+    \fn DoubleVec3D Triangle::getMinCoord()
     \brief Returns the minimum coordinate of a cuboid containing this object.
     \details For each axis, picks the smallest coordinate among the three vertices.
     \return The minimum coordinate of a cuboid containing this object.
 
-    \fn Triangle::getMaxCoord()
+    \fn DoubleVec3D Triangle::getMaxCoord()
     \brief Returns the maximum coordinate of a cuboid containing this object.
     \details For each axis, picks the greatest coordinate among the three vertices.
     \return The maximum coordinate of a cuboid containing this object.
 
-    \fn Triangle::getDescription(std::ostream& stream)
+    \fn std::ostream& Triangle::getDescription(std::ostream& stream)
     \brief Returns this object's description.
     \param stream The current stream.
     \return The stream with the description.
 
-    \fn Triangle::getType()
+    \fn std::string Triangle::getType()
     \brief Returns this object type.
     \return "Triangle".
 
-    \fn Triangle::getLocationJson()
+    \fn json Triangle::getLocationJson()
     \brief Converts this objects's location to json.
     \return This triangle's vertices converted to json.
 
-    \fn Triangle::setLocationJson(const json& j)
+    \fn void Triangle::setLocationJson(const json& j)
     \brief Sets this object's location according to json.
     \param j The json input.
 */

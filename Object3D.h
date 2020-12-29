@@ -12,7 +12,7 @@
     \class Object3D
     \brief Abstract class for a three-dimentional object.
 
-    \var Object3D::area
+    \var double Object3D::area
     \brief Stores the area of this object.
     \details It is computed every time the object coordinates are modified.
     \sa Object3D::getArea(), Object3D::computeArea()
@@ -32,77 +32,77 @@
     \fn Object3D::~Object3D()
     \brief Destructor.
 
-    \fn Object3D::getMaterial()
+    \fn Material* Object3D::getMaterial()
     \brief Getter for the Material.
     \return A pointer to this object's material.
 
-    \fn Object3D::getArea()
+    \fn double Object3D::getArea()
     \brief Getter for this object's area.
     \return This object's area.
     \sa Object3D::area, Object3D::computeArea()
 
-    \fn Object3D::setMaterial(Material* material)
+    \fn void Object3D::setMaterial(Material* material)
     \brief Setter for the Material.
     \param material The new material of this object.
 
-    \fn Object3D::computeArea()
+    \fn virtual void Object3D::computeArea() = 0
     \brief Computes this object area.
     \details Modifies Object3D::area.
     \sa Object3D::area, Object3D::getArea()
 
-    \fn Object3D::deepCopy()
+    \fn virtual Object3D* Object3D::deepCopy() = 0
     \brief Makes a deep copy of this object.
     \return A pointer to a deeply copied version of this object.
 
-    \fn Object3D::closestIntersection(const Ray& ray)
+    \fn virtual double Object3D::closestIntersection(const Ray& ray) = 0
     \brief Computes the closes intersection between the ray and this object.
     \param ray The ray with wich we want to compute the intersection.
     \return The distance between the ray origin and the intersection (the smalles one if there is more than one intersection). Returns -1 if the ray does not intersect with the object.
 
-    \fn Object3D::getNormal(const DoubleVec3D& point)
+    \fn virtual DoubleUnitVec3D Object3D::getNormal(const DoubleVec3D& point) = 0
     \brief Computes the normal at a point on the object.
     \param point The point on the object at which we want to compute the normal.
     \return The normal at this point.
 
-    \fn Object3D::getRandomPoint()
+    \fn virtual DoubleVec3D Object3D::getRandomPoint() = 0
     \brief Computes a random point on the object.
     \return A random point on this object.
 
-    \fn Object3D::getDescription(std::ostream& stream)
+    \fn virtual std::ostream& Object3D::getDescription(std::ostream& stream) = 0
     \brief Returns this object's description.
     \param stream The current stream.
     \return The stream with the description.
 
-    \fn Object3D::getCenter()
+    \fn virtual DoubleVec3D Object3D::getCenter() = 0
     \brief Returns this object's center.
     \return The center of this object.
 
-    \fn Object3D::getMinCoord()
+    \fn virtual DoubleVec3D Object3D::getMinCoord() = 0
     \brief Returns the minimum coordinate of a cuboid containing this object.
     \return The minimum coordinate of a cuboid containing this object.
 
-    \fn Object3D::getMaxCoord()
+    \fn virtual DoubleVec3D Object3D::getMaxCoord() = 0
     \brief Returns the maximum coordinate of a cuboid containing this object.
     \return The maximum coordinate of a cuboid containing this object.
 
-    \fn Object3D::getType()
+    \fn virtual std::string Object3D::getType() = 0
     \brief Returns this object type.
     \return Returns this object type ("Sphere", "Triangle", ...).
 
-    \fn Object3D::getLocationJson()
+    \fn virtual json Object3D::getLocationJson() = 0
     \brief Converts this objects's location to json.
     \return This object's location converted to json.
 
-    \fn Object3D::setLocationJson(const json& j)
+    \fn virtual void Object3D::setLocationJson(const json& j) = 0
     \brief Sets this object's location according to json.
     \param j The json input.
 
-    \fn Object3D::operator=(const Object3D& otherObject)
+    \fn Object3D& Object3D::operator=(const Object3D& otherObject)
     \brief Assignment operator.
     \details Makes a deepcopy of the material before copying it.
     \param otherObject The object to which this will be equal.
 
-    \fn operator<<(std::ostream& stream, const Object3D& object)
+    \fn std::ostream& operator<<(std::ostream& stream, const Object3D& object)
     \brief Ostream operator.
     \details Calls the getDescription() method.
     \param stream The ostream before.

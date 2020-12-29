@@ -24,68 +24,68 @@
     \brief Copy constructor.
     \param sphere The sphere that will be copied.
 
-    \fn Sphere::getRadius()
+    \fn double Sphere::getRadius()
     \brief Getter for the radius.
     \return This sphere's radius.
 
-    \fn Sphere::getCenter()
+    \fn DoubleVec3D Sphere::getCenter()
     \brief Getter for the center.
     \return This sphere's center.
 
-    \fn Sphere::setCenter(const DoubleVec3D& center)
+    \fn void Sphere::setCenter(const DoubleVec3D& center)
     \brief Setter for the center.
     \param center The new center of this sphere.
 
-    \fn Sphere::setRadius(double radius)
+    \fn void Sphere::setRadius(double radius)
     \brief Setter for the radius.
     \param radius The new radius of this sphere.
 
-    \fn Sphere::computeArea()
+    \fn void Sphere::computeArea()
     \brief Computes this sphere's area.
     \details Modifies Object3D::area. It uses the formula A = 4*pi*radius.
 
-    \fn Sphere::deepCopy()
+    \fn Object3D* Sphere::deepCopy()
     \brief Makes a deep copy of this object.
     \return A pointer to a deeply copied version of this object.
 
-    \fn Sphere::closestIntersection(const Ray& ray)
+    \fn double Sphere::closestIntersection(const Ray& ray)
     \brief Computes the closes intersection between the ray and this object.
     \param ray The ray with wich we want to compute the intersection.
     \return The distance between the ray origin and the intersection (the smalles one if there is more than one intersection). Returns -1 if the ray does not intersect with the object.
 
-    \fn Sphere::getNormal(const DoubleVec3D& point)
+    \fn DoubleUnitVec3D Sphere::getNormal(const DoubleVec3D& point)
     \brief Computes the normal at a point on the object.
     \param point The point on the object at which we want to compute the normal.
     \return The normal at this point.
 
-    \fn Sphere::getRandomPoint()
+    \fn DoubleVec3D Sphere::getRandomPoint()
     \brief Computes a random point on the object.
     \return A random point on this object.
 
-    \fn Sphere::getMinCoord()
+    \fn DoubleVec3D Sphere::getMinCoord()
     \brief Returns the minimum coordinate of a cuboid containing this object.
     \details This is computed using the following formula: center - DoubleVec3D(radius).
     \return The minimum coordinate of a cuboid containing this object.
 
-    \fn Sphere::getMaxCoord()
+    \fn DoubleVec3D Sphere::getMaxCoord()
     \brief Returns the maximum coordinate of a cuboid containing this object.
     \details This is computed using the following formula: center + DoubleVec3D(radius).
     \return The maximum coordinate of a cuboid containing this object.
 
-    \fn Sphere::getDescription(std::ostream& stream)
+    \fn std::ostream& Sphere::getDescription(std::ostream& stream)
     \brief Returns this object's description.
     \param stream The current stream.
     \return The stream with the description.
 
-    \fn Sphere::getType()
+    \fn std::string Sphere::getType()
     \brief Returns this object type.
     \return "Sphere".
 
-    \fn Sphere::getLocationJson()
+    \fn json Sphere::getLocationJson()
     \brief Converts this objects's location to json.
     \return This sphere's center and radius converted to json.
 
-    \fn Sphere::setLocationJson(const json& j)
+    \fn void Sphere::setLocationJson(const json& j)
     \brief Sets this object's location according to json.
     \param j The json input.
 */

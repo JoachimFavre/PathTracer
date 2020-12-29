@@ -19,49 +19,49 @@
     \brief Copy constructor.
     \param material The material that will be copied.
 
-    \fn DiffuseMaterial::getAlbedo()
+    \fn DoubleVec3D DiffuseMaterial::getAlbedo()
     \brief Getter for the albedo attribute.
     \return The albedo of this material.
     \sa setAlbedo()
 
-    \fn DiffuseMaterial::setAlbedo(const DoubleVec3D& albedo)
+    \fn void DiffuseMaterial::setAlbedo(const DoubleVec3D& albedo)
     \brief Getter for the albedo attribute.
     \param albedo The new albedo of this material.
     \sa getAlbedo()
 
-    \fn DiffuseMaterial::deepCopy()
+    \fn Material* DiffuseMaterial::deepCopy()
     \brief Makes a deep copy of this material.
     \return A pointer to a deeply copied version of this material.
 
-    \fn DiffuseMaterial::getNewDirection(const Ray& previousRay, const DoubleUnitVec3D& normal)
+    \fn DoubleUnitVec3D DiffuseMaterial::getNewDirection(const Ray& previousRay, const DoubleUnitVec3D& normal)
     \brief Computes the new ray direction.
     \param previousRay The ray that hits this material.
     \param normal The normal at the intersection.
 
-    \fn DiffuseMaterial::computeCurrentRadiance(const DoubleVec3D& recursiveRadiance, double angleNewDirectionNormal, bool nextEventEstimation = false)
+    \fn DoubleVec3D DiffuseMaterial::computeCurrentRadiance(const DoubleVec3D& recursiveRadiance, double angleNewDirectionNormal, bool nextEventEstimation = false)
     \brief Computes the new radiance.
     \param recursiveRadiance The radiance recursively obtained.
     \param angleNewDirectionNormal The cosine of the angle between the direction of the next ray and the normal at the intersection.
     \param nextEventEstimation Whether the radiance is obtained using the next event estimation algorithm.
     \return The new radiance.
 
-    \fn DiffuseMaterial::worksWithNextEventEstimation()
+    \fn bool DiffuseMaterial::worksWithNextEventEstimation()
     \brief Returns whether this material works with next event estimation.
     \return True.
 
-    \fn DiffuseMaterial::getDescription(std::ostream& stream)
+    \fn std::ostream& DiffuseMaterial::getDescription(std::ostream& stream)
     \brief Returns this material's description.
     \param stream The current stream.
     \return The stream with the description.
 
-    \fn DiffuseMaterial::getType()
+    \fn std::string DiffuseMaterial::getType()
     \brief Returns "Diffuse".
 
-    \fn DiffuseMaterial::getSpecificParametersJson()
+    \fn json DiffuseMaterial::getSpecificParametersJson()
     \brief Converts this material's specific parameters to json.
     \return This material's specific parameters converted to json.
 
-    \fn DiffuseMaterial::setSpecificParametersJson(const json& j)
+    \fn void DiffuseMaterial::setSpecificParametersJson(const json& j)
     \brief Sets this material's specific parameters according to json.
     \param j The json input.
 */

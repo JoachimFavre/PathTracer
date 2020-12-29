@@ -11,32 +11,32 @@
     \brief Different current main pages possible.
     \details Could have been defined using a boolean, but it is not something that really needs to be optimised and an enumeration is, I think, more readable.
 
-    \var smallestRenderTime4PictBackup
+    \var double smallestRenderTime4PictBackup
     \brief If the render time takes more time, the render will be backed up.
 
-    \var backupFileName
+    \var std::string backupFileName
     \brief The name of the file in which the backup will be made.
 
-    \fn receiveAndExecuteGeneralCommands()
+    \fn void receiveAndExecuteGeneralCommands()
     \brief Receives and executes the general commands.
     \details Asks a command to the user. If it is general to both main pages (exit, for example), executes it, else, calls executeParametersCommands() or executeObjectsCommands().
 
-    \fn executeParametersCommands(char command)
+    \fn void executeParametersCommands(char command)
     \brief Executes a command specific to the parameters page.
 
-    \fn executeObjectsCommands(char command)
+    \fn void executeObjectsCommands(char command)
     \brief Executes a command specific to the objects page.
 
-    \fn displayCommands()
+    \fn void displayCommands()
     \brief Prints the available command.
     \details The available commands change depending on the active page.
 
-    \fn printAll()
+    \fn void printAll()
     \brief Prints the whole page.
     \details Clears the page, prints the header, information and the available commands.
     \sa clearScreenPrintHeader(), Scene::displayParametersPage(), Scene::displayObjectsPage(), displayCommands()
 
-    \fn initInterface()
+    \fn void initInterface()
     \brief Starts the infinite loop of the interface.
 */
 

@@ -3,7 +3,8 @@
 
 #include "InterfaceGestion.h"
 
-/*!    \file DoubleVec3D.h
+/*! 
+    \file DoubleVec3D.h
     \brief Defines the DoubleVec3D class and the functions around it.
     
     \class DoubleVec3D
@@ -39,22 +40,22 @@
     \param vec The FbxDouble4 vector (from FBX SDK library) that will be converted.
     \sa DoubleVec3D(const FbxDouble3& vec)
 
-    \fn DoubleVec3D::getX()
+    \fn double DoubleVec3D::getX()
     \brief Getter for the first coordinate.
     \return The first coordinate of this vector.
     \sa getY(), getZ(), setVals()
 
-    \fn DoubleVec3D::getY()
+    \fn double DoubleVec3D::getY()
     \brief Getter for the second coordinate.
     \return The second coordinate of this vector.
     \sa getX(), getZ(), setVals()
 
-    \fn DoubleVec3D::getZ()
+    \fn double DoubleVec3D::getZ()
     \brief Getter for the third coordinate.
     \return The third coordinate of this vector.
     \sa getX(), getY(), setVals()
 
-    \fn DoubleVec3D::setVals()
+    \fn virtual void DoubleVec3D::setVals()
     \brief Setter for all coordinates.
     \details There is not one setter by coordinate, because of the way the DoubleUnitVect3D class is defined.
     \param x The first coordinate.
@@ -62,41 +63,41 @@
     \param z The third coordinate.
     \sa getX(), getY(), getZ()
 
-    \fn DoubleVec3D::operator+=(const DoubleVec3D& vec)
+    \fn void DoubleVec3D::operator+=(const DoubleVec3D& vec)
     \brief Sum operator.
     \param vec The second vector that will be used for the sum.
     \sa operator+()
 
-    \fn DoubleVec3D::operator-=(const DoubleVec3D& vec)
+    \fn void DoubleVec3D::operator-=(const DoubleVec3D& vec)
     \brief Difference operator.
     \details Uses the sum and unary minus operators.
     \param vec The second vector that will be used for the difference.
     \sa operator+=(), operator-()
 
-    \fn DoubleVec3D::operator*=(const double& val)
+    \fn void DoubleVec3D::operator*=(const double& val)
     \brief Multiplication by a scalar operator.
     \param val The scalar that will be used for the multiplication.
     \sa operator*(), operator*()
 
-    \fn DoubleVec3D::operator/=(const double& val);
+    \fn void DoubleVec3D::operator/=(const double& val);
     \brief Division by a scalar operator.
     \details Uses the multiplication by a scalar operator.
     \param val The scalar that will be used for the division.
     \sa operator*=(), operator/()
 
-    \fn DoubleVec3D::normalise()
+    \fn void DoubleVec3D::normalise()
     \brief Normalises the vector.
     \details Automatically verifies if normalised attribute is true or not. If the vector length is zero, sets it to (1, 0, 0).
 
-    \fn DoubleVec3D::isNormalised()
+    \fn bool DoubleVec3D::isNormalised()
     \brief Returns tur whether the vector is normalised.
     \return The attribute normalised.
 
-    \fn DoubleVec3D::isZero()
+    \fn bool DoubleVec3D::isZero()
     \brief Returns whether the vector has a length of zero.
     \return False if the three coordinates are 0, true else.
 
-    \fn operator+(const DoubleVec3D& vec1, const DoubleVec3D& vec2)
+    \fn DoubleVec3D operator+(const DoubleVec3D& vec1, const DoubleVec3D& vec2)
     \brief Sum operator.
     \details Uses the operator+=() method.
     \param vec1 The first vector for the sum.
@@ -104,14 +105,14 @@
     \return The sum of the two vectors.
     \sa operator+=()
 
-    \fn operator-(const DoubleVec3D& vec)
+    \fn DoubleVec3D operator-(const DoubleVec3D& vec)
     \brief Unary minus operator.
     \details Uses the operator*=() method.
     \param vec The vector that will be inversed.
     \return The inverse of vec.
     \sa operator*=(), operator-=()
 
-    \fn operator-(const DoubleVec3D& vec1, const DoubleVec3D& vec2)
+    \fn DoubleVec3D operator-(const DoubleVec3D& vec1, const DoubleVec3D& vec2)
     \brief Difference operator.
     \details Uses the operator-=() method.
     \param vec1 The first vector for the difference.
@@ -119,7 +120,7 @@
     \return The difference between vec1 and vec2.
     \sa operator-=()
 
-    \fn operator*(const DoubleVec3D& vec, const double& val)
+    \fn DoubleVec3D operator*(const DoubleVec3D& vec, const double& val)
     \brief Multiplication by a scalar operator (commutative).
     \details Uses the operator*=() method.
     \param vec The vector that will get multiplied.
@@ -127,7 +128,7 @@
     \return The vector multiplied by the scalar.
     \sa operator*=()
 
-    \fn operator*(const double& val, const DoubleVec3D& vec)
+    \fn DoubleVec3D operator*(const double& val, const DoubleVec3D& vec)
     \brief Multiplication by a scalar operator (commutative).
     \details Uses the operator*=() method.
     \param vec The vector that will get multiplied.
@@ -135,7 +136,7 @@
     \return The vector multiplied by the scalar.
     \sa operator*=()
 
-    \fn operator/(const DoubleVec3D& vec, const double& val)
+    \fn DoubleVec3D operator/(const DoubleVec3D& vec, const double& val)
     \brief Division by a scalar operator.
     \details Uses the operator/=() method.
     \param vec The vector that will get divided.
@@ -143,39 +144,39 @@
     \return The vector divided by the scalar.
     \sa operator/=()
 
-    \fn operator<<(std::ostream& stream, const DoubleVec3D& vec)
+    \fn std::ostream& operator<<(std::ostream& stream, const DoubleVec3D& vec)
     \brief Ostream operator.
     \details Displays vectors under the form "(x, y, z)"
     \param stream The ostream before.
     \param vec The vector that will be added to the stream.
     \return The stream with the vector added.
 
-    \fn crossProd(const DoubleVec3D& vec1, const DoubleVec3D& vec2)
+    \fn DoubleVec3D crossProd(const DoubleVec3D& vec1, const DoubleVec3D& vec2)
     \brief Cross product.
     \details A cross prodct gives a third vector, orthogonal to the two previous. Its length is given by the area of the parallelogram drawn by the two others.
     \param vec1 The fisrt vector for the product.
     \param vec2 The second vector for the product.
     \return The cross product between vec1 and vec2.
 
-    \fn dotProd(const DoubleVec3D& vec1, const DoubleVec3D& vec2)
+    \fn double dotProd(const DoubleVec3D& vec1, const DoubleVec3D& vec2)
     \brief Dot product.
     \details A dot product gives the product of the norm of each vector, multiplied by the cosine of the angle between the two vectors.
     \param vec1 The first vector for the product.
     \param vec2 The second vector for the product.
     \return The dot product between vec1 and vec2.
 
-    \fn length(const DoubleVec3D& vec)
+    \fn double length(const DoubleVec3D& vec)
     \brief Norm of the vector.
     \details Uses the dotProd() method.
     \param vec The vector from which the norm will be computed.
     \return The norm of this vector.
 
-    \fn to_json(json& j, const DoubleVec3D& vec)
+    \fn void to_json(json& j, const DoubleVec3D& vec)
     \brief Conversion to json.
     \param j Json output.
     \param vec The vector that will be converted.
 
-    \fn from_json(const json& j, DoubleVec3D& vec)
+    \fn void from_json(const json& j, DoubleVec3D& vec)
     \brief Conversion from json.
     \details Used for the .get<DoubleVec3D>() function.
     \param j Json input.

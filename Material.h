@@ -18,52 +18,52 @@
     \brief Copy constructor.
     \param material The material that will be copied.
 
-    \fn Material::getEmittance()
+    \fn DoubleVec3D Material::getEmittance()
     \brief Getter for the emittance attribute.
     \return The emittance of this material.
 
-    \fn Material::setEmittance(DoubleVec3D emittance)
+    \fn void Material::setEmittance(DoubleVec3D emittance)
     \brief Setter for the emittance attribute.
     \param emittance The new emittance of this material.
 
-    \fn Material::deepCopy()
+    \fn virtual Material* Material::deepCopy() = 0
     \brief Makes a deep copy of this material.
     \return A pointer to a deeply copied version of this material.
 
-    \fn Material::getNewDirection(const Ray& previousRay, const DoubleUnitVec3D& normal)
+    \fn virtual DoubleUnitVec3D Material::getNewDirection(const Ray& previousRay, const DoubleUnitVec3D& normal) = 0
     \brief Computes the new ray direction.
     \param previousRay The ray that hits this material.
     \param normal The normal at the intersection.
 
-    \fn Material::computeCurrentRadiance(const DoubleVec3D& recursiveRadiance, double angleNewDirectionNormal, bool nextEventEstimation = false)
+    \fn virtual DoubleVec3D Material::computeCurrentRadiance(const DoubleVec3D& recursiveRadiance, double angleNewDirectionNormal, bool nextEventEstimation = false) = 0
     \brief Computes the new radiance.
     \param recursiveRadiance The radiance recursively obtained.
     \param angleNewDirectionNormal The cosine of the angle between the direction of the next ray and the normal at the intersection.
     \param nextEventEstimation Whether the radiance is obtained using the next event estimation algorithm.
     \return The new radiance.
 
-    \fn Material::worksWithNextEventEstimation()
+    \fn virtual bool Material::worksWithNextEventEstimation() = 0
     \brief Returns whether this material works with next event estimation.
     \return True if this material works with the next event estimation algorithm, false else.
 
-    \fn Material::getDescription(std::ostream& stream)
+    \fn virtual std::ostream& Material::getDescription(std::ostream& stream) = 0
     \brief Returns this material's description.
     \param stream The current stream.
     \return The stream with the description.
 
-    \fn Material::getType()
+    \fn virtual std::string Material::getType() = 0
     \brief Returns this material type.
     \return Returns this material type ("Diffuse", "Refractive", ...)
 
-    \fn Material::getSpecificParametersJson()
+    \fn virtual json Material::getSpecificParametersJson() = 0
     \brief Converts this material's specific parameters to json.
     \return This material's specific parameters converted to json.
 
-    \fn Material::setSpecificParametersJson(const json& j)
+    \fn virtual void Material::setSpecificParametersJson(const json& j) = 0
     \brief Sets this material's specific parameters according to json.
     \param j The json input.
 
-    \fn operator<<(std::ostream& stream, const Material& material)
+    \fn std::ostream& operator<<(std::ostream& stream, const Material& material)
     \brief Ostream operator.
     \details Calls the getDescription() method.
     \param stream The ostream before.

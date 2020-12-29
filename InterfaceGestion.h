@@ -22,76 +22,76 @@ using json = nlohmann::json;
     \file InterfaceGestion.h
     \brief Defines functions that are used when drawing the interface.
 
-    \var MAX_LENGTH_STRING_FROM_USER
+    \var constexpr unsigned int MAX_LENGTH_STRING_FROM_USER
     \brief Maximum length for a string the user can give.
 
-    \var PROMPT
+    \var const std::string PROMPT
     \brief String that signal that the user can write a command.
 
-    \var STAR_SPLITTER
+    \var const std::string STAR_SPLITTER
     \brief A line of stars.
 
-    \var DASH_SPLITTER
+    \var const std::string DASH_SPLITTER
     \brief A line of dashs.
 
-    \var INVALID_COMMAND
+    \var const std::string INVALID_COMMAND
     \brief String used when the command is invalid.
 
-    \var PICTURE_EXTENSION
+    \var const std::string PICTURE_EXTENSION
     \brief File extension for pictures.
 
-    \var FBX_EXTENSION
+    \var const std::string FBX_EXTENSION
     \brief File extension for FBX files.
 
-    \var PICTURE_SAVE_EXTENSION_JSON
+    \var const std::string PICTURE_SAVE_EXTENSION_JSON
     \brief Custom file extension to save pictures.
 
-    \var OBJECTS_SAVE_EXTENSION
+    \var const std::string OBJECTS_SAVE_EXTENSION
     \brief Custom file extension to save objects groups.
 
-    \var PARAMETERS_SAVE_EXTENSION
+    \var const std::string PARAMETERS_SAVE_EXTENSION
     \brief Custom file extension to save parameters.
 
-    \var POSITIVE_DOUBLE_INFO
+    \var const std::string POSITIVE_DOUBLE_INFO
     \brief Information that is printed when asking a postive double to the user.
 
-    \var POSITIVE_INT_INFO
+    \var const std::string POSITIVE_INT_INFO
     \brief Information that is printed when asking a postive integer to the user.
 
-    \var BOOL_INFO
+    \var const std::string BOOL_INFO
     \brief Information that is printed when asking a boolean to the user.
 
-    \fn clearScreenPrintHeader()
+    \fn void clearScreenPrintHeader()
     \brief Clears the console and shows the header.
 
-    \fn availableCommandsHeader()
+    \fn void availableCommandsHeader()
     \brief Prints a header before printing which commands are available.
 
-    \fn showCMDCursor(bool show)
+    \fn void showCMDCursor(bool show)
     \brief Shows or hide the cursor in the interface.
     \details Used code from Captain Obvlious. Remove blinking underscore on console / cmd prompt. [Accessed 28 December 2020]. Stackoverflow. Aug. 3, 2013. URL: https://stackoverflow.com/a/18028927/12637970.
     \param show Whether the cursor will shown or hidden.
 
-    \fn bool2string(bool b)
+    \fn std::string bool2string(bool b)
     \brief Converts a boolean to string.
     \param b The boolean that will be converted.
     \return The boolean converted into a string.
 
-    \fn getCurrentTimeSeconds()
+    \fn double getCurrentTimeSeconds()
     \brief Gives the number of seconds since 01/01/1970.
     \return The time since 01/01/1970 in seconds.
 
-    \fn randomDouble()
+    \fn double randomDouble()
     \brief Computes a random double between 0 and 1
     \return A random double between 0 and 1 generated following a uniform distrbution.
 
-    \fn getStringFromUser(std::string question = "", std::string prompt = PROMPT)
+    \fn std::string getStringFromUser(std::string question = "", std::string prompt = PROMPT)
     \brief Gets a string from the user.
     \param question The question that will be asked to the user.
     \param prompt The prompt that will be used to show the user that he or she can write something.
     \return The string the user gave.
 
-    \fn getLowerCaseCharFromUser(std::string question = "", std::string prompt = PROMPT)
+    \fn char getLowerCaseCharFromUser(std::string question = "", std::string prompt = PROMPT)
     \brief Gets a lowercase character from the user.
     \details Uses the getStringFromUser() method and takes the first character of this string.
     \param question The question that will be asked to the user.
@@ -99,7 +99,7 @@ using json = nlohmann::json;
     \return The character the user gave.
     \sa getStringFromUser()
 
-    \fn getIntFromUser(std::string question = "", std::string prompt = PROMPT)
+    \fn int getIntFromUser(std::string question = "", std::string prompt = PROMPT)
     \brief Gets an integer from the user.
     \details Uses the getStringFromUser() method. Will continue to ask the question until the user gives a string that can be converted to an int.
     \param question The question that will be asked to the user.
@@ -107,7 +107,7 @@ using json = nlohmann::json;
     \return The integer the user gave.
     \sa getStringFromUser()
 
-    \fn getUnsignedIntFromUser(std::string question = "", std::string prompt = PROMPT)
+    \fn unsigned int getUnsignedIntFromUser(std::string question = "", std::string prompt = PROMPT)
     \brief Gets a positive integer from the user.
     \details Uses the getIntFromUser() method. Will continue to ask the question until the user gives a positive integer.
     \param question The question that will be asked to the user.
@@ -115,7 +115,7 @@ using json = nlohmann::json;
     \return The postive integer the user gave.
     \sa getIntFromUser()
 
-    \fn getDoubleFromUser(std::string question = "", std::string prompt = PROMPT)
+    \fn double getDoubleFromUser(std::string question = "", std::string prompt = PROMPT)
     \brief Gets a number from the user.
     \details Uses the getStringFromUser() method. Will continue to ask the question until the user gives a string that can be converted to a double.
     \param question The question that will be asked to the user.
@@ -123,7 +123,7 @@ using json = nlohmann::json;
     \return The double the user gave.
     \sa getStringFromUser()
 
-    \fn getPositiveDoubleFromUser(std::string question = "", std::string prompt = PROMPT)
+    \fn double getPositiveDoubleFromUser(std::string question = "", std::string prompt = PROMPT)
     \brief Gets a positive number from the user.
     \details Uses the getDoubleFromUser() method. Will continue to ask the question until the user gives a positive double.
     \param question The question that will be asked to the user.
@@ -131,7 +131,7 @@ using json = nlohmann::json;
     \return The postive double the user gave.
     \sa getDoubleFromUser()
 
-    \fn getBoolFromUser(std::string question = "", std::string prompt = PROMPT)
+    \fn bool getBoolFromUser(std::string question = "", std::string prompt = PROMPT)
     \brief Gets a boolean from the user.
     \details Uses the getLowerCaseCharFromUser() method. Will continue to ask the question until the user gives a 't' or 'f'.
     \param question The question that will be asked to the user.
@@ -139,12 +139,12 @@ using json = nlohmann::json;
     \return The boolean the user gave.
     \sa getLowerCaseCharFromUser()
 
-    \fn fileExists(std::string fileName)
+    \fn bool fileExists(std::string fileName)
     \brief Verifies if the file exists.
     \param fileName The path to the file.
     \return True if the file exists, false else.
 
-    \fn formatFileName(std::string fileName, std::string extension)
+    \fn std::string formatFileName(std::string fileName, std::string extension)
     \brief Formats the name of the file the user gave and the extension we want.
     \details For example, it will format "test.txt" into "test.txt" and "test" into "test.txt".
     \param fileName The path to the file we want to format.

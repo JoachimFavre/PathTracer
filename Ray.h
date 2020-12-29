@@ -24,19 +24,19 @@
     \brief Copy constructor.
     \param ray The ray that will be copied.
 
-    \fn Ray::getOrigin()
+    \fn DoubleVec3D Ray::getOrigin()
     \brief Getter for the origin.
     \return This ray's origin.
 
-    \fn Ray::getDirection()
+    \fn DoubleVec3D Ray::getDirection()
     \brief Getter for the direction.
     \return This ray's direction.
 
-    \fn Ray::setOrigin(const DoubleVec3D& origin)
+    \fn void Ray::setOrigin(const DoubleVec3D& origin)
     \brief Setter for the origin.
     \param origin The new origin of this ray.
 
-    \fn Ray::setDirection(const DoubleUnitVec3D& direction)
+    \fn void Ray::setDirection(const DoubleUnitVec3D& direction)
     \brief Setter for the direction.
     \param direction The new direction of this ray.
 */

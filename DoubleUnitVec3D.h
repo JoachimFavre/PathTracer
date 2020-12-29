@@ -33,7 +33,7 @@
     \brief Copy constructor.
     \param vec The unit vector that will be copied.
 
-    \fn DoubleUnitVec3D::setVals(double x, double y, double z)
+    \fn virtual void DoubleUnitVec3D::setVals(double x, double y, double z)
     \brief Setter for all coordinates.
     \details Calls the normalisation method after this one.
     \param x The first coordinate.
@@ -41,17 +41,17 @@
     \param z The third coordinate.
     \sa normalise()
 
-    \fn DoubleUnitVec3D::operator=(const DoubleVec3D& vec)
+    \fn void DoubleUnitVec3D::operator=(const DoubleVec3D& vec)
     \brief Assignment operator.
     \param vec The vector to which this will be equal.
 
-    \fn operator-(const DoubleUnitVec3D& vec)
+    \fn DoubleUnitVec3D operator-(const DoubleUnitVec3D& vec)
     \brief Unary minus.
     \details Allows to skip the conversion from DoubleVec3D to DoubleUnitVec3D.
     \param vec The vector that will be inversed.
     \return The inverse of vec.
 
-    \fn randomVectorOnUnitRadiusSphere()
+    \fn DoubleUnitVec3D randomVectorOnUnitRadiusSphere()
     \brief Generates a random unit vector on a sphere.
     \return A random unit vector on a sphere.
 */

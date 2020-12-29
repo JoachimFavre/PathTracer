@@ -25,47 +25,47 @@
     \brief Copy constructor.
     \param camera The camera that will be copied.
 
-    \fn PerspectiveCamera::getNumberPixelsX()
+    \fn unsigned int PerspectiveCamera::getNumberPixelsX()
     \brief Getter for the number of pixels in *x*.
     \return The number of pixels that compose the camera on the *x* axis.
 
-    \fn PerspectiveCamera::getNumberPixelsY()
+    \fn unsigned int PerspectiveCamera::getNumberPixelsY()
     \brief Getter for the number of pixels in *y*.
     \return The number of pixels that compose the camera on the *y* axis.
 
-    \fn PerspectiveCamera::getOrigin()
+    \fn DoubleVec3D PerspectiveCamera::getOrigin()
     \brief Getter for the camera origin.
     \return The camera origin.
 
-    \fn PerspectiveCamera::getFocal()
+    \fn DoubleVec3D PerspectiveCamera::getFocal()
     \brief Getter for the camera focal.
     \return The camera focal.
 
-    \fn PerspectiveCamera::getWorldWidth()
+    \fn double PerspectiveCamera::getWorldWidth()
     \brief Getter for the camera world width.
     \return The width of the camera in the virtual world.
 
-    \fn PerspectiveCamera::getWorldHeight()
+    \fn double PerspectiveCamera::getWorldHeight()
     \brief Getter for the camera world height.
     \return The width of the camera in the virtual world.
 
-    \fn PerspectiveCamera::setNumberPixelsX(unsigned int numberPixelsX)
+    \fn void PerspectiveCamera::setNumberPixelsX(unsigned int numberPixelsX)
     \brief Setter for the number of pixels in *x*.
     \param numberPixelsX The new number of pixels that compose the camera on the *x* axis.
 
-    \fn PerspectiveCamera::setNumberPixelsY(unsigned int numberPixelsY)
+    \fn void PerspectiveCamera::setNumberPixelsY(unsigned int numberPixelsY)
     \brief Setter for the number of pixels in *y*.
     \param numberPixelsY The new number of pixels that compose the camera on the *y* axis.
 
-    \fn PerspectiveCamera::setOrigin(DoubleVec3D origin)
+    \fn void PerspectiveCamera::setOrigin(DoubleVec3D origin)
     \brief Setter for the camera origin.
     \param origin The new camera origin.
 
-    \fn PerspectiveCamera::setFocal(DoubleVec3D focal)
+    \fn void PerspectiveCamera::setFocal(DoubleVec3D focal)
     \brief Setter for the camera focal.
     \param focal The new camera focal.
 
-    \fn PerspectiveCamera::getRayGoingThrough(double pixelX, double pixelY)
+    \fn Ray PerspectiveCamera::getRayGoingThrough(double pixelX, double pixelY)
     \brief Returns a ray going through some pixels.
     \details See my TM's report for an explanation on how it works.
     \param pixelX The *x* coordinate of the pixel through which we want the ray.
@@ -78,7 +78,7 @@ private:
     unsigned int numberPixelsX, numberPixelsY;
     DoubleVec3D origin, focal;
 
-    // See my TM report for an explanation of these variables.
+    // See my TM's report for an explanation of these variables.
     DoubleUnitVec3D baseX;
     DoubleUnitVec3D baseY;
     void computeBases();
