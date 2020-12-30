@@ -34,7 +34,7 @@
 
     \fn KDTreeNode::KDTreeNode(std::vector<Object3D*> objects, unsigned int maxObjectNumber, unsigned int maxDepth, KDTreeNode* parent = nullptr, unsigned int depth = 0)
     \brief One of the main constructors.
-    \details Computes the minimum and maximum coordinates according to the objects in parameters using getMinPoint(std::vector<Object3D*> objects) and getMaxPoint(std::vector<Object3D*> objects).
+    \details Computes the minimum and maximum coordinates according to the objects in parameters using getMinPoint(std::vector<Object3D*> objects) and getMaxPoint(std::vector<Object3D*> objects). Then calls the other main constructor.
     \param objects The objects that are in this node.
     \param maxObjectNumber Maximum number of objects in a k-d tree leaf. One of the two recursion stop conditions. If one of them is fulfilled, stops the recursion.
     \param maxDepth Maximum recursion depth. One of the two recursion stop conditions. If one of them is fulfilled, stops the recursion.
@@ -44,6 +44,7 @@
 
     \fn KDTreeNode::KDTreeNode(std::vector<Object3D*> objects, DoubleVec3D minCoord, DoubleVec3D maxCoord, unsigned int maxObjectNumber, unsigned int maxDepth, KDTreeNode* parent = nullptr, unsigned int depth = 0)
     \brief One of the main constructors.
+    \details Recursively creates children. See the list of parameters to know when the recursion stops. After having finished, deletes leaves (node that do not have any child) that have the exact same number of objects as their parent.
     \param objects The objects that are in this node.
     \param minCoord The minimum coordinate of this node.
     \param maxCoord The maximum coordinate of this node.
