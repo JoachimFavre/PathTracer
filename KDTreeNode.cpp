@@ -92,7 +92,7 @@ KDTreeNode::KDTreeNode(std::vector<Object3D*> objects, DoubleVec3D minCoord, Dou
         childSmaller = new KDTreeNode(objectsChildSmaller, minCoord, maxCoordChildSmaller, maxObjectNumber, maxDepth, this, depth + 1);
         childGreater = new KDTreeNode(objectsChildGreater, minCoordChildGreater, maxCoord, maxObjectNumber, maxDepth, this, depth + 1);
 
-        // Remove useless children. This should not be useful if the k-d tree is well parametrised.
+        // Remove useless children. This should not be useful if the k-d tree has good recursion parameters.
         if (childSmaller->getChildSmaller() == nullptr && childGreater->getChildSmaller() == nullptr) {
             if (objectsChildSmaller.size() == objects.size() && objectsChildGreater.size() == objects.size()) {
                 delete childSmaller;
