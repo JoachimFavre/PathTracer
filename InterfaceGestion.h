@@ -47,7 +47,7 @@ using json = nlohmann::json;
     \brief Custom file extension to save pictures.
 
     \var const std::string OBJECTS_SAVE_EXTENSION
-    \brief Custom file extension to save objects groups.
+    \brief Custom file extension to save object groups.
 
     \var const std::string PARAMETERS_SAVE_EXTENSION
     \brief Custom file extension to save parameters.

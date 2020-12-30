@@ -13,7 +13,7 @@ void displayCommands() {
     }
     
     if (isObjectsPages) {
-        std::cout << "- g: merge two objects groups" << std::endl;
+        std::cout << "- g: merge two object groups" << std::endl;
         std::cout << "- i: import an object from a FBX file as an objects group" << std::endl;
         std::cout << "- l: load object groups from a " << OBJECTS_SAVE_EXTENSION << " file and add them to current ones" << std::endl;
     }
@@ -256,12 +256,12 @@ void executeObjectsCommands(char command) {
     case 'd': {
         if (objectGroups.size() >= 1) {
             while (true) {
-                int index = getIntFromUser("What is the index of the objects groups you want to delete? (-1 = cancel / -2 = delete all)");
+                int index = getIntFromUser("What is the index of the object groups you want to delete? (-1 = cancel / -2 = delete all)");
                 if (index == -1)
                     return;
                 if (index == -2) {
                     std::cout << std::endl;
-                    bool confirmation = getBoolFromUser("Do you confirm the deletion of all the objects groups? " + BOOL_INFO);
+                    bool confirmation = getBoolFromUser("Do you confirm the deletion of all the object groups? " + BOOL_INFO);
                     if (confirmation)
                         scene.resetObjectGroups();
                     return;
@@ -377,7 +377,7 @@ void executeObjectsCommands(char command) {
     case 'm': {
         if (objectGroups.size() >= 1) {
             while (true) {
-                int index = getIntFromUser("What is the index of the objects groups you want to modify (-1 = cancel) " + POSITIVE_INT_INFO);
+                int index = getIntFromUser("What is the index of the object groups you want to modify (-1 = cancel) " + POSITIVE_INT_INFO);
 
                 if (index == -1)
                     return;

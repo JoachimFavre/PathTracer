@@ -9,8 +9,8 @@ Scene::Scene(const Scene& scene)
 
 
 // Getters
-std::vector<Object3DGroup> Scene::getObjectsGroups() const { return objectsGroups; }
-std::vector<Object3DGroup>& Scene::getObjectsGroupsReference() { return objectsGroups; }
+std::vector<Object3DGroup> Scene::getObjectGroups() const { return objectGroups; }
+std::vector<Object3DGroup>& Scene::getObjectGroupsReference() { return objectGroups; }
 
 
 std::vector<Object3D*> Scene::getObjects() {
@@ -44,7 +44,7 @@ double Scene::getLeastRenderTime4PictureBackup() const { return leastRenderTime4
 
 
 // Setters
-void Scene::setObjectsGroups(std::vector<Object3DGroup> groups) { objectsGroups = groups; }
+void Scene::setObjectGroups(std::vector<Object3DGroup> groups) { objectGroups = groups; }
 void Scene::setCamera(PerspectiveCamera camera) { this->camera = camera; }
 void Scene::setSamplePerPixel(unsigned int samplePerPixel) { this->samplePerPixel = samplePerPixel; }
 void Scene::setMinBounces(unsigned int minBounces) { this->minBounces = minBounces; }
@@ -66,20 +66,20 @@ void Scene::setBackupPicture(bool backupPicture) { this->backupPicture = backupP
 void Scene::setLeastRenderTime4PictureBackup(double leastRenderTime4PictureBackup) { this->leastRenderTime4PictureBackup = leastRenderTime4PictureBackup; }
 
 
-// Objects groups management
+// Object groups management
 void Scene::addObjectGroup(const Object3DGroup& group) {
-    objectsGroups.push_back(group);
+    objectGroups.push_back(group);
 }
 
 void Scene::resetObjectGroups() {
-    objectsGroups.clear();  // Calls their destructor -> no memory leak
+    objectGroups.clear();  // Calls their destructor -> no memory leak
 }
 
 void Scene::computeObjectsAndLamps() {
     for (Object3D* object : objects)
         delete object;
 
-    objects = split(objectsGroups);
+    objects = split(objectGroups);
     lamps.clear();
 
     for (Object3D* object : objects)
@@ -244,7 +244,7 @@ void Scene::saveParameters2File(std::string fileName) const {
 
 void Scene::saveObjectGroups2File(std::string fileName) const {
     json jsonOutput;
-    for (Object3DGroup group : objectsGroups) {
+    for (Object3DGroup group : objectGroups) {
         jsonOutput.push_back(group);
     }
 
@@ -494,8 +494,8 @@ void Scene::displayParametersPage(bool displayIndexes /*= true*/) const {
 }
 
 void Scene::displayObjectsPage() const {
-    for (unsigned int i = 0; i < objectsGroups.size(); i++) {
-        Object3DGroup currentObjectGroup = objectsGroups[i];
+    for (unsigned int i = 0; i < objectGroups.size(); i++) {
+        Object3DGroup currentObjectGroup = objectGroups[i];
 
         std::cout << i << ") " << currentObjectGroup << std::endl << std::endl;
     }

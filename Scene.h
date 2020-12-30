@@ -19,7 +19,7 @@
     \brief Defines the Scene class and the functions around it.
 
     \class Scene
-    \brief Stores objects groups and a camera for the render.
+    \brief Stores object groups and a camera for the render.
 
     \fn Scene::Scene(PerspectiveCamera camera = PerspectiveCamera(), unsigned int samplePerPixel = 8, unsigned int minBounces = 5)
     \brief Main constructor.
@@ -31,13 +31,13 @@
     \brief Copy constructor.
     \param scene The scene that will be copied.
 
-    \fn std::vector<Object3DGroup> Scene::getObjectsGroups()
-    \brief Getter for the objects groups.
-    \return This scene's objects groups.
+    \fn std::vector<Object3DGroup> Scene::getObjectGroups()
+    \brief Getter for the object groups.
+    \return This scene's object groups.
 
-    \fn std::vector<Object3DGroup>& Scene::getObjectsGroupsReference()
-    \brief Getter for a reference to the objects groups.
-    \return A reference to this scene's objects groups.
+    \fn std::vector<Object3DGroup>& Scene::getObjectGroupsReference()
+    \brief Getter for a reference to the object groups.
+    \return A reference to this scene's object groups.
 
     \fn std::vector<Object3D*> Scene::getObjects()
     \brief Getter for the objects.
@@ -108,9 +108,9 @@
     \return The maximum number of recursive steps of the k-d tree.
     \sa Scene::getKDTree(), Scene::getKDMaxObjectNumber()
 
-    \fn void Scene::setObjectsGroups(std::vector<Object3DGroup> groups)
-    \brief Setter for the objects groups.
-    \param groups The new objects groups of this scene.
+    \fn void Scene::setObjectGroups(std::vector<Object3DGroup> groups)
+    \brief Setter for the object groups.
+    \param groups The new object groups of this scene.
 
     \fn void Scene::setCamera(PerspectiveCamera camera)
     \brief Setter for the camera.
@@ -176,7 +176,7 @@
     \param group The objects group that will be added.
 
     \fn void Scene::resetObjectGroups()
-    \brief Destroys all the objects groups.
+    \brief Destroys all the object groups.
 
     \fn void Scene::computeObjectsAndLamps()
     \brief Computes all the objects
@@ -239,7 +239,7 @@
 
 class Scene {
 private:
-    std::vector<Object3DGroup> objectsGroups;
+    std::vector<Object3DGroup> objectGroups;
     std::vector<Object3D*> objects;
     std::vector<Object3D*> lamps;
     KDTreeNode* kdTreeRoot = nullptr;
@@ -270,8 +270,8 @@ public:
     Scene(PerspectiveCamera camera = PerspectiveCamera(), unsigned int samplePerPixel = 8, unsigned int minBounces = 5);
     Scene(const Scene& scene);
 
-    std::vector<Object3DGroup> getObjectsGroups() const;
-    std::vector<Object3DGroup>& getObjectsGroupsReference();  // Reference -> can modify it -> != const
+    std::vector<Object3DGroup> getObjectGroups() const;
+    std::vector<Object3DGroup>& getObjectGroupsReference();  // Reference -> can modify it -> != const
     std::vector<Object3D*> getObjects();
     std::vector<Object3D*> getLamps();
     PerspectiveCamera getCamera() const;
@@ -291,7 +291,7 @@ public:
     bool getBackupPicture() const;
     double getLeastRenderTime4PictureBackup() const;
 
-    void setObjectsGroups(std::vector<Object3DGroup> groups);
+    void setObjectGroups(std::vector<Object3DGroup> groups);
     void setCamera(PerspectiveCamera camera);
     void setSamplePerPixel(unsigned int samplePerPixel);
     void setMinBounces(unsigned int minBounces);

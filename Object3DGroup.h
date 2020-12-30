@@ -101,7 +101,7 @@
     \brief Takes the std::vector of each objects group and merge them.
     \details Makes a deep copy of all Object3D pointers.
     \param groups The objects group that will be merges.
-    \return All the objects of the objects groups.
+    \return All the objects of the object groups.
 
     \fn void to_json(json& j, const Object3DGroup& group)
     \brief Conversion to json.
