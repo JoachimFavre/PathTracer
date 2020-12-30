@@ -62,30 +62,15 @@ void receiveAndExecuteGeneralCommands() {
         return;
     }
     case 'r': {
-        clearScreenPrintHeader();
         Picture* pict = scene.render();
-
-        if (pict->getRenderTime() > smallestRenderTime4PictBackup) {
-            double beginningTime = getCurrentTimeSeconds();
-            std::cout << "Backing the picture up...";
-
-            json jsonOutput = *pict;
-
-            std::ofstream file;
-            file.open(backupFileName);
-            file << std::setw(4) << jsonOutput << std::endl;
-            file.close();
-
-            std::cout << "\rSuccessfully backed the picture up to " << backupFileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl;
-            std::cout << std::endl;
-        }
-
         std::cout << "\a";  // Make noise to notify end of rendering
         getStringFromUser("Press enter to continue");
 
         pict->modify();
+
         std::cout << "Deleting the picture from memory...";
         delete pict;
+
         return;
     }
     case 't': {
@@ -152,7 +137,7 @@ void executeParametersCommands(char command) {
 
 
         std::cout << "Loading parameters...";
-        double beginningTime = getCurrentTimeSeconds();  // don't want to count user time
+        double beginningTime = getCurrentTimeSeconds();
         std::ifstream file;
         file.open(fileName);
         try {

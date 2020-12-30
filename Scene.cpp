@@ -36,6 +36,11 @@ unsigned int Scene::getNumberThreads() const { return numberThreads; }
 bool Scene::getKDTree() const { return kdTree; }
 unsigned int Scene::getKDMaxObjectNumber() const { return kdMaxObjectNumber; }
 unsigned int Scene::getKDMaxDepth() const { return kdMaxDepth; }
+std::string Scene::getBackupFileName() const { return backupFileName; }
+bool Scene::getBackupParameters() const { return backupParameters; }
+bool Scene::getBackupObjectGroups() const { return backupObjectGroups; }
+bool Scene::getBackupPicture() const { return backupPicture; }
+double Scene::getLeastRenderTime4PictureBackup() const { return leastRenderTime4PictureBackup; }
 
 
 // Setters
@@ -54,6 +59,11 @@ void Scene::setNumberThreads(unsigned int numberThreads) { this->numberThreads =
 void Scene::setKDTree(bool kdTree) { this->kdTree = kdTree; }
 void Scene::setKDMaxObjectNumber(unsigned int kdMaxObjectNumber) { this->kdMaxObjectNumber = kdMaxObjectNumber; }
 void Scene::setKDMaxDepth(unsigned int kdMaxDepth) { this->kdMaxDepth = kdMaxDepth; }
+void Scene::setBackupFileName(std::string backupFileName) { this->backupFileName = backupFileName; }
+void Scene::setBackupParameters(bool backupParameters) { this->backupParameters = backupParameters; }
+void Scene::setBackupObjectGroups(bool backupObjectGroups) { this->backupObjectGroups = backupObjectGroups; }
+void Scene::setBackupPicture(bool backupPicture) { this->backupPicture = backupPicture; }
+void Scene::setLeastRenderTime4PictureBackup(double leastRenderTime4PictureBackup) { this->leastRenderTime4PictureBackup = leastRenderTime4PictureBackup; }
 
 
 // Objects groups management
@@ -339,7 +349,8 @@ Picture* Scene::render() {
     omp_set_num_threads(numberThreads);
     showCMDCursor(false);
 
-    // Print informations
+    // Print information
+    clearScreenPrintHeader();
     displayParametersPage(false);
     std::cout << "Objects" << std::endl;
     std::cout << DASH_SPLITTER << std::endl;
@@ -349,17 +360,21 @@ Picture* Scene::render() {
     std::cout << STAR_SPLITTER << std::endl;
     std::cout << std::endl;
 
-    std::cout << "Backing up parameters...";
-    double parametersBackupBeginningTime = getCurrentTimeSeconds();
-    std::string parametersBackupFileName = formatFileName(backupFileName, PARAMETERS_SAVE_EXTENSION);
-    saveParameters2File(parametersBackupFileName);
-    std::cout << "\rSuccessfully backed up parameters to " << parametersBackupFileName << " in " << getCurrentTimeSeconds() - parametersBackupBeginningTime << " seconds." << std::endl;
+    if (backupParameters) {
+        std::cout << "Backing up parameters...";
+        double parametersBackupBeginningTime = getCurrentTimeSeconds();
+        std::string parametersBackupFileName = formatFileName(backupFileName, PARAMETERS_SAVE_EXTENSION);
+        saveParameters2File(parametersBackupFileName);
+        std::cout << "\rSuccessfully backed up parameters to " << parametersBackupFileName << " in " << getCurrentTimeSeconds() - parametersBackupBeginningTime << " seconds." << std::endl;
+    }
 
-    std::cout << "Backing up object groups...";
-    double objectGroupsBackupBeginningTime = getCurrentTimeSeconds();
-    std::string objectGroupsBackupFileName = formatFileName(backupFileName, OBJECTS_SAVE_EXTENSION);
-    saveObjectGroups2File(objectGroupsBackupFileName);
-    std::cout << "\rSuccessfully backed up object groups to " << objectGroupsBackupFileName << " in " << getCurrentTimeSeconds() - objectGroupsBackupBeginningTime << " seconds." << std::endl;
+    if (backupObjectGroups) {
+        std::cout << "Backing up object groups...";
+        double objectGroupsBackupBeginningTime = getCurrentTimeSeconds();
+        std::string objectGroupsBackupFileName = formatFileName(backupFileName, OBJECTS_SAVE_EXTENSION);
+        saveObjectGroups2File(objectGroupsBackupFileName);
+        std::cout << "\rSuccessfully backed up object groups to " << objectGroupsBackupFileName << " in " << getCurrentTimeSeconds() - objectGroupsBackupBeginningTime << " seconds." << std::endl;
+    }
 
     if (kdTree) {
         std::cout << "Creating a k-d tree...";
@@ -396,8 +411,25 @@ Picture* Scene::render() {
         displayRenderingProgression(pixelX + 1, pictureWidth, loopBeginningTime);
     }
 
-    result->setRenderTime(getCurrentTimeSeconds() - loopBeginningTime);
+    double renderTime = getCurrentTimeSeconds() - loopBeginningTime;
+    result->setRenderTime(renderTime);
+
     std::cout << std::endl << std::endl;
+
+    if (backupPicture && renderTime > leastRenderTime4PictureBackup) {
+        double beginningTime = getCurrentTimeSeconds();
+        std::cout << "Backing up the picture...";
+
+        std::string pictureBackupFileName = formatFileName(backupFileName, PICTURE_SAVE_EXTENSION_JSON);
+
+        json jsonOutput = *result;
+        std::ofstream file;
+        file.open(pictureBackupFileName);
+        file << std::setw(4) << jsonOutput << std::endl;
+        file.close();
+
+        std::cout << "\rSuccessfully backed up the picture to " << pictureBackupFileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
+    }
 
     if (kdTree)
         delete kdTreeRoot;

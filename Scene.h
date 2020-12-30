@@ -256,6 +256,12 @@ private:
     unsigned int kdMaxObjectNumber = 10;
     unsigned int kdMaxDepth = 10;
 
+    std::string backupFileName = "backup";
+    bool backupParameters = true;
+    bool backupObjectGroups = true;
+    bool backupPicture = true;
+    double leastRenderTime4PictureBackup = 1.0;
+
     KDTreeNode::Intersection bruteForceIntersection(const Ray& ray) const;
     DoubleVec3D traceRay(const Ray& ray, double usedNextEventEstimation = false, const KDTreeNode* lastNode = nullptr, unsigned int bounces = 0) const;
     std::string getCurrentIndex(int currentIndex, bool displayIndex) const;
@@ -279,6 +285,11 @@ public:
     bool getKDTree() const;
     unsigned int getKDMaxObjectNumber() const;
     unsigned int getKDMaxDepth() const;
+    std::string getBackupFileName() const;
+    bool getBackupParameters() const;
+    bool getBackupObjectGroups() const;
+    bool getBackupPicture() const;
+    double getLeastRenderTime4PictureBackup() const;
 
     void setObjectsGroups(std::vector<Object3DGroup> groups);
     void setCamera(PerspectiveCamera camera);
@@ -292,6 +303,11 @@ public:
     void setKDTree(bool kdTree);
     void setKDMaxObjectNumber(unsigned int kdMaxObjectNumber);
     void setKDMaxDepth(unsigned int kdMaxDepth);
+    void setBackupFileName(std::string backupFileName);
+    void setBackupParameters(bool backupParameters);
+    void setBackupObjectGroups(bool backupObjectGroups);
+    void setBackupPicture(bool backupPicture);
+    void setLeastRenderTime4PictureBackup(double leastRenderTime4PictureBackup);
 
     void addObjectGroup(const Object3DGroup& group);
     void resetObjectGroups();

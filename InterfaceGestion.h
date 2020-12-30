@@ -175,9 +175,6 @@ const std::string POSITIVE_DOUBLE_INFO = "(positive number)";
 const std::string POSITIVE_INT_INFO = "(positive integer)";
 const std::string BOOL_INFO = "(True=T=true=t / False=F=false=f)";
 
-constexpr double smallestRenderTime4PictBackup = 180.0;  // Three minutes
-const std::string backupFileName = "backup";
-
 static std::uniform_real_distribution<double> unif(0, 1);
 static std::default_random_engine re(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
 
