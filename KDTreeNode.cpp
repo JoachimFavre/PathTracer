@@ -110,6 +110,18 @@ KDTreeNode* KDTreeNode::getChildSmaller() const { return childSmaller; }
 KDTreeNode* KDTreeNode::getChildGreater() const { return childGreater; }
 
 // Methods
+unsigned int KDTreeNode::getMaxDepth() const {
+    if (childSmaller == nullptr)
+        return depth;
+    return std::max(childSmaller->getMaxDepth(), childGreater->getMaxDepth());
+}
+
+unsigned int KDTreeNode::getMaxObjectNumberLeaf() const {
+    if (childSmaller == nullptr)
+        return objects.size();
+    return std::max(childSmaller->getMaxObjectNumberLeaf(), childGreater->getMaxObjectNumberLeaf());
+}
+
 double KDTreeNode::intersectionDistance(const Ray& ray) const {
     DoubleVec3D rayOrigin = ray.getOrigin();
     DoubleVec3D rayDirection = ray.getDirection();

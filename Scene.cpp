@@ -388,7 +388,7 @@ Picture* Scene::render() {
         std::cout << "Creating a k-d tree...";
         double kdTreeBeginningTime = getCurrentTimeSeconds();
         kdTreeRoot = new KDTreeNode(objects, kdMaxObjectNumber, kdMaxDepth);
-        std::cout << "\rSuccessfully created a k-d tree in " << getCurrentTimeSeconds() - kdTreeBeginningTime << " seconds." << std::endl;
+        std::cout << "\rSuccessfully created a k-d tree in " << getCurrentTimeSeconds() - kdTreeBeginningTime << " seconds. Its maximum depth is " << kdTreeRoot->getMaxDepth() << " and the maximum number of objects in a single leaf is " << kdTreeRoot->getMaxObjectNumberLeaf() << "." << std::endl;
     }
     /*
     json jsonOutput = *kdTreeRoot;

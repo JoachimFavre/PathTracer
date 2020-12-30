@@ -157,6 +157,9 @@ public:
     KDTreeNode* getChildSmaller() const;
     KDTreeNode* getChildGreater() const;
 
+    unsigned int getMaxDepth() const;
+    unsigned int getMaxObjectNumberLeaf() const;
+
     double intersectionDistance(const Ray& ray) const;
     bool isIn(DoubleVec3D point) const;
     Intersection getIntersectionForward(const Ray& ray) const;
