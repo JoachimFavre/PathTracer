@@ -60,7 +60,7 @@ void Picture::export2File(double middleGrey, std::string fileName, unsigned int 
     std::ofstream file;
     file.open("temp.ppm");
     file << "P3" << std::endl << width << " " << height << " " << MAX_COLOUR_VALUE << std::endl;
-    // File needs first y, then x.
+    // File needs first loop on y, then on x.
     for (unsigned int pixelY = 0; pixelY < height; pixelY++) {
         for (unsigned int pixelX = 0; pixelX < width; pixelX++) {
             DoubleVec3D currentColour = getColourMovingAverage(pixelValues, pixelX, pixelY, movingAverageSize);
