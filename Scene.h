@@ -260,7 +260,7 @@ private:
     bool backupParameters = true;
     bool backupObjectGroups = true;
     bool backupPicture = true;
-    double leastRenderTime4PictureBackup = 1.0;
+    double leastRenderTime4PictureBackup = 180.0;  // Three minutes
 
     KDTreeNode::Intersection bruteForceIntersection(const Ray& ray) const;
     DoubleVec3D traceRay(const Ray& ray, double usedNextEventEstimation = false, const KDTreeNode* lastNode = nullptr, unsigned int bounces = 0) const;

@@ -164,6 +164,13 @@ void executeParametersCommands(char command) {
             scene.setKDMaxDepth(jsonOptimisationParameters["KDMaxDepth"].get<unsigned int>());
             scene.setKDMaxObjectNumber(jsonOptimisationParameters["KDMaxObjectNumber"].get<unsigned int>());
 
+            json jsonBackupParameters = jsonInput["BackupParameters"];
+            scene.setBackupFileName(jsonBackupParameters["BackupFileName"].get<std::string>());
+            scene.setBackupParameters(jsonBackupParameters["BackupParameters"].get<bool>());
+            scene.setBackupObjectGroups(jsonBackupParameters["BackupObjectGroups"].get<bool>());
+            scene.setBackupPicture(jsonBackupParameters["BackupPicture"].get<bool>());
+            scene.setLeastRenderTime4PictureBackup(jsonBackupParameters["LeastRenderTime4PictureBackup"].get<double>());
+
             std::cout << "\rSuccessfully loaded parameters from " << fileName << " in " << getCurrentTimeSeconds() - beginningTime << " seconds." << std::endl << std::endl;
         }
         catch (const json::exception& e) {
@@ -179,7 +186,7 @@ void executeParametersCommands(char command) {
         // Modify a parameter
         while (true) {
             int index = getIntFromUser("What is the index of the parameter you want to modify (-1 = cancel) " + POSITIVE_INT_INFO);
-            if (0 <= index && index <= 12)
+            if (0 <= index && index <= 17)
                 std::cout << std::endl;
             switch (index) {
             case -1: return;
@@ -204,6 +211,11 @@ void executeParametersCommands(char command) {
             case 10: scene.setKDTree(getBoolFromUser("Will a k-d tree be used? " + BOOL_INFO)); return;
             case 11: scene.setKDMaxDepth(getUnsignedIntFromUser("What is the new maximum k-d tree depth? " + POSITIVE_INT_INFO)); return;
             case 12: scene.setKDMaxObjectNumber(getUnsignedIntFromUser("What is the new maximum of objects contained in a k-d tree leaf? " + POSITIVE_INT_INFO)); return;
+            case 13: scene.setBackupFileName(getStringFromUser("What is the new name of the backup files? (every backup will have the same name, but a different file extension)")); return;
+            case 14: scene.setBackupParameters(getBoolFromUser("Will the parameters be backed up before the rendering? " + BOOL_INFO)); return;
+            case 15: scene.setBackupObjectGroups(getBoolFromUser("Will the object groups be backed up before the rendering? " + BOOL_INFO)); return;
+            case 16: scene.setBackupPicture(getBoolFromUser("Will the picture be backed up after the rendering? " + BOOL_INFO)); return;
+            case 17: scene.setLeastRenderTime4PictureBackup(getPositiveDoubleFromUser("The picture will be backed up if the render takes more than how many seconds? " + POSITIVE_DOUBLE_INFO)); return;
             default: std::cout << "This index is invalid!" << std::endl << std::endl;
             }
         }

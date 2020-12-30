@@ -225,6 +225,14 @@ void Scene::saveParameters2File(std::string fileName) const {
         {"KDMaxDepth", kdMaxDepth},
         {"KDMaxObjectNumber", kdMaxObjectNumber}
         }
+    },
+    {"BackupParameters", {
+        {"BackupFileName", backupFileName},
+        {"BackupParameters", backupParameters},
+        {"BackupObjectGroups", backupObjectGroups},
+        {"BackupPicture", backupPicture},
+        {"LeastRenderTime4PictureBackup", leastRenderTime4PictureBackup}
+        }
     }
     };
 
@@ -473,6 +481,15 @@ void Scene::displayParametersPage(bool displayIndexes /*= true*/) const {
     std::cout << getCurrentIndex(index++, displayIndexes) + "K-d tree = " << bool2string(kdTree) << std::endl;
     std::cout << getCurrentIndex(index++, displayIndexes) + "K-d maximum depth = " << kdMaxDepth << std::endl;
     std::cout << getCurrentIndex(index++, displayIndexes) + "K-d maximum object number = " << kdMaxObjectNumber << std::endl;
+    std::cout << std::endl;
+
+    std::cout << "Backup parameters" << std::endl;
+    std::cout << DASH_SPLITTER << std::endl;
+    std::cout << getCurrentIndex(index++, displayIndexes) + "Backup file name = " << backupFileName << std::endl;
+    std::cout << getCurrentIndex(index++, displayIndexes) + "Backup parameters = " << bool2string(backupParameters) << std::endl;
+    std::cout << getCurrentIndex(index++, displayIndexes) + "Backup object groups = " << bool2string(backupObjectGroups) << std::endl;
+    std::cout << getCurrentIndex(index++, displayIndexes) + "Backup picture = " << bool2string(backupPicture) << std::endl;
+    std::cout << getCurrentIndex(index++, displayIndexes) + "Least render time for picture backup = " << leastRenderTime4PictureBackup << std::endl;
     std::cout << std::endl;
 }
 
