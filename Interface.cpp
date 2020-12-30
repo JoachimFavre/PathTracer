@@ -152,7 +152,7 @@ void executeParametersCommands(char command) {
             camera.setFocal(jsonCamera["Focal"].get<DoubleVec3D>());
 
             json jsonBasicParameters = jsonInput["BasicParameters"];
-            scene.setSamplePerPixel(jsonBasicParameters["SamplePerPixel"].get<unsigned int>());
+            scene.setSamplesPerPixel(jsonBasicParameters["SamplesPerPixel"].get<unsigned int>());
             scene.setMinBounces(jsonBasicParameters["MinBounces"].get<unsigned int>());
 
             json jsonOptimisationParameters = jsonInput["OptimisationParameters"];
@@ -194,7 +194,7 @@ void executeParametersCommands(char command) {
             case 1: camera.setNumberPixelsY(getUnsignedIntFromUser("What is the new camera height? " + POSITIVE_INT_INFO)); return;
             case 2: camera.setOrigin(getXYZDoubleVec3DFromUser("What is the new camera origin?")); return;
             case 3: camera.setFocal(getXYZDoubleVec3DFromUser("What is the new camera focal?")); return;
-            case 4: scene.setSamplePerPixel(getUnsignedIntFromUser("What is the new number of sample per pixel? " + POSITIVE_INT_INFO)); return;
+            case 4: scene.setSamplesPerPixel(getUnsignedIntFromUser("What is the new number of samples per pixel? " + POSITIVE_INT_INFO)); return;
             case 5: scene.setMinBounces(getUnsignedIntFromUser("What is the new minimum number of ray bounces? (there can be less if nothing is hit) " + POSITIVE_INT_INFO)); return;
             case 6: scene.setNumberThreads(getUnsignedIntFromUser("What is the new number of threads that will used during the rendering? " + POSITIVE_INT_INFO)); return;
             case 7: scene.setRussianRoulette(getBoolFromUser("Will the russian roulette path termination algorithm be used? " + BOOL_INFO)); return;

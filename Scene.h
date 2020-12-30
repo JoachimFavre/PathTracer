@@ -21,10 +21,10 @@
     \class Scene
     \brief Stores object groups and a camera for the render.
 
-    \fn Scene::Scene(PerspectiveCamera camera = PerspectiveCamera(), unsigned int samplePerPixel = 8, unsigned int minBounces = 5)
+    \fn Scene::Scene(PerspectiveCamera camera = PerspectiveCamera(), unsigned int samplesPerPixel = 8, unsigned int minBounces = 5)
     \brief Main constructor.
     \param camera The camera that will be used for the render.
-    \param samplePerPixel The number of ray casted per pixel. Increasing it will give a higher quality, but at a cost of a linearly increasing time.
+    \param samplesPerPixel The number of ray casted per pixel. Increasing it will give a higher quality, but at a cost of a linearly increasing time.
     \param minBounces The minimum number of bounces that each ray will do. It can be less if the ray does not intersect with any object.
 
     \fn Scene::Scene(const Scene& scene)
@@ -59,7 +59,7 @@
     \brief Getter for a reference to the camera.
     \return A reference to this scene's camera.
 
-    \fn unsigned int Scene::getSamplePerPixel()
+    \fn unsigned int Scene::getSamplesPerPixel()
     \brief Getter for the number of samples per pixel.
     \return The number of samples per pixel that will be used during the render.
     \sa Scene()
@@ -116,9 +116,9 @@
     \brief Setter for the camera.
     \param camera The new camera that will be used during the render.
 
-    \fn void Scene::setSamplePerPixel(unsigned int samplePerPixel)
+    \fn void Scene::setSamplesPerPixel(unsigned int samplesPerPixel)
     \brief Setter for the number of samples per pixel.
-    \param samplePerPixel The new number of samples per pixel that will be used during the render.
+    \param samplesPerPixel The new number of samples per pixel that will be used during the render.
     \sa Scene()
 
     \fn void Scene::setMinBounces(unsigned int minBounces)
@@ -245,7 +245,7 @@ private:
     KDTreeNode* kdTreeRoot = nullptr;
 
     PerspectiveCamera camera = PerspectiveCamera();
-    unsigned int samplePerPixel = 8;
+    unsigned int samplesPerPixel = 8;
     unsigned int minBounces = 10;
 
     bool russianRoulette = true;
@@ -267,7 +267,7 @@ private:
     std::string getCurrentIndex(int currentIndex, bool displayIndex) const;
 
 public:
-    Scene(PerspectiveCamera camera = PerspectiveCamera(), unsigned int samplePerPixel = 8, unsigned int minBounces = 5);
+    Scene(PerspectiveCamera camera = PerspectiveCamera(), unsigned int samplesPerPixel = 8, unsigned int minBounces = 5);
     Scene(const Scene& scene);
 
     std::vector<Object3DGroup> getObjectGroups() const;
@@ -276,7 +276,7 @@ public:
     std::vector<Object3D*> getLamps();
     PerspectiveCamera getCamera() const;
     PerspectiveCamera& getCameraReference();
-    unsigned int getSamplePerPixel() const;
+    unsigned int getSamplesPerPixel() const;
     unsigned int getMinBounces() const;
     bool getRussianRoulette() const;
     double getRrStopProbability() const;
@@ -293,7 +293,7 @@ public:
 
     void setObjectGroups(std::vector<Object3DGroup> groups);
     void setCamera(PerspectiveCamera camera);
-    void setSamplePerPixel(unsigned int samplePerPixel);
+    void setSamplesPerPixel(unsigned int samplesPerPixel);
     void setMinBounces(unsigned int minBounces);
     void setRussianRoulette(bool russianRoulette);
     void setRussianRoulette(bool russianRoulette, double rrStopProbability);

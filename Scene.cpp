@@ -1,11 +1,11 @@
 #include "Scene.h"
 
 // Constructors & Destructors
-Scene::Scene(PerspectiveCamera camera /*= PerspectiveCamera()*/, unsigned int samplePerPixel /*= 8*/, unsigned int minBounces /*= 5*/)
-    : camera(camera), samplePerPixel(samplePerPixel), minBounces(minBounces) {}
+Scene::Scene(PerspectiveCamera camera /*= PerspectiveCamera()*/, unsigned int samplesPerPixel /*= 8*/, unsigned int minBounces /*= 5*/)
+    : camera(camera), samplesPerPixel(samplesPerPixel), minBounces(minBounces) {}
 
 Scene::Scene(const Scene& scene)
-    : Scene(scene.camera, scene.samplePerPixel, scene.minBounces) {}
+    : Scene(scene.camera, scene.samplesPerPixel, scene.minBounces) {}
 
 
 // Getters
@@ -27,7 +27,7 @@ std::vector<Object3D*> Scene::getLamps() {
 
 PerspectiveCamera Scene::getCamera() const { return camera; }
 PerspectiveCamera& Scene::getCameraReference() { return camera; }
-unsigned int Scene::getSamplePerPixel() const { return samplePerPixel; }
+unsigned int Scene::getSamplesPerPixel() const { return samplesPerPixel; }
 unsigned int Scene::getMinBounces() const { return minBounces; }
 bool Scene::getRussianRoulette() const { return russianRoulette; }
 double Scene::getRrStopProbability() const { return rrStopProbability; }
@@ -46,7 +46,7 @@ double Scene::getLeastRenderTime4PictureBackup() const { return leastRenderTime4
 // Setters
 void Scene::setObjectGroups(std::vector<Object3DGroup> groups) { objectGroups = groups; }
 void Scene::setCamera(PerspectiveCamera camera) { this->camera = camera; }
-void Scene::setSamplePerPixel(unsigned int samplePerPixel) { this->samplePerPixel = samplePerPixel; }
+void Scene::setSamplesPerPixel(unsigned int samplesPerPixel) { this->samplesPerPixel = samplesPerPixel; }
 void Scene::setMinBounces(unsigned int minBounces) { this->minBounces = minBounces; }
 void Scene::setRussianRoulette(bool russianRoulette) { this->russianRoulette = russianRoulette; }
 void Scene::setRussianRoulette(bool russianRoulette, double rrStopProbability) {
@@ -66,7 +66,7 @@ void Scene::setBackupPicture(bool backupPicture) { this->backupPicture = backupP
 void Scene::setLeastRenderTime4PictureBackup(double leastRenderTime4PictureBackup) { this->leastRenderTime4PictureBackup = leastRenderTime4PictureBackup; }
 
 
-// Object groups management
+// Objects groups management
 void Scene::addObjectGroup(const Object3DGroup& group) {
     objectGroups.push_back(group);
 }
@@ -212,7 +212,7 @@ void Scene::saveParameters2File(std::string fileName) const {
         }
     },
     {"BasicParameters", {
-        {"SamplePerPixel", samplePerPixel},
+        {"SamplesPerPixel", samplesPerPixel},
         {"MinBounces", minBounces}
         }
     },
@@ -411,9 +411,9 @@ Picture* Scene::render() {
 #pragma omp parallel for
         for (int pixelY = 0; pixelY < pictureHeight; pixelY++) {  // pixelY must be signed for OpenMP
             result->setValuePix(pixelX, pixelY, DoubleVec3D(0.0));
-            for (unsigned int sample = 0; sample < samplePerPixel; sample++) {
+            for (unsigned int sample = 0; sample < samplesPerPixel; sample++) {
                 Ray currentRay = camera.getRayGoingThrough(pixelX + randomDouble(), pixelY + randomDouble());
-                result->addValuePix(pixelX, pixelY, traceRay(currentRay) / samplePerPixel);
+                result->addValuePix(pixelX, pixelY, traceRay(currentRay) / samplesPerPixel);
             }
         }
         displayRenderingProgression(pixelX + 1, pictureWidth, loopBeginningTime);
@@ -468,7 +468,7 @@ void Scene::displayParametersPage(bool displayIndexes /*= true*/) const {
 
     std::cout << "Basic parameters" << std::endl;
     std::cout << DASH_SPLITTER << std::endl;
-    std::cout << getCurrentIndex(index++, displayIndexes) + "Sample per pixel = " << samplePerPixel << std::endl;
+    std::cout << getCurrentIndex(index++, displayIndexes) + "Samples per pixel = " << samplesPerPixel << std::endl;
     std::cout << getCurrentIndex(index++, displayIndexes) + "Minimum bounces = " << minBounces << std::endl;
     std::cout << std::endl;
 
