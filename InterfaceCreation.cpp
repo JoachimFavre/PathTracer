@@ -22,7 +22,7 @@ DoubleVec3D getRGBDoubleVec3DFromUser(std::string question /*= ""*/, std::string
 
 // Material creation
 Material* createDiffuseMaterial(const DoubleVec3D& emittance) {
-    DoubleVec3D albedo = getRGBDoubleVec3DFromUser("What is the albedo of this diffuse material?");
+    DoubleVec3D albedo = getRGBDoubleVec3DFromUser("What is the albedo of this diffuse material? (each component should be between 0 and 1)");
     std::cout << std::endl;
     return new DiffuseMaterial(albedo, emittance);
 }
