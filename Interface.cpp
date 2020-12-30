@@ -229,6 +229,7 @@ void executeParametersCommands(char command) {
             bool continue_ = getBoolFromUser("The file " + fileName + " already exists, do you want to continue? " + BOOL_INFO);
             if (!continue_)
                 return;
+            std::cout << std::endl;
         }
 
         double beginningTime = getCurrentTimeSeconds();
@@ -403,6 +404,7 @@ void executeObjectsCommands(char command) {
             bool continue_ = getBoolFromUser("The file " + fileName + " already exists, do you want to continue? " + BOOL_INFO);
             if (!continue_)
                 return;
+            std::cout << std::endl;
         }
 
         double beginningTime = getCurrentTimeSeconds();
