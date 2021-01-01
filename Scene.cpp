@@ -317,7 +317,6 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
                     intersectionToLamp /= distanceLamp;  // Normalised
                     result += rrFactor * neeFactor * objectMaterial->computeCurrentRadiance(lamp->getMaterial()->getEmittance(), dotProd(intersectionToLamp, normal), true)
                               / distanceLamp / distanceLamp / lamp->getArea();
-                    // result += rrFactor * lamp->getMaterial()->getEmittance() / distanceLamp / distanceLamp * 0.1;
                 }
             }
         }

@@ -42,7 +42,7 @@
 
     \fn void Sphere::computeArea()
     \brief Computes this sphere's area.
-    \details Modifies Object3D::area. It uses the formula A = 4*pi*radius.
+    \details Modifies Object3D::area. It uses the formula A = 4*pi*radius*radius.
 
     \fn Object3D* Sphere::deepCopy()
     \brief Makes a deep copy of this object.
