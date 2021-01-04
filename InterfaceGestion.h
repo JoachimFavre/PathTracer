@@ -85,60 +85,6 @@ using json = nlohmann::json;
     \brief Computes a random double between 0 and 1
     \return A random double between 0 and 1 generated following a uniform distrbution.
 
-    \fn std::string getStringFromUser(std::string question = "", std::string prompt = PROMPT)
-    \brief Gets a string from the user.
-    \param question The question that will be asked to the user.
-    \param prompt The prompt that will be used to show the user that he or she can write something.
-    \return The string the user gave.
-
-    \fn char getLowerCaseCharFromUser(std::string question = "", std::string prompt = PROMPT)
-    \brief Gets a lowercase character from the user.
-    \details Uses the getStringFromUser() method and takes the first character of this string.
-    \param question The question that will be asked to the user.
-    \param prompt The prompt that will be used to show the user that he or she can write something.
-    \return The character the user gave.
-    \sa getStringFromUser()
-
-    \fn int getIntFromUser(std::string question = "", std::string prompt = PROMPT)
-    \brief Gets an integer from the user.
-    \details Uses the getStringFromUser() method. Will continue to ask the question until the user gives a string that can be converted to an int.
-    \param question The question that will be asked to the user.
-    \param prompt The prompt that will be used to show the user that he or she can write something.
-    \return The integer the user gave.
-    \sa getStringFromUser()
-
-    \fn unsigned int getUnsignedIntFromUser(std::string question = "", std::string prompt = PROMPT)
-    \brief Gets a positive integer from the user.
-    \details Uses the getIntFromUser() method. Will continue to ask the question until the user gives a positive integer.
-    \param question The question that will be asked to the user.
-    \param prompt The prompt that will be used to show the user that he or she can write something.
-    \return The postive integer the user gave.
-    \sa getIntFromUser()
-
-    \fn double getDoubleFromUser(std::string question = "", std::string prompt = PROMPT)
-    \brief Gets a number from the user.
-    \details Uses the getStringFromUser() method. Will continue to ask the question until the user gives a string that can be converted to a double.
-    \param question The question that will be asked to the user.
-    \param prompt The prompt that will be used to show the user that he or she can write something.
-    \return The double the user gave.
-    \sa getStringFromUser()
-
-    \fn double getPositiveDoubleFromUser(std::string question = "", std::string prompt = PROMPT)
-    \brief Gets a positive number from the user.
-    \details Uses the getDoubleFromUser() method. Will continue to ask the question until the user gives a positive double.
-    \param question The question that will be asked to the user.
-    \param prompt The prompt that will be used to show the user that he or she can write something.
-    \return The postive double the user gave.
-    \sa getDoubleFromUser()
-
-    \fn bool getBoolFromUser(std::string question = "", std::string prompt = PROMPT)
-    \brief Gets a boolean from the user.
-    \details Uses the getLowerCaseCharFromUser() method. Will continue to ask the question until the user gives a 't' or 'f'.
-    \param question The question that will be asked to the user.
-    \param prompt The prompt that will be used to show the user that he or she can write something.
-    \return The boolean the user gave.
-    \sa getLowerCaseCharFromUser()
-
     \fn bool fileExists(std::string fileName)
     \brief Verifies if the file exists.
     \param fileName The path to the file.
@@ -181,14 +127,6 @@ void showCMDCursor(bool show);
 std::string bool2string(bool b);
 double getCurrentTimeSeconds();
 double randomDouble();
-
-std::string getStringFromUser(std::string question = "", std::string prompt = PROMPT);
-char getLowerCaseCharFromUser(std::string question = "", std::string prompt = PROMPT);
-int getIntFromUser(std::string question = "", std::string prompt = PROMPT);
-unsigned int getUnsignedIntFromUser(std::string question = "", std::string prompt = PROMPT);
-double getDoubleFromUser(std::string question = "", std::string prompt = PROMPT);
-double getPositiveDoubleFromUser(std::string question = "", std::string prompt = PROMPT);
-bool getBoolFromUser(std::string question = "", std::string prompt = PROMPT);
 
 bool fileExists(std::string fileName);
 std::string formatFileName(std::string fileName, std::string extension);

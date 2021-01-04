@@ -14,6 +14,60 @@
     \file InterfaceCreation.h
     \brief Defines functions that are used to interactively create 3D objects and materials.
 
+    \fn std::string getStringFromUser(std::string question = "", std::string prompt = PROMPT)
+    \brief Gets a string from the user.
+    \param question The question that will be asked to the user.
+    \param prompt The prompt that will be used to show the user that he or she can write something.
+    \return The string the user gave.
+
+    \fn char getLowerCaseCharFromUser(std::string question = "", std::string prompt = PROMPT)
+    \brief Gets a lowercase character from the user.
+    \details Uses the getStringFromUser() method and takes the first character of this string.
+    \param question The question that will be asked to the user.
+    \param prompt The prompt that will be used to show the user that he or she can write something.
+    \return The character the user gave.
+    \sa getStringFromUser()
+
+    \fn int getIntFromUser(std::string question = "", std::string prompt = PROMPT)
+    \brief Gets an integer from the user.
+    \details Uses the getStringFromUser() method. Will continue to ask the question until the user gives a string that can be converted to an int.
+    \param question The question that will be asked to the user.
+    \param prompt The prompt that will be used to show the user that he or she can write something.
+    \return The integer the user gave.
+    \sa getStringFromUser()
+
+    \fn unsigned int getUnsignedIntFromUser(std::string question = "", std::string prompt = PROMPT)
+    \brief Gets a positive integer from the user.
+    \details Uses the getIntFromUser() method. Will continue to ask the question until the user gives a positive integer.
+    \param question The question that will be asked to the user.
+    \param prompt The prompt that will be used to show the user that he or she can write something.
+    \return The postive integer the user gave.
+    \sa getIntFromUser()
+
+    \fn double getDoubleFromUser(std::string question = "", std::string prompt = PROMPT)
+    \brief Gets a number from the user.
+    \details Uses the getStringFromUser() method. Will continue to ask the question until the user gives a string that can be converted to a double.
+    \param question The question that will be asked to the user.
+    \param prompt The prompt that will be used to show the user that he or she can write something.
+    \return The double the user gave.
+    \sa getStringFromUser()
+
+    \fn double getPositiveDoubleFromUser(std::string question = "", std::string prompt = PROMPT)
+    \brief Gets a positive number from the user.
+    \details Uses the getDoubleFromUser() method. Will continue to ask the question until the user gives a positive double.
+    \param question The question that will be asked to the user.
+    \param prompt The prompt that will be used to show the user that he or she can write something.
+    \return The postive double the user gave.
+    \sa getDoubleFromUser()
+
+    \fn bool getBoolFromUser(std::string question = "", std::string prompt = PROMPT)
+    \brief Gets a boolean from the user.
+    \details Uses the getLowerCaseCharFromUser() method. Will continue to ask the question until the user gives a 't' or 'f'.
+    \param question The question that will be asked to the user.
+    \param prompt The prompt that will be used to show the user that he or she can write something.
+    \return The boolean the user gave.
+    \sa getLowerCaseCharFromUser()
+
     \fn DoubleVec3D getXYZDoubleVec3DFromUser(std::string question = "", std::string prompt = PROMPT)
     \brief Gets a vector from the user.
     \details Uses three times the getDoubleFromUser() method. Adds "x ", "y " or "z " before the prompt, to show the user which coordinates he or she is giving.
@@ -88,6 +142,13 @@
     \return A pointer to the object stored in the json.
 */
 
+std::string getStringFromUser(std::string question = "", std::string prompt = PROMPT);
+char getLowerCaseCharFromUser(std::string question = "", std::string prompt = PROMPT);
+int getIntFromUser(std::string question = "", std::string prompt = PROMPT);
+unsigned int getUnsignedIntFromUser(std::string question = "", std::string prompt = PROMPT);
+double getDoubleFromUser(std::string question = "", std::string prompt = PROMPT);
+double getPositiveDoubleFromUser(std::string question = "", std::string prompt = PROMPT);
+bool getBoolFromUser(std::string question = "", std::string prompt = PROMPT);
 DoubleVec3D getXYZDoubleVec3DFromUser(std::string question = "", std::string prompt = PROMPT);
 DoubleVec3D getRGBDoubleVec3DFromUser(std::string question = "", std::string prompt = PROMPT);
 

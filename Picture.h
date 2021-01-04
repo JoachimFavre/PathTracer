@@ -6,7 +6,7 @@
 
 #include "CImg/CImg.h"
 
-#include "DoubleVec3D.h"
+#include "InterfaceCreation.h"
 
 /*!
     \file Picture.h
