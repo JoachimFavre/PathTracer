@@ -25,7 +25,7 @@ DoubleUnitVec3D DiffuseMaterial::getNewDirection(const Ray& previousRay, const D
     return newDirection;
 }
 
-DoubleVec3D DiffuseMaterial::computeCurrentRadiance(const DoubleVec3D& recursiveRadiance, double angleNewDirectionNormal, bool nextEventEstimation /*= false*/) const {
+DoubleVec3D DiffuseMaterial::computeCurrentRadiance(const DoubleVec3D& recursiveRadiance, double cosAngleNewDirectionNormal, bool nextEventEstimation /*= false*/) const {
     DoubleVec3D albedo = getAlbedo();
 
     double neeFactor = 2.0;
@@ -35,7 +35,7 @@ DoubleVec3D DiffuseMaterial::computeCurrentRadiance(const DoubleVec3D& recursive
     return DoubleVec3D(recursiveRadiance.getX()*albedo.getX(),
                        recursiveRadiance.getY()*albedo.getY(),
                        recursiveRadiance.getZ()*albedo.getZ())
-                       * angleNewDirectionNormal * neeFactor;
+                       * cosAngleNewDirectionNormal * neeFactor;
 }
 
 bool DiffuseMaterial::worksWithNextEventEstimation() const {
