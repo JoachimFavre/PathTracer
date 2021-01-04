@@ -61,12 +61,6 @@ using json = nlohmann::json;
     \var const std::string BOOL_INFO
     \brief Information that is printed when asking a boolean to the user.
 
-    \var double smallestRenderTime4PictBackup
-    \brief If the render time takes more time, the render will be backed up.
-
-    \var std::string backupFileName
-    \brief The name of the file in which the backup will be made.
-
     \fn void clearScreenPrintHeader()
     \brief Clears the console and shows the header.
 

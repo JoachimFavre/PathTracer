@@ -91,7 +91,7 @@
     \return The number of threads that will be used on the CPU during the render.
 
     \fn bool Scene::getKDTree()
-    \brief Getter for the k-d tree.
+    \brief Getter for the k-d tree option.
     \details See my TM's report for further information on this data structure. 
     \return Whether a k-d tree will be used during the render.
     \sa Scene::getKDMaxObjectNumber(), Scene::getKDMaxDepth()
@@ -107,6 +107,30 @@
     \details One of the two recursion stop conditions, along with Scene::getKDMaxObjectNumber(). If one of them is fulfilled, the k-d tree recursive creation stops. See my TM's report for further information on this data structure.
     \return The maximum number of recursive steps of the k-d tree.
     \sa Scene::getKDTree(), Scene::getKDMaxObjectNumber()
+
+    \fn std::string Scene::getBackupFileName() const
+    \brief Getter for the name of the file in which backups will be made.
+    \details Every backup will be done with the same file name, but using a different file extension.
+    \return The name of the file in which backups will be made.
+
+    \fn bool Scene::getBackupParameters() const
+    \brief Getter for the option to backup the parameters.
+    \return Whether the parameters will be backed up before the render.
+
+    \fn bool Scene::getBackupObjectGroups() const
+    \brief Getter for the option to backup the object groups.
+    \return Whether the object groups will be backed up before the render.
+
+    \fn bool Scene::getBackupPicture() const
+    \brief Getter for the option to backup the picture.
+    \return Whether the picture will be backed up after the render.
+    \sa Scene::getLeastRenderTime4PictureBackup()
+
+    \fn double Scene::getLeastRenderTime4PictureBackup() const
+    \brief Getter for the least render time after which the picture is backed up.
+    \details If this value is set to 0.0, the picture will always be backed up after the render.
+    \return The least render time after which the picture is backed up.
+    \sa Scene::getBackupPicture()
 
     \fn void Scene::setObjectGroups(std::vector<Object3DGroup> groups)
     \brief Setter for the object groups.
@@ -170,6 +194,30 @@
     \details One of the two recursion stop conditions, along with Scene::setKDMaxObjectNumber(). If one of them is fulfilled, the k-d tree recursive creation stops. See my TM's report for further information on this data structure.
     \param kdMaxDepth The new maximum number of recursive steps of the k-d tree.
     \sa Scene::setKDTree(bool kdTree), Scene::setKDMaxObjectNumber(unsigned int kdMaxObjectNumber)
+
+    \fn void Scene::setBackupFileName(std::string backupFileName);
+    \brief Setter for the new name of the file in which backups will be made.
+    \details Every backup will be done with the same file name, but using a different file extension.
+    \param backupFileName The name of the file in which backups will be made.
+
+    \fn void Scene::setBackupParameters(bool backupParameters);
+    \brief Setter for the option to backup the parameters.
+    \param backupParameters Whether the parameters will be backed up before the render.
+
+    \fn void Scene::setBackupObjectGroups(bool backupObjectGroups);
+    \brief Setter for the option to backup the object groups.
+    \param backupObjectGroups Whether the object groups will be backed up before the render.
+
+    \fn void Scene::setBackupPicture(bool backupPicture);
+    \brief Setter for the option to backup the picture.
+    \param backupPicture Whether the picture will be backed up after the render.
+    \sa Scene::setLeastRenderTime4PictureBackup()
+
+    \fn void Scene::setLeastRenderTime4PictureBackup(double leastRenderTime4PictureBackup);
+    \brief Setter for the least render time after which the picture is backed up.
+    \details If this value is set to 0.0, the picture will always be backed up after the render.
+    \param leastRenderTime4PictureBackup The new least render time after which the picture is backed up.
+    \sa Scene::setBackupPicture()
 
     \fn void Scene::addObjectGroup(const Object3DGroup& group)
     \brief Adds an objects group to the current ones.
