@@ -82,9 +82,10 @@ void Scene::computeObjectsAndLamps() {
     objects = split(objectGroups);
     lamps.clear();
 
-    for (Object3D* object : objects)
+    for (Object3D* object : objects) {
         if (!object->getMaterial()->getEmittance().isZero())
             lamps.push_back(object);
+    }
 }
 
 void Scene::defaultScene() {
@@ -298,9 +299,10 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
 
     double neeFactor = 1.0;
     if (nextEventEstimation && objectMaterial->worksWithNextEventEstimation()) {
-        neeFactor = 1.0/(1.0 + lamps.size());
+        neeFactor = 1.0 / lamps.size();
         for (Object3D* lamp : lamps) {
-            DoubleVec3D intersectionToLamp = lamp->getRandomPoint() - intersectionPoint;
+            DoubleVec3D pointOnLamp = lamp->getRandomPoint();
+            DoubleVec3D intersectionToLamp = pointOnLamp - intersectionPoint;
             if (dotProd(normal, intersectionToLamp) > -0.0001) {
                 double distanceLamp = length(intersectionToLamp);
                 Ray shadowRay(intersectionPoint, intersectionToLamp);  // intersectionToLamp goes in DoubleUnitVec3D constructor => normalised
@@ -313,10 +315,11 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
                 else
                     shadowRayIntersection = intersection.kdTreeNode->getIntersectionBackward(shadowRay);
 
-                if (shadowRayIntersection.object == lamp) {
+                if (distanceLamp - 0.00001 < shadowRayIntersection.distance && shadowRayIntersection.distance < distanceLamp + 0.00001) {
                     intersectionToLamp /= distanceLamp;  // Normalised
+
                     result += rrFactor * neeFactor * objectMaterial->computeCurrentRadiance(lamp->getMaterial()->getEmittance(), dotProd(intersectionToLamp, normal), true)
-                              / distanceLamp / distanceLamp / lamp->getArea();
+                              * lamp->getArea() / distanceLamp / distanceLamp * dotProd(lamp->getNormal(pointOnLamp), -intersectionToLamp);
                 }
             }
         }
@@ -328,7 +331,7 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
     DoubleUnitVec3D newDirection = objectMaterial->getNewDirection(ray, normal);
 
     DoubleVec3D recursiveRadiance = traceRay(Ray(intersectionPoint, newDirection), nextEventEstimation && objectMaterial->worksWithNextEventEstimation(), intersection.kdTreeNode, bounces + 1);
-    result += rrFactor * neeFactor * objectMaterial->computeCurrentRadiance(recursiveRadiance, dotProd(newDirection, normal));
+    result += rrFactor * objectMaterial->computeCurrentRadiance(recursiveRadiance, dotProd(newDirection, normal));
 
     return result;
 }
