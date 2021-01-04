@@ -1,8 +1,6 @@
 #ifndef DEF_INTERFACECREATION
 #define DEF_INTERFACECREATION
 
-#include "InterfaceGestion.h"
-
 #include "DiffuseMaterial.h"
 #include "RefractiveMaterial.h"
 #include "SpecularMaterial.h"
