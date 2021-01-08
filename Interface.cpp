@@ -172,7 +172,7 @@ void executeParametersCommands(char command) {
     case 'm': {
         // Modify a parameter
         while (true) {
-            int index = getIntFromUser("What is the index of the parameter you want to modify? (-1 = cancel) " + POSITIVE_INT_INFO);
+            int index = getIntFromUser("What is the index of the parameter you want to modify? (-1 = cancel)");
             if (0 <= index && index <= 17)
                 std::cout << std::endl;
             switch (index) {
@@ -274,13 +274,13 @@ void executeObjectsCommands(char command) {
                 if (index1 == -1)
                     return;
                 if (index1 >= 0 && index1 < objectGroups.size()) {
+                    std::cout << std::endl;
                     while (true) {
-                        std::cout << std::endl;
                         int index2 = getIntFromUser("What is the index of the second objects group? (-1 = cancel)");
                         if (index2 == -1)
                             return;
                         if (index2 == index1)
-                            std::cout << "The second index must be different from the first one" << std::endl << std::endl;
+                            std::cout << "The second index must be different from the first one!" << std::endl << std::endl;
                         else if (index2 >= 0 && index2 < objectGroups.size()) {
                             std::cout << std::endl;
                             std::string newName = getStringFromUser("What is the name of the merged objects group?");
@@ -295,10 +295,10 @@ void executeObjectsCommands(char command) {
                             return;
                         }
                         else
-                            std::cout << "This index is invalid" << std::endl << std::endl;
+                            std::cout << "This index is invalid!" << std::endl << std::endl;
                     }
                 }
-                std::cout << "This index is invalid" << std::endl << std::endl;
+                std::cout << "This index is invalid!" << std::endl << std::endl;
             }
         }
         else
@@ -364,7 +364,7 @@ void executeObjectsCommands(char command) {
     case 'm': {
         if (objectGroups.size() >= 1) {
             while (true) {
-                int index = getIntFromUser("What is the index of the object groups you want to modify? (-1 = cancel) " + POSITIVE_INT_INFO);
+                int index = getIntFromUser("What is the index of the object groups you want to modify? (-1 = cancel) ");
 
                 if (index == -1)
                     return;
