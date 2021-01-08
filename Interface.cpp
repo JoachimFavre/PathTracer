@@ -25,11 +25,7 @@ void displayCommands() {
     std::cout << "- p: switch to " << (isObjectsPages ? "parameters" : "objects") << " page" << std::endl;
     std::cout << "- r: start the rendering" << std::endl;
 
-    if (isObjectsPages)
-        std::cout << "- s: save current object groups to a " << OBJECTS_SAVE_EXTENSION << " file" << std::endl;
-    else
-        std::cout << "- s: save current parameters to a " << PARAMETERS_SAVE_EXTENSION << " file" << std::endl;
-    
+    std::cout << "- s: save current " << (isObjectsPages ? "object groups" : "parameters") << " to a " << (isObjectsPages ? OBJECTS_SAVE_EXTENSION : PARAMETERS_SAVE_EXTENSION) << " file" << std::endl;
     std::cout << "- t: load a picture from a " << PICTURE_SAVE_EXTENSION_JSON << " file" << std::endl;
     std::cout << "- x: exit this program" << std::endl;
 }
@@ -185,7 +181,7 @@ void executeParametersCommands(char command) {
     case 'm': {
         // Modify a parameter
         while (true) {
-            int index = getIntFromUser("What is the index of the parameter you want to modify (-1 = cancel) " + POSITIVE_INT_INFO);
+            int index = getIntFromUser("What is the index of the parameter you want to modify? (-1 = cancel) " + POSITIVE_INT_INFO);
             if (0 <= index && index <= 17)
                 std::cout << std::endl;
             switch (index) {
@@ -377,7 +373,7 @@ void executeObjectsCommands(char command) {
     case 'm': {
         if (objectGroups.size() >= 1) {
             while (true) {
-                int index = getIntFromUser("What is the index of the object groups you want to modify (-1 = cancel) " + POSITIVE_INT_INFO);
+                int index = getIntFromUser("What is the index of the object groups you want to modify? (-1 = cancel) " + POSITIVE_INT_INFO);
 
                 if (index == -1)
                     return;
