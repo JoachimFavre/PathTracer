@@ -1,6 +1,27 @@
 #include "InterfaceCreation.h"
 
 // Getters from user
+std::string getStringFromUser(std::string question /*= ""*/, std::string prompt /*= PROMPT*/) {
+    char userText[MAX_LENGTH_STRING_FROM_USER];
+    while (true) {
+        if (question != "")
+            std::cout << question << std::endl;
+        std::cout << prompt;
+        std::cin.getline(userText, MAX_LENGTH_STRING_FROM_USER);
+        if (std::cin.fail()) {
+            std::cout << "This string is too long." << std::endl << std::endl;
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+        else
+            return userText;
+    }
+}
+
+char getLowerCaseCharFromUser(std::string question /*= ""*/, std::string prompt /*= PROMPT*/) {
+    return std::tolower((getStringFromUser(question, prompt))[0]);
+}
+
 int getIntFromUser(std::string question /*= ""*/, std::string prompt /*= PROMPT*/) {
     while (true) {
         std::string userText = getStringFromUser(question, prompt);

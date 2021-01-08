@@ -12,6 +12,15 @@
     \file InterfaceCreation.h
     \brief Defines functions that are used to interactively create 3D objects and materials.
 
+    \var const std::string POSITIVE_DOUBLE_INFO
+    \brief Information that is printed when asking a postive double to the user.
+
+    \var const std::string POSITIVE_INT_INFO
+    \brief Information that is printed when asking a postive integer to the user.
+
+    \var const std::string BOOL_INFO
+    \brief Information that is printed when asking a boolean to the user.
+
     \fn std::string getStringFromUser(std::string question = "", std::string prompt = PROMPT)
     \brief Gets a string from the user.
     \param question The question that will be asked to the user.
@@ -139,6 +148,10 @@
     \param j Json input.
     \return A pointer to the object stored in the json.
 */
+
+const std::string POSITIVE_DOUBLE_INFO = "(positive number)";
+const std::string POSITIVE_INT_INFO = "(positive integer)";
+const std::string BOOL_INFO = "(True=T=true=t / False=F=false=f)";
 
 std::string getStringFromUser(std::string question = "", std::string prompt = PROMPT);
 char getLowerCaseCharFromUser(std::string question = "", std::string prompt = PROMPT);
