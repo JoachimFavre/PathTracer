@@ -34,15 +34,10 @@
     \brief Starts the infinite loop of the interface.
 */
 
-enum class Page {    
-    ParametersPage,
-    ObjectsPage
-};
-
 static Scene scene;
 static PerspectiveCamera& camera = scene.getCameraReference();
 static std::vector<Object3DGroup>& objectGroups = scene.getObjectGroupsReference();
-static Page currentPage = Page::ParametersPage;
+static bool isParametersPage = true;
 static bool commandWasInvalid = false;
 
 // Main interface

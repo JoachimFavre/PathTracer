@@ -3,36 +3,30 @@
 
 // Main interface
 void displayCommands() {
-    bool isObjectsPages = currentPage == Page::ObjectsPage;
-
     availableCommandsHeader();
-
-    if (isObjectsPages) {
+    
+    if (isParametersPage) {
+        std::cout << "- l: load parameters from a " << PARAMETERS_SAVE_EXTENSION << " file and overwrite current ones" << std::endl;
+    }
+    else {
         std::cout << "- a: add an object group" << std::endl;
         std::cout << "- d: delete an object group" << std::endl;
-    }
-    
-    if (isObjectsPages) {
         std::cout << "- g: merge two object groups" << std::endl;
         std::cout << "- i: import an object from a fbx file as an objects group" << std::endl;
         std::cout << "- l: load object groups from a " << OBJECTS_SAVE_EXTENSION << " file and add them to current ones" << std::endl;
     }
-    else {
-        std::cout << "- l: load parameters from a " << PARAMETERS_SAVE_EXTENSION << " file and overwrite current ones" << std::endl;
-    }
 
-    std::cout << "- m: modify a" << (isObjectsPages ? "n object group" : " parameter") << std::endl;
-    std::cout << "- p: switch to " << (isObjectsPages ? "parameters" : "objects") << " page" << std::endl;
+    std::cout << "- m: modify a" << (isParametersPage ? " parameter" : "n object group") << std::endl;
+    std::cout << "- p: switch to the " << (isParametersPage ? "objects" : "parameters") << " page" << std::endl;
     std::cout << "- r: start the rendering" << std::endl;
 
-    std::cout << "- s: save current " << (isObjectsPages ? "object groups" : "parameters") << " to a " << (isObjectsPages ? OBJECTS_SAVE_EXTENSION : PARAMETERS_SAVE_EXTENSION) << " file" << std::endl;
+    std::cout << "- s: save current " << (isParametersPage ? "parameters" : "object groups") << " to a " << (isParametersPage ? PARAMETERS_SAVE_EXTENSION : OBJECTS_SAVE_EXTENSION) << " file" << std::endl;
     std::cout << "- t: load a picture from a " << PICTURE_SAVE_EXTENSION_JSON << " file" << std::endl;
     std::cout << "- x: exit this program" << std::endl;
 }
 
 
 void receiveAndExecuteGeneralCommands() {
-    bool isParametersPage = currentPage == Page::ParametersPage;
 
     std::cout << std::endl;
     if (commandWasInvalid) {
@@ -51,10 +45,7 @@ void receiveAndExecuteGeneralCommands() {
 
     switch (command) {
     case 'p': {
-        if (isParametersPage)
-            currentPage = Page::ObjectsPage;
-        else
-            currentPage = Page::ParametersPage;
+        isParametersPage = !isParametersPage;
         return;
     }
     case 'r': {
@@ -418,7 +409,7 @@ void executeObjectsCommands(char command) {
 
 void printAll() {
     clearScreenPrintHeader();
-    if (currentPage == Page::ParametersPage)
+    if (isParametersPage)
         scene.displayParametersPage();
     else
         scene.displayObjectsPage();
