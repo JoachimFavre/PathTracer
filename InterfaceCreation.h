@@ -10,7 +10,7 @@
 
 /*!
     \file InterfaceCreation.h
-    \brief Defines functions that are used to interactively create 3D objects and materials.
+    \brief Defines functions that are used to ask for values to the user, and to interactively create 3D objects and materials.
 
     \var const std::string POSITIVE_DOUBLE_INFO
     \brief Information that is printed when asking a postive double to the user.
