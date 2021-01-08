@@ -75,7 +75,7 @@ void Picture::export2File(double middleGrey, std::string fileName, unsigned int 
     remove("temp.ppm");
     image.save(fileName.c_str());
 
-    std::cout << "\rSuccessfully exported the picture to " << fileName << " file with " << middleGrey << " being the middle-grey in " << getCurrentTimeSeconds() - writingBeginningTime << " seconds!" << std::endl;
+    std::cout << "\rSuccessfully exported the picture to " << fileName << " in " << getCurrentTimeSeconds() - writingBeginningTime << " seconds!" << std::endl;
     system((".\\" + fileName).c_str());
 }
 
