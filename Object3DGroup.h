@@ -19,7 +19,7 @@
 
     \fn Object3DGroup::Object3DGroup(const std::string& name, std::vector<Object3D*> objects = {})
     \brief Main constructor.
-    \param name The name of this Objects Group.
+    \param name The name of this object group.
     \param objects The std::vector of Object3D pointers that are in this group.
 
     \fn Object3DGroup::Object3DGroup(const Object3DGroup& group)
@@ -33,7 +33,7 @@
 
     \fn std::string Object3DGroup::getName()
     \brief Getter for the name.
-    \return This objects group's name.
+    \return This object group's name.
 
     \fn std::vector<Object3D*> Object3DGroup::getObjects()
     \brief Getter for the objects.
@@ -42,16 +42,16 @@
     \fn DoubleVec3D Object3DGroup::getCenter()
     \brief Getter for the center
     \details The center is computed by taking the average of the center of each object.
-    \return The center of this objects group.
+    \return The center of this object group.
 
     \fn void Object3DGroup::setName(const std::string& name)
     \brief Setter for the name.
-    \param name The new name of this objects group.
+    \param name The new name of this object group.
 
     \fn void Object3DGroup::setObjects(const std::vector<Object3D*>& newObjects)
     \brief Setter for the objects.
     \details The pointers are deeply copied.
-    \param newObjects The new objects of this objects group.
+    \param newObjects The new objects of this object group.
 
     \fn void Object3DGroup::addObject(Object3D* object)
     \brief Adds an object to the current ones.
@@ -64,12 +64,12 @@
     \param newObjects The objects that will be added.
 
     \fn void Object3DGroup::merge(const Object3DGroup& group)
-    \brief Merge with an other objects group.
+    \brief Merge with an other object group.
     \details Keeps the current name, but adds the objects of the second one. The pointers are deeply copied.
     \param group The group from which the objects will be copied.
 
     \fn void Object3DGroup::resetObjects()
-    \brief Resets all objects of this objects group.
+    \brief Resets all objects of this object group.
     \details Deletes all objects.
 
     \fn Object3DGroup& Object3DGroup::operator=(const Object3DGroup& otherGroup)
@@ -79,8 +79,8 @@
     \return The copy of otherGroup.
 
     \fn static Object3DGroup Object3DGroup::create()
-    \brief Interactive creation of an objects group.
-    \return The interactively created objects group.
+    \brief Interactive creation of an object group.
+    \return The interactively created object group.
 
     \fn void Object3DGroup::printAll()
     \brief Prints the whole page.
@@ -88,7 +88,7 @@
     \sa clearScreenPrintHeader()
 
     \fn void Object3DGroup::modify()
-    \brief Interactive modification of this objects group.
+    \brief Interactive modification of this object group.
     \details This is a page on its own.
 
     \fn std::ostream& operator<<(std::ostream& stream, const Object3DGroup& group)
@@ -98,21 +98,21 @@
     \return The stream with the group added.
 
     \fn std::vector<Object3D*> split(std::vector<Object3DGroup> groups)
-    \brief Takes the std::vector of each objects group and merge them.
+    \brief Takes the std::vector of each object group and merge them.
     \details Makes a deep copy of all Object3D pointers.
-    \param groups The objects group that will be merges.
+    \param groups The object group that will be merges.
     \return All the objects of the object groups.
 
     \fn void to_json(json& j, const Object3DGroup& group)
     \brief Conversion to json.
     \param j Json output.
-    \param group The objects group that will be converted.
+    \param group The object group that will be converted.
 
     \fn void from_json(const json& j, Object3DGroup& group)
     \brief Conversion from json.
     \details Used for the .get<Object3DGroup>() function.
     \param j Json input.
-    \param group The ouput objects group.
+    \param group The ouput object group.
 */
 
 class Object3DGroup {

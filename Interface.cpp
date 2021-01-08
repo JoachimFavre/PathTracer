@@ -12,7 +12,7 @@ void displayCommands() {
         std::cout << "- a: add an object group" << std::endl;
         std::cout << "- d: delete an object group" << std::endl;
         std::cout << "- g: merge two object groups" << std::endl;
-        std::cout << "- i: import an object from a fbx file as an objects group" << std::endl;
+        std::cout << "- i: import an object from a fbx file as an object group" << std::endl;
         std::cout << "- l: load object groups from a " << OBJECTS_SAVE_EXTENSION << " file and add them to current ones" << std::endl;
     }
 
@@ -255,7 +255,7 @@ void executeObjectsCommands(char command) {
                 }
                 if (index >= 0 && index < objectGroups.size()) {
                     std::cout << std::endl;
-                    bool confirmation = getBoolFromUser("Do you confirm the deletion of this objects group? " + BOOL_INFO);
+                    bool confirmation = getBoolFromUser("Do you confirm the deletion of this object group? " + BOOL_INFO);
                     if (confirmation)
                         objectGroups.erase(objectGroups.begin() + index);
                     return;
@@ -270,20 +270,20 @@ void executeObjectsCommands(char command) {
     case 'g': {
         if (objectGroups.size() >= 2) {
             while (true) {
-                int index1 = getIntFromUser("What is the index of the first objects group? (-1 = cancel)");
+                int index1 = getIntFromUser("What is the index of the first object group? (-1 = cancel)");
                 if (index1 == -1)
                     return;
                 if (index1 >= 0 && index1 < objectGroups.size()) {
                     std::cout << std::endl;
                     while (true) {
-                        int index2 = getIntFromUser("What is the index of the second objects group? (-1 = cancel)");
+                        int index2 = getIntFromUser("What is the index of the second object group? (-1 = cancel)");
                         if (index2 == -1)
                             return;
                         if (index2 == index1)
                             std::cout << "The second index must be different from the first one!" << std::endl << std::endl;
                         else if (index2 >= 0 && index2 < objectGroups.size()) {
                             std::cout << std::endl;
-                            std::string newName = getStringFromUser("What is the name of the merged objects group?");
+                            std::string newName = getStringFromUser("What is the name of the merged object group?");
                             objectGroups[index1].merge(objectGroups[index2]);
                             Object3DGroup newObject = objectGroups[index1];
 
@@ -317,7 +317,7 @@ void executeObjectsCommands(char command) {
             return;
         }
 
-        std::string name = getStringFromUser("How do you want to call the objects group?");
+        std::string name = getStringFromUser("How do you want to call the object group?");
         std::cout << std::endl;
         Material* material = createMaterial();
         scene.importFBXFile(fileName.c_str(), material, name);

@@ -101,7 +101,7 @@ void Object3DGroup::printAll() const {
     std::cout << "- d: delete one or all objects" << std::endl;
     std::cout << "- h: " << (hide ? "show" : "hide") << " all objects" << std::endl;
     std::cout << "- m: modify one or all objects' material" << std::endl;
-    std::cout << "- n: change the name of this objects group" << std::endl;
+    std::cout << "- n: change the name of this object group" << std::endl;
 }
 
 

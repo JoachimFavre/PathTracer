@@ -220,8 +220,8 @@
     \sa Scene::setBackupPicture()
 
     \fn void Scene::addObjectGroup(const Object3DGroup& group)
-    \brief Adds an objects group to the current ones.
-    \param group The objects group that will be added.
+    \brief Adds an object group to the current ones.
+    \param group The object group that will be added.
 
     \fn void Scene::resetObjectGroups()
     \brief Destroys all the object groups.
@@ -249,7 +249,7 @@
     \details Uses the FBX SDK library.
     \param filePath The path to the fbx file.
     \param material The material that will be used for all the triangles which will be imported.
-    \param name The name of the objects group in which all triangles will be stored.
+    \param name The name of the object group in which all triangles will be stored.
     \return True if the importation was successful, false else.
     \sa importTrianglesFromFbxNode()
 

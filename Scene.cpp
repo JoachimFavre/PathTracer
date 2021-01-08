@@ -66,7 +66,7 @@ void Scene::setBackupPicture(bool backupPicture) { this->backupPicture = backupP
 void Scene::setLeastRenderTime4PictureBackup(double leastRenderTime4PictureBackup) { this->leastRenderTime4PictureBackup = leastRenderTime4PictureBackup; }
 
 
-// Objects groups management
+// Object groups management
 void Scene::addObjectGroup(const Object3DGroup& group) {
     objectGroups.push_back(group);
 }
