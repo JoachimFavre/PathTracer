@@ -32,12 +32,12 @@
 
     \fn DoubleVec3D::DoubleVec3D(const FbxDouble3& vec)
     \brief Converting constructor for FbxDouble3.
-    \param vec The FbxDouble3 vector (from FBX SDK library) that will be converted.
+    \param vec The FbxDouble3 vector (from the FBX SDK library) that will be converted.
     \sa DoubleVec3D(const FbxDouble4& vec)
 
     \fn DoubleVec3D::DoubleVec3D(const FbxDouble4& vec)
     \brief Converting constructor for FbxDouble4.
-    \param vec The FbxDouble4 vector (from FBX SDK library) that will be converted.
+    \param vec The FbxDouble4 vector (from the FBX SDK library) that will be converted.
     \sa DoubleVec3D(const FbxDouble3& vec)
 
     \fn double DoubleVec3D::getX()

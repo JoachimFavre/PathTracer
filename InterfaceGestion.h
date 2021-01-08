@@ -41,7 +41,7 @@ using json = nlohmann::json;
     \brief File extension for pictures.
 
     \var const std::string FBX_EXTENSION
-    \brief File extension for FBX files.
+    \brief File extension for fbx files.
 
     \var const std::string PICTURE_SAVE_EXTENSION_JSON
     \brief Custom file extension to save pictures.

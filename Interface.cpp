@@ -14,7 +14,7 @@ void displayCommands() {
     
     if (isObjectsPages) {
         std::cout << "- g: merge two object groups" << std::endl;
-        std::cout << "- i: import an object from a FBX file as an objects group" << std::endl;
+        std::cout << "- i: import an object from a fbx file as an objects group" << std::endl;
         std::cout << "- l: load object groups from a " << OBJECTS_SAVE_EXTENSION << " file and add them to current ones" << std::endl;
     }
     else {
@@ -320,7 +320,7 @@ void executeObjectsCommands(char command) {
     }
     case 'i': {
         std::string fileName = getStringFromUser("What is the name of the " + FBX_EXTENSION + " file?");
-        fileName = formatFileName(fileName, ".fbx");
+        fileName = formatFileName(fileName, FBX_EXTENSION);
         std::cout << std::endl;
         bool exists = fileExists(fileName);
 

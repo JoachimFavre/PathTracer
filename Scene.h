@@ -245,9 +245,9 @@
     \sa formatFileName()
 
     \fn bool Scene::importFBXFile(const char* filePath, Material* material, std::string name)
-    \brief Imports a FBX file as triangles.
+    \brief Imports a fbx file as triangles.
     \details Uses the FBX SDK library.
-    \param filePath The path the FBX file.
+    \param filePath The path to the fbx file.
     \param material The material that will be used for all the triangles which will be imported.
     \param name The name of the objects group in which all triangles will be stored.
     \return True if the importation was successful, false else.
