@@ -64,7 +64,7 @@ void receiveAndExecuteGeneralCommands() {
     case 'r': {
         Picture* pict = scene.render();
         std::cout << "\a";  // Make noise to notify end of rendering
-        getStringFromUser("Press enter to continue");
+        getStringFromUser("Press enter to continue.");
 
         pict->modify();
 
