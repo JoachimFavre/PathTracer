@@ -108,7 +108,7 @@ void receiveAndExecuteGeneralCommands() {
         return;
     }
     case 'x': {
-        std::cout << "Have a nice day!" << std::endl;
+        std::cout << "Have a nice day! :)" << std::endl;
         exit(0);
     }
     default:
