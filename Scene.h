@@ -293,9 +293,9 @@ private:
     std::vector<Object3D*> lamps;
     KDTreeNode* kdTreeRoot = nullptr;
 
-    PerspectiveCamera camera = PerspectiveCamera();
-    unsigned int samplesPerPixel = 8;
-    unsigned int minBounces = 10;
+    PerspectiveCamera camera;
+    unsigned int samplesPerPixel;
+    unsigned int minBounces;
 
     bool russianRoulette = true;
     double rrStopProbability = 0.1;  // Linked to russianRoulette   /  stopProb=1 <=> russianRoulette=false
