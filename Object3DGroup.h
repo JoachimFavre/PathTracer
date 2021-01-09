@@ -24,11 +24,12 @@
 
     \fn Object3DGroup::Object3DGroup(const Object3DGroup& group)
     \brief Copy constructor.
+    \details Does not deeply copy any of the pointers.
     \param group The group that will be copied.
 
     \fn Object3DGroup::~Object3DGroup()
     \brief Destructor
-    \details Deletes all Object3D pointers.
+    \details Calls Object3DGroup::resetObjects(). Waning, this method does not delete any pointer.
     \sa resetObjects()
 
     \fn std::string Object3DGroup::getName()
@@ -50,7 +51,7 @@
 
     \fn void Object3DGroup::setObjects(const std::vector<Object3D*>& newObjects)
     \brief Setter for the objects.
-    \details The pointers are deeply copied.
+    \details Warning, the pointers are not copied.
     \param newObjects The new objects of this object group.
 
     \fn void Object3DGroup::addObject(Object3D* object)
@@ -70,13 +71,13 @@
 
     \fn void Object3DGroup::resetObjects()
     \brief Resets all objects of this object group.
-    \details Deletes all objects.
+    \details Warning, this method does not delete any pointer.
+    \sa Object3DGroup::resetAndDeleteObjects()
 
-    \fn Object3DGroup& Object3DGroup::operator=(const Object3DGroup& otherGroup)
-    \brief Assignment operator.
-    \details The objects of the other group are deeply copied.
-    \param otherGroup The group to which this group will be equal.
-    \return The copy of otherGroup.
+    \fn void Object3DGroup::resetAndDeleteObjects()
+    \brief Deletes all pointers to the objects of this object group, then reset its objects.
+    \details Calls the function Object3DGroup::resetObjects()
+    \sa Object3DGroup::resetObjects()
 
     \fn static Object3DGroup Object3DGroup::create()
     \brief Interactive creation of an object group.
@@ -141,8 +142,7 @@ public:
     void addObjects(const std::vector<Object3D*>& newObjects);
     void merge(const Object3DGroup& group);
     void resetObjects();
-
-    Object3DGroup& operator=(const Object3DGroup& otherGroup);
+    void resetAndDeleteObjects();
 
     static Object3DGroup create();
     void printAll() const;
@@ -151,7 +151,7 @@ public:
 
 std::ostream& operator<<(std::ostream& stream, const Object3DGroup& group);
 
-std::vector<Object3D*> split(std::vector<Object3DGroup> groups);
+std::vector<Object3D*> split(const std::vector<Object3DGroup>& groups);
 
 void to_json(json& j, const Object3DGroup& group);
 void from_json(const json& j, Object3DGroup& group);

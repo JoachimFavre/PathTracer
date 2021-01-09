@@ -45,7 +45,7 @@ void Object3DGroup::addObjects(const std::vector<Object3D*>& newObjects) {
     if (totalNumberObjects > 0) {
         center *= objects.size() / totalNumberObjects;
         for (Object3D* object : newObjects) {
-            objects.push_back(object->deepCopy());
+            objects.push_back(object);
             center += object->getCenter() / totalNumberObjects;
         }
     }
@@ -54,24 +54,13 @@ void Object3DGroup::addObjects(const std::vector<Object3D*>& newObjects) {
 void Object3DGroup::merge(const Object3DGroup& group) {    addObjects(group.getObjects()); }
 
 void Object3DGroup::resetObjects() {
-    for (Object3D* object : objects)
-        delete object;
     objects.clear();
 }
 
-
-// Assignment operator
-Object3DGroup& Object3DGroup::operator=(const Object3DGroup& otherGroup) {
-    name = otherGroup.name;
-    center = otherGroup.center;
-
-    std::vector<Object3D*> objectsCopy;
-    for (Object3D* object : otherGroup.objects) {
-        objectsCopy.push_back(object->deepCopy());
-    }
-    objects = objectsCopy;
-
-    return *this;
+void Object3DGroup::resetAndDeleteObjects() {
+    for (Object3D* object : objects)
+        delete object;
+    resetObjects();
 }
 
 
@@ -141,15 +130,20 @@ void Object3DGroup::modify() {
                     if (index == -2) {
                         std::cout << std::endl;
                         bool confirmation = getBoolFromUser("Do you confirm the deletion of all the objects? " + BOOL_INFO);
-                        if (confirmation)
+                        if (confirmation) {
+                            for (Object3D* object : objects)
+                                delete object;
                             objects.clear();
+                        }
                         break;
                     }
                     if (index >= 0 && index < objects.size()) {
                         std::cout << std::endl;
                         bool confirmation = getBoolFromUser("Do you confirm the deletion of this object? " + BOOL_INFO);
-                        if (confirmation)
+                        if (confirmation) {
+                            delete objects[index];
                             objects.erase(objects.begin() + index);
+                        }
                         break;
                     }
                     std::cout << "This index is invalid!" << std::endl << std::endl;
@@ -222,17 +216,12 @@ std::ostream& operator<<(std::ostream& stream, const Object3DGroup& group) {
 
 
 // Other function
-std::vector<Object3D*> split(std::vector<Object3DGroup> groups) {
+std::vector<Object3D*> split(const std::vector<Object3DGroup>& groups) {
     std::vector<Object3D*> result;
     
     for (Object3DGroup group : groups) {
         std::vector<Object3D*> currentObjects = group.getObjects();
-        std::vector<Object3D*> copy;
-
-        for (Object3D* object : currentObjects)
-            copy.push_back(object->deepCopy());
-
-        result.insert(result.end(), copy.begin(), copy.end());
+        result.insert(result.end(), currentObjects.begin(), currentObjects.end());
     }
 
     return result;

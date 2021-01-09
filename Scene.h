@@ -223,8 +223,9 @@
     \brief Adds an object group to the current ones.
     \param group The object group that will be added.
 
-    \fn void Scene::resetObjectGroups()
-    \brief Destroys all the object groups.
+    \fn void Scene::resetAndDeleteObjectGroups()
+    \brief Deletes all object groups and their objects.
+    \sa Object3DGroup::resetAndDeleteObjects()
 
     \fn void Scene::computeObjectsAndLamps()
     \brief Computes all the objects
@@ -358,7 +359,7 @@ public:
     void setLeastRenderTime4PictureBackup(double leastRenderTime4PictureBackup);
 
     void addObjectGroup(const Object3DGroup& group);
-    void resetObjectGroups();
+    void resetAndDeleteObjectGroups();
     void computeObjectsAndLamps();
     void defaultScene();
 

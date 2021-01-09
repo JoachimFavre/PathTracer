@@ -250,14 +250,16 @@ void executeObjectsCommands(char command) {
                     std::cout << std::endl;
                     bool confirmation = getBoolFromUser("Do you confirm the deletion of all the object groups? " + BOOL_INFO);
                     if (confirmation)
-                        scene.resetObjectGroups();
+                        scene.resetAndDeleteObjectGroups();
                     return;
                 }
                 if (index >= 0 && index < objectGroups.size()) {
                     std::cout << std::endl;
                     bool confirmation = getBoolFromUser("Do you confirm the deletion of this object group? " + BOOL_INFO);
-                    if (confirmation)
+                    if (confirmation) {
+                        objectGroups[index].resetAndDeleteObjects();
                         objectGroups.erase(objectGroups.begin() + index);
+                    }
                     return;
                 }
                 std::cout << "This index is invalid!" << std::endl << std::endl;
@@ -420,7 +422,7 @@ void initInterface() {
     std::cout << std::fixed;
     std::cout << std::setprecision(2);
 
-    scene.resetObjectGroups();
+    scene.resetAndDeleteObjectGroups();
     scene.defaultScene();
 
     while (true) {

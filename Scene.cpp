@@ -71,14 +71,13 @@ void Scene::addObjectGroup(const Object3DGroup& group) {
     objectGroups.push_back(group);
 }
 
-void Scene::resetObjectGroups() {
-    objectGroups.clear();  // Calls their destructor -> no memory leak
+void Scene::resetAndDeleteObjectGroups() {
+    for (Object3DGroup objectGroup : objectGroups)
+        objectGroup.resetAndDeleteObjects();
+    objectGroups.clear();
 }
 
 void Scene::computeObjectsAndLamps() {
-    for (Object3D* object : objects)
-        delete object;
-
     objects = split(objectGroups);
     lamps.clear();
 
@@ -156,7 +155,9 @@ bool Scene::importFBXFile(const char* filePath, Material* material, std::string 
     FbxNode* rootNode = fbxScene->GetRootNode();
     std::vector<Object3D*> objects;
 
-    if (!importTrianglesFromFbxNode(rootNode, material, objects))
+    bool importedAllFbxNodeAsTriangles = importTrianglesFromFbxNode(rootNode, material, objects);
+    delete material; // Only made copies.
+    if (!importedAllFbxNodeAsTriangles)
         return false;
 
     addObjectGroup(Object3DGroup(name, objects));
@@ -194,7 +195,7 @@ bool importTrianglesFromFbxNode(FbxNode* node, Material* material, std::vector<O
                 DoubleVec3D vertex1 = rotationAndScalingMatrix * controlPoints[mesh->GetPolygonVertex(polygonIx, 1)] + translation;
                 DoubleVec3D vertex2 = rotationAndScalingMatrix * controlPoints[mesh->GetPolygonVertex(polygonIx, 2)] + translation;
 
-                objects.push_back(new Triangle(vertex0, vertex1, vertex2, material));
+                objects.push_back(new Triangle(vertex0, vertex1, vertex2, material->deepCopy()));
             }
         }
     }
