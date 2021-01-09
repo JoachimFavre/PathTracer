@@ -126,6 +126,7 @@ void Scene::defaultScene() {
 }
 
 bool Scene::importFBXFile(const char* filePath, Material* material, std::string name) {
+    std::cout << "Importing fbx file...";
     double importationBeginningTime = getCurrentTimeSeconds();
 
     FbxManager* sdkManager = FbxManager::Create();
@@ -137,7 +138,7 @@ bool Scene::importFBXFile(const char* filePath, Material* material, std::string 
     bool importStatus = importer->Initialize(filePath, -1, sdkManager->GetIOSettings());
 
     if (!importStatus) {
-        std::cout << "Error in the importation: " << importer->GetStatus().GetErrorString() << std::endl;
+        std::cout << "\rError in the importation: " << importer->GetStatus().GetErrorString() << std::endl;
         return false;
     }
 
@@ -148,7 +149,7 @@ bool Scene::importFBXFile(const char* filePath, Material* material, std::string 
     FbxGeometryConverter clsConverter(sdkManager);
     bool triangulisationStatus = clsConverter.Triangulate(fbxScene, true);
     if (!triangulisationStatus) {
-        std::cout << "Error in the importation: triangulisation could not be fully done" << std::endl;
+        std::cout << "\rError in the importation: triangulisation could not be fully done" << std::endl;
         return false;
     }
 
@@ -161,7 +162,7 @@ bool Scene::importFBXFile(const char* filePath, Material* material, std::string 
         return false;
 
     addObjectGroup(Object3DGroup(name, objects));
-    std::cout << filePath << " was successfully imported in " << getCurrentTimeSeconds() - importationBeginningTime << " seconds!" << std::endl;
+    std::cout << "\r" << filePath << " was successfully imported in " << getCurrentTimeSeconds() - importationBeginningTime << " seconds!" << std::endl;
     return true;
 }
 
@@ -185,7 +186,7 @@ bool importTrianglesFromFbxNode(FbxNode* node, Material* material, std::vector<O
             // Add each triangle to the scene
             for (int polygonIx = 0; polygonIx < mesh->GetPolygonCount(); polygonIx++) {
                 if (mesh->GetPolygonSize(polygonIx) != 3) {
-                    std::cout << "Error in the importation: a polygon is not a triangle" << std::endl;
+                    std::cout << "\rError in the importation: a polygon is not a triangle" << std::endl;
                     return false;
                 }
 
