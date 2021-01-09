@@ -183,7 +183,7 @@ void executeParametersCommands(char command) {
             case 3: camera.setFocal(getXYZDoubleVec3DFromUser("What is the new camera focal?")); return;
             case 4: scene.setSamplesPerPixel(getUnsignedIntFromUser("What is the new number of samples per pixel? " + POSITIVE_INT_INFO)); return;
             case 5: scene.setMinBounces(getUnsignedIntFromUser("What is the new minimum number of ray bounces? (there can be less if nothing is hit) " + POSITIVE_INT_INFO)); return;
-            case 6: scene.setNumberThreads(getUnsignedIntFromUser("What is the new number of threads that will used during the rendering? " + POSITIVE_INT_INFO)); return;
+            case 6: scene.setNumberThreads(getUnsignedIntFromUser("What is the new number of CPU threads that will used during the rendering? " + POSITIVE_INT_INFO)); return;
             case 7: scene.setRussianRoulette(getBoolFromUser("Will the russian roulette path termination algorithm be used? " + BOOL_INFO)); return;
             case 8:
                 while (true) {

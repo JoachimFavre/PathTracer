@@ -478,7 +478,7 @@ void Scene::displayParametersPage(bool displayIndexes /*= true*/) const {
 
     std::cout << "Optimisation parameters" << std::endl;
     std::cout << DASH_SPLITTER << std::endl;
-    std::cout << getCurrentIndex(index++, displayIndexes) + "Number of threads = " << numberThreads << std::endl;
+    std::cout << getCurrentIndex(index++, displayIndexes) + "Number of CPU threads = " << numberThreads << std::endl;
     std::cout << getCurrentIndex(index++, displayIndexes) + "Russian roulette = " << bool2string(russianRoulette) << std::endl;
     std::cout << getCurrentIndex(index++, displayIndexes) + "Rr stop probability = " << rrStopProbability << std::endl;
     std::cout << getCurrentIndex(index++, displayIndexes) + "Next event estimation = " << bool2string(nextEventEstimation) << std::endl;
