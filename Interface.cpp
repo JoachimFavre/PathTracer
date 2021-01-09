@@ -185,7 +185,7 @@ void executeParametersCommands(char command) {
             case 5: scene.setMinBounces(getUnsignedIntFromUser("What is the new minimum number of ray bounces? (there can be less if nothing is hit) " + POSITIVE_INT_INFO)); return;
             case 6: 
                 while (true) {
-                    unsigned int threads = getUnsignedIntFromUser("What is the new number of CPU threads that will used during the rendering? " + POSITIVE_INT_INFO); 
+                    unsigned int threads = getUnsignedIntFromUser("What is the new number of CPU threads that will used during the rendering? (the optimal number would be " + std::to_string(omp_get_max_threads()) + ") " + POSITIVE_INT_INFO);
                     if (threads != 0) {
                         scene.setNumberThreads(threads);
                         return;

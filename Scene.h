@@ -300,7 +300,7 @@ private:
     bool russianRoulette = true;
     double rrStopProbability = 0.1;  // Linked to russianRoulette   /  stopProb=1 <=> russianRoulette=false
     bool nextEventEstimation = true;
-    unsigned int numberThreads = 8;
+    unsigned int numberThreads = omp_get_max_threads();
     bool kdTree = true;
     unsigned int kdMaxObjectNumber = 10;
     unsigned int kdMaxDepth = 10;
