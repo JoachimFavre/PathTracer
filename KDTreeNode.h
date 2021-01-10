@@ -86,6 +86,18 @@
     \details The greater child and the smaller one are distinguished by their position to the cut.
     \return The greater child of this node.
 
+    \fn unsigned int KDTreeNode::getMaxDepth()
+    \brief Gives the maximum depth of this tree.
+    \details This function must be called from the root node of a tree.
+    \return Its own depth, if it has no child; the maximum between the maximum depth of both its children, else.
+    \sa KDTreeNode::getMaxObjectNumberLeaf()
+
+    \fn unsigned int KDTreeNode::getMaxObjectNumberLeaf()
+    \brief Gives the maximum number of objects in a leaf of this tree.
+    \details This function must be called from the root node of a tree.
+    \return Its number of objects, if it has not child; the maximum between the maximum number of objects in a leaf given by both its children, else.
+    \sa KDTreeNode::getMaxDepth()
+
     \fn double KDTreeNode::intersectionDistance(const Ray& ray)
     \brief Gives the distance to the closest intersection between this node's surface and a ray.
     \param ray The ray with which it computes the distance.

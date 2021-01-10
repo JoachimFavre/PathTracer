@@ -98,9 +98,9 @@
     \param group The group that will be added to the stream.
     \return The stream with the group added.
 
-    \fn std::vector<Object3D*> split(std::vector<Object3DGroup> groups)
+    \fn std::vector<Object3D*> split(const std::vector<Object3DGroup>& groups)
     \brief Takes the std::vector of each object group and merge them.
-    \details Makes a deep copy of all Object3D pointers.
+    \details Does not make any deep copy of Object3D pointer.
     \param groups The object group that will be merges.
     \return All the objects of the object groups.
 
