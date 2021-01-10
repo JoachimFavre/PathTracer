@@ -346,8 +346,8 @@ void displayRenderingProgression(unsigned int numberPixelXAlreadyComputed, unsig
 
     // Putting std::string and + instead of << removes the cursor blinking, but we cannot modify the decimal precision
     std::cout << "\rProgress: " << (double)numberPixelXAlreadyComputed/pictureWidth*100
-              << "%     Time already spent: " << timeAlreadySpent
-              << "s     Estimated time left: " << timeEstimation
+              << "%  /  Time already spent: " << timeAlreadySpent
+              << "s  /  Estimated time left: " << timeEstimation
               << "s        ";
 }
 
