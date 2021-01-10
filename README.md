@@ -14,7 +14,7 @@ This is a C++ renderer using the Path Tracing algorithm I made throughout 2020 i
 
 ### The CImg Library version 2.9.2 by David Tschumperlé
 - [Website](http://cimg.eu/)
-- [Download](http://cimg.eu/download.shtml) (put CImg.h in [your project directory]/CImg)
+- [Download](http://cimg.eu/download.html) (put CImg.h in [your project directory]/CImg)
 - [List of supported picture format](http://cimg.eu/reference/group__cimg__files__io.html)
 
 ## Visual Studio 2017 parametring
