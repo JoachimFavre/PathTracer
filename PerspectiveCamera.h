@@ -67,7 +67,7 @@
 
     \fn Ray PerspectiveCamera::getRayGoingThrough(double pixelX, double pixelY)
     \brief Returns a ray going through some pixels.
-    \details See my TM's report for an explanation on how it works.
+    \details See my TM's report for an explanation on how the computations work.
     \param pixelX The *x* coordinate of the pixel through which we want the ray.
     \param pixelY The *y* coordinate of the pixel through which we want the ray.
     \return A ray which origin is the camera's and which direction is such that it goes through the requested pixel.

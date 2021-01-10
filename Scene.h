@@ -16,7 +16,7 @@
 
 /*!
     \file Scene.h
-    \brief Defines the Scene class and the functions around it.
+    \brief Defines the Scene class and some functions around it.
 
     \class Scene
     \brief Stores object groups and a camera for the render.
@@ -49,7 +49,7 @@
     \brief Getter for the lamps.
     \details Calls computeObjectsAndLamps().
     \return This scene's objects that have an emittance strictly greater than 0.
-    \sa getObjects()
+    \sa Scene::getObjects()
 
     \fn PerspectiveCamera Scene::getCamera()
     \brief Getter for the camera.
@@ -62,24 +62,24 @@
     \fn unsigned int Scene::getSamplesPerPixel()
     \brief Getter for the number of samples per pixel.
     \return The number of samples per pixel that will be used during the render.
-    \sa Scene()
+    \sa Scene::Scene()
 
     \fn unsigned int Scene::getMinBounces()
     \brief Getter for the minimum number of bounces.
     \return The minimum number of bounces that will be used during the render.
-    \sa Scene()
+    \sa Scene::Scene()
 
     \fn bool Scene::getRussianRoulette()
     \brief Getter for the russian roulette.
     \details See my TM's report for further information on this algorithm.
     \return Whether the russian roulette path termination algorithm will be used during the render.
-    \sa getRrStopProbability()
+    \sa Scene::getRrStopProbability()
 
     \fn double Scene::getRrStopProbability()
     \brief Getter for the russian roulette stop probability.
     \details Russian roulette stop probability that will be used during the render.
     \return The russian roulette stop probability.
-    \sa Scene(), getRussianRoulette()
+    \sa Scene::Scene(), Scene::getRussianRoulette()
 
     \fn bool Scene::getNextEventEstimation()
     \brief Getter for the next event estimation.
@@ -108,25 +108,25 @@
     \return The maximum number of recursive steps of the k-d tree.
     \sa Scene::getKDTree(), Scene::getKDMaxObjectNumber()
 
-    \fn std::string Scene::getBackupFileName() const
+    \fn std::string Scene::getBackupFileName()
     \brief Getter for the name of the file in which backups will be made.
     \details Every backup will be done with the same file name, but using a different file extension.
     \return The name of the file in which backups will be made.
 
-    \fn bool Scene::getBackupParameters() const
+    \fn bool Scene::getBackupParameters()
     \brief Getter for the option to backup the parameters.
     \return Whether the parameters will be backed up before the render.
 
-    \fn bool Scene::getBackupObjectGroups() const
+    \fn bool Scene::getBackupObjectGroups()
     \brief Getter for the option to backup the object groups.
     \return Whether the object groups will be backed up before the render.
 
-    \fn bool Scene::getBackupPicture() const
+    \fn bool Scene::getBackupPicture()
     \brief Getter for the option to backup the picture.
     \return Whether the picture will be backed up after the render.
     \sa Scene::getLeastRenderTime4PictureBackup()
 
-    \fn double Scene::getLeastRenderTime4PictureBackup() const
+    \fn double Scene::getLeastRenderTime4PictureBackup()
     \brief Getter for the least render time after which the picture is backed up.
     \details If this value is set to 0.0, the picture will always be backed up after the render.
     \return The least render time after which the picture is backed up.
@@ -143,12 +143,12 @@
     \fn void Scene::setSamplesPerPixel(unsigned int samplesPerPixel)
     \brief Setter for the number of samples per pixel.
     \param samplesPerPixel The new number of samples per pixel that will be used during the render.
-    \sa Scene()
+    \sa Scene::Scene()
 
     \fn void Scene::setMinBounces(unsigned int minBounces)
     \brief Setter for the minimum number of bounces.
     \param minBounces The new minimum number of bounces that will be used during the render.
-    \sa Scene()
+    \sa Scene::Scene()
 
     \fn void Scene::setRussianRoulette(bool russianRoulette)
     \brief Setter for the russian roulette.
@@ -160,13 +160,13 @@
     \details See my TM's report for further information on this algorithm.
     \param russianRoulette Whether the russian roulette path termination algorithm will be used during the render.
     \param rrStopProbability The new russian roulette stop probability that will be used during the render.
-    \sa Scene().
+    \sa Scene::Scene().
 
     \fn void Scene::setRrStopProbability(double rrStopProbability)
     \brief Setter for the russian roulette stop probability
     \details See my TM's report for further information on this algorithm.
     \param rrStopProbability The new russian roulette stop probability that will be used during the render.
-    \sa Scene().
+    \sa Scene::Scene().
 
     \fn void Scene::setNextEventEstimation(bool nextEventEstimation)
     \brief Setter for the next event estimation.
@@ -228,22 +228,23 @@
     \sa Object3DGroup::resetAndDeleteObjects()
 
     \fn void Scene::computeObjectsAndLamps()
-    \brief Computes all the objects
+    \brief Computes all the objects.
     \details Also stores a vector of all objects having an emitance strictly greater than 1, to go faster with the next event estimation algorithm.
 
     \fn void Scene::defaultScene()
     \brief Sets this scene's objects to default ones.
     \details The look is similar to the Cornell box.
+    \sa initInterface()
 
     \fn void Scene::saveParameters2File(std::string fileName) const
     \brief Saves parameters to a file.
     \param fileName The name of the file to which the prameters will be saved. It is recommended that this file extension ends with PARAMETERS_SAVE_EXTENSION.
-    \sa formatFileName()
+    \sa formatFileName(), PARAMETERS_SAVE_EXTENSION
 
     \fn void Scene::saveObjectGroups2File(std::string fileName) const
     \brief Saves object groups to a file.
     \param fileName The name of the file to which the object groups will be saved. It is recommended that this file extension ends with OBJECTS_SAVE_EXTENSION.
-    \sa formatFileName()
+    \sa formatFileName(), OBJECTS_SAVE_EXTENSION
 
     \fn bool Scene::importFBXFile(const char* filePath, Material* material, std::string name)
     \brief Imports a fbx file as triangles.
@@ -256,25 +257,26 @@
 
     \fn Picture* Scene::render()
     \brief Start the render of the picture.
-    \details This uses the path tracing algorithm (you could have read this project's title for this information) and some optimisations such as next event estimation and russian roulette path termination.
+    \details This uses the path tracing algorithm (I guess this information was not useful, as it is in the title) and some optimisations such as next event estimation and russian roulette path termination.
     \return A pointer to the rendered picture.
 
     \fn void Scene::displayParametersPage(bool displayIndexes = true)
     \brief Prints the parameters page.
     \details This is one of the main pages.
-    \param displayIndexes If true it will print the indexes before each parameter. This is useful if for the user to be able to change them, but you can remove them if you only want the information.
-    \sa displayObjectsPage()
+    \param displayIndexes If true it will print the indexes before each parameter. This is useful if for the user to be able to change them, but you can remove them if you only want the information (during the render, for example).
+    \sa Scene::displayObjectsPage()
 
     \fn void Scene::displayObjectsPage()
     \brief Prints the objects page.
     \details This is one of the main pages.
-    \sa displayParametersPage()
+    \sa Scene::displayParametersPage()
 
     \fn bool importTrianglesFromFbxNode(FbxNode* node, Material* material, std::vector<Object3D*>& objects)
     \brief Imports recursively all triangles present in a FBXNode.
     \param node The node from which we want to import the mesh.
     \param material The material with which the triangles will be instanciated.
     \param objects A reference to a vector of objects in which the triangles will be added.
+    \warning The material is always deeply copied when instanciating a triangle. Do not forget to delete it after calling this method.
     \sa Scene::importFBXFile()
 
     \fn void displayRenderingProgression(unsigned int numberPixelXAlreadyComputed, unsigned int pictureWidth, double loopBeginningTime)
@@ -282,8 +284,8 @@
     \details This is used during the rendering.
     \param numberPixelXAlreadyComputed The *x* coordinate of the pixel we are currently treating.
     \param pictureWidth The width of the picture we are rendering.
-    \param loopBeginningTime The number of seconds between 01/01/1970 and the beginning of the render.
-    \sa render()
+    \param loopBeginningTime The number of seconds between 1st January 1970 and the beginning of the render.
+    \sa Scene::render()
 */
 
 class Scene {

@@ -7,7 +7,7 @@
 
 /*!
     \file Object3D.h
-    \brief Defines the Object3D class and the functions around it.
+    \brief Defines the Object3D class and some functions around it.
 
     \class Object3D
     \brief Abstract class for a three-dimentional object.
@@ -27,7 +27,9 @@
 
     \fn Object3D::Object3D(const Object3D& obj)
     \brief Copy constructor.
+    \details Calls Object3D::operator=().
     \param obj The object that will be copied.
+    \sa Object3D::operator=().
 
     \fn Object3D::~Object3D()
     \brief Destructor.
@@ -55,9 +57,9 @@
     \return A pointer to a deeply copied version of this object.
 
     \fn virtual double Object3D::closestIntersection(const Ray& ray) = 0
-    \brief Computes the closes intersection between the ray and this object.
+    \brief Computes the closest intersection between the ray and this object.
     \param ray The ray with wich we want to compute the intersection.
-    \return The distance between the ray origin and the intersection (the smalles one if there is more than one intersection). Returns -1 if the ray does not intersect with the object.
+    \return The distance between the ray origin and the intersection (the smallest one if there is more than one intersection). Returns -1 if the ray does not intersect with this object.
 
     \fn virtual DoubleUnitVec3D Object3D::getNormal(const DoubleVec3D& point) = 0
     \brief Computes the normal at a point on the object.
@@ -66,12 +68,14 @@
 
     \fn virtual DoubleVec3D Object3D::getRandomPoint() = 0
     \brief Computes a random point on the object.
+    \details Every point has the same probability to show up.
     \return A random point on this object.
 
     \fn virtual std::ostream& Object3D::getDescription(std::ostream& stream) = 0
     \brief Returns this object's description.
     \param stream The current stream.
     \return The stream with the description.
+    \sa operator<<(std::ostream& stream, const Object3D& object)
 
     \fn virtual DoubleVec3D Object3D::getCenter() = 0
     \brief Returns this object's center.
@@ -80,14 +84,16 @@
     \fn virtual DoubleVec3D Object3D::getMinCoord() = 0
     \brief Returns the minimum coordinate of a cuboid containing this object.
     \return The minimum coordinate of a cuboid containing this object.
+    \sa getMinPoint(std::vector<Object3D*> objects)
 
     \fn virtual DoubleVec3D Object3D::getMaxCoord() = 0
     \brief Returns the maximum coordinate of a cuboid containing this object.
     \return The maximum coordinate of a cuboid containing this object.
+    \sa getMaxPoint(std::vector<Object3D*> objects)
 
     \fn virtual std::string Object3D::getType() = 0
     \brief Returns this object type.
-    \return Returns this object type ("Sphere", "Triangle", ...).
+    \return Returns "Sphere" or "Triangle", depending on the object instance.
 
     \fn virtual json Object3D::getLocationJson() = 0
     \brief Converts this objects's location to json.
@@ -101,14 +107,15 @@
     \brief Assignment operator.
     \details Makes a deepcopy of the material before copying it.
     \param otherObject The object to which this will be equal.
+    \sa Object3D::Object3D(const Object3D& obj)
 
     \fn std::ostream& operator<<(std::ostream& stream, const Object3D& object)
     \brief Ostream operator.
-    \details Calls the getDescription() method.
+    \details Calls the Object3D::getDescription() method.
     \param stream The ostream before.
     \param object The object that will be added to the stream.
     \return The stream with the object added.
-    \sa getDescription()
+    \sa Object3D::getDescription()
 */
 
 class Object3D {

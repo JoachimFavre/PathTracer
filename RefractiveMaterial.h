@@ -13,7 +13,7 @@
     \fn RefractiveMaterial::RefractiveMaterial(double refractiveIndex = 1.5, DoubleVec3D emittance = 0)
     \brief Default and main constructor.
     \param refractiveIndex The refractive index of this material.
-    \param emittance The light this material emits.
+    \param emittance The radiance this material emits.
 
     \fn RefractiveMaterial::RefractiveMaterial(const RefractiveMaterial& material)
     \brief Copy constructor.
@@ -37,6 +37,7 @@
     \brief Computes the new ray direction.
     \param previousRay The ray that hits this material.
     \param normal The normal at the intersection.
+    \return The new ray direction.
 
     \fn DoubleVec3D RefractiveMaterial::computeCurrentRadiance(const DoubleVec3D& recursiveRadiance, double cosAngleNewDirectionNormal, bool nextEventEstimation = false)
     \brief Computes the new radiance.
@@ -53,9 +54,11 @@
     \brief Returns this material's description.
     \param stream The current stream.
     \return The stream with the description.
+    \sa operator<<(std::ostream& stream, const Material& material)
 
     \fn std::string RefractiveMaterial::getType()
-    \brief Returns "Refractive"
+    \brief Returns "Refractive".
+    \return "Refractive".
 
     \fn json RefractiveMaterial::getSpecificParametersJson()
     \brief Converts this material's specific parameters to json.

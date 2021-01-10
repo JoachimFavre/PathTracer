@@ -28,26 +28,32 @@
     \sa INVALID_COMMAND
 
     \fn void receiveAndExecuteGeneralCommands()
-    \brief Receives and executes the general commands.
-    \details Asks a command to the user. If it is general to both main pages (exit, for example), executes it, else, calls executeParametersCommands() or executeObjectsCommands().
+    \brief Receives and executes a general command.
+    \details Asks a command to the user. If it is general to both main pages (exit, for example), executes it. Else, it calls executeParametersCommands() or executeObjectsCommands().
+    \sa executeObjectsCommands(), executeObjectsCommands(), displayCommands(), initInterface()
 
     \fn void executeParametersCommands(char command)
     \brief Executes a command specific to the parameters page.
+    \sa receiveAndExecuteGeneralCommands(), executeObjectsCommands(), displayCommands()
 
     \fn void executeObjectsCommands(char command)
     \brief Executes a command specific to the objects page.
+    \sa receiveAndExecuteGeneralCommands(), executeParametersCommands(), displayCommands()
 
     \fn void displayCommands()
-    \brief Prints the available command.
+    \brief Prints the available commands.
     \details The available commands change depending on the active page.
+    \sa printAll(), receiveAndExecuteGeneralCommands(), executeParametersCommands(), executeObjectsCommands()
 
     \fn void printAll()
     \brief Prints the whole page.
     \details Clears the page, prints the header, information and the available commands.
-    \sa clearScreenPrintHeader(), Scene::displayParametersPage(), Scene::displayObjectsPage(), displayCommands()
+    \sa clearScreenPrintHeader(), Scene::displayParametersPage(), Scene::displayObjectsPage(), displayCommands(), initInterface()
 
     \fn void initInterface()
     \brief Starts the infinite loop of the interface.
+    \details Fills the scene with a default one. Then, it calls printAll() and receiveAndExecuteGeneralCommands() indefinitely.
+    \sa Scene::defaultScene(), printAll(), receiveAndExecuteGeneralCommands()
 */
 
 static Scene scene;

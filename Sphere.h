@@ -8,11 +8,11 @@
     \brief Defines the Sphere class.
 
     \class Sphere
-    \brief A sphere described by its center and its raidus.
+    \brief A sphere described by its center and its radius.
 
     \fn Sphere::Sphere()
     \brief Default constructor.
-    \details Sets the center at (0, 0, 0) and the radius at 1.
+    \details Calls Object3D::Object3D(), then sets the center at (0, 0, 0) and the radius at 1.
 
     \fn Sphere::Sphere(const DoubleVec3D& center, double radius, Material* material)
     \brief Main constructor
@@ -34,24 +34,29 @@
 
     \fn void Sphere::setCenter(const DoubleVec3D& center)
     \brief Setter for the center.
+    \details Calls Sphere::computeArea().
     \param center The new center of this sphere.
+    \sa Sphere::computeArea()
 
     \fn void Sphere::setRadius(double radius)
     \brief Setter for the radius.
+    \details Calls Sphere::computeArea().
     \param radius The new radius of this sphere.
+    \sa Sphere::computeArea()
 
     \fn void Sphere::computeArea()
     \brief Computes this sphere's area.
     \details Modifies Object3D::area. It uses the formula A = 4*pi*radius*radius.
+    \sa Object3D::area, Object3D::getArea()
 
     \fn Object3D* Sphere::deepCopy()
     \brief Makes a deep copy of this object.
     \return A pointer to a deeply copied version of this object.
 
     \fn double Sphere::closestIntersection(const Ray& ray)
-    \brief Computes the closes intersection between the ray and this object.
+    \brief Computes the closest intersection between the ray and this object.
     \param ray The ray with wich we want to compute the intersection.
-    \return The distance between the ray origin and the intersection (the smalles one if there is more than one intersection). Returns -1 if the ray does not intersect with the object.
+    \return The distance between the ray origin and the intersection (the smallest one if there is more than one intersection). Returns -1 if the ray does not intersect with this object.
 
     \fn DoubleUnitVec3D Sphere::getNormal(const DoubleVec3D& point)
     \brief Computes the normal at a point on the object.
@@ -60,22 +65,27 @@
 
     \fn DoubleVec3D Sphere::getRandomPoint()
     \brief Computes a random point on the object.
+    \details Every point has the same probability to show up.
     \return A random point on this object.
+    \sa randomVectorOnUnitRadiusSphere()
 
     \fn DoubleVec3D Sphere::getMinCoord()
     \brief Returns the minimum coordinate of a cuboid containing this object.
     \details This is computed using the following formula: center - DoubleVec3D(radius).
     \return The minimum coordinate of a cuboid containing this object.
+    \sa getMinPoint(std::vector<Object3D*> objects)
 
     \fn DoubleVec3D Sphere::getMaxCoord()
     \brief Returns the maximum coordinate of a cuboid containing this object.
     \details This is computed using the following formula: center + DoubleVec3D(radius).
     \return The maximum coordinate of a cuboid containing this object.
+    \sa getMaxPoint(std::vector<Object3D*> objects)
 
     \fn std::ostream& Sphere::getDescription(std::ostream& stream)
     \brief Returns this object's description.
     \param stream The current stream.
     \return The stream with the description.
+    \sa operator<<(std::ostream& stream, const Object3D& object)
 
     \fn std::string Sphere::getType()
     \brief Returns this object type.

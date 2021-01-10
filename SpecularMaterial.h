@@ -12,7 +12,7 @@
 
     \fn SpecularMaterial::SpecularMaterial(DoubleVec3D emittance = 0)
     \brief Default and main constructor.
-    \param emittance The light this material emits.
+    \param emittance The radiance this material emits.
 
     \fn SpecularMaterial::SpecularMaterial(const SpecularMaterial& material)
     \brief Copy constructor.
@@ -26,6 +26,7 @@
     \brief Computes the new ray direction.
     \param previousRay The ray that hits this material.
     \param normal The normal at the intersection.
+    \return The new ray direction.
 
     \fn DoubleVec3D SpecularMaterial::computeCurrentRadiance(const DoubleVec3D& recursiveRadiance, double cosAngleNewDirectionNormal, bool nextEventEstimation = false)
     \brief Computes the new radiance.
@@ -42,9 +43,11 @@
     \brief Returns this material's description.
     \param stream The current stream.
     \return The stream with the description.
+    \sa operator<<(std::ostream& stream, const Material& material)
 
     \fn std::string SpecularMaterial::getType()
     \brief Returns "Specular".
+    \return "Specular".
 
     \fn json SpecularMaterial::getSpecificParametersJson()
     \brief Converts this material's specific parameters to json.

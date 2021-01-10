@@ -10,7 +10,7 @@
 
 /*!
     \file Picture.h
-    \brief Defines the Picture class and the functions around it.
+    \brief Defines the Picture class and some functions around it.
 
     \class Picture
     \brief Stores radiance for every pixel.
@@ -28,7 +28,7 @@
     \details All pixels are set to (0, 0, 0).
     \param width The picture width.
     \param height The picture height.
-    \param renderTime The time in seconds in took to compute this picture.
+    \param renderTime The time in seconds it took to compute this picture.
 
     \fn Picture::Picture(const Picture& picture)
     \brief Copy constructor
@@ -94,6 +94,7 @@
     \param radiance The radiance we want to convert.
     \param middleGrey The radiance value that corresponds to the middle-grey.
     \return The colour that has been computed. Each part of the colour (red, green or blue) range from 0 to MAX_COLOUR_VALUE.
+    \sa Picture::MAX_COLOUR_VALUE, Picture::export2File()
 
     \fn DoubleVec3D getColourMovingAverage(const std::vector<std::vector<DoubleVec3D>>& pixelValues, unsigned int pixelX, unsigned int pixelY, unsigned int size)
     \brief Computes the value of a pixel when having applied a moving average.
@@ -102,6 +103,7 @@
     \param pixelY the *y* coordinate of the pixel.
     \param size The size of the moving average.
     \return The colour at that pixel after having applied the moving average.
+    \sa Picture::export2File()
 
     \fn void to_json(json& j, const Picture& picture)
     \brief Conversion to json.

@@ -7,7 +7,7 @@
 
 /*!
     \file Object3DGroup.h
-    \brief Defines the Object3DGroup class and the functions around it.
+    \brief Defines the Object3DGroup class and some functions around it.
 
     \class Object3DGroup
     \brief Group of objects.
@@ -24,13 +24,14 @@
 
     \fn Object3DGroup::Object3DGroup(const Object3DGroup& group)
     \brief Copy constructor.
-    \details Does not deeply copy any of the pointers.
     \param group The group that will be copied.
+    \warning The pointers are not deeply copied.
 
     \fn Object3DGroup::~Object3DGroup()
     \brief Destructor
-    \details Calls Object3DGroup::resetObjects(). Waning, this method does not delete any pointer.
-    \sa resetObjects()
+    \details Calls Object3DGroup::resetObjects(). 
+    \warning The pointers are not deleted.
+    \sa Object3DGroup::resetObjects()
 
     \fn std::string Object3DGroup::getName()
     \brief Getter for the name.
@@ -38,7 +39,8 @@
 
     \fn std::vector<Object3D*> Object3DGroup::getObjects()
     \brief Getter for the objects.
-    \return A std::vector of pointers to Object3D that are in this group. The pointers are not deeply copied.
+    \return A std::vector of pointers to Object3D that are in this group. 
+    \warning The pointers are not deeply copied.
 
     \fn DoubleVec3D Object3DGroup::getCenter()
     \brief Getter for the center
@@ -51,8 +53,8 @@
 
     \fn void Object3DGroup::setObjects(const std::vector<Object3D*>& newObjects)
     \brief Setter for the objects.
-    \details Warning, the pointers are not copied.
     \param newObjects The new objects of this object group.
+    \warning The pointers are not deeply copied.
 
     \fn void Object3DGroup::addObject(Object3D* object)
     \brief Adds an object to the current ones.
@@ -61,22 +63,23 @@
 
     \fn void Object3DGroup::addObjects(const std::vector<Object3D*>& newObjects)
     \brief Add multiple objects to the current ones.
-    \details The pointers are deeply copied.
     \param newObjects The objects that will be added.
+    \warning The pointers are not deeply copied.
 
     \fn void Object3DGroup::merge(const Object3DGroup& group)
     \brief Merge with an other object group.
-    \details Keeps the current name, but adds the objects of the second one. The pointers are deeply copied.
+    \details Keeps the current name, but adds the objects of the second one. 
     \param group The group from which the objects will be copied.
+    \warning The pointers are not deeply copied.
 
     \fn void Object3DGroup::resetObjects()
     \brief Resets all objects of this object group.
-    \details Warning, this method does not delete any pointer.
     \sa Object3DGroup::resetAndDeleteObjects()
+    \warning The pointers are not deleted.
 
     \fn void Object3DGroup::resetAndDeleteObjects()
     \brief Deletes all pointers to the objects of this object group, then reset its objects.
-    \details Calls the function Object3DGroup::resetObjects()
+    \details Calls the function Object3DGroup::resetObjects().
     \sa Object3DGroup::resetObjects()
 
     \fn static Object3DGroup Object3DGroup::create()
@@ -100,9 +103,9 @@
 
     \fn std::vector<Object3D*> split(const std::vector<Object3DGroup>& groups)
     \brief Takes the std::vector of each object group and merge them.
-    \details Does not make any deep copy of Object3D pointer.
     \param groups The object group that will be merges.
     \return All the objects of the object groups.
+    \warning The pointers are not deeply copied.
 
     \fn void to_json(json& j, const Object3DGroup& group)
     \brief Conversion to json.

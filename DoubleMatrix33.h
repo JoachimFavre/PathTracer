@@ -5,7 +5,7 @@
 
 /*!
     \file DoubleMatrix33.h
-    \brief Defines the DoubleMatrix33 class and the functions around it.
+    \brief Defines the DoubleMatrix33 class and some functions around it.
 
     \class DoubleMatrix33
     \brief A three-dimensional square matrix using doubles.
@@ -13,14 +13,14 @@
     \fn DoubleMatrix33::DoubleMatrix33(double val = 0)
     \brief Default constructor. Gives all points the same value.
     \param val The value of all the points.
-    \sa DoubleMatrix33(const DoubleVec3D& column0, const DoubleVec3D& column1, const DoubleVec3D& column2)
+    \sa DoubleMatrix33::DoubleMatrix33(const DoubleVec3D& column0, const DoubleVec3D& column1, const DoubleVec3D& column2)
 
     \fn DoubleMatrix33::DoubleMatrix33(const DoubleVec3D& column0, const DoubleVec3D& column1, const DoubleVec3D& column2)
     \brief Main constructor.
     \param column0 The value of the first column.
     \param column1 The value of the second column.
     \param column2 The value of the third column.
-    \sa DoubleMatrix33(double val)
+    \sa DoubleMatrix33::DoubleMatrix33(double val)
 
     \fn DoubleMatrix33::DoubleMatrix33(const DoubleMatrix33& matrix)
     \brief Copy constructor.
@@ -29,90 +29,91 @@
     \fn DoubleVec3D DoubleMatrix33::getColumn0()
     \brief Getter for the first column.
     \return The first column of this matrix.
-    \sa setColumn0(), getColumn1(), getColumn2()
+    \sa DoubleMatrix33::setColumn0(), DoubleMatrix33::getColumn1(), DoubleMatrix33::getColumn2()
 
     \fn DoubleVec3D DoubleMatrix33::getColumn1()
     \brief Getter for the second column.
     \return The second column of this matrix.
-    \sa setColumn1(), getColumn0(), getColumn2()
+    \sa DoubleMatrix33::setColumn1(), DoubleMatrix33::getColumn0(), DoubleMatrix33::getColumn2()
 
     \fn DoubleVec3D DoubleMatrix33::getColumn2()
     \brief Getter for the third column.
     \return The third column of this matrix.
-    \sa setColumn2(), getColumn0(), getColumn1()
+    \sa DoubleMatrix33::setColumn2(), DoubleMatrix33::getColumn0(), DoubleMatrix33::getColumn1()
 
     \fn DoubleVec3D DoubleMatrix33::getRow0T()
     \brief Getter for the first row (transposed).
     \return The first row transposed.
-    \sa getRow1T(), getRow2T()
+    \sa DoubleMatrix33::getRow1T(), DoubleMatrix33::getRow2T()
 
     \fn DoubleVec3D DoubleMatrix33::getRow1T()
     \brief Getter for the second row (transposed).
     \return The second row transposed.
-    \sa getRow0T(), getRow2T()
+    \sa DoubleMatrix33::getRow0T(), DoubleMatrix33::getRow2T()
 
     \fn DoubleVec3D DoubleMatrix33::getRow2T()
     \brief Getter for the third row (transposed).
     \return The third row transposed.
-    \sa getRow0T(), getRow1T()
+    \sa DoubleMatrix33::getRow0T(), DoubleMatrix33::getRow1T()
 
     \fn void DoubleMatrix33::setColumn0(const DoubleVec3D& column0)
     \brief Setter for the first column
     \param column0 The first column.
-    \sa getColumn0(), setColumn1(), setColumn2()
+    \sa DoubleMatrix33::getColumn0(), DoubleMatrix33::setColumn1(), DoubleMatrix33::setColumn2()
 
     \fn void DoubleMatrix33::setColumn1(const DoubleVec3D& column1)
     \brief Setter for the second column
     \param column1 The second column.
-    \sa getColumn1(), setColumn0(), setColumn2()
+    \sa DoubleMatrix33::getColumn1(), DoubleMatrix33::setColumn0(), DoubleMatrix33::setColumn2()
 
     \fn void DoubleMatrix33::setColumn2(const DoubleVec3D& column2)
     \brief Setter for the third column
     \param column2 The third column.
-    \sa getColumn2(), setColumn0(), setColumn1()
+    \sa DoubleMatrix33::getColumn2(), DoubleMatrix33::setColumn0(), DoubleMatrix33::setColumn1()
 
     \fn void DoubleMatrix33::operator+=(const DoubleMatrix33& matrix)
     \brief Sum operator.
     \param matrix The second matrix that will be used for the sum.
-    \sa operator+()
+    \sa operator+(const DoubleMatrix33& matrix1, const DoubleMatrix33& matrix2)
 
     \fn void DoubleMatrix33::operator-=(const DoubleMatrix33& matrix)
     \brief Difference operator.
     \details Uses the sum and unary minus operators.
     \param matrix The second matrix that will be used for the difference.
-    \sa operator+=(), operator-()
+    \sa DoubleMatrix33::operator+=(const DoubleMatrix33& matrix), operator-(const DoubleMatrix33& matrix)
 
     \fn void DoubleMatrix33::operator*=(const DoubleMatrix33& matrix)
     \brief Multiplication by a matrix operator.
     \param matrix The second matrix that will be used for the multiplication.
+    \sa DoubleMatrix33::operator*=(double val)
 
     \fn void DoubleMatrix33::operator*=(double val)
     \brief Multiplication by a scalar operator.
     \param val The scalar that will be used for the multiplication.
-    \sa operator*(), operator*()
+    \sa operator*(const DoubleMatrix33& matrix1, const DoubleMatrix33& matrix2), operator*(const DoubleMatrix33& matrix, const DoubleVec3D& vec), DoubleMatrix33::operator*=(const DoubleMatrix33& matrix)
 
     \fn DoubleMatrix33 operator+(const DoubleMatrix33& matrix1, const DoubleMatrix33& matrix2)
     \brief Sum operator.
-    \details Uses the operator+=() method.
+    \details Uses the DoubleMatrix33::operator+=(const DoubleMatrix33& matrix) method.
     \param matrix1 The first matrix for the sum.
     \param matrix2 The second matrix for the sum.
     \return The sum of the two matrices.
-    \sa operator+=()
+    \sa DoubleMatrix33::operator+=(const DoubleMatrix33& matrix)
 
     \fn DoubleMatrix33 operator-(const DoubleMatrix33& matrix)
     \brief Unary minus operator.
-    \details Uses the operator*=() method.
+    \details Uses the DoubleMatrix33::operator*=(double val) method.
     \param matrix The matrix that will be inversed.
     \return The inverse of matrix.
-    \sa operator*=(), operator-=()
+    \sa DoubleMatrix33::operator*=(double val), DoubleMatrix33::operator-=(const DoubleMatrix33& matrix)
 
     \fn DoubleMatrix33 operator-(const DoubleMatrix33& matrix1, const DoubleMatrix33& matrix2)
     \brief Difference operator
-    \details Uses the operator-=() method.
+    \details Uses the DoubleMatrix33::operator-=(const DoubleMatrix33& matrix) method.
     \param matrix1 The first matrix for the difference.
     \param matrix2 The second matrix for the difference.
     \return The difference between matrix1 and matrix2.
-    \sa operator-=()
+    \sa DoubleMatrix33::operator-=(const DoubleMatrix33& matrix)
 
     \fn DoubleMatrix33 operator*(const DoubleMatrix33& matrix1, const DoubleMatrix33& matrix2)
     \brief Matrix product operator
@@ -120,7 +121,7 @@
     \param matrix1 The first matrix for the product.
     \param matrix2 The second matrix for the product.
     \return The product between matrix1 and matrix2.
-    \sa operator*=()
+    \sa DoubleMatrix33::operator*=(double val)
 
     \fn DoubleVec3D operator*(const DoubleMatrix33& matrix, const DoubleVec3D& vec)
     \brief Matrix-vector product operator

@@ -5,7 +5,7 @@
 
 /*!
     \file KDTreeNode.h
-    \brief Defines the KDTreeNode class and the functions around it.
+    \brief Defines the KDTreeNode class and some functions around it.
 
     \class KDTreeNode
     \brief A node of a k-d tree.
@@ -62,11 +62,11 @@
 
     \fn DoubleVec3D KDTreeNode::getMinCoord()
     \brief Getter for this node's minimum coordinate.
-    \return The minimum coordinate of this node.
+    \return The minimum coordinate of this node's cuboid-shaped volume.
 
     \fn DoubleVec3D KDTreeNode::getMaxCoord()
     \brief Getter for this node's maximum coordinate.
-    \return The maximum coordinate of this node.
+    \return The maximum coordinate of this node's cuboid-shaped volume.
 
     \fn std::vector<Object3D*> KDTreeNode::getObjects()
     \brief Getter for this node's objects.
@@ -104,7 +104,7 @@
     \return The distance to the closest intersection between this node's surface and the ray.
 
     \fn bool KDTreeNode::isIn(DoubleVec3D point)
-    \brief Returns whether a point is inside this node.
+    \brief Returns whether a point is inside this node's cuboid-shaped volume.
     \param point The point for which we want this information.
     \return Whether a point is inside this node.
 
@@ -116,7 +116,7 @@
     \fn KDTreeNode::Intersection KDTreeNode::getIntersectionBackward(const Ray& ray, const KDTreeNode* ignore = nullptr)
     \brief Computes the intersection going from the bottom to the top of the tree.
     \details Starts at a bottom node and alternates between backward and forward intersection.
-    \param ray The ray with whcih the intersection is computed.
+    \param ray The ray with which the intersection is computed.
     \param ignore A KDTreeNode that will be ignored when computing a forward intersection.
     \return The intersection.
 

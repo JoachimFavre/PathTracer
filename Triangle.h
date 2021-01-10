@@ -13,7 +13,7 @@
 
     \fn Triangle::Triangle()
     \brief Default constructor.
-    \details Defines vertex0 = (1, 0, 0), vertex1 = (0, 1, 0) and vertex2 = (0, 0, 1)
+    \details Calls Object3D::Object3D(), then defines vertex0 = (1, 0, 0), vertex1 = (0, 1, 0) and vertex2 = (0, 0, 1).
 
     \fn Triangle::Triangle(const DoubleVec3D& vertex0, const DoubleVec3D& vertex1, const DoubleVec3D& vertex2, Material* material)
     \brief Main constructor
@@ -45,19 +45,26 @@
 
     \fn void Triangle::setVertex0(const DoubleVec3D& vertex)
     \brief Setter for the first vertex.
+    \details Calls Triangle::computeArea().
     \param vertex The new first vertex of this triangle.
+    \sa Triangle::computeArea()
 
     \fn void Triangle::setVertex1(const DoubleVec3D& vertex)
     \brief Setter for the second vertex.
+    \details Calls Triangle::computeArea().
     \param vertex The new second vertex of this triangle.
+    \sa Triangle::computeArea()
 
     \fn void Triangle::setVertex2(const DoubleVec3D& vertex)
     \brief Setter for the third vertex.
+    \details Calls Triangle::computeArea().
     \param vertex The new third vertex of this triangle.
+    \sa Triangle::computeArea()
 
     \fn void Triangle::computeArea()
     \brief Computes this triangle's area.
-    \details Modifies Object3D::area. It uses the formula A = 0.5 * ||edge1 x edge2||.
+    \details Modifies Object3D::area. It uses the formula A = 0.5 * ||edge1 x edge2||, with edge1 = vertex1 - vertex0 and edge2 = vertex2 - vertex0.
+    \sa Object3D::area, Object3D::getArea()
 
     \fn Object3D* Triangle::deepCopy()
     \brief Makes a deep copy of this object.
@@ -66,31 +73,35 @@
     \fn double Triangle::closestIntersection(const Ray& ray)
     \brief Computes the closest intersection between the ray and this object.
     \param ray The ray with wich we want to compute the intersection.
-    \return The distance between the ray origin and the intersection. Returns -1 if the ray does not intersect with the object.
+    \return The distance between the ray origin and the intersection. Returns -1 if the ray does not intersect with this object.
 
     \fn DoubleUnitVec3D Triangle::getNormal(const DoubleVec3D& point)
     \brief Computes the normal at a point on the object.
     \param point The point on the object at which we want to compute the normal.
-    \return The cross product between (vertex1 - vertex0) and (vertex2 - vertex0)
+    \return The cross product between (vertex1 - vertex0) and (vertex2 - vertex0).
 
     \fn DoubleVec3D Triangle::getRandomPoint()
     \brief Computes a random point on the object.
+    \details Every point has the same probability to show up.
     \return A random point on this object.
 
     \fn DoubleVec3D Triangle::getMinCoord()
     \brief Returns the minimum coordinate of a cuboid containing this object.
     \details For each axis, picks the smallest coordinate among the three vertices.
     \return The minimum coordinate of a cuboid containing this object.
+    \sa getMinPoint(std::vector<Object3D*> objects)
 
     \fn DoubleVec3D Triangle::getMaxCoord()
     \brief Returns the maximum coordinate of a cuboid containing this object.
     \details For each axis, picks the greatest coordinate among the three vertices.
     \return The maximum coordinate of a cuboid containing this object.
+    \sa getMaxPoint(std::vector<Object3D*> objects)
 
     \fn std::ostream& Triangle::getDescription(std::ostream& stream)
     \brief Returns this object's description.
     \param stream The current stream.
     \return The stream with the description.
+    \sa operator<<(std::ostream& stream, const Object3D& object)
 
     \fn std::string Triangle::getType()
     \brief Returns this object type.

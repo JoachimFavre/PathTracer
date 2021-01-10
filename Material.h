@@ -5,14 +5,14 @@
 
 /*!
     \file Material.h
-    \brief Defines the Material class and the functions around it.
+    \brief Defines the Material class and some functions around it.
 
     \class Material
     \brief Abstrat class that models a material.
 
     \fn Material::Material(DoubleVec3D emittance = 0)
     \brief Default and main constructor.
-    \param emittance The light this material emits.
+    \param emittance The radiance this material emits.
 
     \fn Material::Material(const Material& material)
     \brief Copy constructor.
@@ -34,6 +34,7 @@
     \brief Computes the new ray direction.
     \param previousRay The ray that hits this material.
     \param normal The normal at the intersection.
+    \return The new ray direction.
 
     \fn virtual DoubleVec3D Material::computeCurrentRadiance(const DoubleVec3D& recursiveRadiance, double cosAngleNewDirectionNormal, bool nextEventEstimation = false) = 0
     \brief Computes the new radiance.
@@ -50,10 +51,11 @@
     \brief Returns this material's description.
     \param stream The current stream.
     \return The stream with the description.
+    \sa operator<<(std::ostream& stream, const Material& material)
 
     \fn virtual std::string Material::getType() = 0
     \brief Returns this material type.
-    \return Returns this material type ("Diffuse", "Refractive", ...)
+    \return "Diffuse", "Refractive" or "Specular", depending on the material instance.
 
     \fn virtual json Material::getSpecificParametersJson() = 0
     \brief Converts this material's specific parameters to json.
@@ -65,11 +67,11 @@
 
     \fn std::ostream& operator<<(std::ostream& stream, const Material& material)
     \brief Ostream operator.
-    \details Calls the getDescription() method.
+    \details Calls the Material::getDescription() method.
     \param stream The ostream before.
     \param material The material that will be added to the stream.
     \return The stream with the material added.
-    \sa getDescription()
+    \sa Material::getDescription()
 */
 
 class Material {
