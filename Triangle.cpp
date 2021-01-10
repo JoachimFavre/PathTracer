@@ -43,7 +43,7 @@ Object3D* Triangle::deepCopy() const {
     return new Triangle(vertex0, vertex1, vertex2, getMaterial()->deepCopy());
 }
 
-double Triangle::closestIntersection(const Ray& ray) const {
+double Triangle::smallestPositiveIntersection(const Ray& ray) const {
     // Using Möller-Trumbore intersection algorithm (using notations from https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm (accessed on 3rd July 2020)
     // Return -1 if no intersection
     DoubleVec3D edge1 = vertex1 - vertex0;

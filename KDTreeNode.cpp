@@ -252,7 +252,7 @@ KDTreeNode::Intersection KDTreeNode::getIntersectionForward(const Ray& ray) cons
         double smallestPositiveDistance = INFINITY;  // Has to be strictly positive -> we don't want it to intersect with same object
         Object3D* closestObject = nullptr;
         for (Object3D* object : objects) {
-            double distance = object->closestIntersection(ray);
+            double distance = object->smallestPositiveIntersection(ray);
             if (distance > 0.00001 && distance < smallestPositiveDistance) {
                 smallestPositiveDistance = distance;
                 closestObject = object;
@@ -262,7 +262,7 @@ KDTreeNode::Intersection KDTreeNode::getIntersectionForward(const Ray& ray) cons
     }
 }
 
-KDTreeNode::Intersection KDTreeNode::getIntersectionBackward(const Ray& ray, const KDTreeNode* ignore /*= nullptr*/) const {
+KDTreeNode::Intersection KDTreeNode::getIntersectionBackwards(const Ray& ray, const KDTreeNode* ignore /*= nullptr*/) const {
     if (childSmaller == nullptr) {
         Intersection intersection = getIntersectionForward(ray);
         if (intersection.object != nullptr && isIn(ray.getOrigin() + ray.getDirection()*intersection.distance))
@@ -271,19 +271,19 @@ KDTreeNode::Intersection KDTreeNode::getIntersectionBackward(const Ray& ray, con
         if (parent == nullptr)
             return Intersection(nullptr, INFINITY, this);
         else
-            return parent->getIntersectionBackward(ray, this);
+            return parent->getIntersectionBackwards(ray, this);
     }
     // One of the children must be ignored
     if (childSmaller == ignore) {
         Intersection intersection = childGreater->getIntersectionForward(ray);
         if((intersection.object == nullptr || !childGreater->isIn(ray.getOrigin() + ray.getDirection()*intersection.distance)) && parent != nullptr)
-            return parent->getIntersectionBackward(ray, this);
+            return parent->getIntersectionBackwards(ray, this);
         return intersection;
     }
     if (childGreater == ignore) {
         Intersection intersection = childSmaller->getIntersectionForward(ray);
         if ((intersection.object == nullptr || !childSmaller->isIn(ray.getOrigin() + ray.getDirection()*intersection.distance)) && parent != nullptr)
-            return parent->getIntersectionBackward(ray, this);
+            return parent->getIntersectionBackwards(ray, this);
         return intersection;
     }
 
@@ -292,7 +292,7 @@ KDTreeNode::Intersection KDTreeNode::getIntersectionBackward(const Ray& ray, con
     if (intersection.object != nullptr && isIn(ray.getOrigin() + ray.getDirection()*intersection.distance))
         return intersection;
     if (parent != nullptr)
-        return parent->getIntersectionBackward(ray, this);
+        return parent->getIntersectionBackwards(ray, this);
     return intersection;
 }
 

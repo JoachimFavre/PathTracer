@@ -113,9 +113,9 @@
     \param ray The ray with which the intersection is computed.
     \return The intersection.
 
-    \fn KDTreeNode::Intersection KDTreeNode::getIntersectionBackward(const Ray& ray, const KDTreeNode* ignore = nullptr)
+    \fn KDTreeNode::Intersection KDTreeNode::getIntersectionBackwards(const Ray& ray, const KDTreeNode* ignore = nullptr)
     \brief Computes the intersection going from the bottom to the top of the tree.
-    \details Starts at a bottom node and alternates between backward and forward intersection.
+    \details Starts at a bottom node and alternates between backwards and forward intersection.
     \param ray The ray with which the intersection is computed.
     \param ignore A KDTreeNode that will be ignored when computing a forward intersection.
     \return The intersection.
@@ -176,7 +176,7 @@ public:
     double intersectionDistance(const Ray& ray) const;
     bool isIn(DoubleVec3D point) const;
     Intersection getIntersectionForward(const Ray& ray) const;
-    Intersection getIntersectionBackward(const Ray& ray, const KDTreeNode* ignore = nullptr) const;
+    Intersection getIntersectionBackwards(const Ray& ray, const KDTreeNode* ignore = nullptr) const;
 };
 
 DoubleVec3D getMinPoint(std::vector<Object3D*> objects);

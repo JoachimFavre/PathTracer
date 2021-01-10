@@ -34,7 +34,7 @@ Object3D* Sphere::deepCopy() const {
     return new Sphere(center, radius, getMaterial()->deepCopy());
 }
 
-double Sphere::closestIntersection(const Ray& ray) const {
+double Sphere::smallestPositiveIntersection(const Ray& ray) const {
     // Returns -1 if no solution
     // Using quadratic equation formula to solve (meaning of a, b, c)
     // a = dotProd(rayDir, rayDir) but = 1

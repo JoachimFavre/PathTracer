@@ -70,8 +70,8 @@
     \brief Makes a deep copy of this object.
     \return A pointer to a deeply copied version of this object.
 
-    \fn double Triangle::closestIntersection(const Ray& ray)
-    \brief Computes the closest intersection between the ray and this object.
+    \fn double Triangle::smallestPositiveIntersection(const Ray& ray)
+    \brief Computes the smallest positive intersection between the ray and this object.
     \param ray The ray with wich we want to compute the intersection.
     \return The distance between the ray origin and the intersection. Returns -1 if the ray does not intersect with this object.
 
@@ -137,7 +137,7 @@ public:
     void computeArea();
     Object3D* deepCopy() const;
 
-    double closestIntersection(const Ray& ray) const;
+    double smallestPositiveIntersection(const Ray& ray) const;
     DoubleUnitVec3D getNormal(const DoubleVec3D& point) const;
     DoubleVec3D getRandomPoint() const;
     DoubleVec3D getMinCoord() const;

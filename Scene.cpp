@@ -262,7 +262,7 @@ KDTreeNode::Intersection Scene::bruteForceIntersection(const Ray& ray) const {
     double smallestPositiveDistance = INFINITY;  // Has to be strictly positive -> we don't want it to intersect with same object
     Object3D* closestObject = nullptr;
     for (Object3D* object : objects) {
-        double distance = object->closestIntersection(ray);
+        double distance = object->smallestPositiveIntersection(ray);
         if (distance > 0.00001 && distance < smallestPositiveDistance) {
             smallestPositiveDistance = distance;
             closestObject = object;
@@ -289,7 +289,7 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
     else if (lastNode == nullptr)
         intersection = kdTreeRoot->getIntersectionForward(ray);
     else
-        intersection = lastNode->getIntersectionBackward(ray);
+        intersection = lastNode->getIntersectionBackwards(ray);
 
     if (intersection.object == nullptr)  // Something must be hit
         return result;
@@ -315,7 +315,7 @@ DoubleVec3D Scene::traceRay(const Ray& ray, double usedNextEventEstimation /*= f
                 else if (intersection.kdTreeNode == nullptr)
                     shadowRayIntersection = kdTreeRoot->getIntersectionForward(shadowRay);
                 else
-                    shadowRayIntersection = intersection.kdTreeNode->getIntersectionBackward(shadowRay);
+                    shadowRayIntersection = intersection.kdTreeNode->getIntersectionBackwards(shadowRay);
 
                 if (distanceLamp - 0.00001 < shadowRayIntersection.distance && shadowRayIntersection.distance < distanceLamp + 0.00001) {
                     intersectionToLamp /= distanceLamp;  // Normalised

@@ -56,8 +56,8 @@
     \brief Makes a deep copy of this object.
     \return A pointer to a deeply copied version of this object.
 
-    \fn virtual double Object3D::closestIntersection(const Ray& ray) = 0
-    \brief Computes the closest intersection between the ray and this object.
+    \fn virtual double Object3D::smallestPositiveIntersection(const Ray& ray) = 0
+    \brief Computes the smallest positive intersection between the ray and this object.
     \param ray The ray with wich we want to compute the intersection.
     \return The distance between the ray origin and the intersection (the smallest one if there is more than one intersection). Returns -1 if the ray does not intersect with this object.
 
@@ -138,7 +138,7 @@ public:
     virtual void computeArea() = 0;
     virtual Object3D* deepCopy() const = 0;
 
-    virtual double closestIntersection(const Ray& ray) const = 0;
+    virtual double smallestPositiveIntersection(const Ray& ray) const = 0;
     virtual DoubleUnitVec3D getNormal(const DoubleVec3D& point) const = 0;
     virtual DoubleVec3D getRandomPoint() const = 0;
     virtual std::ostream& getDescription(std::ostream& stream) const = 0;
