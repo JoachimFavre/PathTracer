@@ -4,7 +4,7 @@ This is a C++ renderer using the Path Tracing algorithm I made throughout 2020 i
 
 ## Dependencies
 ### FBX SDK version 2020.1 by Autodesk
-- [Download](https://www.autodesk.com/developer-network/platform-technologies/fbx-sdk-2020-0 ) (use Runtime Library Option "MT")
+- [Download](https://www.autodesk.com/developer-network/platform-technologies/fbx-sdk-2020-0) (use Runtime Library Option "MT")
 - [Documentation](https://help.autodesk.com/view/FBX/2020/ENU/)
 
 ### JSON for Modern C++ version 3.9.1 by nlohmann
@@ -17,9 +17,10 @@ This is a C++ renderer using the Path Tracing algorithm I made throughout 2020 i
 - [Download](http://cimg.eu/download.shtml) (put CImg.h in [your project directory]/CImg)
 - [List of supported picture format](http://cimg.eu/reference/group__cimg__files__io.html)
 
-## Visual Studio parametring
+## Visual Studio 2017 parametring
 - Make sure to follow the [FBX SDK configuration tutorial](https://help.autodesk.com/view/FBX/2020/ENU/?guid=FBX_Developer_Help_getting_started_installing_and_configuring_configuring_the_fbx_sdk_for_wind_html) (using Runtime Library Option "MT")
 - Assert that "Project Properties > C/C++ > Language > Open MP Support" is yes (else multithreading will not work).
+- NB: I could not use a Visual Studio 2019 because the FBX SDK library is not available (or, at least, was not on the 10th January 2021) for this version.  
 
 ## Fbx file export from Blender
 To export a FBX file from [Blender](https://www.blender.org/), make sure that:
