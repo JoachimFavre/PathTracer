@@ -52,6 +52,16 @@ using json = nlohmann::json;
     \var const std::string PARAMETERS_SAVE_EXTENSION
     \brief Custom file extension to save parameters.
 
+    \var static std::uniform_real_distribution<double> unif
+    \brief Uniform distribution used by the randomDouble() function.
+    \details This distribution gives random double between 0 and 1.
+    \sa re, randomDouble()
+
+    \var static std::default_random_engine re
+    \brief Random engine used by the randomDouble() function.
+    \details Its seed is given by the number of seconds between the 1st January 1970 and the moment at which the user starts the program.
+    \sa unif, randomDouble()
+
     \fn void clearScreenPrintHeader()
     \brief Clears the console and shows the header.
 
@@ -74,7 +84,9 @@ using json = nlohmann::json;
 
     \fn double randomDouble()
     \brief Computes a random double between 0 and 1
+    \details Simply calls unif(re).
     \return A random double between 0 and 1 generated following a uniform distrbution.
+    \sa unif, re
 
     \fn bool fileExists(std::string fileName)
     \brief Verifies if the file exists.
@@ -102,8 +114,8 @@ const std::string PICTURE_SAVE_EXTENSION_JSON = "ptpict";
 const std::string OBJECTS_SAVE_EXTENSION = "ptobj";
 const std::string PARAMETERS_SAVE_EXTENSION = "ptparam";
 
-static std::uniform_real_distribution<double> unif(0, 1);
-static std::default_random_engine re(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
+static std::uniform_real_distribution<double> unif = std::uniform_real_distribution<double>(0, 1);
+static std::default_random_engine re = std::default_random_engine(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
 
 
 // Functions
