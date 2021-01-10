@@ -182,7 +182,7 @@ void executeParametersCommands(char command) {
             case 2: camera.setOrigin(getXYZDoubleVec3DFromUser("What is the new camera origin?")); return;
             case 3: camera.setFocal(getXYZDoubleVec3DFromUser("What is the new camera focal?")); return;
             case 4: scene.setSamplesPerPixel(getUnsignedIntFromUser("What is the new number of samples per pixel? " + POSITIVE_INT_INFO)); return;
-            case 5: scene.setMinBounces(getUnsignedIntFromUser("What is the new minimum number of ray bounces? (there can be less if nothing is hit) " + POSITIVE_INT_INFO)); return;
+            case 5: scene.setMinBounces(getUnsignedIntFromUser("What is the new minimum number of ray bounces before the russian roulette algorithm is used? " + POSITIVE_INT_INFO)); return;
             case 6: 
                 while (true) {
                     unsigned int threads = getUnsignedIntFromUser("What is the new number of CPU threads that will used during the rendering? (the optimal number would be " + std::to_string(omp_get_max_threads()) + ") " + POSITIVE_INT_INFO);

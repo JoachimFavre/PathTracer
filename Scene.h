@@ -25,7 +25,7 @@
     \brief Main constructor.
     \param camera The camera that will be used for the render.
     \param samplesPerPixel The number of ray casted per pixel. Increasing it will give a higher quality, but at a cost of a linearly increasing time.
-    \param minBounces The minimum number of bounces that each ray will do. It can be less if the ray does not intersect with any object.
+    \param minBounces The minimum number of bounces that each ray will do before beginning to use the russian roulette algorithm.
 
     \fn Scene::Scene(const Scene& scene)
     \brief Copy constructor.
