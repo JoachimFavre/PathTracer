@@ -8,7 +8,7 @@ This is a C++ renderer using the Path Tracing algorithm I made throughout 2020 i
 - [Documentation](https://help.autodesk.com/view/FBX/2020/ENU/)
 
 ### JSON for Modern C++ version 3.9.1 by nlohmann
-- [GitHub](https://github.com/nlohmann/json) (used examples from README.md)
+- [GitHub](https://github.com/nlohmann/json) (I used examples from README.md)
 - [Download](https://github.com/nlohmann/json/releases/tag/v3.9.1) (using include.zip/single_include)
 - [Documentation](https://nlohmann.github.io/json/)
 
